@@ -126,7 +126,7 @@ public class Aplicacion {
                 int retorno = cs.getInt(10);
                 
                 if(retorno==1){
-                    Mails.SendMail(correo, correo, path+"/css/images/varustore.png", hash, "Confirmación de cuenta", "la que sea", "Confirmar");
+                    Mails.SendMail(correo, correo, path+"/css/images/varustore.png", token, "Confirmación de cuenta", "la que sea", "Confirmar");
                     return true;
                 }else{
                     return false;

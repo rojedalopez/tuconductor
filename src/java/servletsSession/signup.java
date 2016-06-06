@@ -36,21 +36,27 @@ public class signup extends HttpServlet {
             throws ServletException, IOException, ClassNotFoundException, SQLException, InvalidKeyException {
         response.setContentType("text/html;charset=UTF-8");
         String mail = request.getParameter("mail");
+        System.err.println(mail);
         String password = request.getParameter("password");
+        System.err.println(password);
         String name = request.getParameter("name");
+        System.err.println(name);
         String lastname = request.getParameter("lastname");
+        System.err.println(lastname);
         String phone = request.getParameter("phone");
+        System.err.println(phone);
         String path = getServletContext().getRealPath("");
         
-        boolean b=Aplicacion.InsertUsuario(mail, password, name, lastname, phone, path);
+        
+        //boolean b=Aplicacion.InsertUsuario(mail, password, name, lastname, phone, path);
          
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            if(b){
+            /*if(b){
                 out.print("true");
             }else{
                 out.print("false");
-            }
+            }*/
         }
     }
 

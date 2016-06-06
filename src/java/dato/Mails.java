@@ -27,8 +27,8 @@ public class Mails {
     public static void SendMail(String to, String user, String imagen, String token, String as, String empresa, String textoBoton){
         String servidorSMTP = "smtp.gmail.com";
         String puerto = "587";
-        String usuario = "rojedalopez@gmail.com";
-        String password = "r0b3rto,.,1047";
+        String usuario = "info.sappyme@gmail.com";
+        String password = "vale,.,270414";
         String asunto = as;
  
         Properties props = new Properties();

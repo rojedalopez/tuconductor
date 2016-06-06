@@ -9,15 +9,17 @@
     <link href="assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />
-   <link href="assets/css/style.css" rel="stylesheet" />
-      <link href="assets/css/main-style.css" rel="stylesheet" />
-      
-      
-
+    <link href="assets/css/style.css" rel="stylesheet" />
+    <link href="assets/css/main-style.css" rel="stylesheet" />
+    <link href="css/generales.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>      
+    <script type="text/javascript" src="js/angular/sign.js"></script>      
 </head>
 
-<body class="body-Login-back">
-
+<body class="body-Login-back" ng-app="myApp" class="ng-cloak">
+    <div ng-controller="SignUpController as ctrl">
     <div class="container">
        
         <div class="row">
@@ -65,55 +67,57 @@
                     <h4 class="modal-title" id="myModalLabel">Formulario de registro</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" action="signup" method="POST">
+                    <form role="form" name="myForm">
                         <div class="form-group">
-                            <label>Nombre</label>
+                            <label>Nombre</label><span ng-show="myForm.name.$error.minlength" class="errores">Tamaño minino de 3 caracteres</span>
                             <div class="form-group input-group">
                                 <span class="input-group-addon"><img src="assets/img/user_icon.png" width="20" height="20" /></span>
-                                <input type="text" class="form-control" name="name" placeholder="Ingrese sus nombres">
+                                <input type="text" ng-model="ctrl.usuario.name" class="form-control" name="name" placeholder="Ingrese sus nombres" minlength="3">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Apellidos</label>
+                            <label>Apellidos</label><span ng-show="myForm.lastname.$error.minlength" class="errores">Tamaño minino de 3 caracteres</span>
                             <div class="form-group input-group">
                                 <span class="input-group-addon"><img src="assets/img/user_icon.png" width="20" height="20" /></span>
-                                <input type="text" class="form-control" name="lastname" placeholder="Ingrese sus apellidos">
+                                <input type="text" ng-model="ctrl.usuario.lastname" class="form-control" name="lastname" placeholder="Ingrese sus apellidos" minlength="3">
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label>E-mail</label>
+                            <label>E-mail</label><span ng-show="myForm.mail.$invalid && myForm.mail.$dirty" class="errores">Ingrese E-Mail valido</span>
                             <div class="form-group input-group">
                                 <span class="input-group-addon"><img src="assets/img/email_icon.png" width="20" height="20" /></span>
-                                <input type="text" class="form-control" name="email" placeholder="Ingrese su E-mail">
+                                <input type="email" ng-model="ctrl.usuario.mail" class="form-control" name="mail" placeholder="Ingrese su E-mail" required>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Contraseña</label>
+                            <label>Contraseña</label><span ng-show="myForm.password.$error.minlength" class="errores">Tamaño minimo de contraseña de 8 caracteres</span>
+                            <span ng-show="!myForm.password.$error.minlength && myForm.password.$error.pattern && myForm.password.$dirty" class="errores">Debe contener por lo menos un numero o un simbolo</span>
                             <div class="form-group input-group">
                                 <span class="input-group-addon"><img src="assets/img/pass_icon.png" width="20" height="20" /></span>
-                                <input type="password" class="form-control" name="password" placeholder="Ingrese su contraseña">
+                                <input type="password" ng-model="ctrl.usuario.password" class="form-control" name="password" placeholder="Ingrese su contraseña" ng-pattern="/(?=.*[a-z])(?=.*[^a-zA-Z])/" minlength="8">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Confirmar contraseña</label>
+                            <label>Confirmar contraseña</label><span ng-show="myForm.passwordRepeat.$invalid && myForm.passwordRepeat.$dirty" class="errores">Debe coincidir con la contraseña</span>
                             <div class="form-group input-group">
                                 <span class="input-group-addon"><img src="assets/img/pass_icon.png" width="20" height="20" /></span>
-                                <input type="password" class="form-control" placeholder="Ingrese su contraseña">
+                                <input type="password" class="form-control" placeholder="Ingrese su contraseña" name="passwordRepeat" 
+                                ng-model="ctrl.usuario.passwordRepeat" same-as="{{ctrl.usuario.password}}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Telefono</label>
                             <div class="form-group input-group">
                                 <span class="input-group-addon"><img src="assets/img/telefono_icon.png" width="20" height="20" /></span>
-                                <input type="text" class="form-control" name="phone" placeholder="Ingrese su telefono">
+                                <input type="text" ng-model="ctrl.usuario.phone" class="form-control" name="phone" placeholder="Ingrese su telefono">
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Candelar</button>
-                    <button type="button" class="btn btn-primary">Registrarme</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button ng-click="ctrl.submit()" class="btn btn-primary" ng-disabled="myForm.$invalid">Registrarme</button>
                 </div>
             </div>
         </div>
@@ -152,7 +156,7 @@
         }
         
     </script>
-    
+    </div>
 </body>
 
 </html>
