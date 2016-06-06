@@ -15,13 +15,18 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
           };
           
           self.submit = function() {
-              console.log(self.usuario.name);
-              console.log(self.usuario.lastname);
-              console.log(self.usuario.mail);
-              console.log(self.usuario.password);
-              console.log(self.usuario.phone);
-            open_message(self.SaveUser(self.usuario));
-            self.reset();
+            self.SaveUser(self.usuario); 
+            self.close();
+          };
+          
+          self.close = function(){
+              self.reset();
+              dialog.modal( "hide" );
+          };
+           
+          self.opener = function(){
+              self.reset();
+              dialog.modal( "show" );
           };
           
           self.reset = function(){
@@ -33,20 +38,10 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
 
 	return {
                     SaveSign: function(usuario){
-                        var fd = new FormData();
-                        fd.append("mail", usuario.mail);
-                        fd.append("password", usuario.password);
-                        fd.append("name", usuario.name);
-                        fd.append("lastname", usuario.lastname);
-                        fd.append("phone", usuario.phone);
-                        
-					return $http.post('signup', fd, {
-                                                    headers: {'Content-Type': undefined},
-                                                    transformRequest: angular.identity
-                                                })
-							.then(
+                        return $http.post('signup', usuario).then(
 									function(response){
                                                                                 console.log(response.data);
+                                                                                open_message(response.data);
 										return response.data;
 									}, 
 									function(errResponse){
