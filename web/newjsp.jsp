@@ -12,6 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Bimbo mkon</h1>
+        <h1>Bimbo mkon...</h1>
     </body>
 </html>
