@@ -133,9 +133,9 @@
     <script src="assets/plugins/bootstrap/bootstrap.min.js"></script>
     <script src="assets/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script type="text/javascript">
+        $( "#message_exito" ).hide();
+        $( "#message_error" ).hide();
         function open_message(valor){
-            $( "#message_exito" ).hide();
-            $( "#message_error" ).hide();
             if(valor=="true"){
                 $("#message_exito").show();
                 setTimeout(function(){
