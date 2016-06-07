@@ -23,7 +23,11 @@ public class validate extends HttpServlet {
          
         try {
             if(Aplicacion.validarReset(user, tkn)){
-                response.sendRedirect("activacion.jsp?email="+user);
+                if(Aplicacion.ActivarCuentaUsuario(user)){
+                    response.sendRedirect("activacion.jsp?email="+user);
+                }else{
+                    response.sendRedirect("activacion.jsp?error");
+                }
             }else{
                 response.sendRedirect("activacion.jsp?error");
             }
