@@ -50,7 +50,7 @@ public class Aplicacion {
              
                 try{
                     conn=conexion();
-                    String instruccion="SELECT cod_empleado, eml_empleado, hsh_empleado, psw_empleado, nbr_empleado, apl_empleado, mvl_empleado FROM tblEmpleado WHERE eml_empleado = ?;";
+                    String instruccion="SELECT cod_empleado, tblUsuario.eml_usuario, hsh_usuario, pwd_usuario, nbr_empleado, apl_empleado, mvl_empleado FROM tblUsuario INNER JOIN tblEmpleado ON tblEmpleado.eml_usuario = tblUsuario.eml_usuario WHERE tblUsuario.eml_usuario = ? AND ver_usuario = 1;";
                     insertar=conn.prepareStatement(instruccion);
                     insertar.setString(1, correo);
                     datos=insertar.executeQuery();
