@@ -16,7 +16,9 @@
     <script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
     <script type="text/javascript" src="js/angular.min.js"></script>
     <script type="text/javascript" src="js/app.js"></script>      
-    <script type="text/javascript" src="js/angular/sign.js"></script>      
+    <script type="text/javascript" src="js/angular/sign.js"></script>    
+    <script type="text/javascript" src="js/angular/profile.js"></script>    
+    
 </head>
 
 <body class="body-Login-back" ng-app="myApp" class="ng-cloak">

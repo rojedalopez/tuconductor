@@ -7,6 +7,8 @@ package dato;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
@@ -19,6 +21,9 @@ import javax.crypto.spec.SecretKeySpec;
  * @author SISTEMAS
  */
 public class Metodos {
+        
+    static SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    static SimpleDateFormat formateador_ = new SimpleDateFormat("yyyy/MM/dd hh:mm a");
         
     //CANCULA CON EL ALGORITMO SHA256
     public static String sha256(String usuario, String key) throws InvalidKeyException{
@@ -86,8 +91,16 @@ public class Metodos {
         return thisMonth;
     }
     
-    public static long[] calcular(Date fecha){
+    public static String calcular(String fecha_){
 
+        Date fecha = null;
+
+        try {
+                fecha = formateador.parse(fecha_);
+        } catch (ParseException e) {
+                e.printStackTrace();
+        }
+                
         long[] vector = new long[4];
 
         final long MILLSECS_PER_DAY = 24 * 60 * 60 * 1000; //Milisegundos al día
@@ -96,7 +109,7 @@ public class Metodos {
         final long MILLSECS_PER_SECOND = 1000; //Milisegundos al minuto
         Date hoy = new Date(); //Fecha de hoy
 
-        long diferencia = (fecha.getTime() - hoy.getTime());
+        long diferencia = (hoy.getTime() - fecha.getTime());
         long dias = diferencia / MILLSECS_PER_DAY;
         long horas = (diferencia % MILLSECS_PER_DAY) / MILLSECS_PER_HOUR;
         long minutos = (diferencia % MILLSECS_PER_HOUR) / MILLSECS_PER_MINUTE;
@@ -106,8 +119,17 @@ public class Metodos {
         vector[2] = minutos;
         vector[1] = horas;
         vector[0] = dias;
+        
+        String desde = "";
+        String[] medidas = {" dias", " horas", " minutos", " segundos"};
+        for(int i=0; i<vector.length; i++){
+            if(vector[i]!=0){
+                    desde += vector[i] + "" + medidas[i];
+                    break;
+            }
+        }
 
-        return vector;
+        return desde;
     }
 
     

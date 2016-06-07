@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('myApp',[
-    'MyApp.Sign'
+    'MyApp.Sign',
+    'MyApp.Profile'
 ]);
 
 

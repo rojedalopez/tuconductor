@@ -23,10 +23,17 @@ if(session.getAttribute("user") == null){
     <link href="assets/css/main-style.css" rel="stylesheet" />
     <!-- Page-Level CSS -->
     <link href="assets/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    
+    <script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>      
+    <script type="text/javascript" src="js/angular/sign.js"></script>
+    <script type="text/javascript" src="js/angular/profile.js"></script>    
+    
    </head>
-<body>
+<body ng-app="myApp" class="ng-cloak">
     <!--  wrapper -->
-    <div id="wrapper">
+    <div id="wrapper"  ng-controller="ProfileController as ctrl">
         <!-- navbar top -->
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="navbar">
             <!-- navbar-header -->
@@ -382,26 +389,26 @@ if(session.getAttribute("user") == null){
                             </span>
                         </div>
                     </div>
-                    <div class="panel-body">
-                        <ul class="chat">
+                    <div class="panel-body" >
+                        <ul class="chat" ng-repeat="p in ctrl.publicaciones">
                             <li class="left clearfix">
                                 <span class="chat-img pull-left">
                                     <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />
                                 </span>
                                 <div class="chat-body clearfix">
                                     <div class="header">
-                                        <strong class="primary-font">Jack Sparrow</strong>
+                                        <strong class="primary-font"><span ng-bind="p.origen"></span></strong>
                                         <small class="pull-right text-muted">
-                                            <i class="fa fa-clock-o fa-fw"></i>12 mins ago
+                                            <i class="fa fa-clock-o fa-fw"></i><span ng-bind="p.desde"></span>
                                         </small>
                                     </div>
                                     <p>
-                                        mensaje de prueba
+                                        <span ng-bind="p.comentario"></span>
                                     </p>
-                                    <div style="text-align: right;"><img src="assets/img/megusta_icon.png" width="14" height="14" /> 10 <img src="assets/img/comment_icon.png" width="14" height="14" /> 7</div>
+                                    <div style="text-align: right;"><img src="assets/img/megusta_icon.png" width="14" height="14" /> <span ng-bind="p.megusta"></span> <img src="assets/img/comment_icon.png" width="14" height="14" /> <span ng-bind="p.num_comentario"></span></div>
                                 </div>
                                 <div class="panel-footer" style="text-align: right;">
-                                    <a href="#" data-toggle="modal" data-target="#Modal_comment">Comentar</a> - <a href="#">Compartir</a> - <a href="#">Me gusta</a> 
+                                    <a href="#" ng-click="ctrl.comentar()" data-toggle="modal" data-target="#Modal_comment">Comentar</a> - <a href="#">Compartir</a> - <a href="#">Me gusta</a> 
                                 </div>
                             </li>
                         </ul>
@@ -512,7 +519,7 @@ if(session.getAttribute("user") == null){
                         </div>
                         <div class="panel-footer">
                             <div class="input-group">
-                                <input id="btn-input" type="text" class="form-control input-sm"  placeholder="Añair un comentario.." />
+                                <input id="btn-input" type="text" class="form-control input-sm"  placeholder="Añadir un comentario.." />
                                 <span class="input-group-btn">
                                     <button class="btn btn-warning btn-sm" id="btn-chat">
                                         Enviar
