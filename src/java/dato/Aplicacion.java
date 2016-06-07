@@ -15,13 +15,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author SISTEMAS
  */
 public class Aplicacion {
-    
     public static Connection conexion() throws ClassNotFoundException{
         Connection conn = null;
         try{
