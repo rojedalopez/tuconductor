@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servletsSession;
 
 import dato.Aplicacion;
@@ -28,7 +23,7 @@ public class validate extends HttpServlet {
          
         try {
             if(Aplicacion.validarReset(user, tkn)){
-                response.sendRedirect("activacion.jsp?user="+user);
+                response.sendRedirect("activacion.jsp?email="+user);
             }else{
                 response.sendRedirect("activacion.jsp?error");
             }
@@ -39,7 +34,7 @@ public class validate extends HttpServlet {
     }
     
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             processRequest(request, response);
