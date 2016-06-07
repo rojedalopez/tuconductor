@@ -28,9 +28,9 @@ public class validate extends HttpServlet {
          
         try {
             if(Aplicacion.validarReset(user, tkn)){
-                response.sendRedirect("conf/resetPassw.jsp?user="+user+"&tkn="+tkn);
+                response.sendRedirect("activacion.jsp?user="+user);
             }else{
-                response.sendRedirect("conf/resetPassw.jsp?error=ya fue utilizado el enlace");
+                response.sendRedirect("activacion.jsp?error");
             }
         } catch (SQLException ex) {
             System.out.println(ex.toString());

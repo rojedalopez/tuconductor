@@ -1,3 +1,4 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 
@@ -35,7 +36,7 @@
                         <form role="form" method="POST" action="login">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="E-mail" name="nick" type="email" autofocus>
+                                    <input class="form-control" placeholder="E-mail" name="nick" type="email" value="<%out.print((request.getParameter("email")!=null)?request.getParameter("email"):"");%>" autofocus>
                                 </div>
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Contraseña" name="pass" type="password" value="">
