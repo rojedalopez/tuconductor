@@ -24,7 +24,7 @@ import javax.mail.internet.MimeMultipart;
  * @author SISTEMAS
  */
 public class Mails {
-    public static void SendMail(String to, String user, String imagen, String token, String as, String empresa, String textoBoton){
+    public static void SendMail(String user, String token, String as, String textoBoton){
         String servidorSMTP = "smtp.gmail.com";
         String puerto = "587";
         String usuario = "info.sappyme@gmail.com";
@@ -48,30 +48,28 @@ public class Mails {
          message.setFrom(new InternetAddress("Sappyme Colombia <info.sappyme@gmail.com>"));
          MimeBodyPart html = new MimeBodyPart();
  
-             html.setContent("<div style='font-size: 12px;color: #424242;width:700px;margin-left:auto;margin-right:auto;padding:10px;;border:solid 2px gray;'>\n" +
-"\n" +
+             html.setContent("<div style='font-size: 12px;color: #424242;width:100%;margin-left:auto;margin-right:auto;padding:10px;background-color: #E0E0E0;'>\n" +
+"            <div style='width: 70%; margin: 0 auto;background-color: #ffffff;'>\n" +
 "    <div style='border-bottom: 1px solid #E0E0E0;'>\n" +
-"      <div style='width: 100%;margin-left: auto;margin-right: auto;'>\n" +
-"        <img src='cid:logoimg' style='height: 72px; width: 72px;margin-right: 1em;vertical-align: top;margin-top: 12px;' >\n" +
-"        <a href=''>\n" +
-"        <h1 style='font-weight: 300;font-size: 4em;margin: 0.5em 0.25em;display: inline-block;color: #3E4156;'>\n" +
-"              "+empresa+"\n" +
-"        </h1>\n" +
-"        </a>\n" +
+"      <div style='width: 100%;margin-left: auto;margin-right: auto;background-color: navy;height: 15px;'>\n" +
 "      </div>\n" +
 "    </div>\n" +
 "    <div style='box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);width: 100%;margin-left: auto;margin-right: auto;'>\n" +
 "      <div style='box-sizing: border-box;'>\n" +
 "        <center><h2 style='font-weight: 250;font-size: 2.5em;margin: 0.5em 0.25em;display: inline-block;color: #3E4156;'>\n" +
-"              "+as.toUpperCase()+"\n" +
+              as + 
 "        </h2></center>\n" +
 "       <center style='padding: 20px 10px;'>\n" +
-"               <a style='color:white; background-color:red; border: solid 1px white;padding: 17px;text-decoration:none; cursor:pointer;font-weight:bold;' href='sappyme.co/resetPassword?user="+user+"&tkn="+token+"'>"+textoBoton+"</a>\n" +
+"               <a style='color:white; background-color:red; border: solid 1px white;padding: 17px;text-decoration:none; \n" +
+"                  cursor:pointer;font-weight:bold;' href='http://sappyme.co:8081/tuconductor/validate?user="+user+"&tkn="+token+"'>\n" +
+                    textoBoton +
+"               </a>\n" +
 "       </center>\n" +
 "       <p style='padding: 15px;'>\n" +
-"       Después de hacer clic en el botón de arriba , se le pedirá que complete los pasos siguientes :<br/>\n" +
-"       1. Introduzca su nueva contraseña.<br/>\n" +
-"       2. Haga clic en \"Enviar\" .<br/>\n" +
+"       Para completar su registro es necesario que active su cuenta, para esto debe darle clic al boton anterior.<br/>\n" +
+"       Si no es posible ingresar al boton, ingrese al siguiente link:<br/>\n" +
+"       <a href='http://sappyme.co:8081/tuconductor/validate?user="+user+"&tkn="+token+"'>href='http://sappyme.co:8081/tuconductor/validate?user="+user+"&tkn="+token+"'</a>\n" +
+"       <br/>\n" +
 "       <br/>\n" +
 "       Si ya confirmaste tu cuenta o no has solicitado un restablecimiento de contraseña o usted siente que ha recibido este mensaje por error, \n" +
 "       por favor llame a nuestro equipo de soporte 24/7 de inmediato. <br/>\n" +
@@ -79,13 +77,15 @@ public class Mails {
 "       </p>\n" +
 "      </div>\n" +
 "      <div style='border-top: 1px solid #E0E0E0;padding:25px;'>\n" +
-"       <center>Por favor no responder a este email. Los correos electrónicos enviados a esta dirección no serán contestados .</center>\n" +
-"        <center>Sofware desarrollado por ROjedaLopez</center>\n" +
+"       <center>Por favor no responder a este email.</center>\n" +
+"       <center>Los correos electrónicos enviados a esta dirección no serán contestados.</center>\n" +
+"        <center>© 2016 TuConductor</center>\n" +
 "      </div>\n" +
 "    </div>\n" +
+"    </div>        \n" +
 "  </div>", "text/html");
  
-         BodyPart imgPart = new MimeBodyPart();
+         /*BodyPart imgPart = new MimeBodyPart();
          String fileName = imagen;
  
  
@@ -93,13 +93,13 @@ public class Mails {
          DataSource ds = new FileDataSource(fileName);
          imgPart.setDataHandler(new DataHandler(ds));
          imgPart.setHeader("Content-ID", "<logoimg>");
-         alternative.addBodyPart(imgPart); 
+         alternative.addBodyPart(imgPart); */
          alternative.addBodyPart(html);
  
          //se recorre la lista de correos del contrato
  
  
-         message.addRecipient(Message.RecipientType.CC, new InternetAddress(to));
+         message.addRecipient(Message.RecipientType.CC, new InternetAddress(user));
          message.setSubject(asunto);
          message.setContent(alternative);
  

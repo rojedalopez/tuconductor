@@ -6,68 +6,38 @@
 package servletsSession;
 
 import dato.Aplicacion;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.security.InvalidKeyException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-@WebServlet("/user")
-public class signup extends HttpServlet {
-
+public class validate extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ClassNotFoundException, SQLException, InvalidKeyException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
         
-        StringBuffer sb = new StringBuffer();
-  
-        try
-        {
-          BufferedReader reader = request.getReader();
-          String line = null;
-          while ((line = reader.readLine()) != null)
-          {
-            sb.append(line);
-          }
-        } catch (Exception e) { e.printStackTrace(); }
- 
-        JSONParser parser = new JSONParser();
-        JSONObject joCliente = null;
+        String user = request.getParameter("user");
+        String tkn = request.getParameter("tkn");
          
-        joCliente = (JSONObject) parser.parse(sb.toString());
-        
-        String mail = (String) joCliente.get("mail");
-        String password = (String) joCliente.get("password");
-        String name = (String) joCliente.get("name");
-        String lastname = (String) joCliente.get("lastname");
-        String phone = (String) joCliente.get("phone");
-        String path = getServletContext().getRealPath("");
-        
-        
-        boolean b=Aplicacion.InsertUsuario(mail, password, name, lastname, phone, path);
-         
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            if(b){
-                out.print("true");
+        try {
+            if(Aplicacion.validarReset(user, tkn)){
+                response.sendRedirect("conf/resetPassw.jsp?user="+user+"&tkn="+tkn);
             }else{
-                out.print("false");
+                response.sendRedirect("conf/resetPassw.jsp?error=ya fue utilizado el enlace");
             }
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
         }
+        
     }
-
-
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -83,8 +53,9 @@ public class signup extends HttpServlet {
             Logger.getLogger(signup.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
 
-
+ 
     @Override
     public String getServletInfo() {
         return "Short description";
