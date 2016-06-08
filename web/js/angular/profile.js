@@ -4,10 +4,12 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
           var self = this;
           self.usuario={mail:"", password:"",name:"", lastname:"", phone:""};
           self.publicaciones=[];
-          self.publicacion={id:null, fecha:Date(), origen:"", cod_origen:"", destino:"", comentario:"", archivo:"", me_gusta:0, desde:"", num_comentario:0};
-
-         self.SaveUser = function(usuario){
-              ProfileService.SaveSign(usuario)
+          self.publicacion={id:null, fecha:Date(), origen:"", cod_origen:"", destino:"", comentario:"", archivo:"", me_gusta:0, desde:"", num_comentario:0, comment:[]};
+          self.comment={id:null,fecha:Date(), origen:"", cod_origen:"", comentario:"", desde:"", id_publicacion:""};
+          self.comentario = "";
+          
+          self.SaveComment = function(comment){
+              ProfileService.SaveComment(comment)
 		              .then(
                       self.reset, 
 				              function(errResponse){
@@ -40,9 +42,13 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
               dialog.modal( "hide" );
           };
            
-          self.comentar = function(){
-              self.reset();
-              dialog.modal( "show" );
+           
+          self.sendComment = function(id,codigo){
+              self.comment.id = -1;
+              self.comment.cod_origen = codigo;
+              self.comment.id_publicacion = id;
+              self.comment.comentario = self.comentario;
+              self.SaveComment(self.comment);
           };
           
           self.opener = function(){
@@ -58,11 +64,10 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
       }]).factory('ProfileService', ['$http', '$q', function($http, $q){
 
 	return {
-                    SaveSign: function(usuario){
-                        return $http.post('signup', usuario).then(
+                    SaveComment: function(comment){
+                        return $http.post('comment', comment).then(
 									function(response){
                                                                                 console.log(response.data);
-                                                                                open_message(response.data);
 										return response.data;
 									}, 
 									function(errResponse){

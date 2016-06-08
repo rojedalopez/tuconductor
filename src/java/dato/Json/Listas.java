@@ -19,7 +19,7 @@ import org.json.simple.JSONObject;
  * @author SISTEMAS
  */
 public class Listas {
-    public static String ObtenerCliente(String id) throws SQLException{
+    public static String ObtenerPublicacionesProfile(String id) throws SQLException{
         JSONObject obj = null;
         JSONArray lista = new JSONArray();
         Connection conn=null;
@@ -51,6 +51,7 @@ public class Listas {
                         obj.put("destino", datos.getString(8));
                         obj.put("num_comentario", datos.getInt(9));
                         obj.put("desde", Metodos.calcular(datos.getString(2)));
+                        obj.put("comment", ObtenerCommentsByPublish(datos.getInt(1)));
                         lista.add(obj);
                     }
                     datos.close();
@@ -71,5 +72,53 @@ public class Listas {
         return "";
     }
     
+    public static JSONArray ObtenerCommentsByPublish(int id) throws SQLException{
+        JSONObject obj = null;
+        JSONArray lista = new JSONArray();
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        Statement stm=null;
+        ResultSet datos=null;
+             
+        try{
+                    conn=conexion();
+                    String instruccion="";
+                     
+                    instruccion =   "SELECT c.id_comentario, CONCAT(e.nbr_empleado, \" \", e.apl_empleado) AS Origen, " +
+                                    "c.fch_comentario, c.cmn_comentario, e.cod_empleado, c.id_publicacion " +
+                                    "FROM tblComentario  AS c INNER JOIN tblEmpleado AS e ON c.cod_empleado = e.cod_empleado " +
+                                    "WHERE id_publicacion = ?;";
+                     
+                    insertar=conn.prepareStatement(instruccion);
+                    insertar.setInt(1, id);
+                    datos=insertar.executeQuery();
+                    while (datos.next()) {
+                        obj = new JSONObject();
+                        obj.put("id", datos.getInt(1));
+                        obj.put("origen", datos.getString(2));
+                        obj.put("fecha", datos.getString(3));
+                        obj.put("comentario", datos.getString(4));
+                        obj.put("cod_origen", datos.getString(5));
+                        obj.put("id_publicacion", datos.getInt(6));
+                        obj.put("desde", Metodos.calcular(datos.getString(3)));
+                        lista.add(obj);
+                    }
+                    datos.close();
+                    conn.close();
+                    return lista;
+             
+        }catch (SQLException e) {
+            System.out.println("error SQLException en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }catch (Exception e){
+                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }finally{
+                    if(!conn.isClosed()){
+                        conn.close();
+                    }
+                }
+        return lista;
+    }
    
 }

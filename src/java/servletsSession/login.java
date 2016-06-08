@@ -37,6 +37,7 @@ public class login extends HttpServlet {
                 if(u.getMensaje().equals("true")){
                     String[] nombre = u.getNombre().split(" ");
                     session.setAttribute("user", u);
+                    session.setAttribute("cod", u.getCodigo());
                     session.setAttribute("usr", nombre[0]);
                     session.setAttribute("session", true);
                     response.sendRedirect("profile.jsp");

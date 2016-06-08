@@ -23,7 +23,7 @@ public class profile extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println(Listas.ObtenerCliente("fykUa776BN8M34up607E"));
+            out.println(Listas.ObtenerPublicacionesProfile("fykUa776BN8M34up607E"));
         }
     }
 

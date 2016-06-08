@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servletsSession;
+package servletsSave;
 
 import dato.Save.Guardar;
 import java.io.BufferedReader;
@@ -22,16 +22,14 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-@WebServlet("/user")
-public class signup extends HttpServlet {
-
+@WebServlet("/comments")
+public class comment extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ClassNotFoundException, SQLException, InvalidKeyException, ParseException {
+            throws ServletException, IOException, ParseException, ClassNotFoundException, SQLException, InvalidKeyException {
         response.setContentType("text/html;charset=UTF-8");
-        
         StringBuffer sb = new StringBuffer();
-  
+        
         try
         {
           BufferedReader reader = request.getReader();
@@ -43,48 +41,44 @@ public class signup extends HttpServlet {
         } catch (Exception e) { e.printStackTrace(); }
  
         JSONParser parser = new JSONParser();
-        JSONObject joCliente = null;
+        JSONObject joComment = null;
          
-        joCliente = (JSONObject) parser.parse(sb.toString());
+        joComment = (JSONObject) parser.parse(sb.toString());
         
-        String mail = (String) joCliente.get("mail");
-        String password = (String) joCliente.get("password");
-        String name = (String) joCliente.get("name");
-        String lastname = (String) joCliente.get("lastname");
-        String phone = (String) joCliente.get("phone");
-        String path = getServletContext().getRealPath("");
+        int id_p = Integer.parseInt(joComment.get("id_publicacion").toString());
+        int id = Integer.parseInt(joComment.get("id").toString());
+        String cod = (String) joComment.get("cod_origen");
+        String comentario = (String) joComment.get("comentario");
         
         
-        boolean b=Guardar.InsertUsuario(mail, password, name, lastname, phone, path);
-         
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            if(b){
-                out.print("true");
-            }else{
-                out.print("false");
-            }
+            out.print(Guardar.InsertComment(id, id_p, cod, comentario));
         }
+        
     }
-
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             processRequest(request, response);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(signup.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(signup.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvalidKeyException ex) {
-            Logger.getLogger(signup.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {
-            Logger.getLogger(signup.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(comment.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(comment.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(comment.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidKeyException ex) {
+            Logger.getLogger(comment.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
     @Override
     public String getServletInfo() {
         return "Short description";
