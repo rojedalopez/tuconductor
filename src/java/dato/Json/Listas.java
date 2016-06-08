@@ -51,7 +51,6 @@ public class Listas {
                         obj.put("destino", datos.getString(8));
                         obj.put("num_comentario", datos.getInt(9));
                         obj.put("desde", Metodos.calcular(datos.getString(2)));
-                        obj.put("comment", ObtenerCommentsByPublish(datos.getInt(1)));
                         lista.add(obj);
                     }
                     datos.close();
@@ -72,7 +71,7 @@ public class Listas {
         return "";
     }
     
-    public static JSONArray ObtenerCommentsByPublish(int id) throws SQLException{
+    public static String ObtenerCommentsByPublish(int id) throws SQLException{
         JSONObject obj = null;
         JSONArray lista = new JSONArray();
         Connection conn=null;
@@ -105,7 +104,7 @@ public class Listas {
                     }
                     datos.close();
                     conn.close();
-                    return lista;
+                    return lista.toJSONString();
              
         }catch (SQLException e) {
             System.out.println("error SQLException en ObtenerCliente");
@@ -118,7 +117,7 @@ public class Listas {
                         conn.close();
                     }
                 }
-        return lista;
+        return lista.toJSONString();
     }
    
 }

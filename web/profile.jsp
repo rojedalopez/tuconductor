@@ -405,38 +405,7 @@ if(session.getAttribute("user") == null){
                                     <p>
                                         <span ng-bind="p.comentario"></span>
                                     </p>
-                                    <div style="text-align: right;"><img src="assets/img/megusta_icon.png" width="14" height="14" /> <span ng-bind="p.megusta"></span> <img src="assets/img/comment_icon.png" width="14" height="14" /> <span ng-bind="p.num_comentario"></span></div>
-                                </div>
-                                <div class="panel-footer">
-                                    <div class="input-group">
-                                        <input id="btn-input" type="text" class="form-control input-sm" ng-model="ctrl.comentario"  placeholder="Añadir un comentario.." />
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-warning btn-sm" id="btn-chat" ng-click="ctrl.sendComment(p.id, '${sessionScope.cod}')">
-                                                Enviar
-                                            </button>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="panel-body">
-                                    <ul class="chat" ng-repeat="c in p.comment">
-                                        <li class="left clearfix">
-                                            <span class="chat-img pull-left">
-                                                <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />
-                                            </span>
-                                            <div class="chat-body clearfix">
-                                                <div class="header">
-                                                    <strong class="primary-font"><span ng-bind="c.origen"></span></strong>
-                                                    <small class="pull-right text-muted">
-                                                        <i class="fa fa-clock-o fa-fw"></i><span ng-bind="c.desde"></span>
-                                                    </small>
-                                                </div>
-                                                <p>
-                                                    <span ng-bind="c.comentario"></span>
-                                                </p>
-
-                                            </div>
-                                        </li>
-                                    </ul>
+                                    <div style="text-align: right;"><img src="assets/img/megusta_icon.png" width="14" height="14" /> <span ng-bind="p.megusta"></span> <img src="assets/img/comment_icon.png" width="14" height="14" ng-click="ctrl.openComment(p.id, '${sessionScope.cod}')" /> <span ng-bind="p.num_comentario"></span></div>
                                 </div>
                             </li>
                         </ul>
@@ -528,8 +497,7 @@ if(session.getAttribute("user") == null){
         </div>
         <!-- end page-wrapper -->
 
-    </div>
-    <!-- end wrapper -->
+    
 
     
     <div class="modal fade" id="Modal_comment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -556,23 +524,23 @@ if(session.getAttribute("user") == null){
                             </div>
                         </div>
                         <div class="panel-body">
-                            <ul class="chat">
-                                <li class="left clearfix">
-                                    <span class="chat-img pull-left">
-                                        <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />
-                                    </span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header">
-                                            <strong class="primary-font">Jack Sparrow</strong>
-                                            <small class="pull-right text-muted">
-                                                <i class="fa fa-clock-o fa-fw"></i>12 mins ago
-                                            </small>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
-                                        </p>
-                                        
-                                    </div>
+                            <ul class="chat" ng-repeat="c in ctrl.comments">
+                                        <li class="left clearfix">
+                                            <span class="chat-img pull-left">
+                                                <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />
+                                            </span>
+                                            <div class="chat-body clearfix">
+                                                <div class="header">
+                                                    <strong class="primary-font"><span ng-bind="c.origen"></span></strong>
+                                                    <small class="pull-right text-muted">
+                                                        <i class="fa fa-clock-o fa-fw"></i><span ng-bind="c.desde"></span>
+                                                    </small>
+                                                </div>
+                                                <p>
+                                                    <span ng-bind="c.comentario"></span>
+                                                </p>
+
+                                            </div>
                                 </li>
                             </ul>
                         </div>
@@ -582,6 +550,9 @@ if(session.getAttribute("user") == null){
             </div>
         </div>
     </div>
+    
+    </div>
+    <!-- end wrapper -->
     
     <!-- Core Scripts - Include with every page -->
     <script src="assets/plugins/jquery-1.10.2.js"></script>
@@ -595,13 +566,7 @@ if(session.getAttribute("user") == null){
     <script src="assets/scripts/dashboard-demo.js"></script>
 
     <script type="text/javascript">
-        $( "#form_addcomment" ).hide();
-        function visualizar_addcomment(){
-            $("#form_addcomment").show();
-        }
-        function ocultar_addcomment(){
-            $("#form_addcomment").hide();
-        }
+        var popup = $( "#Modal_comment" );
         
     </script>
 </body>
