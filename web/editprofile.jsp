@@ -280,7 +280,7 @@ if(session.getAttribute("user") == null){
                                 <img src="assets/img/user.jpg" alt="">
                             </div>
                             <div class="user-info">
-                                <div>Roberto</div>
+                                <div>${sessionScope.usr}</div>
                                 <div class="user-text-online">
                                     <a href="#">Mejora tu Perfil</a>
                                 </div>

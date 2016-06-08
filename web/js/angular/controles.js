@@ -208,23 +208,18 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
 
 angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', 'ProfileService', function($scope, ProfileService) {
           var self = this;
-          self.usuario={mail:"", password:"",name:"", lastname:"", phone:""};
+          self.usuario_dp={tip_doc:"", num_doc:"", fecha_nac:Date(), genero:"", est_civil:"", tel:"", pais:"", depto:"", ciudad:"", 
+          dir:"", naci:"", la1:0, la2:0, lb1:0, lb2:0, lb3:0, lc1:0, lc2:0, lc3:0};
           self.publicaciones=[];
           self.publicacion={id:null, fecha:Date(), origen:"", cod_origen:"", destino:"", comentario:"", archivo:"", me_gusta:0, desde:"", num_comentario:0};
           self.comments=[];
           self.comment={id:null,fecha:Date(), origen:"", cod_origen:"", comentario:"", desde:"", id_publicacion:""};
           self.comentario = "";
           
-          self.SaveComment = function(comment){
-              ProfileService.SaveComment(comment)
+          self.SaveDatosPersonales = function(usuario_dp){
+              ProfileService.SaveDatosPersonales(usuario_dp)
 		              .then(function(d){
-                                if(d==="true"){
-                                    console.log(self.publicacion.comment.length);
-                                    self.publicacion.comment.push(self.comment);
-                                    console.log(self.publicacion.comment.length);
-                                }else{
-                                    console.log("no entro");
-                                }
+                                
                               }, 
 				              function(errResponse){
 					               console.error('Error while creating Paper.');
@@ -299,7 +294,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
       }]).factory('ProfileService', ['$http', '$q', function($http, $q){
 
 	return {
-                    SaveComment: function(comment){
+                    SaveDatosPersonales: function(comment){
                         return $http.post('comment', comment).then(
 									function(response){
                                                                                 console.log(response.data);
