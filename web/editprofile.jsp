@@ -1,3 +1,14 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% 
+response.setHeader("Pragma", "No-chache"); 
+response.setHeader("Expires", "0"); 
+response.setHeader("Cache-Control", "no-cache"); 
+response.setHeader("Cache", "no-cache"); 
+if(session.getAttribute("user") == null){
+   //redirijo al login
+    response.sendRedirect("?mensaje=Acabo su sesion.");
+}
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,10 +23,16 @@
     <link href="assets/css/main-style.css" rel="stylesheet" />
     <!-- Page-Level CSS -->
     <link href="assets/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <link href="css/generales.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>      
+    <script type="text/javascript" src="js/angular/controles.js"></script>    
+    
    </head>
-<body>
+<body ng-app="myApp" class="ng-cloak">
     <!--  wrapper -->
-    <div id="wrapper">
+    <div id="wrapper" ng-controller="ProfileController as ctrl">
         <!-- navbar top -->
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="navbar">
             <!-- navbar-header -->
@@ -337,232 +354,231 @@
             </div>
 
             <div class="row">
-            
-                <div class="panel-group" id="accordion">
-                    <div class="panel panel-default">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                            <div class="panel-heading" style="background-color: #f0f0f0;">
-                                <h4 class="panel-title">
-                                    DATOS PERSONALES
-                                </h4>
+                <div class="col-lg-12">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            DATOS PERSONALES
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label>Tipo de documento:</label>                                        
+                                <div class="form-inline">                                            
+                                    <select class="form-control"  style="width: 48%;">
+                                        <option>Seleccione</option>
+                                        <option>Cedula de ciudadania</option>
+                                        <option>Cedula de extranjeria</option>
+                                        <option>Pasaporte</option>
+                                    </select>
+                                    <input type="text" class="form-control" placeholder="Numero del documento"  style="width: 50%;" >
+                                </div>                                
                             </div>
-                        </a>
-                        <div id="collapseOne" class="panel-collapse collapse in">
-                            <div class="panel-body">
-                                <form class="form-horizontal">
-                                    <div class="form-group">
-                                        <label class="control-label col-xs-3 ">Tipo de documento:</label>
-                                        <div class="col-xs-6">
-                                            <select class="form-control">
-                                                <option>Seleccione</option>
-                                                <option>Cedula de ciudadania</option>
-                                                <option>Cedula de extranjeria</option>
-                                                <option>Pasaporte</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-xs-3"></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-xs-offset-3 col-xs-6">
-                                            <input type="text" class="form-control" placeholder="Numero del documento" >
-                                        </div>
-                                    </div>
-                                    
-                                        
-                                    <div class="form-group">
-                                        <label class="control-label col-xs-3">Fecha de nacimiento:</label>
-                                        <div class="col-xs-6">
-                                            <input type="date" class="form-control" />
-                                        </div>
-                                        <div class="col-xs-3"></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-xs-3">Genero:</label>
-                                        <div class="col-xs-3">
-                                            <label class="radio-inline">
-                                                <input type="radio" name="genderRadios" value="male"> Maculino
-                                            </label>
-                                        </div>
-                                        <div class="col-xs-6"></div>                                        
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-xs-offset-3 col-xs-3">
-                                            <label class="radio-inline">
-                                                <input type="radio" name="genderRadios" value="male"> Maculino
-                                            </label>
-                                        </div>
-                                        <div class="col-xs-6"></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-xs-3">Estado civil:</label>
-                                        <div class="col-xs-4">
-                                            <select class="form-control">
-                                                <option>Estado civil</option>
-                                                <option>Soltero(a)</option>
-                                                <option>Casado(a)</option>
-                                                <option>Separado(a)/Divoriado(a)</option>
-                                                <option>Viudo(a)</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-xs-3">Telefono:</label>
-                                        <div class="col-xs-4">
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-xs-3">Pais:</label>
-                                        <div class="col-xs-4">
-                                            <select class="form-control">
-                                                <option>Pais</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-xs-3">Departamento:</label>
-                                        <div class="col-xs-4">
-                                            <select class="form-control">
-                                                <option>Departamento</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-xs-3">Ciudad:</label>
-                                        <div class="col-xs-4">
-                                            <select class="form-control">
-                                                <option>Ciudad</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-xs-3" >Dirección:</label>
-                                        <div class="col-xs-8">
-                                            <input type="tel" class="form-control" >
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-xs-3">Nacionalidad:</label>
-                                        <div class="col-xs-4">
-                                            <select class="form-control">
-                                                <option>Nacionalidad</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-xs-3">Licencia de conducción:</label>
-                                        <div class="col-xs-1">
-                                            <label class="checkbox-inline">
-                                                <input type="checkbox" value="news"> A1.
-                                            </label>
-                                        </div>
-                                        <div class="col-xs-1">
-                                            <label class="checkbox-inline">
-                                                <input type="checkbox" value="news"> A2.
-                                            </label>
-                                        </div>
-                                        <div class="col-xs-1">
-                                            <label class="checkbox-inline">
-                                                <input type="checkbox" value="news"> B1.
-                                            </label>
-                                        </div>
-                                        <div class="col-xs-1">
-                                            <label class="checkbox-inline">
-                                                <input type="checkbox" value="news"> B2.
-                                            </label>
-                                        </div>                                
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-xs-3"></label>
-                                        <div class="col-xs-1">
-                                            <label class="checkbox-inline">
-                                                <input type="checkbox" value="news"> B3.
-                                            </label>
-                                        </div>
-                                        <div class="col-xs-1">
-                                            <label class="checkbox-inline">
-                                                <input type="checkbox" value="news"> C1.
-                                            </label>
-                                        </div>
-                                        <div class="col-xs-1">
-                                            <label class="checkbox-inline">
-                                                <input type="checkbox" value="news"> C2.
-                                            </label>
-                                        </div>
-                                        <div class="col-xs-1">
-                                            <label class="checkbox-inline">
-                                                <input type="checkbox" value="news"> C3.
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-xs-offset-3 col-xs-9">
-                                            <label class="checkbox-inline">
-                                                <input type="checkbox" value="agree">  Accepto <a href="#">Terminos y condiciones</a>.
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <div class="form-group">
-                                        <div class="col-xs-offset-8 col-xs-4">
-                                            <input type="submit" class="btn btn-primary" value="Guardar Cambios">
-                                            <input type="reset" class="btn btn-default" value="Cancelar">
-                                        </div>
-                                    </div>
-                                </form>
+                            <div class="form-group">
+                                <label>Fecha de nacimiento:</label>                                        
+                                <div class="form-inline">                                            
+                                    <input type="date" class="form-control"  style="width: 100%;" />
+                                </div>                                
                             </div>
+                            <div class="form-group">
+                                <label>Genero:</label>                                        
+                                <div class="form-inline">                                            
+                                    <label class="radio-inline">
+                                        <input type="radio" name="genderRadios" value="m"> Maculino
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="genderRadios" value="f"> Femenino
+                                    </label>
+                                </div>                                
+                            </div>
+                            <div class="form-group">
+                                <label>Estado civil:</label>                                        
+                                <div class="form-inline">                                            
+                                    <select class="form-control"  style="width: 100%;">
+                                        <option>Estado civil</option>
+                                        <option>Soltero(a)</option>
+                                        <option>Casado(a)</option>
+                                        <option>Separado(a)/Divoriado(a)</option>
+                                        <option>Viudo(a)</option>
+                                    </select>
+                                </div>                                
+                            </div>
+                            <div class="form-group">
+                                <label>Telefono:</label>                                        
+                                <div class="form-inline">                                            
+                                    <input type="text" class="form-control" style="width: 100%;">
+                                </div>                                
+                            </div>
+                            <div class="form-group">
+                                <label>Pais</label>                                        
+                                <div class="form-inline">                                            
+                                    <select class="form-control"  style="width: 100%;">
+                                        <option>Pais</option>
+                                    </select>
+                                </div>                                
+                            </div>
+                            <div class="form-group">
+                                <label>Departamento:</label>                                        
+                                <div class="form-inline">                                            
+                                    <select class="form-control"  style="width: 100%;">
+                                        <option>Departamento</option>
+                                    </select>
+                                </div>                                
+                            </div>
+                            <div class="form-group">
+                                <label>Ciudad:</label>                                        
+                                <div class="form-inline">                                            
+                                    <select class="form-control" style="width: 100%;">
+                                        <option>Ciudad</option>
+                                    </select>
+                                </div>                                
+                            </div>
+                            <div class="form-group">
+                                <label>Direccion:</label>                                        
+                                <div class="form-inline">                                            
+                                    <input type="text" class="form-control"  style="width: 100%;" >
+                                </div>                                
+                            </div>
+                            <div class="form-group" >
+                                <label>Nacionalidad:</label>                                        
+                                <div class="form-inline">                                            
+                                    <select class="form-control"  style="width: 100%;">
+                                        <option>Nacionalidad</option>
+                                    </select>
+                                </div>                                
+                            </div>
+                            <div class="form-group">
+                                <label>Licencia de conducción:</label>                                        
+                                <div class="form-inline">                                            
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value="news"> A1.
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value="news"> A2.
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value="news"> B1.
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value="news"> B2.
+                                    </label>
+                                </div>                                
+                            </div>
+                            <div class="form-group">
+                                <div class="form-inline">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value="news"> B3.
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value="news"> C1.
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value="news"> C2.
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value="news"> C3.
+                                    </label>
+                                </div>                                
+                            </div>
+                            <div class="form-group">
+                                <div class="form-group" style="text-align: right;">
+                                    <input type="submit" class="btn btn-primary" value="Guardar Cambios">
+                                    <input type="reset" class="btn btn-default" value="Cancelar">
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
-                    <div class="panel panel-default">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                            <div class="panel-heading"  style="background-color: #f0f0f0;">
-                                <h4 class="panel-title">
-                                    PERFIL PROFESIONAL
-                                </h4>
+                </div>
+                <div class="col-lg-12">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            PERFIL PROFESIONAL
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label>Cargo o titulo breve de su hoja de vida:</label>                                        
+                                <div class="form-group">                                            
+                                    <input type="text" class="form-control" placeholder="Ej: C" />
+                                </div>
                             </div>
-                        </a>
-                        <div id="collapseTwo" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <label>Cargo o titulo breve de su hoja de vida:</label>                                        
-                                    <div class="form-group">                                            
-                                        <input type="text" class="form-control" placeholder="Ej: C" />
-                                    </div>
+                            <div class="form-group">
+                                <label>Decripcion breve de su perfil profesional:</label>                                        
+                                <div class="form-group">                                            
+                                    <textarea class="form-control" placeholder="Ej: C" rows="4" ></textarea>
                                 </div>
-                                <div class="form-group">
-                                    <label>Decripcion breve de su perfil profesional:</label>                                        
-                                    <div class="form-group">                                            
-                                        <textarea class="form-control" placeholder="Ej: C" rows="4" ></textarea>
-                                    </div>
-                                </div>
+                            </div>
 
-                                <div class="form-group">
-                                        <div class="col-xs-offset-9 col-xs-4">
-                                            <input type="submit" class="btn btn-primary" value="Guardar Cambios">
-                                            <input type="reset" class="btn btn-default" value="Cancelar">
-                                        </div>
-                                    </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel panel-default" >
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                            <div class="panel-heading"  style="background-color: #f0f0f0;" >
-                                <h4 class="panel-title">
-                                    EXPERIENCIA LABORAL
-                                </h4>
-                            </div>
-                        </a>
-                        <div id="collapseThree" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#Modal_experiencia">Añadir experiencia laboral</button>
+                            <div class="form-group">
+                                <div class="form-group" style="text-align: right;">
+                                    <input type="submit" class="btn btn-primary" value="Guardar Cambios">
+                                    <input type="reset" class="btn btn-default" value="Cancelar">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-12">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            EXPERIENCIA LABORAL
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading">                                                
+                                            Ingeniero de Investigacion y desarrollo
+                                            <button type="button" class="close"><img src="assets/img/delete_icon.png" width="18" height="18"></button>
+                                            <button type="button" class="close"><img src="assets/img/edit_icon.png"  width="18" height="18"></button>                                                
+                                        </div>
+                                        <div class="panel-body">
+                                            <p>Logiseguridad ltda, barranquilla, Atlantico, Colombia</p>
+                                        </div>
+                                        <div class="panel-footer">
+                                            Febrero 2013 - actualidad
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                            <div class="col-lg-12"><br/></div>
+                            </div>
+                            <button type="button" class="btn btn-primary btn-lg center-block" data-toggle="modal" data-target="#Modal_experiencia">Añadir experiencia laboral</button>
+                        </div>
+                    </div>
+                </div>
                 
+                <div class="col-lg-12">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            FORMACIÓN
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading">                                                
+                                            Universidad / carrera universitaria
+                                            <button type="button" class="close"><img src="assets/img/delete_icon.png" width="18" height="18"></button>
+                                            <button type="button" class="close"><img src="assets/img/edit_icon.png"  width="18" height="18"></button>                                                
+                                        </div>
+                                        <div class="panel-body">
+                                            <p>Universidad san martin de porras</p>
+                                        </div>
+                                        <div class="panel-footer">
+                                            Febrero 2013 - actualidad
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                            <div class="col-lg-12"><br/></div>
+                            </div>
+                            <button type="button" class="btn btn-primary btn-lg center-block" data-toggle="modal" data-target="#Modal_formacion">Añadir formación</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-
+            
 
          
 
@@ -699,6 +715,102 @@
                             <label class="control-label col-xs-2">Retiro:</label>
                             <div class="col-xs-10">
                                 <textarea class="form-control" rows="3" placeholder="Razones de su retiro..." ></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-primary">Añadir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="modal fade" id="Modal_formacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Formulario de formación</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="myForm" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-xs-4">Centro educativo:</label>
+                            <div class="col-xs-8">
+                                <input type="text" class="form-control" name="phone" placeholder="Nombre de la empresa" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-xs-4">Nivel de estudios:</label>
+                            <div class="col-xs-8">
+                                <select class="form-control">
+                                    <option>Nivel De Estudios</option>
+                                    <option>Educación Basica Primaria</option>
+                                    <option>Educación Basica Secundaria</option>
+                                    <option>Bachillerato / educacion Media</option>
+                                    <option>Universidad / Carrera Tecnica</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-xs-4">Area de estudio:</label>
+                            <div class="col-xs-8">
+                                <input type="text" class="form-control" name="phone" placeholder="$" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-xs-4">Estado:</label>
+                            <div class="form-inline col-xs-8">
+                                <label class="checkbox-inline" style="font-size: 11px;">
+                                    <input type="checkbox" value="news"> Culminado
+                                </label>
+                                <label class="checkbox-inline"  style="font-size: 11px;">
+                                    <input type="checkbox" value="news"> Cursando
+                                </label>
+                                <label class="checkbox-inline"  style="font-size: 11px;">
+                                    <input type="checkbox" value="news"> Aplazado/Abandonado
+                                </label>
+                            </div>                                
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-xs-4">Periodo inicio:</label>
+                            <div class="col-xs-4">
+                                <select class="form-control">
+                                    <option value="0">Mes</option>
+                                    <option value="1">1</option><option value="2">2</option>
+                                    <option value="3">3</option><option value="4">4</option>
+                                    <option value="5">5</option><option value="6">6</option>
+                                    <option value="7">7</option><option value="8">8</option>
+                                    <option value="9">9</option><option value="10">10</option>
+                                    <option value="11">11</option><option value="12">12</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-4">
+                                <select class="form-control">
+                                    <option>Año</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-xs-4">Periodo fin:</label>
+                            <div class="col-xs-4">
+                                <select class="form-control">
+                                    <option value="0">Mes</option>
+                                    <option value="1">1</option><option value="2">2</option>
+                                    <option value="3">3</option><option value="4">4</option>
+                                    <option value="5">5</option><option value="6">6</option>
+                                    <option value="7">7</option><option value="8">8</option>
+                                    <option value="9">9</option><option value="10">10</option>
+                                    <option value="11">11</option><option value="12">12</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-4">
+                                <select class="form-control">
+                                    <option>Año</option>
+                                </select>
                             </div>
                         </div>
                     </form>
