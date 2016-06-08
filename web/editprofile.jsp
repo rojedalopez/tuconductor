@@ -354,140 +354,143 @@ if(session.getAttribute("user") == null){
             </div>
 
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            DATOS PERSONALES
-                        </div>
-                        <div class="panel-body">
-                            <div class="form-group">
-                                <label>Tipo de documento:</label>                                        
-                                <div class="form-inline">                                            
-                                    <select class="form-control"  style="width: 48%;">
-                                        <option>Seleccione</option>
-                                        <option>Cedula de ciudadania</option>
-                                        <option>Cedula de extranjeria</option>
-                                        <option>Pasaporte</option>
-                                    </select>
-                                    <input type="text" class="form-control" placeholder="Numero del documento"  style="width: 50%;" >
-                                </div>                                
+                <form ng-submit="ctrl.submit()" name="datos_personales">
+                    <div class="col-lg-12">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                DATOS PERSONALES
                             </div>
-                            <div class="form-group">
-                                <label>Fecha de nacimiento:</label>                                        
-                                <div class="form-inline">                                            
-                                    <input type="date" class="form-control"  style="width: 100%;" />
-                                </div>                                
-                            </div>
-                            <div class="form-group">
-                                <label>Genero:</label>                                        
-                                <div class="form-inline">                                            
-                                    <label class="radio-inline">
-                                        <input type="radio" name="genderRadios" value="m"> Maculino
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="genderRadios" value="f"> Femenino
-                                    </label>
-                                </div>                                
-                            </div>
-                            <div class="form-group">
-                                <label>Estado civil:</label>                                        
-                                <div class="form-inline">                                            
-                                    <select class="form-control"  style="width: 100%;">
-                                        <option>Estado civil</option>
-                                        <option>Soltero(a)</option>
-                                        <option>Casado(a)</option>
-                                        <option>Separado(a)/Divoriado(a)</option>
-                                        <option>Viudo(a)</option>
-                                    </select>
-                                </div>                                
-                            </div>
-                            <div class="form-group">
-                                <label>Telefono:</label>                                        
-                                <div class="form-inline">                                            
-                                    <input type="text" class="form-control" style="width: 100%;">
-                                </div>                                
-                            </div>
-                            <div class="form-group">
-                                <label>Pais</label>                                        
-                                <div class="form-inline">                                            
-                                    <select class="form-control"  style="width: 100%;">
-                                        <option>Pais</option>
-                                    </select>
-                                </div>                                
-                            </div>
-                            <div class="form-group">
-                                <label>Departamento:</label>                                        
-                                <div class="form-inline">                                            
-                                    <select class="form-control"  style="width: 100%;">
-                                        <option>Departamento</option>
-                                    </select>
-                                </div>                                
-                            </div>
-                            <div class="form-group">
-                                <label>Ciudad:</label>                                        
-                                <div class="form-inline">                                            
-                                    <select class="form-control" style="width: 100%;">
-                                        <option>Ciudad</option>
-                                    </select>
-                                </div>                                
-                            </div>
-                            <div class="form-group">
-                                <label>Direccion:</label>                                        
-                                <div class="form-inline">                                            
-                                    <input type="text" class="form-control"  style="width: 100%;" >
-                                </div>                                
-                            </div>
-                            <div class="form-group" >
-                                <label>Nacionalidad:</label>                                        
-                                <div class="form-inline">                                            
-                                    <select class="form-control"  style="width: 100%;">
-                                        <option>Nacionalidad</option>
-                                    </select>
-                                </div>                                
-                            </div>
-                            <div class="form-group">
-                                <label>Licencia de conducción:</label>                                        
-                                <div class="form-inline">                                            
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" value="news"> A1.
-                                    </label>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" value="news"> A2.
-                                    </label>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" value="news"> B1.
-                                    </label>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" value="news"> B2.
-                                    </label>
-                                </div>                                
-                            </div>
-                            <div class="form-group">
-                                <div class="form-inline">
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" value="news"> B3.
-                                    </label>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" value="news"> C1.
-                                    </label>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" value="news"> C2.
-                                    </label>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" value="news"> C3.
-                                    </label>
-                                </div>                                
-                            </div>
-                            <div class="form-group">
-                                <div class="form-group" style="text-align: right;">
-                                    <input type="submit" class="btn btn-primary" value="Guardar Cambios">
-                                    <input type="reset" class="btn btn-default" value="Cancelar">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label>Tipo de documento:</label>                                        
+                                    <div class="form-inline">                                            
+                                        <select class="form-control"  style="width: 48%;" name="tip_doc" ng-model="ctrl.usuario_dp.tip_doc">
+                                            <option>Seleccione</option>
+                                            <option>Cedula de ciudadania</option>
+                                            <option>Cedula de extranjeria</option>
+                                            <option>Pasaporte</option>
+                                        </select>
+                                        <input type="text" class="form-control" placeholder="Numero del documento"  style="width: 50%;" name="num_doc" ng-model="ctrl.usuario_dp.num_doc" >
+                                    </div>                                
                                 </div>
+                                <div class="form-group">
+                                    <label>Fecha de nacimiento:</label>                                        
+                                    <div class="form-inline">                                            
+                                        <input type="date" class="form-control"  style="width: 100%;" name="fecha_nac" ng-model="ctrl.usuario_dp.fecha_nac" />
+                                    </div>                                
+                                </div>
+                                <div class="form-group">
+                                    <label>Genero:</label>                                        
+                                    <div class="form-inline">                                            
+                                        <label class="radio-inline">
+                                            <input type="radio" name="genero" ng-model="ctrl.usuario_dp.genero" value="m"> Maculino
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="genero" ng-model="ctrl.usuario_dp.genero" value="f"> Femenino
+                                        </label>
+                                    </div>                                
+                                </div>
+                                <div class="form-group">
+                                    <label>Estado civil:</label>                                        
+                                    <div class="form-inline">                                            
+                                        <select class="form-control"  style="width: 100%;" name="est_civil" ng-model="ctrl.usuario_dp.est_civil">
+                                            <option value="0">Estado civil</option>
+                                            <option value="S">Soltero(a)</option>
+                                            <option value="C">Casado(a)</option>
+                                            <option value="U">Union libre</option>
+                                            <option value="D">Separado(a)/Divoriado(a)</option>
+                                            <option value="V">Viudo(a)</option>
+                                        </select>
+                                    </div>                                
+                                </div>
+                                <div class="form-group">
+                                    <label>Telefono:</label>                                        
+                                    <div class="form-inline">                                            
+                                        <input type="text" class="form-control" style="width: 100%;"  name="tel" ng-model="ctrl.usuario_dp.tel">
+                                    </div>                                
+                                </div>
+                                <div class="form-group">
+                                    <label>Pais</label>                                        
+                                    <div class="form-inline">                                            
+                                        <select class="form-control"  style="width: 100%;"  name="pais" ng-model="ctrl.usuario_dp.pais">
+                                            <option>Pais</option>
+                                        </select>
+                                    </div>                                
+                                </div>
+                                <div class="form-group">
+                                    <label>Departamento:</label>                                        
+                                    <div class="form-inline">                                            
+                                        <select class="form-control"  style="width: 100%;"  name="dpto" ng-model="ctrl.usuario_dp.dpto">
+                                            <option>Departamento</option>
+                                        </select>
+                                    </div>                                
+                                </div>
+                                <div class="form-group">
+                                    <label>Ciudad:</label>                                        
+                                    <div class="form-inline">                                            
+                                        <select class="form-control" style="width: 100%;"  name="ciudad" ng-model="ctrl.usuario_dp.ciudad">
+                                            <option>Ciudad</option>
+                                        </select>
+                                    </div>                                
+                                </div>
+                                <div class="form-group">
+                                    <label>Direccion:</label>                                        
+                                    <div class="form-inline">                                            
+                                        <input type="text" class="form-control"  style="width: 100%;" name="dir" ng-model="ctrl.usuario_dp.dir">
+                                    </div>                                
+                                </div>
+                                <div class="form-group" >
+                                    <label>Nacionalidad:</label>                                        
+                                    <div class="form-inline">                                            
+                                        <select class="form-control"  style="width: 100%;"  name="nac" ng-model="ctrl.usuario_dp.nac">
+                                            <option>Nacionalidad</option>
+                                        </select>
+                                    </div>                                
+                                </div>
+                                <div class="form-group">
+                                    <label>Licencia de conducción:</label>                                        
+                                    <div class="form-inline">                                            
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" value="1" name="la1" ng-model="ctrl.usuario_dp.la1"> A1.
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" value="1"  name="la2" ng-model="ctrl.usuario_dp.la2"> A2.
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" value="1"  name="lb1" ng-model="ctrl.usuario_dp.lb1"> B1.
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" value="1"  name="lb2" ng-model="ctrl.usuario_dp.lb2"> B2.
+                                        </label>
+                                    </div>                                
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-inline">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" value="1"  name="lb3" ng-model="ctrl.usuario_dp.lb3"> B3.
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" value="1"  name="lc1" ng-model="ctrl.usuario_dp.lc1"> C1.
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" value="1"  name="lc2" ng-model="ctrl.usuario_dp.lc2"> C2.
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" value="1"  name="lc3" ng-model="ctrl.usuario_dp.lc3"> C3.
+                                        </label>
+                                    </div>                                
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-group" style="text-align: right;">
+                                        <input type="submit" class="btn btn-primary" value="Guardar Cambios">
+                                        <input type="reset" class="btn btn-default" value="Cancelar">
+                                    </div>
+                                </div>
+
                             </div>
-                            
                         </div>
                     </div>
-                </div>
+                </form>
                 <div class="col-lg-12">
                     <div class="panel panel-info">
                         <div class="panel-heading">
