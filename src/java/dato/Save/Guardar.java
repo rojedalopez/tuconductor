@@ -175,5 +175,58 @@ public class Guardar {
     }
     
     
+    public static boolean SaveExperiencia(String cod_, int id, String empresa, String cargo, float salario, float bonos, String supervisor, 
+            String telefono, String pais, String dpto, String ciudad, String dir, int mes_inicio, int anio_inicio, int mes_fin, int anio_fin, 
+            boolean labora, String retiro) throws ClassNotFoundException, SQLException{
+        boolean b=false;
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        
+        conn=conexion();
+            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveExperiencia(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)};")) {
+                cs.setString(1, cod_);
+                cs.setInt(2, id);
+                cs.setString(3, empresa);
+                cs.setString(4, cargo);
+                cs.setFloat(5, salario);
+                cs.setFloat(6, bonos);
+                cs.setString(7, supervisor);
+                cs.setString(8, telefono);
+                cs.setString(9, pais);
+                cs.setString(10, dpto);
+                cs.setString(11, ciudad);
+                cs.setString(12, dir);
+                cs.setInt(13, mes_inicio);
+                cs.setInt(14, anio_inicio);
+                cs.setInt(15, mes_fin);
+                cs.setInt(16, anio_fin);
+                cs.setInt(17, anio_fin);
+                cs.setInt(18, (labora)?1:0);
+                cs.setString(19, retiro);
+                cs.registerOutParameter(20, Types.INTEGER);
+                cs.executeQuery();
+
+                int retorno = cs.getInt(20);
+                
+                if(retorno==1){
+                    return true;
+                }else{
+                    return false;
+                }
+
+            }catch (SQLException e) {
+                System.out.println("error SQLException en SAVE EXPERIENCIA USUARIO");
+                System.out.println(e.getMessage());
+            }catch (Exception e){
+                System.out.println("error Exception en SAVE EXPERIENCIA USUARIO");
+                System.out.println(e.getMessage());
+            }finally{
+                if(!conn.isClosed()){
+                    conn.close();
+                }
+            }
+            return false;
+
+    }
     
 }

@@ -357,7 +357,7 @@ if(session.getAttribute("user") == null){
 
             <div class="row">
                 
-                <form ng-submit="ctrl.submitDP('${sessionScope.cod}')" name="datos_personales" novalidate>
+                <form ng-submit="ctrl.submitDP()" name="datos_personales" novalidate>
                     <div class="col-lg-12">
                         <div class="panel panel-info">
                             <div class="panel-heading">
@@ -513,18 +513,19 @@ if(session.getAttribute("user") == null){
                         </div>
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-lg-12">
+                                <div class="col-lg-12" ng-repeat="ex in ctrl.experiencias">
                                     <div class="panel panel-info">
                                         <div class="panel-heading">                                                
-                                            Ingeniero de Investigacion y desarrollo
+                                            <span ng-bind="ex.cargo" ></span>
                                             <button type="button" class="close"><img src="assets/img/delete_icon.png" width="18" height="18"></button>
-                                            <button type="button" class="close"><img src="assets/img/edit_icon.png"  width="18" height="18"></button>                                                
+                                            <button type="button" ng-click="ctrl.editExp(ex.id)" class="close"><img src="assets/img/edit_icon.png"  width="18" height="18"></button>                                                
                                         </div>
                                         <div class="panel-body">
-                                            <p>Logiseguridad ltda, barranquilla, Atlantico, Colombia</p>
+                                            <span ng-bind="ex.empresa" ></span>
                                         </div>
                                         <div class="panel-footer">
-                                            Febrero 2013 - actualidad
+                                            {{ctrl.Meses[ex.mes_inicio-1].Mes + " " + ex.anio_inicio}} - {{(ex.labora)?"Actualmente":ctrl.Meses[ex.mes_fin-1].Mes + " " + ex.anio_fin}}
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -532,7 +533,7 @@ if(session.getAttribute("user") == null){
                             <div class="row">
                             <div class="col-lg-12"><br/></div>
                             </div>
-                            <button type="button" class="btn btn-primary btn-lg center-block" data-toggle="modal" data-target="#Modal_experiencia">Añadir experiencia laboral</button>
+                            <button type="button" class="btn btn-primary btn-lg center-block" ng-click="ctrl.openExp()">Añadir experiencia laboral</button>
                         </div>
                     </div>
                 </div>
@@ -585,9 +586,10 @@ if(session.getAttribute("user") == null){
                     <h4 class="modal-title" id="myModalLabel">Formulario de experiencia laboral</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" name="exp_laboral" class="form-horizontal">
+                    <form role="form" ng-submit="ctrl.submitExp()" name="exp_laboral" class="form-horizontal">
                         <p>
                             <label class="etiqueta_e">Empresa:</label>
+                            <input type="hidden" name="id" ng-model="ctrl.exp_laboral.id"/>
                             <input type="text" class="form-control texto_e" name="empresa" ng-model="ctrl.exp_laboral.empresa"  placeholder="Nombre de la empresa" />
                         </p>
                         <p>
@@ -663,11 +665,12 @@ if(session.getAttribute("user") == null){
                             <label class="etiqueta_e">Retiro:</label>
                             <textarea class="form-control area_e" name="retiro" ng-model="ctrl.exp_laboral.retiro" rows="3" placeholder="Razones de su retiro..." ></textarea>
                         </p>
+                        
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Añadir</button>
+                        </div>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <button class="btn btn-primary">Añadir</button>
                 </div>
             </div>
         </div>
@@ -768,6 +771,7 @@ if(session.getAttribute("user") == null){
 
     <script type="text/javascript">
         var btn_guardar_cambios = $("#btn_guardar_cambios");
+        var form_experiencia = $("#Modal_experiencia");
     </script>
 </body>
 

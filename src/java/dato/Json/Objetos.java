@@ -65,9 +65,11 @@ public class Objetos {
                         obj.put("lc3", datos.getBoolean(23));
                         obj.put("perfil", datos.getString(24));
                         obj.put("cargo", datos.getString(25));
+                        obj.put("exp_laborales", Listas.listaExpLaborales(id));
                     }
                     datos.close();
                     conn.close();
+                    System.out.println(obj.toJSONString());
                     return obj.toJSONString();
              
         }catch (SQLException e) {

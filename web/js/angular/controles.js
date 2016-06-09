@@ -216,12 +216,12 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
                 la2:false, lb1:false, lb2:false, lb3:false, 
                 lc1:false, lc2:false, lc3:false, cargo:"", perfil:""};
             
-          self.Anios=[];  
-          self.publicaciones=[];
-          self.publicacion={id:null, fecha:Date(), date:"", origen:"", cod_origen:"", destino:"", comentario:"", archivo:"", me_gusta:0, desde:"", num_comentario:0};
-          self.comments=[];
-          self.comment={id:null,fecha:Date(), origen:"", cod_origen:"", comentario:"", desde:"", id_publicacion:""};
-          self.comentario = "";
+          self.Anios=[]; 
+          
+          self.experiencias=[];
+          self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", dpto:"", 
+              ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0};
+          
           
           self.SaveDatosPersonales = function(usuario_dp){
               ProfileService.SaveDatosPersonales(usuario_dp)
@@ -234,6 +234,16 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
                   );
           };
 
+          self.SaveExpUsuario = function(exp_laboral){
+              ProfileService.SaveExpUsuario(exp_laboral)
+		              .then(function(d){
+                                
+                              }, 
+				              function(errResponse){
+					               console.error('Error while creating Paper.');
+				              }	
+                  );
+          };
           
           self.GetUsuarioGeneral = function(){
               ProfileService.GetUsuarioGeneral()
@@ -241,6 +251,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
       					       function(d) {
       						        self.usuario_dp = d;
                                                         self.usuario_dp.fecha_nac =  new Date(self.usuario_dp.fecha_nac);
+                                                        self.experiencias = d.exp_laborales;
       					       },
             					function(errResponse){
             						console.error('Error while fetching Currencies');
@@ -248,26 +259,11 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
       			       );
           };
           
-          self.llenarComentarios = function(id){
-              ProfileService.llenarComentarios(id)
-                  .then(
-      					       function(d) {
-      						        self.comments = d;
-      					       },
-            					function(errResponse){
-            						console.error('Error while fetching Currencies');
-            					}
-      			       );
-          };
-          
+                    
           self.llenarAnios = function(){
             var Anio = new Date().getFullYear();
-            console.log(Anio);
             for(var a = Anio; a >= Anio - 100; a--){
-                console.log(a);
-                console.log(self.Anios.length);
                 self.Anios.push({ID:a, Year:a});
-                console.log(self.Anios.length);
             }
           };
           
@@ -275,11 +271,16 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
           self.GetUsuarioGeneral();
                    
           
-          self.submitDP = function(cod){
+          self.submitDP = function(){
+              console.log("aqui entro");
               btn_guardar_cambios.button('loading');
-              self.usuario_dp.cod = cod;
               self.usuario_dp.date = self.usuario_dp.fecha_nac.toString("yyyy-MM-dd");
               self.SaveDatosPersonales(self.usuario_dp);
+          };
+          
+          self.submitExp = function(){
+              console.log("entro");
+              self.SaveExpUsuario(self.exp_laboral);
           };
           
           self.submit = function() {
@@ -291,33 +292,29 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
               self.reset();
               dialog.modal( "hide" );
           };
-           
-           
-          self.sendComment = function(id,codigo){
-              self.selectPublicacion(id);
-              self.comment.id = -1;
-              self.comment.cod_origen = codigo;
-              self.comment.id_publicacion = id;
-              self.comment.comentario = self.comentario;
-              self.SaveComment(self.comment);
-          };
           
-          self.selectPublicacion = function(id){
-              for(var i = 0; i < self.publicaciones.length; i++){
-                  if(self.publicaciones[i].id == id) {
-                     self.publicacion = angular.copy(self.publicaciones[i]);
+          self.openExp = function(){
+              self.resetExp();
+              form_experiencia.modal( "show" );
+          };
+           
+           
+        
+          self.editExp = function(id){
+              console.log(id);
+              for(var i = 0; i < self.experiencias.length; i++){
+                  if(self.experiencias[i].id == id) {
+                     self.exp_laboral = angular.copy(self.experiencias[i]);
                      break;
+                     form_experiencia.modal( "show" );
                   }
               }
           };
           
-          self.openComment = function(id){
-              self.llenarComentarios(id);
-              popup.modal( "show" );
-          };
-          
-          self.reset = function(){
-             
+                   
+          self.resetExp = function(){
+             self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", dpto:"", 
+              ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0};
           };
           
         self.tipoIdents = [
@@ -607,20 +604,20 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
 									}
 							);
 			},
-                        GetUsuarioGeneral: function() {
-					return $http.post('usuario_general')
-							.then(
+                        SaveExpUsuario: function(exp_laboral){
+                        return $http.post('experiencia_usuario', exp_laboral).then(
 									function(response){
+                                                                                console.log(response.data);
 										return response.data;
 									}, 
 									function(errResponse){
-										console.error('Error while fetching expenses');
+										console.error('Error guardando datos personales ' +errResponse);
 										return $q.reject(errResponse);
 									}
 							);
 			},
-                        llenarComentarios: function(id) {
-					return $http.post('listcomments?id='+id)
+                        GetUsuarioGeneral: function() {
+					return $http.post('usuario_general')
 							.then(
 									function(response){
 										return response.data;
