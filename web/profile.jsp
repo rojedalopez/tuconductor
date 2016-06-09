@@ -307,7 +307,7 @@ if(session.getAttribute("user") == null){
                         <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Perfil<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="flot.html">Editar perfil</a>
+                                <a href="editprofile.jsp">Editar perfil</a>
                             </li>
                             <li>
                                 <a href="morris.html">Quién ha visto tu perfil</a>

@@ -113,4 +113,67 @@ public class Guardar {
 
     }
     
+
+    public static boolean UpdateUsuarioDatosPersonales(String cod_, String nombre, String apellido, String tipo_doc_, String doc_, String fecha_, 
+            String genero_, String est_civil_, String movil, String tel_, String pais_, String ciudad_, String dpto_, String dir_,
+            String nac_, boolean la1, boolean la2, boolean lb1, boolean lb2, boolean lb3, boolean lc1, boolean lc2, boolean lc3, String perfil, String cargo) throws ClassNotFoundException, SQLException{
+        boolean b=false;
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        
+        conn=conexion();
+            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveDatosPersonales(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)};")) {
+                cs.setString(1, cod_);
+                cs.setString(2, nombre);
+                cs.setString(3, apellido);
+                cs.setString(4, tipo_doc_);
+                cs.setString(5, doc_);
+                cs.setString(6, fecha_);
+                cs.setString(7, genero_);
+                cs.setString(8, est_civil_);
+                cs.setString(9, movil);
+                cs.setString(10, tel_);
+                cs.setString(11, pais_);
+                cs.setString(12, ciudad_);
+                cs.setString(13, dpto_);
+                cs.setString(14, dir_);
+                cs.setString(15, nac_);
+                cs.setInt(16, (la1)?1:0);
+                cs.setInt(17, (la2)?1:0);
+                cs.setInt(18, (lb1)?1:0);
+                cs.setInt(19, (lb2)?1:0);
+                cs.setInt(20, (lb3)?1:0);
+                cs.setInt(21, (lc1)?1:0);
+                cs.setInt(22, (lc2)?1:0);
+                cs.setInt(23, (lc3)?1:0);
+                cs.setString(24, perfil);
+                cs.setString(25, cargo);
+                cs.registerOutParameter(26, Types.INTEGER);
+                cs.executeQuery();
+
+                int retorno = cs.getInt(26);
+                
+                if(retorno==1){
+                    return true;
+                }else{
+                    return false;
+                }
+
+            }catch (SQLException e) {
+                System.out.println("error SQLException en INSERTAR USUARIO");
+                System.out.println(e.getMessage());
+            }catch (Exception e){
+                System.out.println("error Exception en INSERTAR USUARIO");
+                System.out.println(e.getMessage());
+            }finally{
+                if(!conn.isClosed()){
+                    conn.close();
+                }
+            }
+            return false;
+
+    }
+    
+    
+    
 }

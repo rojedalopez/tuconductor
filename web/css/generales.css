@@ -4,3 +4,56 @@
     font-style: italic;
     margin-left: 12px;
 }
+
+    .etiqueta {
+    float: left; clear: left;
+    margin: 7px 20px 0 0; 
+    width: 200px;
+    text-align: right; 
+    font-size: 12px; 
+    color: #445668;
+    text-transform: uppercase; 
+    text-shadow: 0px 1px 0px #f2f2f2;
+   }
+   
+   .required{
+        color:red
+    }
+   
+   .etiqueta_a {
+    font-size: 12px; 
+    color: #445668;
+    text-transform: uppercase; 
+    text-shadow: 0px 1px 0px #f2f2f2;
+   }
+   
+   .texto   {
+        padding-left: 15px;
+        width:400px;
+    }
+    
+    .area{
+        resize: none;
+        padding-left: 15px;
+    }
+    
+    .selector    {
+        width:400px;
+    }
+
+@media screen and (max-width: 992px) {
+    .texto, .selector, .area{
+        width: 90%;
+        margin-left: 15px;
+        margin-right: auto;
+        position: relative;
+        
+    } 
+    
+    .etiqueta, .etiqueta_a{
+        text-align: left; 
+        margin-left: 15px;
+        font-size: 10px;
+    }
+}
+
