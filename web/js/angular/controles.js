@@ -252,7 +252,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
       						        self.usuario_dp = d;
                                                         self.usuario_dp.fecha_nac =  new Date(self.usuario_dp.fecha_nac);
                                                         self.experiencias = d.exp_laborales;
-      					       },
+     					       },
             					function(errResponse){
             						console.error('Error while fetching Currencies');
             					}
@@ -303,6 +303,9 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
           self.editExp = function(id){
               console.log(id);
               for(var i = 0; i < self.experiencias.length; i++){
+                  console.log(i);
+                  console.log(self.experiencias[i]);
+                  console.log(self.experiencias[i].id);
                   if(self.experiencias[i].id == id) {
                      self.exp_laboral = angular.copy(self.experiencias[i]);
                      break;

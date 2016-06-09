@@ -146,8 +146,8 @@ public class Listas {
                         obj.put("id", datos.getInt(1));
                         obj.put("empresa", datos.getString(2));
                         obj.put("cargo", datos.getString(3));
-                        obj.put("salario", datos.getString(4));
-                        obj.put("bonos", datos.getString(5));
+                        obj.put("salario", datos.getFloat(4));
+                        obj.put("bonos", datos.getFloat(5));
                         obj.put("supervisor", datos.getString(6));
                         obj.put("telefono", datos.getString(7));
                         obj.put("direccion", datos.getString(8));
