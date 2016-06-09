@@ -51,7 +51,7 @@ if(session.getAttribute("user") == null){
             <!-- end navbar-header -->
             <!-- navbar-top-links -->
             <ul class="nav navbar-top-links navbar-right">
-                <!-- main dropdown -->                >
+                <!-- main dropdown -->                
                 <li class="dropdown">
                     
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
