@@ -51,8 +51,9 @@ if(session.getAttribute("user") == null){
             <!-- end navbar-header -->
             <!-- navbar-top-links -->
             <ul class="nav navbar-top-links navbar-right">
-                <!-- main dropdown -->
+                <!-- main dropdown -->                >
                 <li class="dropdown">
+                    
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <span class="top-label label label-danger">3</span><i class="fa fa-envelope fa-3x"></i>
                     </a>
@@ -355,6 +356,7 @@ if(session.getAttribute("user") == null){
             </div>
 
             <div class="row">
+                
                 <form ng-submit="ctrl.submitDP('${sessionScope.cod}')" name="datos_personales" novalidate>
                     <div class="col-lg-12">
                         <div class="panel panel-info">
@@ -442,43 +444,39 @@ if(session.getAttribute("user") == null){
                                         <option value="" selected>--Seleccione Nacionalidad--</option>
                                     </select>
                                 </p>
-                                <div class="form-group">
-                                    <label class="etiqueta" for="nac">Licencia de conducción:</label>                                        
-                                    <div class="form-inline">                                            
-                                        <label class="checkbox-inline">
-                                            <input type="checkbox" value="1" name="la1" ng-model="ctrl.usuario_dp.la1"> A1.
-                                        </label>
-                                        <label class="checkbox-inline">
-                                            <input type="checkbox" value="1"  name="la2" ng-model="ctrl.usuario_dp.la2"> A2.
-                                        </label>
-                                        <label class="checkbox-inline">
-                                            <input type="checkbox" value="1"  name="lb1" ng-model="ctrl.usuario_dp.lb1"> B1.
-                                        </label>
-                                        <label class="checkbox-inline">
-                                            <input type="checkbox" value="1"  name="lb2" ng-model="ctrl.usuario_dp.lb2"> B2.
-                                        </label>
-                                    </div>                                
-                                </div>
-                                <div class="form-group">
-                                    <div class="form-inline">
-                                        <label class="checkbox-inline">
-                                            <input type="checkbox" value="1"  name="lb3" ng-model="ctrl.usuario_dp.lb3"> B3.
-                                        </label>
-                                        <label class="checkbox-inline">
-                                            <input type="checkbox" value="1"  name="lc1" ng-model="ctrl.usuario_dp.lc1"> C1.
-                                        </label>
-                                        <label class="checkbox-inline">
-                                            <input type="checkbox" value="1"  name="lc2" ng-model="ctrl.usuario_dp.lc2"> C2.
-                                        </label>
-                                        <label class="checkbox-inline">
-                                            <input type="checkbox" value="1"  name="lc3" ng-model="ctrl.usuario_dp.lc3"> C3.
-                                        </label>
-                                    </div>                                
-                                </div>
+                                <p>
+                                    <label class="etiqueta">Licencia de conducción:</label>                                       
+                                    <label class="checkbox-inline" >
+                                        <input type="checkbox" value="1" name="la1" ng-model="ctrl.usuario_dp.la1"> A1.
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value="1"  name="la2" ng-model="ctrl.usuario_dp.la2"> A2.
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value="1"  name="lb1" ng-model="ctrl.usuario_dp.lb1"> B1.
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value="1"  name="lb2" ng-model="ctrl.usuario_dp.lb2"> B2.
+                                    </label>
+                                </p>
+                                <p>
+                                    <label class="etiqueta" ></label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value="1"  name="lb3" ng-model="ctrl.usuario_dp.lb3"> B3.
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value="1"  name="lc1" ng-model="ctrl.usuario_dp.lc1"> C1.
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value="1"  name="lc2" ng-model="ctrl.usuario_dp.lc2"> C2.
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value="1"  name="lc3" ng-model="ctrl.usuario_dp.lc3"> C3.
+                                    </label>     
+                                </p>
                             </div>
                         </div>
                     </div>
-                
                     <div class="col-lg-12">
                         <div class="panel panel-info">
                             <div class="panel-heading">
@@ -504,7 +502,9 @@ if(session.getAttribute("user") == null){
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
+                    
                 </form>
                 <div class="col-lg-12">
                     <div class="panel panel-info">
@@ -682,83 +682,61 @@ if(session.getAttribute("user") == null){
                     <h4 class="modal-title" id="myModalLabel">Formulario de formación</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" name="myForm" class="form-horizontal">
-                        <div class="form-group">
-                            <label class="control-label col-xs-4">Centro educativo:</label>
-                            <div class="col-xs-8">
-                                <input type="text" class="form-control" name="phone" placeholder="Nombre de la empresa" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-xs-4">Nivel de estudios:</label>
-                            <div class="col-xs-8">
-                                <select class="form-control">
-                                    <option>Nivel De Estudios</option>
-                                    <option>Educación Basica Primaria</option>
-                                    <option>Educación Basica Secundaria</option>
-                                    <option>Bachillerato / educacion Media</option>
-                                    <option>Universidad / Carrera Tecnica</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-xs-4">Area de estudio:</label>
-                            <div class="col-xs-8">
-                                <input type="text" class="form-control" name="phone" placeholder="$" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-xs-4">Estado:</label>
-                            <div class="form-inline col-xs-8">
-                                <label class="checkbox-inline" style="font-size: 11px;">
+                    <form role="form" name="formacion" class="form-horizontal">
+                        <p>
+                            <label class="etiqueta_e">Centro educativo:</label>                            
+                            <input type="text" class="form-control texto_e" name="c_educativo" ng-model="ctrl.formacion.c_educativo" placeholder="Nombre del centro educativo" />
+                        </p>
+                        <p>
+                            <label class="etiqueta_e">Nivel de estudios:</label>                           
+                            <select class="form-control selector_e" name="nivel_estudio" ng-model="ctrl.formacion.nivel_estudio">
+                                <option>Nivel De Estudios</option>
+                                <option>Educación Basica Primaria</option>
+                                <option>Educación Basica Secundaria</option>
+                                <option>Bachillerato / educacion Media</option>
+                                <option>Universidad / Carrera Tecnica</option>
+                            </select>
+                        </p>
+                        <p>
+                            <label class="etiqueta_e">Area de estudio:</label>
+                            <input type="text" class="form-control texto_e" name="area_estudio" ng-model="ctrl.formacion.area_estudio" placeholder="Area de estudio" />
+                        </p>
+                        <p>
+                            <label class="etiqueta_e">Estado:</label>
+                            <div class="form-inline">
+                                <label class="checkbox-inline">
                                     <input type="checkbox" value="news"> Culminado
                                 </label>
-                                <label class="checkbox-inline"  style="font-size: 11px;">
+                                <label class="checkbox-inline">
                                     <input type="checkbox" value="news"> Cursando
                                 </label>
-                                <label class="checkbox-inline"  style="font-size: 11px;">
+                                <label class="checkbox-inline">
                                     <input type="checkbox" value="news"> Aplazado/Abandonado
                                 </label>
                             </div>                                
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-xs-4">Periodo inicio:</label>
-                            <div class="col-xs-4">
-                                <select class="form-control">
-                                    <option value="0">Mes</option>
-                                    <option value="1">1</option><option value="2">2</option>
-                                    <option value="3">3</option><option value="4">4</option>
-                                    <option value="5">5</option><option value="6">6</option>
-                                    <option value="7">7</option><option value="8">8</option>
-                                    <option value="9">9</option><option value="10">10</option>
-                                    <option value="11">11</option><option value="12">12</option>
+                        </p>
+                        <p>
+                            <label class="etiqueta_e">Inicio:</label>
+                            <div class="form-group form-inline">
+                                <select class="form-control selector_e_min" name="mes_inicio" ng-model="ctrl.exp_laboral.mes_inicio" ng-options="Mes.ID as Mes.Mes for Mes in ctrl.Meses">
+                                    <option value="">--- Seleccione Mes ---</option>
+                                </select>
+                                <select class="form-control selector_e_min" name="anio_inicio" ng-model="ctrl.exp_laboral.anio_inicio" ng-options="Anio.ID as Anio.Year for Anio in ctrl.Anios">
+                                    <option value="">--- Seleccione Año ---</option>
                                 </select>
                             </div>
-                            <div class="col-xs-4">
-                                <select class="form-control">
-                                    <option>Año</option>
+                        </p>
+                        <p>
+                            <label class="etiqueta_e">Fin</label>
+                            <div class="form-group form-inline">
+                                <select class="form-control selector_e_min" name="mes_fin" ng-model="ctrl.exp_laboral.mes_fin" ng-options="Mes.ID as Mes.Mes for Mes in ctrl.Meses">
+                                    <option value="">--- Seleccione Mes ---</option>
+                                </select>
+                                <select class="form-control selector_e_min" name="anio_fin" ng-model="ctrl.exp_laboral.anio_fin" ng-options="Anio.ID as Anio.Year for Anio in ctrl.Anios">
+                                    <option value="">--- Seleccione Año ---</option>
                                 </select>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-xs-4">Periodo fin:</label>
-                            <div class="col-xs-4">
-                                <select class="form-control">
-                                    <option value="0">Mes</option>
-                                    <option value="1">1</option><option value="2">2</option>
-                                    <option value="3">3</option><option value="4">4</option>
-                                    <option value="5">5</option><option value="6">6</option>
-                                    <option value="7">7</option><option value="8">8</option>
-                                    <option value="9">9</option><option value="10">10</option>
-                                    <option value="11">11</option><option value="12">12</option>
-                                </select>
-                            </div>
-                            <div class="col-xs-4">
-                                <select class="form-control">
-                                    <option>Año</option>
-                                </select>
-                            </div>
-                        </div>
+                        </p>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -768,7 +746,7 @@ if(session.getAttribute("user") == null){
             </div>
         </div>
     </div>
-
+    
     </div>
     <!-- end wrapper -->
 
