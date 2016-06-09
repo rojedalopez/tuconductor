@@ -237,7 +237,10 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
           self.SaveExpUsuario = function(exp_laboral){
               ProfileService.SaveExpUsuario(exp_laboral)
 		              .then(function(d){
-                                
+                                if(d==="true"){
+                                    form_experiencia.modal( "hide" );
+                                    self.resetExp();
+                                }
                               }, 
 				              function(errResponse){
 					               console.error('Error while creating Paper.');
@@ -279,7 +282,6 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
           };
           
           self.submitExp = function(){
-              console.log("entro");
               self.SaveExpUsuario(self.exp_laboral);
           };
           
@@ -301,15 +303,11 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
            
         
           self.editExp = function(id){
-              console.log(id);
               for(var i = 0; i < self.experiencias.length; i++){
-                  console.log(i);
-                  console.log(self.experiencias[i]);
-                  console.log(self.experiencias[i].id);
-                  if(self.experiencias[i].id == id) {
+                  if(self.experiencias[i].id === id) {
                      self.exp_laboral = angular.copy(self.experiencias[i]);
-                     break;
                      form_experiencia.modal( "show" );
+                     break;
                   }
               }
           };
@@ -341,18 +339,18 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         ];
         
         self.Meses = [
-            {ID: '1', Mes: 'Enero'},
-            {ID: '2', Mes: 'Febrero'},
-            {ID: '3', Mes: 'Marzo'},
-            {ID: '4', Mes: 'Abril'},
-            {ID: '5', Mes: 'Mayo'},
-            {ID: '6', Mes: 'Junio'},
-            {ID: '7', Mes: 'Julio'},
-            {ID: '8', Mes: 'Agosto'},
-            {ID: '9', Mes: 'Septiembre'},
-            {ID: '10', Mes: 'Octubre'},
-            {ID: '11', Mes: 'Noviembre'},
-            {ID: '12', Mes: 'Diciembre'}
+            {ID: 1, Mes: 'Enero'},
+            {ID: 2, Mes: 'Febrero'},
+            {ID: 3, Mes: 'Marzo'},
+            {ID: 4, Mes: 'Abril'},
+            {ID: 5, Mes: 'Mayo'},
+            {ID: 6, Mes: 'Junio'},
+            {ID: 7, Mes: 'Julio'},
+            {ID: 8, Mes: 'Agosto'},
+            {ID: 9, Mes: 'Septiembre'},
+            {ID: 10, Mes: 'Octubre'},
+            {ID: 11, Mes: 'Noviembre'},
+            {ID: 12, Mes: 'Diciembre'}
         ];
         
         self.Paises = [
