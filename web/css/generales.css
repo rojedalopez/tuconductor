@@ -16,6 +16,17 @@
     text-shadow: 0px 1px 0px #f2f2f2;
    }
    
+   .etiqueta_e {
+    float: left; clear: left;
+    margin: 7px 10px 0 0; 
+    width: 130px;
+    text-align: right; 
+    font-size: 12px; 
+    color: #445668;
+    text-transform: uppercase; 
+    text-shadow: 0px 1px 0px #f2f2f2;
+   }
+   
    .required{
         color:red
     }
@@ -32,6 +43,16 @@
         width:400px;
     }
     
+    .texto_e   {
+        padding-left: 15px;
+        width:400px;
+    }
+    
+    .texto_e_min{
+        padding-left: 15px;
+        width: 250px;
+    }
+    
     .area{
         resize: none;
         padding-left: 15px;
@@ -40,9 +61,23 @@
     .selector    {
         width:400px;
     }
+    
+    .selector_e    {
+        width:400px;
+    }
+    
+    .selector_e_min    {
+        width:180px;
+    }
+    
+    .area_e{
+        resize: none;
+        padding-left: 15px;
+        width:400px;
+    }
 
 @media screen and (max-width: 992px) {
-    .texto, .selector, .area{
+    .texto, .selector, .area, .texto_e, .texto_e_min, .selector_e, .selector_e_min, .area_e{
         width: 90%;
         margin-left: 15px;
         margin-right: auto;
@@ -50,7 +85,7 @@
         
     } 
     
-    .etiqueta, .etiqueta_a{
+    .etiqueta, .etiqueta_a, .etiqueta_e{
         text-align: left; 
         margin-left: 15px;
         font-size: 10px;
