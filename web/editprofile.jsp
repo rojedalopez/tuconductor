@@ -6,7 +6,7 @@ response.setHeader("Cache-Control", "no-cache");
 response.setHeader("Cache", "no-cache"); 
 if(session.getAttribute("user") == null){
    //redirijo al login
-    response.sendRedirect("../tuconductor/?mensaje=Acabo su sesion.");
+    response.sendRedirect("?mensaje=Acabo su sesion.");
 }
 %>
 <!DOCTYPE html>
@@ -648,10 +648,10 @@ if(session.getAttribute("user") == null){
                         <p>
                             <label class="etiqueta_e">Fin</label>
                             <div class="form-group form-inline">
-                                <select class="form-control selector_e_min" name="mes_fin" ng-model="ctrl.exp_laboral.mes_fin" ng-options="Mes.ID as Mes.Mes for Mes in ctrl.Meses">
+                                <select class="form-control selector_e_min" ng-disabled="ctrl.exp_laboral.labora" name="mes_fin" ng-model="ctrl.exp_laboral.mes_fin" ng-options="Mes.ID as Mes.Mes for Mes in ctrl.Meses">
                                     <option value="">--- Seleccione Mes ---</option>
                                 </select>
-                                <select class="form-control selector_e_min" name="anio_fin" ng-model="ctrl.exp_laboral.anio_fin" ng-options="Anio.ID as Anio.Year for Anio in ctrl.Anios">
+                                <select class="form-control selector_e_min" ng-disabled="ctrl.exp_laboral.labora" name="anio_fin" ng-model="ctrl.exp_laboral.anio_fin" ng-options="Anio.ID as Anio.Year for Anio in ctrl.Anios">
                                     <option value="">--- Seleccione Año ---</option>
                                 </select>
                             </div>
@@ -663,7 +663,7 @@ if(session.getAttribute("user") == null){
                         </p>
                         <p>
                             <label class="etiqueta_e">Retiro:</label>
-                            <textarea class="form-control area_e" name="retiro" ng-model="ctrl.exp_laboral.retiro" rows="3" placeholder="Razones de su retiro..." ></textarea>
+                            <textarea class="form-control area_e" name="retiro" ng-disabled="ctrl.exp_laboral.labora" ng-model="ctrl.exp_laboral.retiro" rows="3" placeholder="Razones de su retiro..." ></textarea>
                         </p>
                         
                         <div class="modal-footer">

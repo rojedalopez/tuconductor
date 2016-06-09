@@ -6,13 +6,12 @@
 package dato.Json;
 
 import static dato.Aplicacion.conexion;
-import dato.Metodos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import org.json.simple.JSONArray;
+import java.text.SimpleDateFormat;
 import org.json.simple.JSONObject;
 
 /**
@@ -20,6 +19,8 @@ import org.json.simple.JSONObject;
  * @author SISTEMAS
  */
 public class Objetos {
+    
+    static SimpleDateFormat Fechaformateador = new SimpleDateFormat("yyyy-MM-dd 00:00");
     public static String ObtenerDatosdeUsuario(String id) throws SQLException{
         JSONObject obj = new JSONObject();
         Connection conn=null;
@@ -45,7 +46,7 @@ public class Objetos {
                         obj.put("apellido", datos.getString(3));
                         obj.put("tip_doc", datos.getString(4));
                         obj.put("num_doc", datos.getString(5));
-                        obj.put("fecha_nac", datos.getString(6));
+                        obj.put("fecha_nac", Fechaformateador.format(datos.getDate(6)));
                         obj.put("genero", datos.getString(7));
                         obj.put("est_civil", datos.getString(8));
                         obj.put("movil", datos.getString(9));

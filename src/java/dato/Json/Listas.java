@@ -136,7 +136,7 @@ public class Listas {
                                     "tel_spv_explaboral, dir_explaboral, cui_explaboral, dpt_explaboral, pais_explaboral, aun_explaboral, " +
                                     "rzn_fin_explaboral, mes_ini_explaboral, anio_ini_explaboral, mes_fin_explaboral, " +
                                     "anio_fin_explaboral, exp_mes_explaboral " +
-                                    "FROM tuconductor.tblExpLaboral WHERE cod_empleado = ?;";
+                                    "FROM tuconductor.tblExpLaboral WHERE cod_empleado = ? ORDER BY aun_explaboral DESC, anio_ini_explaboral DESC, mes_ini_explaboral DESC;";
                      
                     insertar=conn.prepareStatement(instruccion);
                     insertar.setString(1, cod);

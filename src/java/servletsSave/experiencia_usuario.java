@@ -42,8 +42,10 @@ public class experiencia_usuario extends HttpServlet {
  
         JSONParser parser = new JSONParser();
         JSONObject joExperiencia_usr = null;
+        System.out.println(sb.toString());
         joExperiencia_usr = (JSONObject) parser.parse(sb.toString());
         int id = Integer.parseInt(joExperiencia_usr.get("id").toString());
+        System.out.println(id);
         String empresa = (String) joExperiencia_usr.get("empresa");
         String cargo = (String) joExperiencia_usr.get("cargo");
         float salario = Float.parseFloat(joExperiencia_usr.get("salario").toString());
@@ -56,8 +58,14 @@ public class experiencia_usuario extends HttpServlet {
         String direccion = (String) joExperiencia_usr.get("direccion");
         int mes_inicio = Integer.parseInt(joExperiencia_usr.get("mes_inicio").toString());
         int anio_inicio = Integer.parseInt(joExperiencia_usr.get("anio_inicio").toString());
-        int mes_fin = Integer.parseInt(joExperiencia_usr.get("mes_fin").toString());
-        int anio_fin = Integer.parseInt(joExperiencia_usr.get("anio_fin").toString());
+        int mes_fin = 0;
+        int anio_fin = 0;
+        if(joExperiencia_usr.get("mes_fin")!=null){
+            mes_fin = Integer.parseInt(joExperiencia_usr.get("mes_fin").toString());
+        }
+        if(joExperiencia_usr.get("anio_fin")!=null){
+            anio_fin = Integer.parseInt(joExperiencia_usr.get("anio_fin").toString());
+        }
         boolean labora = (Boolean) joExperiencia_usr.get("labora");
         String retiro = (String) joExperiencia_usr.get("retiro");
                         

@@ -210,7 +210,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
           var self = this;
           self.usuario_dp={
                 cod:"", nombre:"", apellido:"", tip_doc:"", 
-                num_doc:"", fecha_nac:Date(), genero:"", est_civil:"", 
+                num_doc:"", fecha_nac:"", genero:"", est_civil:"", 
                 movil: "", tel:"", pais:"CO", depto:"", 
                 ciudad:"", dir:"", naci:"CO", la1:false, 
                 la2:false, lb1:false, lb2:false, lb3:false, 
@@ -240,7 +240,19 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
                                 if(d==="true"){
                                     form_experiencia.modal( "hide" );
                                     self.resetExp();
+                                    self.listaExperiencias();
                                 }
+                              }, 
+				              function(errResponse){
+					               console.error('Error while creating Paper.');
+				              }	
+                  );
+          };
+          
+          self.listaExperiencias = function(){
+              ProfileService.listaExperiencias()
+		              .then(function(d){
+                                    self.experiencias = d;
                               }, 
 				              function(errResponse){
 					               console.error('Error while creating Paper.');
@@ -253,7 +265,9 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
                   .then(
       					       function(d) {
       						        self.usuario_dp = d;
+                                                        console.log(self.usuario_dp.fecha_nac);
                                                         self.usuario_dp.fecha_nac =  new Date(self.usuario_dp.fecha_nac);
+                                                        console.log(self.usuario_dp.fecha_nac);
                                                         self.experiencias = d.exp_laborales;
      					       },
             					function(errResponse){
@@ -316,6 +330,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
           self.resetExp = function(){
              self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", dpto:"", 
               ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0};
+             $scope.exp_laboral.$setPristine();
           };
           
         self.tipoIdents = [
@@ -619,6 +634,18 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
 			},
                         GetUsuarioGeneral: function() {
 					return $http.post('usuario_general')
+							.then(
+									function(response){
+										return response.data;
+									}, 
+									function(errResponse){
+										console.error('Error while fetching expenses');
+										return $q.reject(errResponse);
+									}
+							);
+			},
+                        listaExperiencias: function() {
+					return $http.post('list_experiencia')
 							.then(
 									function(response){
 										return response.data;
