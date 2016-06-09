@@ -51,6 +51,11 @@ if(session.getAttribute("user") == null){
             <!-- navbar-top-links -->
             <ul class="nav navbar-top-links navbar-right">
                 <!-- main dropdown -->
+                <li style="cursor: pointer;" onclick="open_modal_subirhv()">                    
+                    <div class="alert2 alert-info text-center" style="position: relative; top:-7px;">
+                        <i class="fa fa-cloud-upload"></i>&nbsp;<b>Subir Hoja de Vida</b>
+                    </div>
+                </li>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <span class="top-label label label-danger">3</span><i class="fa fa-envelope fa-3x"></i>
@@ -358,13 +363,13 @@ if(session.getAttribute("user") == null){
                 
                 <div class="col-lg-4">
                     <div class="alert alert-info text-center">
-                        <img src="assets/img/comment_icon.png" />&nbsp;<a href="#" onclick="visualizar_addcomment()">Comparte una actualización</a>
+                        <i class="fa fa-comment"></i>&nbsp;<a href="#" onclick="visualizar_addcomment()">Comparte una actualización</a>
 
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="alert alert-info text-center">
-                        <img src="assets/img/camera_icon.png" />&nbsp;Cargar una foto
+                        <i class="fa fa-camera"></i>&nbsp;Cargar una foto
                     </div>
                 </div>
                 <div class="col-lg-8">
@@ -549,6 +554,62 @@ if(session.getAttribute("user") == null){
             </div>
         </div>
     </div>
+        
+        
+    
+    <div class="modal fade" id="Modal_hv" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Mi hoja de vida</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <label class="etiqueta_e">Seleccionar H.V:</label>
+                        <input type="file" class="form-control texto" />
+                    
+                    </p>
+                    <div class="panel panel-primary">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover table-striped" >
+                                            <thead>
+                                                <tr>
+                                                    <th>Fecha</th>
+                                                    <th>Hora</th>
+                                                    <th>Hoja de vida</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class='tooltip-demo'>                                                
+                                                <tr>
+                                                    <td>10/21/2013</td>
+                                                    <td>10:48:43</td>
+                                                    <td>hvjuanmanuelcastilla.pdf</td>
+                                                    <td style="text-align: center;">
+                                                        <img src="assets/img/hv_icon.png" width="18" height="18" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Descargar H.V">
+                                                        <img src="assets/img/delete_icon.png" width="18" height="18" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Eliminar H.V">                                                        
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
     
     </div>
     <!-- end wrapper -->
@@ -567,6 +628,9 @@ if(session.getAttribute("user") == null){
     <script type="text/javascript">
         var popup = $( "#Modal_comment" );
         
+        function open_modal_subirhv(){
+            $("#Modal_hv").modal("show");
+        }
     </script>
 </body>
 
