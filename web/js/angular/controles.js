@@ -368,6 +368,13 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
             {ID: 12, Mes: 'Diciembre'}
         ];
         
+        self.NvlFormacion = [
+            {'ID': 1, 'Value': 'Educación Basica Primaria'},
+            {'ID': 2, 'Value': 'Educación Basica Secundaria'},
+            {'ID': 3, 'Value': 'Bachillerato / educacion Media'},
+            {'ID': 4, 'Value': 'Universidad / Carrera Tecnica'}  
+        ];
+        
         self.Paises = [
             {ID: 'AF', Nombre : 'Afganistán'},
             {ID: 'AL', Nombre : 'Albania'},

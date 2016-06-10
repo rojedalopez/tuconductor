@@ -692,12 +692,8 @@ if(session.getAttribute("user") == null){
                         </p>
                         <p>
                             <label class="etiqueta_e">Nivel de estudios:</label>                           
-                            <select class="form-control selector_e" name="nivel_estudio" ng-model="ctrl.formacion.nivel_estudio">
-                                <option>Nivel De Estudios</option>
-                                <option>Educación Basica Primaria</option>
-                                <option>Educación Basica Secundaria</option>
-                                <option>Bachillerato / educacion Media</option>
-                                <option>Universidad / Carrera Tecnica</option>
+                            <select class="form-control selector_e" name="nivel_estudio" ng-model="ctrl.formacion.nivel_estudio" ng-options="Nivel.ID as Nivel.Value for Nivel in ctrl.NvlFormacion">
+                                <option value="">--- Seleccione opción ---</option>
                             </select>
                         </p>
                         <p>
