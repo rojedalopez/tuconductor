@@ -53,7 +53,7 @@
                                 <input type="submit" class="btn btn-lg btn-success btn-block" value="Iniciar sesion" style="margin-top: 3%;"/>
                                 
                                 <div class="form-horizontal" style="text-align: left; margin-top: 3%;">
-                                    ¿Aún no tienes una cuenta?, <a href="#" data-toggle="modal" data-target="#myModal">Registrate aqui</a>
+                                    ¿Aún no tienes una cuenta?, <a href="#" data-toggle="modal" data-target="#Modal_choise_optios">Registrate aqui</a>
                                 </div>
                                 
                             </fieldset>
@@ -69,7 +69,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="Modal_Conductor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -165,7 +165,118 @@
             </div>
         </div>
     </div>
+                                
+    <div class="modal fade" id="Modal_choise_optios" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Selecciona tu perfil</h4>
+                </div>    
+                
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6" style="cursor: pointer;" onclick="open_modal('Modal_Conductor')">
+                            <div class="panel panel-primary text-center no-boder">
+                                <div class="panel-body green">
+                                    <img src="assets/img/conductor_icon.png" />
+                                    <h3>Conductor</h3>
+                                </div>
+                                <div class="panel-footer">
+                                    <span class="panel-eyecandy-title">Registrate como conductor
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6" style="cursor: pointer;" onclick="open_modal('Modal_Empresa')">
+                            <div class="panel panel-primary text-center no-boder">
+                                <div class="panel-body green">
+                                    <img src="assets/img/empresa_icon.png" />
+                                    <h3>Empresa</h3>
+                                </div>
+                                <div class="panel-footer">
+                                    <span class="panel-eyecandy-title">Registrate como empresa
+                                    </span>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
+    <div class="modal fade" id="Modal_Empresa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Registro Empresa</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" ng-submit="ctrl.submitExp()" name="add_empresa" class="form-horizontal" novalidate>
+                        <p ng-class="{ 'has-error': add_empresa.nit.$error.required || add_empresa.nit.$error.minlength }">
+                            <label class="etiqueta_e">NIT<i class="required">*</i>:</label>
+                            <input type="text" class="form-control texto_e" name="nit" ng-model="ctrl.empresa.nit" placeholder="Nit de la empresa" minlength="6" required />
+                        </p>
+                        <p ng-class="{ 'has-error': add_empresa.r_social.$error.required || add_empresa.r_social.$error.minlength }">
+                            <label class="etiqueta_e">Razon social<i class="required">*</i>:</label>
+                            <input type="text" class="form-control texto_e" name="r_social" ng-model="ctrl.empresa.r_social" placeholder="Razon social de la empresa" minlength="6" required />
+                        </p>
+                        <p ng-class="{ 'has-error': add_empresa.dir.$error.required || add_empresa.dir.$error.minlength }">
+                            <label class="etiqueta_e">Dirección<i class="required">*</i>:</label>
+                            <input type="text" class="form-control texto_e" name="dir" ng-model="ctrl.empresa.dir" placeholder="Direccion de la empresa" minlength="6" required />
+                        </p>
+                        <p  ng-class="{ 'has-error': add_empresa.tel.$error.required || add_empresa.tel.$error.minlength }">
+                            <label class="etiqueta_e">Telefono<i class="required">*</i>:</label>
+                            <input type="text" class="form-control texto_e" name="tel" ng-model="ctrl.empresa.tel" placeholder="Telefono de la empresa" minlength="7" required />
+                        </p>
+                        <p>
+                            <label class="etiqueta_e">Camara de comercio:</label>
+                            <input type="file" class="form-control texto_e" name="cam_com" ng-model="ctrl.empresa.cam_com"  />
+                        </p>
+                        <p>
+                            <label class="etiqueta_e">Rut:</label>
+                            <input type="text" class="form-control texto_e" name="rut" ng-model="ctrl.empresa.rut" placeholder="Rut de la empresa" />
+                        </p>
+                        <p  ng-class="{ 'has-error': add_empresa.nombre_replegal.$error.required || add_empresa.nombre_replegal.$error.minlength }">
+                            <label class="etiqueta_e">Nombre Rep. legal<i class="required">*</i>:</label>
+                            <input type="text" class="form-control texto_e" name="nombre_replegal" ng-model="ctrl.empresa.nombre_replegal" placeholder="Nombre del rep. legal de la empresa" minlength="6" required/>
+                        </p>
+                        <p  ng-class="{ 'has-error': add_empresa.doc_replegal.$error.required || add_empresa.doc_replegal.$error.minlength }">
+                            <label class="etiqueta_e">Documento Rep. legal<i class="required">*</i>:</label>
+                            <input type="text" class="form-control texto_e" name="doc_replegal" ng-model="ctrl.empresa.doc_replegal" placeholder="Documento del rep. legal de la empresa" minlength="6" required/>
+                        </p>
+                        <p>
+                            <label class="etiqueta_e">Email Rep. legal:</label>
+                            <input type="text" class="form-control texto_e" name="email_replegal" ng-model="ctrl.empresa.email_replegal" placeholder="Email del rep. legal de la empresa" />
+                        </p>
+                        <p>
+                            <label class="etiqueta_e">Telefono Rep. legal:</label>
+                            <input type="text" class="form-control texto_e" name="tel_replegal" ng-model="ctrl.empresa.tel_replegal" placeholder="Telefono del rep. legal de la empresa" />
+                        </p>                        
+                        <p ng-class="{ 'has-error': add_empresa.mail.$error.required || add_empresa.mail.$error.minlength }">
+                            <label class="etiqueta_e">Usuario<i class="required">*</i>:</label>
+                            <input type="text" class="form-control texto_e" name="mail" ng-model="ctrl.empresa.mail" placeholder="Usuario (E-mail) de la empresa" minlength="6" required />
+                        </p>
+                        <p ng-class="{ 'has-error': add_empresa.password.$error.required || add_empresa.password.$error.minlength }">
+                            <label class="etiqueta_e">Contraseña<i class="required">*</i>:</label>
+                            <input type="password" class="form-control texto_e" name="password" ng-model="ctrl.empresa.password" placeholder="Contraseña de la empresa" minlength="6" required />
+                        </p>
+                        <p ng-class="{ 'has-error': add_empresa.passwordRepeat.$error.required || add_empresa.passwordRepeat.$error.minlength }">
+                            <label class="etiqueta_e">Confirmar contraseña<i class="required">*</i>:</label>
+                            <input type="password" class="form-control texto_e" name="passwordRepeat" ng-model="ctrl.empresa.passwordRepeat" placeholder="Confirmar la contraseña" minlength="6" required />
+                        </p>
+                    </form>                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" ng-disabled="add_empresa.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_empresa" class="btn btn-primary" >Registrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+                                
     <div id="message_exito" class="alert alert-success alert-dismissable" style="width: 300px; position: absolute; right: 5px; bottom: 5px;" >
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         Registro exitoso...
@@ -181,21 +292,28 @@
     <script src="assets/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script type="text/javascript">
         var dialog ;        
+        var dialog2 ;
             $(document).ready(function() {
-                dialog = $("#myModal");
+                dialog = $("#Modal_Conductor");
+                dialog2 = $("#Modal_Empresa");
             } );
         $( "#message_exito" ).hide();
         $( "#message_error" ).hide();
         $( "#Modal_forgotpass_success" ).hide();
         $( "#Modal_forgotpass_error" ).hide();
+        function open_modal(modal){
+            $("#"+modal).modal("show");
+        }
         function open_message_forgot(valor){
             if(valor=="true"){
                 $( "#Modal_forgotpass_error" ).hide();
                 $( "#Modal_forgotpass_success" ).show("slow");                
             }else{
                 $( "#Modal_forgotpass_success" ).hide();
-                $( "#Modal_forgotpass_error" ).show("slow");                
-            }            
+                $( "#Modal_forgotpass_error" ).show("slow");
+                
+            }
+            
         }
         function open_message(valor){
             if(valor=="true"){
