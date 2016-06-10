@@ -51,7 +51,11 @@ public class Aplicacion {
              
                 try{
                     conn=conexion();
-                    String instruccion="SELECT cod_empleado, tblUsuario.eml_usuario, hsh_usuario, pwd_usuario, nbr_empleado, apl_empleado, mvl_empleado, hv_empleado, up_hv_empleado, tkn_hv_empleado FROM tblUsuario INNER JOIN tblEmpleado ON tblEmpleado.eml_usuario = tblUsuario.eml_usuario WHERE tblUsuario.eml_usuario = ? AND ver_usuario = 1;";
+                    String instruccion="SELECT IFNULL(cod_empleado, nit_empresa) as cod, tblUsuario.eml_usuario, hsh_usuario, pwd_usuario, " +
+                                        "IFNULL(nbr_empleado, nbr_empresa) as nombre, apl_empleado, mvl_empleado, hv_empleado, up_hv_empleado, tkn_hv_empleado, tblUsuario.id_rol " +
+                                        "FROM tblUsuario LEFT JOIN tblEmpleado ON tblEmpleado.eml_usuario = tblUsuario.eml_usuario " +
+                                        "LEFT JOIN tblEmpresa ON tblEmpresa.eml_usuario = tblUsuario.eml_usuario " +
+                                        "WHERE tblUsuario.eml_usuario = ? AND ver_usuario = 1;";
                     insertar=conn.prepareStatement(instruccion);
                     insertar.setString(1, correo);
                     datos=insertar.executeQuery();
@@ -71,6 +75,7 @@ public class Aplicacion {
                             u.setHv_archivo(datos.getString(8));
                             u.setFecha(datos.getString(9));
                             u.setToken(datos.getString(10));
+                            u.setRol(datos.getInt(11));
                             u.setMensaje("true");
                             return u;
                         }else{

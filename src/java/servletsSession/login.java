@@ -35,18 +35,25 @@ public class login extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             if(u!=null){
                 if(u.getMensaje().equals("true")){
-                    String[] nombre = u.getNombre().split(" ");
                     session.setAttribute("user", u);
                     session.setAttribute("cod", u.getCodigo());
-                    session.setAttribute("usr", nombre[0]);
                     session.setAttribute("session", true);
-                    response.sendRedirect("conductor/profile.jsp");
+                    if(u.getRol()==1){
+                        response.sendRedirect("admin/");
+                    }else if(u.getRol()==2){
+                        session.setAttribute("usr", u.getNombre());
+                        response.sendRedirect("empresa/");
+                    }else if(u.getRol()==3){
+                        String[] nombre = u.getNombre().split(" ");
+                        session.setAttribute("usr", nombre[0]);
+                        response.sendRedirect("conductor/");
+                    }
                  }else{
                     System.out.println("error en: " +u.getMensaje());
                     response.sendRedirect("?mensaje=Error en la autenticacion.");
                 }
             }else{
-                response.sendRedirect("?mensaje=No existe usuario.");                
+                response.sendRedirect("../?mensaje=No existe usuario.");                
             }
         }
     }

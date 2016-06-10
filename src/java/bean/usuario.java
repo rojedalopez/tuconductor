@@ -19,10 +19,20 @@ public class usuario {
     private String hv_archivo;
     private String fecha;
     private String token;
-
+    private int rol;
+    
     public usuario() {
     }
 
+    public int getRol() {
+        return rol;
+    }
+
+    public void setRol(int rol) {
+        this.rol = rol;
+    }
+
+    
     public String getHv_archivo() {
         return hv_archivo;
     }

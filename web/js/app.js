@@ -3,7 +3,8 @@
 angular.module('myApp',[
     'MyApp.Sign',
     'MyApp.Wall',
-    'MyApp.Profile'
+    'MyApp.Profile',
+    'MyApp.InfoAdicional'
 ]);
 
 
