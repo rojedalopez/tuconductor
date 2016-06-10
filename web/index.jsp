@@ -35,6 +35,7 @@
                         <h3 class="panel-title">Formulario de ingreso</h3>
                     </div>
                     <div class="panel-body" >
+                        
                         <form role="form" method="POST" action="login">
                             <fieldset>
                                 <div class="form-group">
@@ -49,15 +50,21 @@
                                     </label>
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
-                                <input type="submit" class="btn btn-lg btn-success btn-block" value="Iniciar sesion"/>
-                                <div style="text-align: center; margin-top: 5%;">
-                                    ¿Aun no tienes una cuenta?, <a href="#" data-toggle="modal" data-target="#myModal">Registrate aqui</a>
-                                    
+                                <input type="submit" class="btn btn-lg btn-success btn-block" value="Iniciar sesion" style="margin-top: 3%;"/>
+                                
+                                <div class="form-horizontal" style="text-align: left; margin-top: 3%;">
+                                    ¿Aún no tienes una cuenta?, <a href="#" data-toggle="modal" data-target="#myModal">Registrate aqui</a>
                                 </div>
+                                
                             </fieldset>
                         </form>
-                    </div>
+                    </div>                                
                 </div>
+                <div class="alert alert-danger" style="text-align: center;">
+                    <a href="#" class="alert-link"data-toggle="modal" data-target="#Modal_forgotpass"><i class="fa fa-exclamation-triangle"></i> ¿Olvidaste tu contraseña?</a>                
+                </div>
+                
+                
             </div>
         </div>
     </div>
@@ -125,6 +132,39 @@
             </div>
         </div>
     </div>
+                                
+    <div class="modal fade" id="Modal_forgotpass" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">¿Olvidaste tu contraseña?</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="myForm">
+                        <div class="form-group">
+                            <label>E-mail</label><span ng-show="myForm.mail.$invalid && myForm.mail.$dirty" class="errores">Ingrese E-Mail valido</span>
+                            <div class="form-group input-group">
+                                <span class="input-group-addon"><img src="assets/img/email_icon.png" width="20" height="20" /></span>
+                                <input type="email" ng-model="ctrl.usuario.mail" class="form-control" name="mail" placeholder="Ingrese su E-mail" required>
+                            </div>
+                        </div>
+                        <div class="alert alert-info" id="Modal_forgotpass_success">
+                            <b>Se ha enviado el mensaje de restablecimiento de contraseña.</b><br/>Sigue las instrucciones que se proporcionan en el mensaje de correo electronico para restablecer la contraseña.
+                        </div>
+                        <div class="alert alert-danger" id="Modal_forgotpass_error">
+                            <b>Se ha presentado un error.</b><br/>El correo ingresado no se encuentra registrado en la plataforma TuConductor.
+                        </div>
+                        
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button ng-click="ctrl.submit()" class="btn btn-primary" ng-disabled="myForm.$invalid">Enviar correo</button>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <div id="message_exito" class="alert alert-success alert-dismissable" style="width: 300px; position: absolute; right: 5px; bottom: 5px;" >
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -146,6 +186,17 @@
             } );
         $( "#message_exito" ).hide();
         $( "#message_error" ).hide();
+        $( "#Modal_forgotpass_success" ).hide();
+        $( "#Modal_forgotpass_error" ).hide();
+        function open_message_forgot(valor){
+            if(valor=="true"){
+                $( "#Modal_forgotpass_error" ).hide();
+                $( "#Modal_forgotpass_success" ).show("slow");                
+            }else{
+                $( "#Modal_forgotpass_success" ).hide();
+                $( "#Modal_forgotpass_error" ).show("slow");                
+            }            
+        }
         function open_message(valor){
             if(valor=="true"){
                 $("#message_exito").show();
