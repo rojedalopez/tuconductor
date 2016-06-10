@@ -16,19 +16,20 @@ if(session.getAttribute("user") == null){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>:::TuConductor:::</title>
     <!-- Core CSS - Include with every page -->
-    <link href="assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
-    <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
-    <link href="assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />
-    <link href="assets/css/style.css" rel="stylesheet" />
-    <link href="assets/css/main-style.css" rel="stylesheet" />
+    <link href="../assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="../assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="../assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />
+    <link href="../assets/css/style.css" rel="stylesheet" />
+    <link href="../assets/css/main-style.css" rel="stylesheet" />
     <!-- Page-Level CSS -->
-    <link href="assets/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
-    <link href="assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
-
-    <script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
-    <script type="text/javascript" src="js/angular.min.js"></script>
-    <script type="text/javascript" src="js/app.js"></script>      
-    <script type="text/javascript" src="js/angular/controles.js"></script>     
+    <link href="../assets/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <link href="../css/generales.css" rel="stylesheet" />
+    <link href="../assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+    
+    <script type="text/javascript" src="../js/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="../js/angular.min.js"></script>
+    <script type="text/javascript" src="../js/app.js"></script>      
+    <script type="text/javascript" src="../js/angular/controles.js"></script>     
     
    </head>
 <body ng-app="myApp" class="ng-cloak">
@@ -45,7 +46,7 @@ if(session.getAttribute("user") == null){
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="index.html">
-                    <img src="assets/img/logo.png" alt="" />
+                    <img src="../assets/img/logo.png" alt="" />
                 </a>
             </div>
             <!-- end navbar-header -->
@@ -278,7 +279,7 @@ if(session.getAttribute("user") == null){
                         <!-- user image section-->
                         <div class="user-section">
                             <div class="user-section-inner">
-                                <img src="assets/img/user.jpg" alt="">
+                                <img src="../assets/img/user.jpg" alt="">
                             </div>
                             <div class="user-info">
                                 <div>${sessionScope.usr}</div>
@@ -358,7 +359,7 @@ if(session.getAttribute("user") == null){
                 <div class="col-lg-4" style="cursor: pointer;" onclick="Open_dialog_filter()">
                     <div class="panel panel-primary text-center no-boder">
                         <div class="panel-body blue">
-                            <img src="assets/img/filter_icon.png" />
+                            <img src="../assets/img/filter_icon.png" />
                             <label>FILTROS</label>
                         </div>
                         <div class="panel-footer">
@@ -398,8 +399,8 @@ if(session.getAttribute("user") == null){
                                             <td style="text-align: center;">5</td>
                                             <td>Juan Manuel</td>
                                             <td>Castilla Barros</td>
-                                            <td style="text-align: center; cursor: pointer;"><img src="assets/img/hv_icon.png" class="btn_icon_red" data-toggle="tooltip" data-placement="left" title="Descargar H.V"/></td>
-                                            <td style="text-align: center; cursor: pointer;"><img src="assets/img/token2_icon.png" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Obtener este conductor"/></td>
+                                            <td style="text-align: center; cursor: pointer;"><img src="../assets/img/hv_icon.png" class="btn_icon_red" data-toggle="tooltip" data-placement="left" title="Descargar H.V"/></td>
+                                            <td style="text-align: center; cursor: pointer;"><img src="../assets/img/token2_icon.png" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Obtener este conductor"/></td>
                                         </tr>
                                         <%}%>
                                     </tbody>
@@ -488,7 +489,7 @@ if(session.getAttribute("user") == null){
                                             <td style="text-align: center;">04/12/2016</td>
                                             <td>09:08:07</td>
                                             <td style="text-align: center;">Oferta</td>
-                                            <td style="text-align: center; cursor: pointer;"><img src="assets/img/hv_icon.png" class="btn_icon_red" data-toggle="tooltip" data-placement="left" title="Descargar H.V"/></td>
+                                            <td style="text-align: center; cursor: pointer;"><img src="../assets/img/hv_icon.png" class="btn_icon_red" data-toggle="tooltip" data-placement="left" title="Descargar H.V"/></td>
                                         </tr>
                                         <%}%>
                                     </tbody>
@@ -507,14 +508,14 @@ if(session.getAttribute("user") == null){
     
     
     <!-- Core Scripts - Include with every page -->
-    <script src="assets/plugins/jquery-1.10.2.js"></script>
-    <script src="assets/plugins/bootstrap/bootstrap.min.js"></script>
-    <script src="assets/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="assets/plugins/pace/pace.js"></script>
-    <script src="assets/scripts/siminta.js"></script>
+    <script src="../assets/plugins/jquery-1.10.2.js"></script>
+    <script src="../assets/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="../assets/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="../assets/plugins/pace/pace.js"></script>
+    <script src="../assets/scripts/siminta.js"></script>
     <!-- Page-Level Plugin Scripts-->
-    <script src="assets/plugins/dataTables/jquery.dataTables.js"></script>
-    <script src="assets/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script src="../assets/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="../assets/plugins/dataTables/dataTables.bootstrap.js"></script>
 
     <script type="text/javascript">
         

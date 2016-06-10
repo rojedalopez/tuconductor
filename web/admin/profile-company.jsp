@@ -16,19 +16,19 @@ if(session.getAttribute("user") == null){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>:::TuConductor:::</title>
     <!-- Core CSS - Include with every page -->
-    <link href="assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
-    <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
-    <link href="assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />
-    <link href="assets/css/style.css" rel="stylesheet" />
-    <link href="assets/css/main-style.css" rel="stylesheet" />
+    <link href="../assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="../assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="../assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />
+    <link href="../assets/css/style.css" rel="stylesheet" />
+    <link href="../assets/css/main-style.css" rel="stylesheet" />
     <!-- Page-Level CSS -->
-    <link href="assets/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
-    <link href="assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
-
-    <script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
-    <script type="text/javascript" src="js/angular.min.js"></script>
-    <script type="text/javascript" src="js/app.js"></script>      
-    <script type="text/javascript" src="js/angular/controles.js"></script>     
+    <link href="../assets/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <link href="../assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+    <link href="../css/generales.css" rel="stylesheet" />
+    <script type="text/javascript" src="../js/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="../js/angular.min.js"></script>
+    <script type="text/javascript" src="../js/app.js"></script>      
+    <script type="text/javascript" src="../js/angular/controles.js"></script>     
     
    </head>
 <body ng-app="myApp" class="ng-cloak">
@@ -45,7 +45,7 @@ if(session.getAttribute("user") == null){
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="index.html">
-                    <img src="assets/img/logo.png" alt="" />
+                    <img src="../assets/img/logo.png" alt="" />
                 </a>
             </div>
             <!-- end navbar-header -->
@@ -278,7 +278,7 @@ if(session.getAttribute("user") == null){
                         <!-- user image section-->
                         <div class="user-section">
                             <div class="user-section-inner">
-                                <img src="assets/img/user.jpg" alt="">
+                                <img src="../assets/img/user.jpg" alt="">
                             </div>
                             <div class="user-info">
                                 <div>${sessionScope.usr}</div>
@@ -349,7 +349,7 @@ if(session.getAttribute("user") == null){
             <div class="row">
                 <!-- Page Header -->
                 <div class="col-lg-12">
-                    <h1 class="page-header">Mi Perfil</h1>
+                    <h1 class="page-header">Perfil Administrativo (Empresas)</h1>
                 </div>
                 <!--End Page Header -->
             </div>
@@ -358,7 +358,7 @@ if(session.getAttribute("user") == null){
                 <div class="col-lg-4" style="cursor: pointer;" onclick="Open_dialog_filter()">
                     <div class="panel panel-primary text-center no-boder">
                         <div class="panel-body blue">
-                            <img src="assets/img/filter_icon.png" />
+                            <img src="../assets/img/filter_icon.png" />
                             <label>FILTROS</label>
                         </div>
                         <div class="panel-footer">
@@ -367,36 +367,24 @@ if(session.getAttribute("user") == null){
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-4" style="cursor: pointer;" onclick="Open_dialog_newempresa()">
                     <div class="panel panel-primary text-center no-boder">
                         <div class="panel-body blue">
-                            <img src="assets/img/dashboard_icon.png" />
-                            <label>DASHBOARD</label>
+                            <img src="../assets/img/personadd_icon.png" />
+                            <label>NUEVA EMPRESA</label>
                         </div>
                         <div class="panel-footer">
-                            <span class="panel-eyecandy-title">Representación de mis indicadores
+                            <span class="panel-eyecandy-title">Registrar nueva empresa
                             </span>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 tooltip-demo" style="cursor: pointer;" onclick="Open_dialog_tokens()">
-                    <div class="panel panel-primary text-center no-boder"  data-toggle="tooltip" data-placement="bottom" title="Ofertas disponibles: 3 / Ofertas disponibles: 3">
-                        <div class="panel-body yellow">
-                            <img src="assets/img/token_icon.png" />
-                            <label>500</label>
-                            
-                        </div>
-                        <div class="panel-footer">
-                            <span class="panel-eyecandy-title">Mis tokens
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                
                 <div class="col-lg-12">
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                             Lista de conductores
+                             Lista de Empresas
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
@@ -422,8 +410,8 @@ if(session.getAttribute("user") == null){
                                             <td style="text-align: center;">5</td>
                                             <td>Juan Manuel</td>
                                             <td>Castilla Barros</td>
-                                            <td style="text-align: center; cursor: pointer;"><img src="assets/img/hv_icon.png" class="btn_icon_red" data-toggle="tooltip" data-placement="left" title="Descargar H.V"/></td>
-                                            <td style="text-align: center; cursor: pointer;"><img src="assets/img/token2_icon.png" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Obtener este conductor"/></td>
+                                            <td style="text-align: center; cursor: pointer;"><img src="../assets/img/hv_icon.png" class="btn_icon_red" data-toggle="tooltip" data-placement="left" title="Descargar H.V"/></td>
+                                            <td style="text-align: center; cursor: pointer;"><img src="../assets/img/token2_icon.png" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Obtener este conductor"/></td>
                                         </tr>
                                         <%}%>
                                     </tbody>
@@ -461,66 +449,68 @@ if(session.getAttribute("user") == null){
         </div>
     </div>
         
-    <div class="modal fade" id="Modal_tokens" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="Modal_newempresa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Informacion Tokens</h4>
+                    <h4 class="modal-title" id="myModalLabel">Registro Empresa</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="alert alert-info text-center">
-                                <i class="fa fa-money fa-3x"></i>&nbsp;<b>20 </b>Tokens disponibles
-
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="alert alert-info text-center">
-                                <i class="fa fa-tags fa-3x"></i>&nbsp;<b>2 </b>Ofertas disponibles  
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="alert alert-info text-center">
-                                <i class="fa fa-eye fa-3x"></i>&nbsp;<b>10 </b>Vistas disponibles
-
-                            </div>
-                        </div>
-                        <!--end quick info section -->
-                    </div>
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                             Tabla de trazabilidad
-                        </div>
-                        <div class="panel-body">
-                            
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example2">
-                                    <thead>
-                                        <tr>
-                                            <th>Fecha</th>
-                                            <th>Hora</th>
-                                            <th>Opcion realizada</th>
-                                            <th>Informacion</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <%for(int i=0;i<15;i++){%>
-                                        <tr class="gradeA tooltip-demo" >
-                                            <td style="text-align: center;">04/12/2016</td>
-                                            <td>09:08:07</td>
-                                            <td style="text-align: center;">Oferta</td>
-                                            <td style="text-align: center; cursor: pointer;"><img src="assets/img/hv_icon.png" class="btn_icon_red" data-toggle="tooltip" data-placement="left" title="Descargar H.V"/></td>
-                                        </tr>
-                                        <%}%>
-                                    </tbody>
-                                </table>
-                            </div>
-                            
-                        </div>
-                    </div>
+                    <form role="form" ng-submit="ctrl.submitExp()" name="add_empresa" class="form-horizontal" novalidate>
+                        <p ng-class="{ 'has-error': add_empresa.nit.$error.required || add_empresa.nit.$error.minlength }">
+                            <label class="etiqueta_e">NIT<i class="required">*</i>:</label>
+                            <input type="text" class="form-control texto_e" name="nit" ng-model="ctrl.empresa.nit" placeholder="Nit de la empresa" minlength="6" required />
+                        </p>
+                        <p ng-class="{ 'has-error': add_empresa.r_social.$error.required || add_empresa.r_social.$error.minlength }">
+                            <label class="etiqueta_e">Razon social<i class="required">*</i>:</label>
+                            <input type="text" class="form-control texto_e" name="r_social" ng-model="ctrl.empresa.r_social" placeholder="Razon social de la empresa" minlength="6" required />
+                        </p>
+                        <p ng-class="{ 'has-error': add_empresa.dir.$error.required || add_empresa.dir.$error.minlength }">
+                            <label class="etiqueta_e">Dirección<i class="required">*</i>:</label>
+                            <input type="text" class="form-control texto_e" name="dir" ng-model="ctrl.empresa.dir" placeholder="Direccion de la empresa" minlength="6" required />
+                        </p>
+                        <p  ng-class="{ 'has-error': add_empresa.tel.$error.required || add_empresa.tel.$error.minlength }">
+                            <label class="etiqueta_e">Telefono<i class="required">*</i>:</label>
+                            <input type="text" class="form-control texto_e" name="tel" ng-model="ctrl.empresa.tel" placeholder="Telefono de la empresa" minlength="7" required />
+                        </p>
+                        <p>
+                            <label class="etiqueta_e">Camara de comercio:</label>
+                            <input type="file" class="form-control texto_e" name="cam_com" ng-model="ctrl.empresa.cam_com"  />
+                        </p>
+                        <p  ng-class="{ 'has-error': add_empresa.nombre_replegal.$error.required || add_empresa.nombre_replegal.$error.minlength }">
+                            <label class="etiqueta_e">Nombre Rep. legal<i class="required">*</i>:</label>
+                            <input type="text" class="form-control texto_e" name="nombre_replegal" ng-model="ctrl.empresa.nombre_replegal" placeholder="Nombre del rep. legal de la empresa" minlength="6" required/>
+                        </p>
+                        <p  ng-class="{ 'has-error': add_empresa.doc_replegal.$error.required || add_empresa.doc_replegal.$error.minlength }">
+                            <label class="etiqueta_e">Documento Rep. legal<i class="required">*</i>:</label>
+                            <input type="text" class="form-control texto_e" name="doc_replegal" ng-model="ctrl.empresa.doc_replegal" placeholder="Documento del rep. legal de la empresa" minlength="6" required/>
+                        </p>
+                        <p>
+                            <label class="etiqueta_e">Email Rep. legal:</label>
+                            <input type="text" class="form-control texto_e" name="email_replegal" ng-model="ctrl.empresa.email_replegal" placeholder="Email del rep. legal de la empresa" />
+                        </p>
+                        <p>
+                            <label class="etiqueta_e">Telefono Rep. legal:</label>
+                            <input type="text" class="form-control texto_e" name="tel_replegal" ng-model="ctrl.empresa.tel_replegal" placeholder="Telefono del rep. legal de la empresa" />
+                        </p>                        
+                        <p ng-class="{ 'has-error': add_empresa.mail.$error.required || add_empresa.mail.$error.minlength }">
+                            <label class="etiqueta_e">Usuario<i class="required">*</i>:</label>
+                            <input type="text" class="form-control texto_e" name="mail" ng-model="ctrl.empresa.mail" placeholder="Usuario (E-mail) de la empresa" minlength="6" required />
+                        </p>
+                        <p ng-class="{ 'has-error': add_empresa.password.$error.required || add_empresa.password.$error.minlength }">
+                            <label class="etiqueta_e">Contraseña<i class="required">*</i>:</label>
+                            <input type="password" class="form-control texto_e" name="password" ng-model="ctrl.empresa.password" placeholder="Contraseña de la empresa" minlength="6" required />
+                        </p>
+                        <p ng-class="{ 'has-error': add_empresa.passwordRepeat.$error.required || add_empresa.passwordRepeat.$error.minlength }">
+                            <label class="etiqueta_e">Confirmar contraseña<i class="required">*</i>:</label>
+                            <input type="password" class="form-control texto_e" name="passwordRepeat" ng-model="ctrl.empresa.passwordRepeat" placeholder="Confirmar la contraseña" minlength="6" required />
+                        </p>
+                    </form>                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" ng-disabled="add_empresa.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_empresa" class="btn btn-primary" >Registrar</button>
                 </div>
             </div>
         </div>
@@ -531,22 +521,22 @@ if(session.getAttribute("user") == null){
     
     
     <!-- Core Scripts - Include with every page -->
-    <script src="assets/plugins/jquery-1.10.2.js"></script>
-    <script src="assets/plugins/bootstrap/bootstrap.min.js"></script>
-    <script src="assets/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="assets/plugins/pace/pace.js"></script>
-    <script src="assets/scripts/siminta.js"></script>
+    <script src="../assets/plugins/jquery-1.10.2.js"></script>
+    <script src="../assets/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="../assets/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="../assets/plugins/pace/pace.js"></script>
+    <script src="../assets/scripts/siminta.js"></script>
     <!-- Page-Level Plugin Scripts-->
-    <script src="assets/plugins/dataTables/jquery.dataTables.js"></script>
-    <script src="assets/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script src="../assets/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="../assets/plugins/dataTables/dataTables.bootstrap.js"></script>
 
     <script type="text/javascript">
-        
+        var btn_add_empresa = $("#btn_add_empresa");
         function Open_dialog_filter(){
             $( "#Modal_filter" ).modal("show");
         }
-        function Open_dialog_tokens(){
-            $( "#Modal_tokens" ).modal("show");
+        function Open_dialog_newempresa(){
+            $( "#Modal_newempresa" ).modal("show");
         }
         $(document).ready(function () {
             var ex= document.getElementById("dataTables-example");

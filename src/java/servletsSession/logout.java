@@ -43,7 +43,7 @@ public class logout extends HttpServlet {
                 session.removeAttribute("usr");
                 session.invalidate();
                  
-                response.sendRedirect("");
+                response.sendRedirect("../");
         }catch(NullPointerException ex){
             PrintWriter out = response.getWriter();
             response.sendRedirect("?mensaje=Primero ingrese al sistema."); 

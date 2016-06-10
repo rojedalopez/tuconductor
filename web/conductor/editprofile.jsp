@@ -6,7 +6,7 @@ response.setHeader("Cache-Control", "no-cache");
 response.setHeader("Cache", "no-cache"); 
 if(session.getAttribute("user") == null){
    //redirijo al login
-    response.sendRedirect("?mensaje=Acabo su sesion.");
+    response.sendRedirect("../?mensaje=Acabo su sesion.");
 }
 %>
 <!DOCTYPE html>
