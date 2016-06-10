@@ -607,6 +607,10 @@ if(session.getAttribute("user") == null){
                     </div>
 
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button ng-click="ctrl.submit()" class="btn btn-primary" ng-disabled="myForm.$invalid">Subir hoja de vida</button>
+                </div>
             </div>
         </div>
     </div>
