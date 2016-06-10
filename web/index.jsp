@@ -53,7 +53,7 @@
                                 <input type="submit" class="btn btn-lg btn-success btn-block" value="Iniciar sesion" style="margin-top: 3%;"/>
                                 
                                 <div class="form-horizontal" style="text-align: left; margin-top: 3%;">
-                                    ¿Aún no tienes una cuenta?, <a href="#" data-toggle="modal" data-target="#Modal_choise_optios">Registrate aqui</a>
+                                    ¿Aún no tienes una cuenta?, <a href="#" data-toggle="modal" data-target="#Modal_choise_options">Registrate aqui</a>
                                 </div>
                                 
                             </fieldset>
@@ -166,7 +166,7 @@
         </div>
     </div>
                                 
-    <div class="modal fade" id="Modal_choise_optios" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="Modal_choise_options" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -302,6 +302,7 @@
         $( "#Modal_forgotpass_success" ).hide();
         $( "#Modal_forgotpass_error" ).hide();
         function open_modal(modal){
+            $("#Modal_choise_options").modal("hide");
             $("#"+modal).modal("show");
         }
         function open_message_forgot(valor){
