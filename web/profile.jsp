@@ -565,10 +565,11 @@ if(session.getAttribute("user") == null){
                     <h4 class="modal-title" id="myModalLabel">Mi hoja de vida</h4>
                 </div>
                 <div class="modal-body">
+                    <form role="form" name="form_hv" ng-submit="ctrl.submitHV()">
                     <p>
                         <label class="etiqueta_e">Seleccionar H.V:</label>
-                        <input type="file" class="form-control texto" />
-                    
+                        <input name="file" type="file" uploader-model="ctrl.hoja_vida.file" accept=".pdf, .docx" class="form-control texto" required/>
+
                     </p>
                     <div class="panel panel-primary">
                         <div class="panel-body">
@@ -605,12 +606,14 @@ if(session.getAttribute("user") == null){
                         </div>
                         <!-- /.panel-body -->
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" ng-disabled="form_hv.$invalid">Subir hoja de vida</button>
+                    </div>
+                </form>
 
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <button ng-click="ctrl.submit()" class="btn btn-primary" ng-disabled="myForm.$invalid">Subir hoja de vida</button>
-                </div>
+                
             </div>
         </div>
     </div>

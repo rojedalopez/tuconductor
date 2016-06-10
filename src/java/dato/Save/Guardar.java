@@ -260,10 +260,10 @@ public class Guardar {
                 }
 
             }catch (SQLException e) {
-                System.out.println("error SQLException en SAVE EXPERIENCIA USUARIO");
+                System.out.println("error SQLException en SAVE FORMACION USUARIO");
                 System.out.println(e.getMessage());
             }catch (Exception e){
-                System.out.println("error Exception en SAVE EXPERIENCIA USUARIO");
+                System.out.println("error Exception en SAVE FORMACION USUARIO");
                 System.out.println(e.getMessage());
             }finally{
                 if(!conn.isClosed()){
@@ -273,4 +273,39 @@ public class Guardar {
             return false;
 
     }
+    
+    public static boolean saveHV(String codigo, String archivo) throws ClassNotFoundException, SQLException{
+         
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        conn=conexion();
+        try{
+         
+        String instruccion="UPDATE tblEmpleado SET hv_empleado = ?, up_hv_empleado = DATE_ADD(NOW(),INTERVAL -5 HOUR) WHERE cod_empleado ?;";
+         
+        insertar=conn.prepareStatement(instruccion);
+        insertar.setString(1, archivo);
+        insertar.setString(2, codigo);
+                 
+        if(insertar.executeUpdate()==1){
+            return true;
+        }
+         
+        insertar.close();
+        conn.close();
+         
+        }catch (SQLException ex) {
+                System.out.println("error en saveFinCompra");
+            System.out.println(ex.getMessage());
+        }finally{
+            if(conn!=null){
+                if(!conn.isClosed()){
+                    conn.close();
+                }
+            }
+        }
+         
+        return false;
+    }
+     
 }

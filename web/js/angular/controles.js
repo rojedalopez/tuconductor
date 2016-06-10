@@ -8,6 +8,22 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
           self.comments=[];
           self.comment={id:null,fecha:Date(), origen:"", cod_origen:"", comentario:"", desde:"", id_publicacion:""};
           self.comentario = "";
+          self.hoja_vida={file:null};
+          
+          self.SaveHV = function(hoja_vida){
+              WallService.SaveHV(hoja_vida)
+		              .then(function(d){
+                                if(d==="true"){
+                                    console.log("entro");
+                                }else{
+                                    console.log("no entro");
+                                }
+                              }, 
+				              function(errResponse){
+					               console.error('Error while creating Paper.');
+				              }	
+                  );
+          };
           
           self.SaveComment = function(comment){
               WallService.SaveComment(comment)
@@ -24,6 +40,11 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
 					               console.error('Error while creating Paper.');
 				              }	
                   );
+          };
+          
+          self.submitHV = function (){
+            self.SaveHV(self.hoja_vida);
+            self.hoja_vida={file:null};
           };
           
           self.llenarPublicaciones = function(){
@@ -128,6 +149,25 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
 										return $q.reject(errResponse);
 									}
 							);
+			},SaveHV: function(hoja_vida){
+
+                        var fd = new FormData();
+                        fd.append("file", hoja_vida.file);
+                        console.log(hoja_vida.file);
+                        
+					return $http.post('upload_hv', fd, {
+                                                    transformRequest: angular.identity,
+                                                    headers: {'Content-Type': undefined}
+                                                })
+							.then(
+									function(response){
+										return response.data;
+									}, 
+									function(errResponse){
+										console.error('Error while updating paper ' +errResponse);
+										return $q.reject(errResponse);
+									}
+							);
 			}
 		
 	};
@@ -147,7 +187,31 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
             }
         };
     }
-}; });
+}; 
+}).directive('uploaderModel', ["$parse", function($parse){
+            return{
+                restrict : 'A',
+                link : function(scope, iElement, iAttrs){
+                    iElement.on("change", function(e){
+                        
+                        var f = iElement[0].files[0];
+                        
+                        var reader = new FileReader();
+                        
+                        reader.onload = (function(theFile) {
+                            return function(e) {
+                              // Render thumbnail.
+                              //scope.ctrl.paper.img = e.target.result;
+                            };
+                        })(f);
+                        
+                        reader.readAsDataURL(f);
+                        
+                       $parse(iAttrs.uploaderModel).assign(scope, f); 
+                    });
+                }
+            };
+    }]);
 
 
 angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'SignUpService', function($scope, SignUpService) {
