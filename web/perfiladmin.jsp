@@ -404,6 +404,18 @@ if(session.getAttribute("user") == null){
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-4">
+                    <div class="panel panel-primary text-center no-boder">
+                        <div class="panel-body blue">
+                            <img src="assets/img/token_icon.png" />
+                            <label>VENTAS</label>
+                        </div>
+                        <div class="panel-footer">
+                            <span class="panel-eyecandy-title">Administración de ventas
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- end page-wrapper -->
