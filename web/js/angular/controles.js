@@ -844,6 +844,3 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         };
     }
 }; });
-
-
-

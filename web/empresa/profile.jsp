@@ -28,7 +28,7 @@ if(session.getAttribute("user") == null){
     <script type="text/javascript" src="../js/jquery-2.2.0.min.js"></script>
     <script type="text/javascript" src="../js/angular.min.js"></script>
     <script type="text/javascript" src="../js/app.js"></script>      
-    <script type="text/javascript" src="../js/angular/controles.js"></script>     
+    <script type="text/javascript" src="../js/angular/controles.js"></script>  
     
    </head>
 <body ng-app="myApp" class="ng-cloak">

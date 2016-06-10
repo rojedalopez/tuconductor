@@ -235,10 +235,6 @@
                             <label class="etiqueta_e">Camara de comercio:</label>
                             <input type="file" class="form-control texto_e" name="cam_com" ng-model="ctrl.empresa.cam_com"  />
                         </p>
-                        <p>
-                            <label class="etiqueta_e">Rut:</label>
-                            <input type="text" class="form-control texto_e" name="rut" ng-model="ctrl.empresa.rut" placeholder="Rut de la empresa" />
-                        </p>
                         <p  ng-class="{ 'has-error': add_empresa.nombre_replegal.$error.required || add_empresa.nombre_replegal.$error.minlength }">
                             <label class="etiqueta_e">Nombre Rep. legal<i class="required">*</i>:</label>
                             <input type="text" class="form-control texto_e" name="nombre_replegal" ng-model="ctrl.empresa.nombre_replegal" placeholder="Nombre del rep. legal de la empresa" minlength="6" required/>
