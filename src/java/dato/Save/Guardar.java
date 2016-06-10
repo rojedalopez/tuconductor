@@ -310,5 +310,56 @@ public class Guardar {
          
         return false;
     }
+    
+    public static boolean saveEmpresa(String nit, String r_social, String dir, String tel, String cam_com, String nbr_rep, String doc_rep, String mail_rep, String tel_rep, String correo, String contrasena) throws ClassNotFoundException, SQLException, InvalidKeyException{
+         
+        boolean b=false;
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        String hash = Metodos.RandomString(25, false);
+        String pass = Metodos.sha256(contrasena, hash);
+        String cod = Metodos.RandomString(20, false);
+        String token = Metodos.RandomString(10, false);
+        conn=conexion();        
+        try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_RegistroEmpresa(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}")) {
+                cs.setString(1, nit);
+                cs.setString(2, r_social);
+                cs.setString(3, dir);
+                cs.setString(4, tel);
+                cs.setString(5, cam_com);
+                cs.setString(6, doc_rep);
+                cs.setString(7, nbr_rep);
+                cs.setString(8, mail_rep);
+                cs.setString(9, tel_rep);
+                cs.setString(10, correo);
+                cs.setString(11, hash);
+                cs.setString(12, pass);
+                cs.setInt(13, 2);
+                cs.setString(14, token);
+                cs.registerOutParameter(15, Types.INTEGER);
+                cs.executeQuery();
+
+                int retorno = cs.getInt(15);
+                
+                if(retorno==1){
+                    Mails.SendMail(correo, token, "CONFIRMACIÓN DE CUENTA", "ACTIVAR");
+                    return true;
+                }else{
+                    return false;
+                }
+
+            }catch (SQLException e) {
+                System.out.println("error SQLException en INSERTAR EMPRESA");
+                System.out.println(e.getMessage());
+            }catch (Exception e){
+                System.out.println("error Exception en INSERTAR EMPRESA");
+                System.out.println(e.getMessage());
+            }finally{
+                if(!conn.isClosed()){
+                    conn.close();
+                }
+            }
+            return false;
+    }
      
 }
