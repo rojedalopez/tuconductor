@@ -229,4 +229,48 @@ public class Guardar {
 
     }
     
+    //PROC_SaveFormacion
+    public static boolean SaveFormacion(String cod_, int id, String c_educativo, int nivel, String area, int estado,
+            int mes_inicio, int anio_inicio, int mes_fin, int anio_fin) throws ClassNotFoundException, SQLException{
+        boolean b=false;
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        
+        conn=conexion();
+            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveFormacion(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)};")) {
+                cs.setString(1, cod_);
+                cs.setInt(2, id);
+                cs.setString(3, c_educativo);
+                cs.setInt(4, nivel);
+                cs.setString(5, area);
+                cs.setInt(6, estado);
+                cs.setInt(7, mes_inicio);
+                cs.setInt(8, anio_inicio);
+                cs.setInt(9, mes_fin);
+                cs.setInt(10, anio_fin);
+                cs.registerOutParameter(11, Types.INTEGER);
+                cs.executeQuery();
+
+                int retorno = cs.getInt(11);
+                
+                if(retorno==1){
+                    return true;
+                }else{
+                    return false;
+                }
+
+            }catch (SQLException e) {
+                System.out.println("error SQLException en SAVE EXPERIENCIA USUARIO");
+                System.out.println(e.getMessage());
+            }catch (Exception e){
+                System.out.println("error Exception en SAVE EXPERIENCIA USUARIO");
+                System.out.println(e.getMessage());
+            }finally{
+                if(!conn.isClosed()){
+                    conn.close();
+                }
+            }
+            return false;
+
+    }
 }

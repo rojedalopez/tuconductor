@@ -67,6 +67,7 @@ public class Objetos {
                         obj.put("perfil", datos.getString(24));
                         obj.put("cargo", datos.getString(25));
                         obj.put("exp_laborales", Listas.listaExpLaborales(id));
+                        obj.put("formacion", Listas.listaFormaciones(id));
                     }
                     datos.close();
                     conn.close();

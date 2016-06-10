@@ -545,18 +545,18 @@ if(session.getAttribute("user") == null){
                         </div>
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-lg-12">
+                                <div class="col-lg-12" ng-repeat="fm in ctrl.formaciones">
                                     <div class="panel panel-info">
                                         <div class="panel-heading">                                                
-                                            Universidad / carrera universitaria
+                                            {{ctrl.NvlFormacion[fm.nivel_estudio-1].Value}}
                                             <button type="button" class="close"><img src="assets/img/delete_icon.png" width="18" height="18"></button>
-                                            <button type="button" class="close"><img src="assets/img/edit_icon.png"  width="18" height="18"></button>                                                
+                                            <button type="button" class="close" ng-click="ctrl.editForm(fm.id)"><img src="assets/img/edit_icon.png"  width="18" height="18"></button>                                                
                                         </div>
                                         <div class="panel-body">
-                                            <p>Universidad san martin de porras</p>
+                                            <p><span ng-bind="fm.c_educativo"></span></p>
                                         </div>
                                         <div class="panel-footer">
-                                            Febrero 2013 - actualidad
+                                            {{ctrl.Meses[fm.mes_inicio-1].Mes + " " + fm.anio_inicio}} - {{(fm.estado!==2)?(fm.estado===1)?'Cursando':'Aplazado/Abandonado':ctrl.Meses[fm.mes_fin-1].Mes + " " + fm.anio_fin}}
                                         </div>
                                     </div>
                                 </div>
@@ -564,7 +564,7 @@ if(session.getAttribute("user") == null){
                             <div class="row">
                             <div class="col-lg-12"><br/></div>
                             </div>
-                            <button type="button" class="btn btn-primary btn-lg center-block" data-toggle="modal" data-target="#Modal_formacion">Añadir formación</button>
+                            <button type="button" class="btn btn-primary btn-lg center-block" ng-click="ctrl.openForm()">Añadir formación</button>
                         </div>
                     </div>
                 </div>
@@ -578,7 +578,7 @@ if(session.getAttribute("user") == null){
         <!-- end page-wrapper -->
         
         
-        <div class="modal fade" id="Modal_experiencia" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="form_experiencia" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -677,7 +677,7 @@ if(session.getAttribute("user") == null){
     </div>
     
     
-    <div class="modal fade" id="Modal_formacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="form_formacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -685,7 +685,7 @@ if(session.getAttribute("user") == null){
                     <h4 class="modal-title" id="myModalLabel">Formulario de formación</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" name="formacion" class="form-horizontal">
+                    <form role="form" name="form_formacion" ng-submit="ctrl.submitForm()" class="form-horizontal">
                         <p>
                             <label class="etiqueta_e">Centro educativo:</label>                            
                             <input type="text" class="form-control texto_e" name="c_educativo" ng-model="ctrl.formacion.c_educativo" placeholder="Nombre del centro educativo" />
@@ -704,23 +704,23 @@ if(session.getAttribute("user") == null){
                             <label class="etiqueta_e">Estado:</label>
                             <div class="form-inline">
                                 <label class="checkbox-inline">
-                                    <input type="checkbox" value="news"> Culminado
+                                    <input type="radio" value="1" name="estado" ng-model="ctrl.formacion.estado"> Cursando
                                 </label>
                                 <label class="checkbox-inline">
-                                    <input type="checkbox" value="news"> Cursando
+                                    <input type="radio" value="2" name="estado" ng-model="ctrl.formacion.estado"> Culminado
                                 </label>
                                 <label class="checkbox-inline">
-                                    <input type="checkbox" value="news"> Aplazado/Abandonado
+                                    <input type="radio" value="3" name="estado" ng-model="ctrl.formacion.estado"> Aplazado/Abandonado
                                 </label>
                             </div>                                
                         </p>
                         <p>
                             <label class="etiqueta_e">Inicio:</label>
                             <div class="form-group form-inline">
-                                <select class="form-control selector_e_min" name="mes_inicio" ng-model="ctrl.exp_laboral.mes_inicio" ng-options="Mes.ID as Mes.Mes for Mes in ctrl.Meses">
+                                <select class="form-control selector_e_min" name="mes_inicio" ng-model="ctrl.formacion.mes_inicio" ng-options="Mes.ID as Mes.Mes for Mes in ctrl.Meses">
                                     <option value="">--- Seleccione Mes ---</option>
                                 </select>
-                                <select class="form-control selector_e_min" name="anio_inicio" ng-model="ctrl.exp_laboral.anio_inicio" ng-options="Anio.ID as Anio.Year for Anio in ctrl.Anios">
+                                <select class="form-control selector_e_min" name="anio_inicio" ng-model="ctrl.formacion.anio_inicio" ng-options="Anio.ID as Anio.Year for Anio in ctrl.Anios">
                                     <option value="">--- Seleccione Año ---</option>
                                 </select>
                             </div>
@@ -728,19 +728,19 @@ if(session.getAttribute("user") == null){
                         <p>
                             <label class="etiqueta_e">Fin</label>
                             <div class="form-group form-inline">
-                                <select class="form-control selector_e_min" name="mes_fin" ng-model="ctrl.exp_laboral.mes_fin" ng-options="Mes.ID as Mes.Mes for Mes in ctrl.Meses">
+                                <select class="form-control selector_e_min" name="mes_fin" ng-model="ctrl.formacion.mes_fin" ng-options="Mes.ID as Mes.Mes for Mes in ctrl.Meses">
                                     <option value="">--- Seleccione Mes ---</option>
                                 </select>
-                                <select class="form-control selector_e_min" name="anio_fin" ng-model="ctrl.exp_laboral.anio_fin" ng-options="Anio.ID as Anio.Year for Anio in ctrl.Anios">
+                                <select class="form-control selector_e_min" name="anio_fin" ng-model="ctrl.formacion.anio_fin" ng-options="Anio.ID as Anio.Year for Anio in ctrl.Anios">
                                     <option value="">--- Seleccione Año ---</option>
                                 </select>
                             </div>
                         </p>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Añadir</button>
+                        </div>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <button class="btn btn-primary">Añadir</button>
                 </div>
             </div>
         </div>
@@ -767,7 +767,8 @@ if(session.getAttribute("user") == null){
 
     <script type="text/javascript">
         var btn_guardar_cambios = $("#btn_guardar_cambios");
-        var form_experiencia = $("#Modal_experiencia");
+        var form_experiencia = $("#form_experiencia");
+        var form_formacion = $("#form_formacion");
     </script>
 </body>
 

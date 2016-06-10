@@ -181,5 +181,56 @@ public class Listas {
                 }
         return lista;
     }
+    
+    public static JSONArray listaFormaciones(String cod) throws SQLException{
+        JSONObject obj = null;
+        JSONArray lista = new JSONArray();
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        Statement stm=null;
+        ResultSet datos=null;
+             
+        try{
+                    conn=conexion();
+                    String instruccion="";
+                     
+                    instruccion =   "SELECT id_formacion, ins_formacion, id_nvlformacion, area_formacion, id_estformacion, mes_ini_formacin, " +
+                                    "anio_ini_formacion, mes_fin_formacion, anio_fin_formacion FROM tblFormacion " +
+                                    "WHERE cod_empleado = ? ORDER BY id_nvlformacion DESC;";
+                     
+                    insertar=conn.prepareStatement(instruccion);
+                    insertar.setString(1, cod);
+                    datos=insertar.executeQuery();
+                    while (datos.next()) {
+                        obj = new JSONObject();
+                        obj.put("id", datos.getInt(1));
+                        obj.put("c_educativo", datos.getString(2));
+                        obj.put("nivel_estudio", datos.getInt(3));
+                        obj.put("area_estudio", datos.getString(4));
+                        obj.put("estado", datos.getInt(5));
+                        obj.put("mes_inicio", datos.getInt(6));
+                        obj.put("anio_inicio", datos.getInt(7));
+                        obj.put("mes_fin", datos.getInt(8));
+                        obj.put("anio_fin", datos.getInt(9));
+                        
+                        lista.add(obj);
+                    }
+                    datos.close();
+                    conn.close();
+                    return lista;
+             
+        }catch (SQLException e) {
+            System.out.println("error SQLException en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }catch (Exception e){
+                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }finally{
+                    if(!conn.isClosed()){
+                        conn.close();
+                    }
+                }
+        return lista;
+    }
    
 }

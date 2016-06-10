@@ -222,6 +222,8 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
           self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", dpto:"", 
               ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0};
           
+          self.formaciones=[];
+          self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0};
           
           self.SaveDatosPersonales = function(usuario_dp){
               ProfileService.SaveDatosPersonales(usuario_dp)
@@ -249,10 +251,36 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
                   );
           };
           
+          self.SaveFormacion = function(formacion){
+              ProfileService.SaveFormacion(formacion)
+		              .then(function(d){
+                                if(d==="true"){
+                                    form_formacion.modal( "hide" );
+                                    self.resetForm();
+                                    self.listaFormaciones();
+                                }
+                              }, 
+				              function(errResponse){
+					               console.error('Error while creating Paper.');
+				              }	
+                  );
+          };
+          
           self.listaExperiencias = function(){
               ProfileService.listaExperiencias()
 		              .then(function(d){
                                     self.experiencias = d;
+                              }, 
+				              function(errResponse){
+					               console.error('Error while creating Paper.');
+				              }	
+                  );
+          };
+          
+          self.listaFormaciones = function(){
+              ProfileService.listaFormaciones()
+		              .then(function(d){
+                                    self.formaciones = d;
                               }, 
 				              function(errResponse){
 					               console.error('Error while creating Paper.');
@@ -269,6 +297,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
                                                         self.usuario_dp.fecha_nac =  new Date(self.usuario_dp.fecha_nac);
                                                         console.log(self.usuario_dp.fecha_nac);
                                                         self.experiencias = d.exp_laborales;
+                                                        self.formaciones = d.formacion;
      					       },
             					function(errResponse){
             						console.error('Error while fetching Currencies');
@@ -299,6 +328,10 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
               self.SaveExpUsuario(self.exp_laboral);
           };
           
+          self.submitForm = function(){
+              self.SaveFormacion(self.formacion);
+          };
+          
           self.submit = function() {
             self.SaveUser(self.usuario); 
             self.close();
@@ -309,14 +342,17 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
               dialog.modal( "hide" );
           };
           
-          self.openExp = function(){
+        self.openExp = function(){
               self.resetExp();
               form_experiencia.modal( "show" );
           };
            
-           
+        self.openForm = function(){
+              self.resetExp();
+              form_formacion.modal( "show" );
+          };   
         
-          self.editExp = function(id){
+        self.editExp = function(id){
               for(var i = 0; i < self.experiencias.length; i++){
                   if(self.experiencias[i].id === id) {
                      self.exp_laboral = angular.copy(self.experiencias[i]);
@@ -326,11 +362,27 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
               }
           };
           
-                   
-          self.resetExp = function(){
+        
+        self.editForm = function(id){
+              for(var i = 0; i < self.formaciones.length; i++){
+                  if(self.formaciones[i].id === id) {
+                     self.formacion = angular.copy(self.formaciones[i]);
+                     form_formacion.modal( "show" );
+                     break;
+                  }
+              }
+          };
+        
+        
+        self.resetExp = function(){
              self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", dpto:"", 
               ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0};
              $scope.exp_laboral.$setPristine();
+          };
+          
+        self.resetForm = function(){
+              self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0};
+              $scope.form_formacion.$setPristine();
           };
           
         self.tipoIdents = [
@@ -627,6 +679,18 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
 									}
 							);
 			},
+                        SaveFormacion: function(formacion){
+                        return $http.post('formacion_usuario', formacion).then(
+									function(response){
+                                                                                console.log(response.data);
+										return response.data;
+									}, 
+									function(errResponse){
+										console.error('Error guardando datos personales ' +errResponse);
+										return $q.reject(errResponse);
+									}
+							);
+			},
                         SaveExpUsuario: function(exp_laboral){
                         return $http.post('experiencia_usuario', exp_laboral).then(
 									function(response){
@@ -653,6 +717,18 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
 			},
                         listaExperiencias: function() {
 					return $http.post('list_experiencia')
+							.then(
+									function(response){
+										return response.data;
+									}, 
+									function(errResponse){
+										console.error('Error while fetching expenses');
+										return $q.reject(errResponse);
+									}
+							);
+			},
+                        listaFormaciones: function() {
+					return $http.post('list_formacion')
 							.then(
 									function(response){
 										return response.data;
