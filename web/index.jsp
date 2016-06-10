@@ -12,13 +12,14 @@
     <link href="assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet" />
     <link href="assets/css/main-style.css" rel="stylesheet" />
+    
     <link href="css/generales.css" rel="stylesheet" />
     <script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
     <script type="text/javascript" src="js/angular.min.js"></script>
     <script type="text/javascript" src="js/app.js"></script>      
-    <script type="text/javascript" src="../js/angular/profile.js"></script>
-    <script type="text/javascript" src="../js/angular/sign.js"></script>
-    <script type="text/javascript" src="../js/angular/wall.js"></script>
+    <script type="text/javascript" src="js/angular/profile.js"></script>
+    <script type="text/javascript" src="js/angular/sign.js"></script>
+    <script type="text/javascript" src="js/angular/wall.js"></script>
   
     
 </head>
@@ -265,12 +266,13 @@
                             <label class="etiqueta_e">Confirmar contraseña<i class="required">*</i>:</label>
                             <input type="password" class="form-control texto_e" name="passwordRepeat" ng-model="ctrl.empresa.passwordRepeat" placeholder="Confirmar la contraseña" minlength="6" required />
                         </p>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" ng-disabled="add_empresa.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_empresa" class="btn btn-primary" >Registrar</button>
+                        </div>
                     </form>                    
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" ng-disabled="add_empresa.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_empresa" class="btn btn-primary" >Registrar</button>
-                </div>
+                
             </div>
         </div>
     </div>
