@@ -8,19 +8,17 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
           self.comments=[];
           self.comment={id:null,fecha:Date(), origen:"", cod_origen:"", comentario:"", desde:"", id_publicacion:""};
           self.comentario = "";
-          self.hoja_vida={file:null};
+          self.hoja_vida={file:null, fecha:"", token:"", nombre:"", archivo:""};
           
           self.SaveHV = function(hoja_vida){
               WallService.SaveHV(hoja_vida)
 		              .then(function(d){
                                 if(d==="true"){
-                                    console.log("entro");
-                                }else{
-                                    console.log("no entro");
+                                    self.getDatosUser();
                                 }
                               }, 
 				              function(errResponse){
-					               console.error('Error while creating Paper.');
+					               console.error('Error while creating Paper.' + errResponse);
 				              }	
                   );
           };
@@ -44,7 +42,18 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
           
           self.submitHV = function (){
             self.SaveHV(self.hoja_vida);
-            self.hoja_vida={file:null};
+          };
+          
+          self.getDatosUser = function(){
+              WallService.getDatosUser()
+                  .then(
+      					       function(d) {
+      						        self.hoja_vida = d;
+      					       },
+            					function(errResponse){
+            						console.error('Error while fetching Currencies');
+            					}
+      			       );
           };
           
           self.llenarPublicaciones = function(){
@@ -72,7 +81,7 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
           };
           
           self.llenarPublicaciones();
-          
+          self.getDatosUser();
           self.submit = function() {
             self.SaveUser(self.usuario); 
             self.close();
@@ -115,7 +124,7 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
 
 	return {
                     SaveComment: function(comment){
-                        return $http.post('comment', comment).then(
+                        return $http.post('../comment', comment).then(
 									function(response){
                                                                                 console.log(response.data);
 										return response.data;
@@ -127,7 +136,7 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
 							);
 			},
                         llenarPublicaciones: function() {
-					return $http.post('profile')
+					return $http.post('../profile')
 							.then(
 									function(response){
 										return response.data;
@@ -139,7 +148,7 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
 							);
 			},
                         llenarComentarios: function(id) {
-					return $http.post('listcomments?id='+id)
+					return $http.post('../listcomments?id='+id)
 							.then(
 									function(response){
 										return response.data;
@@ -154,12 +163,26 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
                         var fd = new FormData();
                         fd.append("file", hoja_vida.file);
                         
-					return $http.post('upload_hv', fd, {
+					return $http.post('../upload_hv', fd, {
                                                     transformRequest: angular.identity,
                                                     headers: {'Content-Type': undefined}
                                                 })
 							.then(
 									function(response){
+                                                                                console.log(response);
+										return response.data;
+									}, 
+									function(errResponse){
+										console.error('Error while updating paper ' +errResponse);
+										return $q.reject(errResponse);
+									}
+							);
+			},getDatosUser: function(){
+                        
+					return $http.post('../usuario_info')
+							.then(
+									function(response){
+                                                                                console.log(response);
 										return response.data;
 									}, 
 									function(errResponse){
@@ -731,7 +754,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
 
 	return {
                     SaveDatosPersonales: function(usuario_dp){
-                        return $http.post('usuario_dp', usuario_dp).then(
+                        return $http.post('../usuario_dp', usuario_dp).then(
 									function(response){
                                                                                 console.log(response.data);
 										return response.data;
@@ -743,7 +766,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
 							);
 			},
                         SaveFormacion: function(formacion){
-                        return $http.post('formacion_usuario', formacion).then(
+                        return $http.post('../formacion_usuario', formacion).then(
 									function(response){
                                                                                 console.log(response.data);
 										return response.data;
@@ -755,7 +778,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
 							);
 			},
                         SaveExpUsuario: function(exp_laboral){
-                        return $http.post('experiencia_usuario', exp_laboral).then(
+                        return $http.post('../experiencia_usuario', exp_laboral).then(
 									function(response){
                                                                                 console.log(response.data);
 										return response.data;
@@ -767,7 +790,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
 							);
 			},
                         GetUsuarioGeneral: function() {
-					return $http.post('usuario_general')
+					return $http.post('../usuario_general')
 							.then(
 									function(response){
 										return response.data;
@@ -779,7 +802,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
 							);
 			},
                         listaExperiencias: function() {
-					return $http.post('list_experiencia')
+					return $http.post('../list_experiencia')
 							.then(
 									function(response){
 										return response.data;
@@ -791,7 +814,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
 							);
 			},
                         listaFormaciones: function() {
-					return $http.post('list_formacion')
+					return $http.post('../list_formacion')
 							.then(
 									function(response){
 										return response.data;

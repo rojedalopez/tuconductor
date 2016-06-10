@@ -16,8 +16,35 @@ public class usuario {
     private String codigo;
     private String telefono;
     private String mensaje;
+    private String hv_archivo;
+    private String fecha;
+    private String token;
 
     public usuario() {
+    }
+
+    public String getHv_archivo() {
+        return hv_archivo;
+    }
+
+    public void setHv_archivo(String hv_archivo) {
+        this.hv_archivo = hv_archivo;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getCorreo() {

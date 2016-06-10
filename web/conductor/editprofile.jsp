@@ -16,19 +16,19 @@ if(session.getAttribute("user") == null){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>:::TuConductor:::</title>
     <!-- Core CSS - Include with every page -->
-    <link href="assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
-    <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
-    <link href="assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />
-    <link href="assets/css/style.css" rel="stylesheet" />
-    <link href="assets/css/main-style.css" rel="stylesheet" />
+    <link href="../assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="../assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="../assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />
+    <link href="../assets/css/style.css" rel="stylesheet" />
+    <link href="../assets/css/main-style.css" rel="stylesheet" />
     <!-- Page-Level CSS -->
-    <link href="assets/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
-    <link href="css/generales.css" rel="stylesheet" />
-    <script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
-    <script type="text/javascript" src="js/angular.min.js"></script>
-    <script type="text/javascript" src="js/app.js"></script>      
-    <script type="text/javascript" src="js/angular/controles.js"></script>    
-    <script type="text/javascript" src="js/date.js"></script>
+    <link href="../assets/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <link href="../css/generales.css" rel="stylesheet" />
+    <script type="text/javascript" src="../js/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="../js/angular.min.js"></script>
+    <script type="text/javascript" src="../js/app.js"></script>      
+    <script type="text/javascript" src="../js/angular/controles.js"></script>    
+    <script type="text/javascript" src="../js/date.js"></script>
     
    </head>
 <body ng-app="myApp" class="ng-cloak">
@@ -45,7 +45,7 @@ if(session.getAttribute("user") == null){
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="index.html">
-                    <img src="assets/img/logo.png" alt="" />
+                    <img src="../assets/img/logo.png" alt="" />
                 </a>
             </div>
             <!-- end navbar-header -->
@@ -279,7 +279,7 @@ if(session.getAttribute("user") == null){
                         <!-- user image section-->
                         <div class="user-section">
                             <div class="user-section-inner">
-                                <img src="assets/img/user.jpg" alt="">
+                                <img src="../assets/img/user.jpg" alt="">
                             </div>
                             <div class="user-info">
                                 <div>${sessionScope.usr}</div>
@@ -517,8 +517,8 @@ if(session.getAttribute("user") == null){
                                     <div class="panel panel-info">
                                         <div class="panel-heading">                                                
                                             <span ng-bind="ex.cargo" ></span>
-                                            <button type="button" class="close"><img src="assets/img/delete_icon.png" width="18" height="18"></button>
-                                            <button type="button" ng-click="ctrl.editExp(ex.id)" class="close"><img src="assets/img/edit_icon.png"  width="18" height="18"></button>                                                
+                                            <button type="button" class="close"><img src="../assets/img/delete_icon.png" width="18" height="18"></button>
+                                            <button type="button" ng-click="ctrl.editExp(ex.id)" class="close"><img src="../assets/img/edit_icon.png"  width="18" height="18"></button>                                                
                                         </div>
                                         <div class="panel-body">
                                             <span ng-bind="ex.empresa" ></span>
@@ -549,8 +549,8 @@ if(session.getAttribute("user") == null){
                                     <div class="panel panel-info">
                                         <div class="panel-heading">                                                
                                             {{ctrl.NvlFormacion[fm.nivel_estudio-1].Value}}
-                                            <button type="button" class="close"><img src="assets/img/delete_icon.png" width="18" height="18"></button>
-                                            <button type="button" class="close" ng-click="ctrl.editForm(fm.id)"><img src="assets/img/edit_icon.png"  width="18" height="18"></button>                                                
+                                            <button type="button" class="close"><img src="../assets/img/delete_icon.png" width="18" height="18"></button>
+                                            <button type="button" class="close" ng-click="ctrl.editForm(fm.id)"><img src="../assets/img/edit_icon.png"  width="18" height="18"></button>                                                
                                         </div>
                                         <div class="panel-body">
                                             <p><span ng-bind="fm.c_educativo"></span></p>
@@ -755,15 +755,15 @@ if(session.getAttribute("user") == null){
     
     
     <!-- Core Scripts - Include with every page -->
-    <script src="assets/plugins/jquery-1.10.2.js"></script>
-    <script src="assets/plugins/bootstrap/bootstrap.min.js"></script>
-    <script src="assets/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="assets/plugins/pace/pace.js"></script>
-    <script src="assets/scripts/siminta.js"></script>
+    <script src="../assets/plugins/jquery-1.10.2.js"></script>
+    <script src="../assets/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="../assets/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="../assets/plugins/pace/pace.js"></script>
+    <script src="../assets/scripts/siminta.js"></script>
     <!-- Page-Level Plugin Scripts-->
-    <script src="assets/plugins/morris/raphael-2.1.0.min.js"></script>
-    <script src="assets/plugins/morris/morris.js"></script>
-    <script src="assets/scripts/dashboard-demo.js"></script>
+    <script src="../assets/plugins/morris/raphael-2.1.0.min.js"></script>
+    <script src="../assets/plugins/morris/morris.js"></script>
+    <script src="../assets/scripts/dashboard-demo.js"></script>
 
     <script type="text/javascript">
         var btn_guardar_cambios = $("#btn_guardar_cambios");

@@ -7,6 +7,7 @@ package servletsSave;
 
 import bean.usuario;
 import dato.Json.Listas;
+import dato.Metodos;
 import dato.Save.Guardar;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -23,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+import org.json.simple.JSONObject;
 
 @MultipartConfig
 public class upload_hv extends HttpServlet {
@@ -35,18 +38,23 @@ public class upload_hv extends HttpServlet {
         
         Part filePart = request.getPart("file"); // Retrieves <input type="file" name="file">
         String filename = getFilename(filePart);
+        System.out.println(filename);
+        String[] vector_nombre = filename.split("\\.");
+        int tamanio = vector_nombre[0].length();
+        String token = Metodos.RandomString(55-tamanio, false);
+        String nuevo_nombre = vector_nombre[0]+"_"+token+"."+vector_nombre[1];
         InputStream filecontent = filePart.getInputStream();
         String c = "";
         try{
-        c = Thread.currentThread().getContextClassLoader().getResource("../../").getPath();    
-        System.out.println(c);
-        File f = new File(c+"/upload/"+filename).getCanonicalFile();
-        FileOutputStream ous = new FileOutputStream(f);
-        int dato = filecontent.read();
-        while(dato != -1){
-            ous.write(dato);
-            dato = filecontent.read();
-        }
+            c = Thread.currentThread().getContextClassLoader().getResource("../../").getPath();    
+            System.out.println(c);
+            File f = new File(c+"/upload/"+nuevo_nombre).getCanonicalFile();
+            FileOutputStream ous = new FileOutputStream(f);
+            int dato = filecontent.read();
+            while(dato != -1){
+                ous.write(dato);
+                dato = filecontent.read();
+            }
         }catch(IOException ex){
             System.out.println(ex.getMessage());
         }
@@ -57,8 +65,13 @@ public class upload_hv extends HttpServlet {
          
         try (PrintWriter out = response.getWriter()) {
             if(session.getAttribute("user")!=null){
+                session.setAttribute("hv", vector_nombre[0]);
+                session.setAttribute("tkn", token);
+                session.setAttribute("ext", vector_nombre[1]);
+                session.setAttribute("fch", new Date());
+                
                 usuario u = (usuario)session.getAttribute("user");
-                boolean b = Guardar.saveHV(u.getCodigo(), filename);
+                boolean b = Guardar.saveHV(u.getCodigo(), nuevo_nombre, token, filename);
                 if(b){
                     out.print("true");
                 }else{

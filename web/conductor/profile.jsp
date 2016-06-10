@@ -16,18 +16,18 @@ if(session.getAttribute("user") == null){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>:::TuConductor:::</title>
     <!-- Core CSS - Include with every page -->
-    <link href="assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
-    <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
-    <link href="assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />
-    <link href="assets/css/style.css" rel="stylesheet" />
-    <link href="assets/css/main-style.css" rel="stylesheet" />
+    <link href="../assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="../assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="../assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />
+    <link href="../assets/css/style.css" rel="stylesheet" />
+    <link href="../assets/css/main-style.css" rel="stylesheet" />
     <!-- Page-Level CSS -->
-    <link href="assets/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <link href="../assets/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
     
-    <script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
-    <script type="text/javascript" src="js/angular.min.js"></script>
-    <script type="text/javascript" src="js/app.js"></script>      
-    <script type="text/javascript" src="js/angular/controles.js"></script>     
+    <script type="text/javascript" src="../js/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="../js/angular.min.js"></script>
+    <script type="text/javascript" src="../js/app.js"></script>      
+    <script type="text/javascript" src="../js/angular/controles.js"></script>     
     
    </head>
 <body ng-app="myApp" class="ng-cloak">
@@ -44,7 +44,7 @@ if(session.getAttribute("user") == null){
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="index.html">
-                    <img src="assets/img/logo.png" alt="" />
+                    <img src="../assets/img/logo.png" alt="" />
                 </a>
             </div>
             <!-- end navbar-header -->
@@ -260,7 +260,7 @@ if(session.getAttribute("user") == null){
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                        <li><a href="../logout"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
                         </li>
                     </ul>
                     <!-- end dropdown-user -->
@@ -282,7 +282,7 @@ if(session.getAttribute("user") == null){
                         <!-- user image section-->
                         <div class="user-section">
                             <div class="user-section-inner">
-                                <img src="assets/img/user.jpg" alt="">
+                                <img src="../assets/img/user.jpg" alt="">
                             </div>
                             <div class="user-info">
                                 <div>${sessionScope.usr}</div>
@@ -409,7 +409,7 @@ if(session.getAttribute("user") == null){
                                     <p>
                                         <span ng-bind="p.comentario"></span>
                                     </p>
-                                    <div style="text-align: right;"><img src="assets/img/megusta_icon.png" width="14" height="14" /> <span ng-bind="p.megusta"></span> <img src="assets/img/comment_icon.png" width="14" height="14" ng-click="ctrl.openComment(p.id, '${sessionScope.cod}')" /> <span ng-bind="p.num_comentario"></span></div>
+                                    <div style="text-align: right;"><img src="../assets/img/megusta_icon.png" width="14" height="14" /> <span ng-bind="p.megusta"></span> <img src="../assets/img/comment_icon.png" width="14" height="14" ng-click="ctrl.openComment(p.id, '${sessionScope.cod}')" /> <span ng-bind="p.num_comentario"></span></div>
                                 </div>
                             </li>
                         </ul>
@@ -580,19 +580,17 @@ if(session.getAttribute("user") == null){
                                             <thead>
                                                 <tr>
                                                     <th>Fecha</th>
-                                                    <th>Hora</th>
                                                     <th>Hoja de vida</th>
                                                     <th>Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody class='tooltip-demo'>                                                
                                                 <tr>
-                                                    <td>10/21/2013</td>
-                                                    <td>10:48:43</td>
-                                                    <td>hvjuanmanuelcastilla.pdf</td>
+                                                    <td>{{ctrl.hoja_vida.fecha}}</td>
+                                                    <td>{{ctrl.hoja_vida.nombre}}</td>
                                                     <td style="text-align: center;">
-                                                        <img src="assets/img/hv_icon.png" width="18" height="18" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Descargar H.V">
-                                                        <img src="assets/img/delete_icon.png" width="18" height="18" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Eliminar H.V">                                                        
+                                                        <a target="_blank" href="../upload/{{ctrl.hoja_vida.archivo}}"><img src="../assets/img/hv_icon.png" width="18" height="18" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Descargar H.V"></a>
+                                                        <img src="../assets/img/delete_icon.png" width="18" height="18" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Eliminar H.V">                                                        
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -622,15 +620,15 @@ if(session.getAttribute("user") == null){
     <!-- end wrapper -->
     
     <!-- Core Scripts - Include with every page -->
-    <script src="assets/plugins/jquery-1.10.2.js"></script>
-    <script src="assets/plugins/bootstrap/bootstrap.min.js"></script>
-    <script src="assets/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="assets/plugins/pace/pace.js"></script>
-    <script src="assets/scripts/siminta.js"></script>
+    <script src="../assets/plugins/jquery-1.10.2.js"></script>
+    <script src="../assets/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="../assets/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="../assets/plugins/pace/pace.js"></script>
+    <script src="../assets/scripts/siminta.js"></script>
     <!-- Page-Level Plugin Scripts-->
-    <script src="assets/plugins/morris/raphael-2.1.0.min.js"></script>
-    <script src="assets/plugins/morris/morris.js"></script>
-    <script src="assets/scripts/dashboard-demo.js"></script>
+    <script src="../assets/plugins/morris/raphael-2.1.0.min.js"></script>
+    <script src="../assets/plugins/morris/morris.js"></script>
+    <script src="../assets/scripts/dashboard-demo.js"></script>
 
     <script type="text/javascript">
         var popup = $( "#Modal_comment" );

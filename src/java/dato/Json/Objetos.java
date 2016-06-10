@@ -87,4 +87,45 @@ public class Objetos {
                 }
         return "";
     }
+    
+    public static String ObtenerDatosGeneral(String id) throws SQLException{
+        JSONObject obj = new JSONObject();
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        Statement stm=null;
+        ResultSet datos=null;
+             
+        try{
+                    conn=conexion();
+                    String instruccion="";
+                     
+                    instruccion =   "SELECT hv_empleado, nbr_hv_empleado, tkn_hv_empleado, up_hv_empleado FROM tuconductor.tblEmpleado WHERE cod_empleado = ?;";
+                     
+                    insertar=conn.prepareStatement(instruccion);
+                    insertar.setString(1, id);
+                    datos=insertar.executeQuery();
+                    if (datos.next()) {
+                        obj.put("archivo", datos.getString(1));
+                        obj.put("nombre", datos.getString(2));
+                        obj.put("token", datos.getString(3));
+                        obj.put("fecha", datos.getString(4));
+                    }
+                    datos.close();
+                    conn.close();
+                    System.out.println(obj.toJSONString());
+                    return obj.toJSONString();
+             
+        }catch (SQLException e) {
+            System.out.println("error SQLException en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }catch (Exception e){
+                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }finally{
+                    if(!conn.isClosed()){
+                        conn.close();
+                    }
+                }
+        return "";
+    }
 }

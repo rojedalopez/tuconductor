@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servletsSession;
+package servletsGet;
 
 import bean.usuario;
-import dato.Aplicacion;
+import dato.Json.Objetos;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -18,38 +18,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class login extends HttpServlet {
+public class usuario_info extends HttpServlet {
 
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
-        String usuario = request.getParameter("nick");
-        String contrasena = request.getParameter("pass");
         HttpSession session =  null;
  
-        session = request.getSession(true);
-
-        usuario u = Aplicacion.obtenerUsuario(usuario, contrasena);
-        
+        session = request.getSession(false);
+         
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            if(u!=null){
-                if(u.getMensaje().equals("true")){
-                    String[] nombre = u.getNombre().split(" ");
-                    session.setAttribute("user", u);
-                    session.setAttribute("cod", u.getCodigo());
-                    session.setAttribute("usr", nombre[0]);
-                    session.setAttribute("session", true);
-                    response.sendRedirect("conductor/profile.jsp");
-                 }else{
-                    System.out.println("error en: " +u.getMensaje());
-                    response.sendRedirect("?mensaje=Error en la autenticacion.");
-                }
+            if(session.getAttribute("user")!=null){
+                usuario u = (usuario)session.getAttribute("user");
+                String x = Objetos.ObtenerDatosGeneral(u.getCodigo());
+                out.print(x);
             }else{
-                response.sendRedirect("?mensaje=No existe usuario.");                
+                out.print("session");
             }
         }
     }
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -57,7 +46,7 @@ public class login extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(usuario_info.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

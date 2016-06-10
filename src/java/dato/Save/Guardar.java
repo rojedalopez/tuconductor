@@ -274,7 +274,7 @@ public class Guardar {
 
     }
     
-    public static boolean saveHV(String codigo, String archivo) throws ClassNotFoundException, SQLException{
+    public static boolean saveHV(String codigo, String archivo, String token, String nombre) throws ClassNotFoundException, SQLException{
          
         Connection conn=null;
         PreparedStatement insertar=null;
@@ -282,11 +282,13 @@ public class Guardar {
         try{
         System.out.println(archivo); 
         System.out.println(codigo); 
-        String instruccion="UPDATE tblEmpleado SET hv_empleado = ?, up_hv_empleado = DATE_ADD(NOW(),INTERVAL -5 HOUR) WHERE cod_empleado = ?;";
+        String instruccion="UPDATE tblEmpleado SET hv_empleado = ?, nbr_hv_empleado = ?, tkn_hv_empleado = ?, up_hv_empleado = NOW() WHERE cod_empleado = ?;";
          
         insertar=conn.prepareStatement(instruccion);
         insertar.setString(1, archivo);
-        insertar.setString(2, codigo);
+        insertar.setString(2, nombre);
+        insertar.setString(3, token);
+        insertar.setString(4, codigo);
                  
         if(insertar.executeUpdate()==1){
             return true;
