@@ -586,11 +586,11 @@ if(session.getAttribute("user") == null){
                     <h4 class="modal-title" id="myModalLabel">Formulario de experiencia laboral</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" ng-submit="ctrl.submitExp()" name="exp_laboral" class="form-horizontal">
-                        <p>
-                            <label class="etiqueta_e">Empresa:</label>
+                    <form role="form" ng-submit="ctrl.submitExp()" name="exp_laboral" class="form-horizontal" novalidate>
+                        <p ng-class="{ 'has-error': exp_laboral.empresa.$error.required || exp_laboral.empresa.$error.minlength }">
+                            <label class="etiqueta_e">Empresa<i class="required">*</i>:</label>
                             <input type="hidden" name="id" ng-model="ctrl.exp_laboral.id"/>
-                            <input type="text" class="form-control texto_e" name="empresa" ng-model="ctrl.exp_laboral.empresa"  placeholder="Nombre de la empresa" />
+                            <input type="text" class="form-control texto_e" name="empresa" ng-model="ctrl.exp_laboral.empresa"  placeholder="Nombre de la empresa" minlength="5" required/>
                         </p>
                         <p>
                             <label class="etiqueta_e">Cargo:</label>
@@ -668,7 +668,7 @@ if(session.getAttribute("user") == null){
                         
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">Añadir</button>
+                            <button type="submit" class="btn btn-primary" ng-disabled="exp_laboral.$invalid">Añadir</button>
                         </div>
                     </form>
                 </div>

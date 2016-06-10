@@ -280,8 +280,9 @@ public class Guardar {
         PreparedStatement insertar=null;
         conn=conexion();
         try{
-         
-        String instruccion="UPDATE tblEmpleado SET hv_empleado = ?, up_hv_empleado = DATE_ADD(NOW(),INTERVAL -5 HOUR) WHERE cod_empleado ?;";
+        System.out.println(archivo); 
+        System.out.println(codigo); 
+        String instruccion="UPDATE tblEmpleado SET hv_empleado = ?, up_hv_empleado = DATE_ADD(NOW(),INTERVAL -5 HOUR) WHERE cod_empleado = ?;";
          
         insertar=conn.prepareStatement(instruccion);
         insertar.setString(1, archivo);

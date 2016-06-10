@@ -153,7 +153,6 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
 
                         var fd = new FormData();
                         fd.append("file", hoja_vida.file);
-                        console.log(hoja_vida.file);
                         
 					return $http.post('upload_hv', fd, {
                                                     transformRequest: angular.identity,
