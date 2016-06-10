@@ -216,7 +216,7 @@
                     <h4 class="modal-title" id="myModalLabel">Registro Empresa</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" ng-submit="ctrl.submitExp()" name="add_empresa" class="form-horizontal" novalidate>
+                    <form role="form" ng-submit="ctrl.submit_Empresa()" name="add_empresa" class="form-horizontal" novalidate>
                         <p ng-class="{ 'has-error': add_empresa.nit.$error.required || add_empresa.nit.$error.minlength }">
                             <label class="etiqueta_e">NIT<i class="required">*</i>:</label>
                             <input type="text" class="form-control texto_e" name="nit" ng-model="ctrl.empresa.nit" placeholder="Nit de la empresa" minlength="6" required />
@@ -235,7 +235,7 @@
                         </p>
                         <p>
                             <label class="etiqueta_e">Camara de comercio:</label>
-                            <input type="file" class="form-control texto_e" name="cam_com" ng-model="ctrl.empresa.cam_com"  />
+                            <input type="file" class="form-control texto_e" uploader-model="ctrl.empresa.cam_com" accept=".pdf, .docx" name="cam_com"  required  />
                         </p>
                         <p  ng-class="{ 'has-error': add_empresa.nombre_replegal.$error.required || add_empresa.nombre_replegal.$error.minlength }">
                             <label class="etiqueta_e">Nombre Rep. legal<i class="required">*</i>:</label>
@@ -269,7 +269,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" ng-disabled="add_empresa.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_empresa" class="btn btn-primary" >Registrar</button>
+                    <button type="submit" ng-disabled="add_empresa.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_empresa" class="btn btn-primary" >Registrar</button>
                 </div>
             </div>
         </div>
