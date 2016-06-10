@@ -28,7 +28,9 @@ if(session.getAttribute("user") == null){
     <script type="text/javascript" src="../js/angular.min.js"></script>
     <script type="text/javascript" src="../js/app.js"></script>      
     <script type="text/javascript" src="../js/date.js"></script>
-    <script type="text/javascript" src="../js/angular/controlador.js"></script>
+    <script type="text/javascript" src="../js/angular/profile.js"></script>
+    <script type="text/javascript" src="../js/angular/sign.js"></script>
+    <script type="text/javascript" src="../js/angular/wall.js"></script>
     
     
    </head>
