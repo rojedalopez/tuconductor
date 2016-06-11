@@ -354,7 +354,7 @@ if(session.getAttribute("user") == null){
             <div class="row">
                 <!-- Page Header -->
                 <div class="col-lg-12">
-                    <h1 class="page-header">Mi Perfil</h1>
+                    <h1 class="page-header">Ofertas</h1>
                 </div>
                 <!--End Page Header -->
             </div>
@@ -466,6 +466,10 @@ if(session.getAttribute("user") == null){
                             <label class="etiqueta_e">Tipo contrato<i class="required">*</i>:</label>
                             <select class="form-control selector_e" name="tipo" ng-model="ctrl.oferta.tipo"></select>
                         </p>
+                        <p  ng-class="{ 'has-error': form_oferta.vacantes.$error.required}">
+                            <label class="etiqueta_e">Fecha contratación<i class="required">*</i>:</label>
+                            <input type="date" class="form-control texto_e" name="fecha_contratacion" ng-model="ctrl.oferta.fecha_contratacion" required />
+                        </p>
                         <p>
                             <label class="etiqueta_e">Estado<i class="required">*</i>:</label>
                             <label class="checkbox-inline" >
@@ -499,8 +503,7 @@ if(session.getAttribute("user") == null){
 
     <script type="text/javascript">
         var btn_guardar_cambios = $("#btn_guardar_cambios");
-        var form_experiencia = $("#form_experiencia");
-        var form_formacion = $("#form_formacion");
+        var form_oferta = $("#form_oferta");
         var btn_add_exp = $("#btn_add_exp");
         var btn_add_formacion = $("#btn_add_formacion");
         
