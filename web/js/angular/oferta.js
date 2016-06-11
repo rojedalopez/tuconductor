@@ -1,35 +1,29 @@
 'use strict';
 
-angular.module('MyApp.InfoAdicional', []).controller('InfoAdicionalController', ['$scope', 'InfoAdicionalService', function($scope, InfoAdicionalService) {
-          var self = this;
-          self.multas=[];
-          self.multa={id:-1, lugar:"", fecha:"", cargo:"", pago:false};
+angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'InfoAdicionalService', function($scope, InfoAdicionalService) {
+    var self = this;
+    self.oferta=[];
+    self.multa={id:-1, lugar:"", fecha:"", cargo:"", pago:false};
            
-            self.SaveExpUsuario = function(exp_laboral){
-              InfoAdicionalService.SaveExpUsuario(exp_laboral)
-		              .then(function(d){
-                                if(d==="true"){
-                                    form_experiencia.modal( "hide" );
-                                    self.resetExp();
-                                    self.listaExperiencias();
-                                }
-                              }, 
-				              function(errResponse){
-					               console.error('Error while creating Paper.');
-				              }	
-                  );
-          };
+    self.SaveExpUsuario = function(exp_laboral){
+        InfoAdicionalService.SaveExpUsuario(exp_laboral).then(function(d){
+            if(d==="true"){
+                form_experiencia.modal( "hide" );
+                self.resetExp();
+                self.listaExperiencias();
+            }
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+        });
+    };
           
-         self.listaExperiencias = function(){
-              InfoAdicionalService.listaExperiencias()
-		              .then(function(d){
-                                    self.experiencias = d;
-                              }, 
-				              function(errResponse){
-					               console.error('Error while creating Paper.');
-				              }	
-                  );
-          };
+    self.listaExperiencias = function(){
+        InfoAdicionalService.listaExperiencias().then(function(d){
+            self.experiencias = d;
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+        });
+    };
           
 
           self.GetUsuarioGeneral = function(){
