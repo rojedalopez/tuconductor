@@ -6,12 +6,14 @@
 package dato.Json;
 
 import static dato.Aplicacion.conexion;
+import static dato.Json.Objetos.Fechaformateador;
 import dato.Metodos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 /**
@@ -19,6 +21,7 @@ import org.json.simple.JSONObject;
  * @author SISTEMAS
  */
 public class Listas {
+    static SimpleDateFormat Fechaformateador = new SimpleDateFormat("yyyy-MM-dd 00:00");
     public static String ObtenerPublicacionesProfile(String id) throws SQLException{
         JSONObject obj = null;
         JSONArray lista = new JSONArray();
@@ -42,7 +45,7 @@ public class Listas {
                     while (datos.next()) {
                         obj = new JSONObject();
                         obj.put("id", datos.getInt(1));
-                        obj.put("fecha", datos.getString(2));
+                        obj.put("fecha", Fechaformateador.format(datos.getDate(2)));
                         obj.put("comentario", datos.getString(3));
                         obj.put("archivo", datos.getString(4));
                         obj.put("origen", datos.getString(5));
@@ -95,7 +98,7 @@ public class Listas {
                         obj = new JSONObject();
                         obj.put("id", datos.getInt(1));
                         obj.put("origen", datos.getString(2));
-                        obj.put("fecha", datos.getString(3));
+                        obj.put("fecha", Fechaformateador.format(datos.getDate(3)));
                         obj.put("comentario", datos.getString(4));
                         obj.put("cod_origen", datos.getString(5));
                         obj.put("id_publicacion", datos.getInt(6));
@@ -135,7 +138,7 @@ public class Listas {
                     instruccion =   "SELECT id_explaboral, epr_explaboral, crg_explaboral, slr_explaboral, bon_explaboral, spv_explaboral, " +
                                     "tel_spv_explaboral, dir_explaboral, cui_explaboral, dpt_explaboral, pais_explaboral, aun_explaboral, " +
                                     "rzn_fin_explaboral, mes_ini_explaboral, anio_ini_explaboral, mes_fin_explaboral, " +
-                                    "anio_fin_explaboral, exp_mes_explaboral " +
+                                    "anio_fin_explaboral, mes_explaboral, anio_explaboral " +
                                     "FROM tuconductor.tblExpLaboral WHERE cod_empleado = ? ORDER BY aun_explaboral DESC, anio_ini_explaboral DESC, mes_ini_explaboral DESC;";
                      
                     insertar=conn.prepareStatement(instruccion);
@@ -205,13 +208,13 @@ public class Listas {
                         obj = new JSONObject();
                         obj.put("id", datos.getInt(1));
                         obj.put("fecha", datos.getString(2));
-                        obj.put("vacante", datos.getString(3));
-                        obj.put("titulo", datos.getFloat(4));
-                        obj.put("descripcion", datos.getFloat(5));
-                        obj.put("tipo", datos.getString(6));
-                        obj.put("fecha_contratacion", datos.getString(7));
-                        obj.put("salario", datos.getString(8));
-                        obj.put("estado", datos.getString(9));
+                        obj.put("vacante", datos.getInt(3));
+                        obj.put("titulo", datos.getString(4));
+                        obj.put("descripcion", datos.getString(5));
+                        obj.put("tipo", datos.getInt(6));
+                        obj.put("fecha_contratacion", Fechaformateador.format(datos.getDate(7)));
+                        obj.put("salario", datos.getFloat(8));
+                        obj.put("estado", datos.getBoolean(9));
                         
                         lista.add(obj);
                     }

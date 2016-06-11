@@ -406,19 +406,19 @@ if(session.getAttribute("user") == null){
                         </div>
                         <div class="panel-body">
                             <div class="row">                                
-                                <div class="col-lg-12">
+                                <div class="col-lg-12" ng-repeat="of in ctrl.ofertas">
                                     <div class="panel panel-info">
                                         <div class="panel-heading">    
                                             <i class="fa fa-map-marker"> <b>Barranquilla</b></i>
                                             <button type="button" class="close"><img src="../assets/img/delete_icon.png" width="18" height="18"></button>
-                                            <button type="button" class="close" ng-click="ctrl.editForm(fm.id)"><img src="../assets/img/edit_icon.png"  width="18" height="18"></button>                                                
+                                            <button type="button" class="close" ng-click="ctrl.editOferta(of.id)"><img src="../assets/img/edit_icon.png"  width="18" height="18"></button>                                                
                                         </div>
                                         <div class="panel-body">
-                                            <p style="font-size: 20px; color: #0088cc;">Se requiere ingeniero de sistemas</p>
-                                            <p>Se requiere personal con experiencia mínima de 6 meses en ventas, atención al cliente, manejo de dinero, manejo de caja, datafono, salario: 689455 + prestaciones + Auxilio de Transporte. Horario: lunes a domingo, inclui</p>
+                                            <p style="font-size: 20px; color: #0088cc;"><span ng-bind="of.titulo"></span></p>
+                                            <p><span ng-bind="of.descripcion"></span></p>
                                         </div>
                                         <div class="panel-footer">                                            
-                                            Publicado: <b>Ayer, 10:43:45</b>
+                                            Publicado: <b><span ng-bind="of.fecha"></span></b>
                                         </div>
                                     </div>
                                 </div>
@@ -442,7 +442,7 @@ if(session.getAttribute("user") == null){
                     <h4 class="modal-title" id="myModalLabel">Publicar oferta</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" name="form_oferta" ng-submit="ctrl.submitOferta" class="form-horizontal" novalidate>
+                    <form role="form" name="form_oferta" ng-submit="ctrl.submitOferta()" class="form-horizontal" novalidate>
                         <p ng-class="{ 'has-error': form_oferta.titulo.$error.required || form_oferta.titulo.$error.minlength }">
                             <label class="etiqueta_e">Titulo<i class="required">*</i>:</label>                            
                             <input type="text" class="form-control texto_e" name="titulo" ng-model="ctrl.oferta.titulo" placeholder="Titulo de la oferta" minlength="6" required />
@@ -453,7 +453,7 @@ if(session.getAttribute("user") == null){
                         </p>
                         <p ng-class="{ 'has-error': form_oferta.vacantes.$error.required || form_oferta.vacantes.$error.minlength }">
                             <label class="etiqueta_e"># Vacantes<i class="required">*</i>:</label>
-                            <input type="text" class="form-control texto_e" name="vacantes" ng-model="ctrl.oferta.vacantes" placeholder="Cantidad de vacantes" minlength="1" required />
+                            <input type="text" class="form-control texto_e" name="vacantes" ng-model="ctrl.oferta.vacante" placeholder="Cantidad de vacantes" minlength="1" required />
                         </p>
                         <p>
                             <label class="etiqueta_e">Salario<i class="required">*</i>:</label>
@@ -461,7 +461,9 @@ if(session.getAttribute("user") == null){
                         </p>
                         <p>
                             <label class="etiqueta_e">Tipo contrato<i class="required">*</i>:</label>
-                            <select class="form-control selector_e" name="tipo" ng-model="ctrl.oferta.tipo"></select>
+                            <select class="form-control selector_e" name="tipo" ng-model="ctrl.oferta.tipo" ng-options="Tipo.ID as Tipo.Value for Tipo in ctrl.TipoContrato" >
+                                <option value="">--- Seleccione Tipo ---</option>
+                            </select>
                         </p>
                         <p  ng-class="{ 'has-error': form_oferta.vacantes.$error.required}">
                             <label class="etiqueta_e">Fecha contratación<i class="required">*</i>:</label>

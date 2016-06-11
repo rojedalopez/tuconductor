@@ -20,7 +20,7 @@
     <script type="text/javascript" src="js/angular/profile.js"></script>
     <script type="text/javascript" src="js/angular/sign.js"></script>
     <script type="text/javascript" src="js/angular/wall.js"></script>
-  
+    <script type="text/javascript" src="../js/angular/oferta.js"></script>
     
 </head>
 

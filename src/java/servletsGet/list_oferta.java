@@ -43,7 +43,8 @@ public class list_oferta extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
-                String x = Listas.listaExpLaborales(u.getCodigo()).toJSONString();
+                String x = Listas.listaOfertas(u.getCodigo()).toJSONString();//?
+                System.out.println(x);
                 out.print(x);
             }else{
                 out.print("session");

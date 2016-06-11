@@ -183,7 +183,7 @@ public class Guardar {
         PreparedStatement insertar=null;
         
         conn=conexion();
-            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveExperiencia(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)};")) {
+            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveExperiencia(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)};")) {
                 cs.setString(1, cod_);
                 cs.setInt(2, id);
                 cs.setString(3, empresa);
@@ -200,13 +200,12 @@ public class Guardar {
                 cs.setInt(14, anio_inicio);
                 cs.setInt(15, mes_fin);
                 cs.setInt(16, anio_fin);
-                cs.setInt(17, anio_fin);
-                cs.setInt(18, (labora)?1:0);
-                cs.setString(19, retiro);
-                cs.registerOutParameter(20, Types.INTEGER);
+                cs.setInt(17, (labora)?1:0);
+                cs.setString(18, retiro);
+                cs.registerOutParameter(19, Types.INTEGER);
                 cs.executeQuery();
 
-                int retorno = cs.getInt(20);
+                int retorno = cs.getInt(19);
                 
                 if(retorno==1){
                     return true;

@@ -2,7 +2,7 @@
 
 angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'OfertaService', function($scope, OfertaService) {
     var self = this;
-    self.oferta={id:-1, titulo:"", descripcion:"", vacantes:"", salario:"", tipo:"", estado:false, fecha_creacion:"", fecha_contratacion:""};
+    self.oferta={id:-1, titulo:"", descripcion:"", vacante:"", salario:0,tipo:1, estado:false, fecha_creacion:"", fecha_contratacion:""};
     self.ofertas=[];
     self.SaveOferta = function(oferta){
         OfertaService.SaveOferta(oferta).then(function(d){
@@ -25,6 +25,8 @@ angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'Of
     };
           
 
+    self.listaOfertas();
+    
     self.GetUsuarioGeneral = function(){
         OfertaService.GetUsuarioGeneral().then(function(d) {
             self.ofertas = d.oferta;
@@ -34,9 +36,10 @@ angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'Of
     };
           
           
-          self.GetUsuarioGeneral();
+          //self.GetUsuarioGeneral();
           
           self.submitOferta = function(){
+              self.oferta.fecha_contratacion = self.oferta.fecha_contratacion.toString("yyyy-MM-dd");
               self.SaveOferta(self.oferta);
           };
           
@@ -63,11 +66,16 @@ angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'Of
           };
           
         
-        
+        self.TipoContrato = [
+            {"ID":1,"Value":"Termino Indefinido"},
+            {"ID":2,"Value":"Termino Definido"},
+            {"ID":3,"Value":"Obra Labor"},
+            {"ID":4,"Value":"Por Horas"}
+        ];
         
         self.resetOferta = function(){
-            self.oferta={id:-1, titulo:"", descripcion:"", vacantes:"", salario:"", tipo:"", estado:false, fecha_creacion:"", fecha_contratacion:"",};
-            $scope.oferta.$setPristine();
+            self.oferta={id:-1, titulo:"", descripcion:"", vacante:"", salario:0, tipo:1, estado:false, fecha_creacion:"", fecha_contratacion:"",};
+            $scope.form_oferta.$setPristine();
           };
         
       }]).factory('OfertaService', ['$http', '$q', function($http, $q){
