@@ -361,5 +361,48 @@ public class Guardar {
             }
             return false;
     }
+    
+    public static boolean saveOferta(int id, String titulo, String descripcion, int vacante, int tipo, String fecha, float salario, boolean estado, String nit) throws ClassNotFoundException, SQLException, InvalidKeyException{ 
+         
+        boolean b=false;
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        conn=conexion();        
+        try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveOferta(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}")) {
+                cs.setInt(1, id);
+                cs.setInt(2, vacante);
+                cs.setString(3, titulo);
+                cs.setString(4, descripcion);
+                cs.setInt(5, tipo);
+                cs.setString(6, fecha);
+                cs.setString(7, ""+salario);
+                cs.setBoolean(8, estado);
+                cs.setString(9, nit);
+                cs.registerOutParameter(10, Types.INTEGER);
+                cs.executeQuery();
+
+                int retorno = cs.getInt(10);
+                
+                if(retorno==1){
+                    //Mails.SendMail(correo, token, "CONFIRMACIÓN DE CUENTA", "ACTIVAR");
+                    return true;
+                }else{
+                    return false;
+                }
+
+            }catch (SQLException e) {
+                System.out.println("error SQLException en INSERTAR EMPRESA");
+                System.out.println(e.getMessage());
+            }catch (Exception e){
+                System.out.println("error Exception en INSERTAR EMPRESA");
+                System.out.println(e.getMessage());
+            }finally{
+                if(!conn.isClosed()){
+                    conn.close();
+                }
+            }
+            return false;
+    }
+    
      
 }

@@ -7,7 +7,7 @@ angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'Of
     self.SaveOferta = function(oferta){
         OfertaService.SaveOferta(oferta).then(function(d){
             if(d==="true"){
-                form_oferta.modal( "hide" );
+                dialog.modal( "hide" );
                 self.resetOferta();
                 self.listaOfertas();
             }
@@ -46,8 +46,9 @@ angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'Of
           };
           
           self.openOferta = function(){
-              self.resetExp();
-              form_oferta.modal( "show" );
+              console.log("eentro aca");
+              self.resetOferta();
+              dialog.modal( "show" );
           };
            
                
@@ -55,7 +56,7 @@ angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'Of
             for(var i = 0; i < self.ofertas.length; i++){
                 if(self.ofertas[i].id === id) {
                    self.oferta = angular.copy(self.ofertas[i]);
-                   form_oferta.modal( "show" );
+                   dialog.modal( "show" );
                    break;
                 }
             }
@@ -74,7 +75,7 @@ angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'Of
 	return {
                     
                         SaveOferta: function(oferta){
-                        return $http.post('../experiencia_usuario', oferta).then(
+                        return $http.post('../oferta', oferta).then(
 									function(response){
                                                                                 console.log(response.data);
 										return response.data;
@@ -86,7 +87,7 @@ angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'Of
 							);
 			},
                         listaOfertas: function() {
-					return $http.post('../list_experiencia')
+					return $http.post('../list_oferta')
 							.then(
 									function(response){
 										return response.data;

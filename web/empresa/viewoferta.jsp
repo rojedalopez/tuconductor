@@ -37,7 +37,7 @@ if(session.getAttribute("user") == null){
    </head>
 <body ng-app="myApp" class="ng-cloak">
     <!--  wrapper -->
-    <div id="wrapper" ng-controller="InfoAdicionalController as ctrl">
+    <div id="wrapper" ng-controller="OfertaController as ctrl">
         <!-- navbar top -->
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="navbar">
             <!-- navbar-header -->
@@ -360,7 +360,7 @@ if(session.getAttribute("user") == null){
             </div>
 
             <div class="row">
-                <div class="col-lg-4" style="cursor: pointer;" onclick="Open_dialog_publicar()">
+                <div class="col-lg-4" style="cursor: pointer;" ng-click="ctrl.openOferta()">
                     <div class="panel panel-primary text-center no-boder">
                         <div class="panel-body blue">
                             <img src="../assets/img/add_icon.png" />
@@ -384,7 +384,7 @@ if(session.getAttribute("user") == null){
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 tooltip-demo" style="cursor: pointer;" onclick="Open_dialog_tokens()">
+                <div class="col-lg-4 tooltip-demo" style="cursor: pointer;" >
                     <div class="panel panel-primary text-center no-boder"  data-toggle="tooltip" data-placement="bottom" title="Ofertas disponibles: 3 / Ofertas disponibles: 3">
                         <div class="panel-body yellow">
                             <img src="../assets/img/token_icon.png" />
@@ -434,10 +434,7 @@ if(session.getAttribute("user") == null){
 
         </div>
         <!-- end page-wrapper -->
-    
-    </div>
-    <!-- end wrapper -->
-    <div class="modal fade" id="Modal_publicar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="Modal_publicar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -445,7 +442,7 @@ if(session.getAttribute("user") == null){
                     <h4 class="modal-title" id="myModalLabel">Publicar oferta</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" name="form_oferta" ng-submit="ctrl.submitForm()" class="form-horizontal" novalidate>
+                    <form role="form" name="form_oferta" ng-submit="ctrl.submitOferta" class="form-horizontal" novalidate>
                         <p ng-class="{ 'has-error': form_oferta.titulo.$error.required || form_oferta.titulo.$error.minlength }">
                             <label class="etiqueta_e">Titulo<i class="required">*</i>:</label>                            
                             <input type="text" class="form-control texto_e" name="titulo" ng-model="ctrl.oferta.titulo" placeholder="Titulo de la oferta" minlength="6" required />
@@ -486,6 +483,9 @@ if(session.getAttribute("user") == null){
         </div>
     </div>
     
+    <!-- end wrapper -->    
+    </div>
+    
     
     
     
@@ -504,12 +504,11 @@ if(session.getAttribute("user") == null){
     <script type="text/javascript">
         var btn_guardar_cambios = $("#btn_guardar_cambios");
         var form_oferta = $("#form_oferta");
+        var dialog = $("#Modal_publicar");
         var btn_add_exp = $("#btn_add_exp");
         var btn_add_formacion = $("#btn_add_formacion");
         
-        function Open_dialog_publicar(){
-            $("#Modal_publicar").modal("show");
-        }
+        
     </script>
 </body>
 
