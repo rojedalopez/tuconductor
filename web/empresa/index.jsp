@@ -35,7 +35,7 @@ if(session.getAttribute("user") == null){
    </head>
 <body ng-app="myApp" class="ng-cloak">
     <!--  wrapper -->
-    <div id="wrapper"  ng-controller="WallController as ctrl">
+    <div id="wrapper"  ng-controller="WallEmpresaController as ctrl">
         <!-- navbar top -->
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="navbar">
             <!-- navbar-header -->
@@ -258,7 +258,7 @@ if(session.getAttribute("user") == null){
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                        <li><a href="../logout"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
                         </li>
                     </ul>
                     <!-- end dropdown-user -->
@@ -415,19 +415,17 @@ if(session.getAttribute("user") == null){
                                             <th></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <%for(int i=0;i<50;i++){%>
+                                    <tbody ng-repeat="emp in ctrl.empleados">
                                         <tr class="gradeA tooltip-demo" >
-                                            <td style="text-align: center;">98</td>
+                                            <td style="text-align: center;"><spam ng-bind="emp.puntaje"></spam></td>
                                             <td>Camion</td>
                                             <td style="text-align: center;">C3</td>
-                                            <td style="text-align: center;">5</td>
-                                            <td>Juan Manuel</td>
-                                            <td>Castilla Barros</td>
-                                            <td style="text-align: center; cursor: pointer;"><img src="../assets/img/hv_icon.png" class="btn_icon_red" data-toggle="tooltip" data-placement="left" title="Descargar H.V"/></td>
+                                            <td style="text-align: center;"><spam ng-bind="emp.experiencia"></spam></td>
+                                            <td><spam ng-bind="emp.nombre"></spam></td>
+                                            <td><spam ng-bind="emp.apellido"></spam></td>
+                                            <td style="text-align: center; cursor: pointer;"><a href="../upload/{{emp.hoja_vida}}"><img src="../assets/img/hv_icon.png" class="btn_icon_red" data-toggle="tooltip" data-placement="left" title="Descargar H.V"/></a></td>
                                             <td style="text-align: center; cursor: pointer;"><img src="../assets/img/token2_icon.png" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Obtener este conductor"/></td>
                                         </tr>
-                                        <%}%>
                                     </tbody>
                                 </table>
                             </div>

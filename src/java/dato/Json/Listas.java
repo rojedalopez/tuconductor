@@ -287,4 +287,51 @@ public class Listas {
         return lista;
     }
    
+    public static JSONArray listaEmpleados() throws SQLException{
+        JSONObject obj = null;
+        JSONArray lista = new JSONArray();
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        Statement stm=null;
+        ResultSet datos=null;
+             
+        try{
+                    conn=conexion();
+                    String instruccion="";
+                     
+                    instruccion =   "SELECT cod_empleado, eml_usuario, nbr_empleado, apl_empleado, pje_empleado, hv_empleado, ROUND(exp_empleado) " +
+                                    "FROM tblEmpleado WHERE ver_empleado = 1 ORDER BY pje_empleado DESC";
+                     
+                    insertar=conn.prepareStatement(instruccion);
+                    
+                    datos=insertar.executeQuery();
+                    while (datos.next()) {
+                        obj = new JSONObject();
+                        obj.put("cod", datos.getString(1));
+                        obj.put("email", datos.getString(2));
+                        obj.put("nombre", datos.getString(3));
+                        obj.put("apellido", datos.getString(4));
+                        obj.put("puntaje", datos.getInt(5));
+                        obj.put("hoja_vida", datos.getString(6));
+                        obj.put("experiencia", datos.getInt(7));
+                        
+                        lista.add(obj);
+                    }
+                    datos.close();
+                    conn.close();
+                    return lista;
+             
+        }catch (SQLException e) {
+            System.out.println("error SQLException en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }catch (Exception e){
+                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }finally{
+                    if(!conn.isClosed()){
+                        conn.close();
+                    }
+                }
+        return lista;
+    }
 }

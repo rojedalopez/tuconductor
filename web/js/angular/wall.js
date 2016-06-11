@@ -190,4 +190,65 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
             });
         }
     };
+}]).controller('WallEmpresaController', ['$scope', 'WallEmpresaService', function($scope, WallEmpresaService) {
+    var self = this;
+    self.empleado={email:"", cod:"",nombre:"", apellido:"", puntaje:0, hoja_vida:"",experiencia:0};
+    self.empleados=[];
+    
+    self.llenarEmpleados = function(){
+        WallEmpresaService.llenarEmpleados().then(function(d) {
+            self.empleados = d;
+        },function(errResponse){
+            console.error('Error while fetching Currencies');
+        });
+    };
+          
+    self.llenarEmpleados();
+    
+          
+}]).factory('WallEmpresaService', ['$http', '$q', function($http, $q){
+    return {
+        llenarEmpleados: function() {
+            return $http.post('../list_employes').then(function(response){
+		return response.data;
+            },function(errResponse){
+                console.error('Error while fetching expenses');
+                return $q.reject(errResponse);
+            });
+	}
+    };
+}]).directive('sameAs', function() { return {
+    require : 'ngModel',
+    link : function(scope, elm, attrs, ngModelCtrl) {
+        ngModelCtrl.$validators.sameAs = function(modelValue, viewValue) {
+            var checkedVal = attrs.sameAs;
+            var thisInputVal = viewValue;
+
+            if (thisInputVal == checkedVal) {
+                return true; // valid
+            } else {
+                return false;
+            }
+        };
+    }
+}; 
+}).directive('uploaderModel', ["$parse", function($parse){
+    return{
+        restrict : 'A',
+        link : function(scope, iElement, iAttrs){
+            iElement.on("change", function(e){
+                var f = iElement[0].files[0];
+                var reader = new FileReader();
+                reader.onload = (function(theFile) {
+                    return function(e) {
+                      // Render thumbnail.
+                      //scope.ctrl.paper.img = e.target.result;
+                    };
+                })(f);
+
+                reader.readAsDataURL(f);
+                $parse(iAttrs.uploaderModel).assign(scope, f); 
+            });
+        }
+    };
 }]);
