@@ -25,8 +25,15 @@ if(session.getAttribute("user") == null){
     <link href="../assets/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
     <link href="../assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
     <link href="../css/generales.css" rel="stylesheet" />
+    
     <script type="text/javascript" src="../js/jquery-2.2.0.min.js"></script>
-    <script type="text/javascript" src="../js/angular.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="../js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/dataTables.responsive.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+    <script src="../js/dist/angular-datatables.min.js"></script> 
+    
     <script type="text/javascript" src="../js/app.js"></script>      
     <script type="text/javascript" src="../js/angular/profile.js"></script>
     <script type="text/javascript" src="../js/angular/sign.js"></script>
@@ -357,31 +364,6 @@ if(session.getAttribute("user") == null){
             </div>
 
             <div class="row">
-                <div class="col-lg-4" style="cursor: pointer;" onclick="Open_dialog_filter()">
-                    <div class="panel panel-primary text-center no-boder">
-                        <div class="panel-body blue">
-                            <img src="../assets/img/filter_icon.png" />
-                            <label>FILTROS</label>
-                        </div>
-                        <div class="panel-footer">
-                            <span class="panel-eyecandy-title">Mejorar mi busqueda
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4" style="cursor: pointer;" onclick="Open_dialog_newempresa()">
-                    <div class="panel panel-primary text-center no-boder">
-                        <div class="panel-body blue">
-                            <img src="../assets/img/personadd_icon.png" />
-                            <label>NUEVA EMPRESA</label>
-                        </div>
-                        <div class="panel-footer">
-                            <span class="panel-eyecandy-title">Registrar nueva empresa
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                
                 <div class="col-lg-12">
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
@@ -393,27 +375,25 @@ if(session.getAttribute("user") == null){
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th>Puntaje</th>
-                                            <th>Tipo Vehiculo</th>
-                                            <th>Licencia</th>
-                                            <th>Exp.(Años)</th>
-                                            <th>Nombre</th>
-                                            <th>Apellido</th>
-                                            <th>H.V</th>
-                                            <th></th>
+                                            <th>NIT</th>
+                                            <th>Razon social</th>
+                                            <th>Dirección</th>
+                                            <th>Telefono</th>
+                                            <th>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <%for(int i=0;i<50;i++){%>
                                         <tr class="gradeA tooltip-demo" >
-                                            <td style="text-align: center;">98</td>
-                                            <td>Camion</td>
-                                            <td style="text-align: center;">C3</td>
-                                            <td style="text-align: center;">5</td>
-                                            <td>Juan Manuel</td>
-                                            <td>Castilla Barros</td>
-                                            <td style="text-align: center; cursor: pointer;"><img src="../assets/img/hv_icon.png" class="btn_icon_red" data-toggle="tooltip" data-placement="left" title="Descargar H.V"/></td>
-                                            <td style="text-align: center; cursor: pointer;"><img src="../assets/img/token2_icon.png" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Obtener este conductor"/></td>
+                                            <td style="text-align: center;">987654321</td>
+                                            <td>Logiseguridad ltda</td>
+                                            <td>Cra 53 # 64 - 72</td>
+                                            <td>3601087</td>
+                                            <td style="text-align: center; cursor: pointer;">
+                                                <img src="../assets/img/cam_com_icon.png" class="btn_icon_red" data-toggle="tooltip" data-placement="left" title="Descargar Camara de comercio"/>
+                                                <img src="../assets/img/info_icon.png" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Informacion adicional" onclick="Open_dialog_info()"/>
+                                                <img src="../assets/img/edit2_icon.png" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Editar empresa" onclick="Open_dialog_edit()"/>
+                                                <img src="../assets/img/bloquear_icon.png" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Bloquear empresa"/></td>
                                         </tr>
                                         <%}%>
                                     </tbody>
@@ -434,29 +414,63 @@ if(session.getAttribute("user") == null){
         </div>
         <!-- end page-wrapper -->
 
-    
-
-    
-    <div class="modal fade" id="Modal_filter" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        
+    <div class="modal fade" id="Modal_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Filtros de busqueda</h4>
+                    <h4 class="modal-title" id="myModalLabel">Información adicional</h4>
                 </div>
                 <div class="modal-body">
-                    prueba
+                    <div class="row">
+                        <div class="col-lg-4" style="cursor: pointer;" onclick="Open_dialog_tokens()">
+                            <div class="panel panel-primary text-center">
+                                <div class="panel-body blue">
+                                    <img src="../assets/img/token_icon.png" />
+                                </div>
+                                <div class="panel-footer">
+                                    <span class="panel-eyecandy-title">Tokens
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="panel panel-primary text-center">
+                                <div class="panel-body blue">
+                                    <img src="../assets/img/oferta_icon.png" />
+                                    <label>20</label>
+                                </div>
+                                <div class="panel-footer">
+                                    <span class="panel-eyecandy-title">Ofertas realizadas 
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="panel panel-primary text-center">
+                                <div class="panel-body blue">
+                                    <img src="../assets/img/vista_icon.png" />
+                                    <label>10</label>
+                                </div>
+                                <div class="panel-footer">
+                                    <span class="panel-eyecandy-title">Vistas realizadas
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
         
-    <div class="modal fade" id="Modal_newempresa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="Modal_editempresa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Registro Empresa</h4>
+                    <h4 class="modal-title" id="myModalLabel">Edición Empresa</h4>
                 </div>
                 <div class="modal-body">
                     <form role="form" ng-submit="ctrl.submitExp()" name="add_empresa" class="form-horizontal" novalidate>
@@ -512,7 +526,67 @@ if(session.getAttribute("user") == null){
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" ng-disabled="add_empresa.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_empresa" class="btn btn-primary" >Registrar</button>
+                    <button type="submit" ng-disabled="add_empresa.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_empresa" class="btn btn-primary" >Editar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+       
+    <div class="modal fade" id="Modal_tokens" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Informacion Tokens</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="alert alert-info text-center">
+                                <i class="fa fa-tags fa-3x"></i>&nbsp;<b>2 </b>Ofertas disponibles  
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="alert alert-info text-center">
+                                <i class="fa fa-eye fa-3x"></i>&nbsp;<b>10 </b>Vistas disponibles
+
+                            </div>
+                        </div>
+                        <!--end quick info section -->
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                             Tabla de trazabilidad
+                        </div>
+                        <div class="panel-body">
+                            
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example2">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Hora</th>
+                                            <th>Opcion realizada</th>
+                                            <th>Informacion</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <%for(int i=0;i<15;i++){%>
+                                        <tr class="gradeA tooltip-demo" >
+                                            <td style="text-align: center;">04/12/2016</td>
+                                            <td>09:08:07</td>
+                                            <td style="text-align: center;">Oferta</td>
+                                            <td style="text-align: center; cursor: pointer;"><img src="../assets/img/hv_icon.png" class="btn_icon_red" data-toggle="tooltip" data-placement="left" title="Descargar H.V"/></td>
+                                        </tr>
+                                        <%}%>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -537,9 +611,17 @@ if(session.getAttribute("user") == null){
         function Open_dialog_filter(){
             $( "#Modal_filter" ).modal("show");
         }
-        function Open_dialog_newempresa(){
-            $( "#Modal_newempresa" ).modal("show");
+        function Open_dialog_tokens(){
+            $( "#Modal_tokens" ).modal("show");
         }
+        function Open_dialog_info(){
+            $("#Modal_info").modal("show");
+        }
+        function Open_dialog_edit(){
+            $("#Modal_editempresa").modal("show");
+        }
+        
+        
         $(document).ready(function () {
             var ex= document.getElementById("dataTables-example");
             if($.fn.DataTable.fnIsDataTable(ex)){
