@@ -362,60 +362,46 @@ if(session.getAttribute("user") == null){
             </div>
 
             <div class="row">
-                
-                
-                <div class="col-lg-4">
+                <div class="col-lg-8">
                     <div class="alert alert-info text-center">
-                        <i class="fa fa-comment"></i>&nbsp;<a href="#" onclick="visualizar_addcomment()">Comparte una actualización</a>
-
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="alert alert-info text-center">
-                        <i class="fa fa-camera"></i>&nbsp;Cargar una foto
+                        <!--<i class="fa fa-comment"></i>&nbsp;<a href="#" onclick="visualizar_addcomment()">Comparte una actualización</a>-->
+                        <span class="form-inline">
+                            <label class="etiqueta_e"><i class="fa fa-edit"></i> Palabra clave:</label>
+                            <input type="text" class="form-control" name="p_clave" placeholder="Palabra clave"/>  
+                            <label class="etiqueta_e"><i class="fa fa-map-marker"></i> Lugar:</label>
+                            <select class="form-control selector_e_min" name="lugar" >
+                                <option>Lugar</option>
+                            </select>                            
+                            <button class="btn btn-warning" id="btn-filtrar">
+                                    Buscar ofertas
+                            </button>
+                        </span>
                     </div>
                 </div>
                 <div class="col-lg-8">
                     <!-- Chat Panel Example-->
-                    
-                
-                
                 <div class="chat-panel panel panel-primary">
                     <div class="panel-heading">
                         <i class="fa fa-comments fa-fw"></i>
-                        Actualizaciones
+                        Ofertas
                     </div>
 
-                    <div class="panel-footer" id="form_addcomment">
-                        <div class="input-group">
-                            <textarea id="btn-input" class="form-control input-sm"  placeholder="Añair un comentario.." rows="3" ></textarea>
-                            <span class="input-group-btn">
-                                <button class="btn btn-warning" id="btn-chat" onclick="ocultar_addcomment()">
-                                    Enviar
-                                </button>
-                            </span>
-                        </div>
-                    </div>
+                    
                     <div class="panel-body" >
-                        <ul class="chat" ng-repeat="p in ctrl.publicaciones">
-                            <li class="left clearfix">
-                                <span class="chat-img pull-left">
-                                    <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />
-                                </span>
-                                <div class="chat-body clearfix">
-                                    <div class="header">
-                                        <strong class="primary-font"><span ng-bind="p.origen"></span></strong>
-                                        <small class="pull-right text-muted">
-                                            <i class="fa fa-clock-o fa-fw"></i><span ng-bind="p.desde"></span>
-                                        </small>
-                                    </div>
-                                    <p>
-                                        <span ng-bind="p.comentario"></span>
-                                    </p>
-                                    <div style="text-align: right;"><img src="../assets/img/megusta_icon.png" width="14" height="14" /> <span ng-bind="p.megusta"></span> <img src="../assets/img/comment_icon.png" width="14" height="14" ng-click="ctrl.openComment(p.id, '${sessionScope.cod}')" /> <span ng-bind="p.num_comentario"></span></div>
-                                </div>
-                            </li>
-                        </ul>
+                        
+                        <div class="panel panel-info">
+                            <div class="panel-heading">    
+                                <i class="fa fa-map-marker"> <b>Barranquilla</b></i>
+                            </div>
+                            <div class="panel-body">
+                                <p style="font-size: 20px; color: #0088cc;"><span ng-bind="of.titulo"></span></p>
+                                <p><span ng-bind="of.descripcion"></span></p>
+                            </div>
+                            <div class="panel-footer">                                            
+                                Publicado: <b><span ng-bind="of.fecha"></span></b>
+                            </div>
+                        </div>
+                        
                     </div>
 
 
@@ -431,69 +417,12 @@ if(session.getAttribute("user") == null){
                         <h3>20,741 </h3>
                     </div>
                     <div class="panel-footer">
-                        <span class="panel-eyecandy-title">Daily User Visits
+                        <span class="panel-eyecandy-title">OFERTAS DISPONIBLES
                         </span>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
-                <!-- Notifications-->
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <i class="fa fa-bell fa-fw"></i>Mis Contactos
-                    </div>
-
-                    <div class="panel-body">
-                        <div class="list-group">
-                            <a href="#" class="list-group-item">
-                                <i class="fa fa-comment fa-fw"></i>New Comment
-                                <span class="pull-right text-muted small"><em>4 minutes ago</em>
-                                </span>
-                            </a>
-                            <a href="#" class="list-group-item">
-                                <i class="fa fa-twitter fa-fw"></i>3 New Followers
-                                <span class="pull-right text-muted small"><em>12 minutes ago</em>
-                                </span>
-                            </a>
-                            <a href="#" class="list-group-item">
-                                <i class="fa fa-envelope fa-fw"></i>Message Sent
-                                <span class="pull-right text-muted small"><em>27 minutes ago</em>
-                                </span>
-                            </a>
-                            <a href="#" class="list-group-item">
-                                <i class="fa fa-tasks fa-fw"></i>New Task
-                                <span class="pull-right text-muted small"><em>43 minutes ago</em>
-                                </span>
-                            </a>
-                            <a href="#" class="list-group-item">
-                                <i class="fa fa-upload fa-fw"></i>Server Rebooted
-                                <span class="pull-right text-muted small"><em>11:32 AM</em>
-                                </span>
-                            </a>
-                            <a href="#" class="list-group-item">
-                                <i class="fa fa-bolt fa-fw"></i>Server Crashed!
-                                <span class="pull-right text-muted small"><em>11:13 AM</em>
-                                </span>
-                            </a>
-                            <a href="#" class="list-group-item">
-                                <i class="fa fa-warning fa-fw"></i>Server Not Responding
-                                <span class="pull-right text-muted small"><em>10:57 AM</em>
-                                </span>
-                            </a>
-                            <a href="#" class="list-group-item">
-                                <i class="fa fa-shopping-cart fa-fw"></i>New Order Placed
-                                <span class="pull-right text-muted small"><em>9:49 AM</em>
-                                </span>
-                            </a>
-
-                        </div>
-                        <!-- /.list-group -->
-                        <a href="#" class="btn btn-default btn-block">Ver todos mis contactos</a>
-                    </div>
-
-                </div>
-                <!--End Notifications-->
-            </div>
+            
                 
         </div>
 
