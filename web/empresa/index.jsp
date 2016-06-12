@@ -54,6 +54,11 @@ if(session.getAttribute("user") == null){
             <!-- navbar-top-links -->
             <ul class="nav navbar-top-links navbar-right">
                 <!-- main dropdown -->
+                <li style="cursor: pointer;" onclick="open_modal_subirhv()">                    
+                    <div class="alert2 alert-info text-center" style="position: relative; top:-7px;">
+                        <i class="fa fa-shopping-cart"></i>&nbsp;<b>Comprar Tokens</b>
+                    </div>
+                </li>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <span class="top-label label label-danger">3</span><i class="fa fa-envelope fa-3x"></i>
@@ -381,15 +386,24 @@ if(session.getAttribute("user") == null){
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 tooltip-demo" style="cursor: pointer;" onclick="Open_dialog_tokens()">
-                    <div class="panel panel-primary text-center no-boder"  data-toggle="tooltip" data-placement="bottom" title="Ofertas disponibles: 3 / Ofertas disponibles: 3">
+                <div class="col-lg-2 tooltip-demo" style="cursor: pointer;" onclick="Open_dialog_tokens()">
+                    <div class="panel panel-primary text-center no-boder">
                         <div class="panel-body yellow">
-                            <img src="../assets/img/token_icon.png" />
-                            <label>500</label>
-                            
+                            <label style="font-size: 32px;">10</label>
                         </div>
                         <div class="panel-footer">
-                            <span class="panel-eyecandy-title">Mis tokens
+                            <span class="panel-eyecandy-title"><i class="fa fa-tags"></i> Tokens Ofertas
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 tooltip-demo" style="cursor: pointer;" onclick="Open_dialog_tokens()">
+                    <div class="panel panel-primary text-center no-boder">
+                        <div class="panel-body yellow">
+                            <label style="font-size: 32px;">9</label> 
+                        </div>
+                        <div class="panel-footer">
+                            <span class="panel-eyecandy-title"><i class="fa fa-eye"></i> Tokens Vistas
                             </span>
                         </div>
                     </div>
@@ -470,18 +484,12 @@ if(session.getAttribute("user") == null){
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-lg-4">
-                            <div class="alert alert-info text-center">
-                                <i class="fa fa-money fa-3x"></i>&nbsp;<b>20 </b>Tokens disponibles
-
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="alert alert-info text-center">
                                 <i class="fa fa-tags fa-3x"></i>&nbsp;<b>2 </b>Ofertas disponibles  
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="alert alert-info text-center">
                                 <i class="fa fa-eye fa-3x"></i>&nbsp;<b>10 </b>Vistas disponibles
 
