@@ -281,7 +281,8 @@ public class Guardar {
         try{
         System.out.println(archivo); 
         System.out.println(codigo); 
-        String instruccion="UPDATE tblEmpleado SET hv_empleado = ?, nbr_hv_empleado = ?, tkn_hv_empleado = ?, up_hv_empleado = NOW() WHERE cod_empleado = ?;";
+        String instruccion="UPDATE tblEmpleado SET hv_empleado = ?, nbr_hv_empleado = ?, tkn_hv_empleado = ?, up_hv_empleado = DATE_ADD(now(), INTERVAL -1 HOUR)"
+                + " WHERE cod_empleado = ?;";
          
         insertar=conn.prepareStatement(instruccion);
         insertar.setString(1, archivo);
