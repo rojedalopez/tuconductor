@@ -6,7 +6,7 @@ response.setHeader("Cache-Control", "no-cache");
 response.setHeader("Cache", "no-cache"); 
 if(session.getAttribute("user") == null){
    //redirijo al login
-    response.sendRedirect("../?mensaje=Acabo su sesion.");
+    response.sendRedirect("?mensaje=Acabo su sesion.");
 }
 %>
 <!DOCTYPE html>
@@ -31,7 +31,7 @@ if(session.getAttribute("user") == null){
     <script type="text/javascript" src="../js/angular/profile.js"></script>
     <script type="text/javascript" src="../js/angular/sign.js"></script>
     <script type="text/javascript" src="../js/angular/wall.js"></script>     
-    
+    <script type="text/javascript" src="../js/angular/oferta.js"></script>     
    </head>
 <body ng-app="myApp" class="ng-cloak">
     <!--  wrapper -->
