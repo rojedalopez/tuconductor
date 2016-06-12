@@ -432,61 +432,7 @@ if(session.getAttribute("user") == null){
 
         </div>
         <!-- end page-wrapper -->
-
     
-
-    
-    <div class="modal fade" id="Modal_comment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Comentarios</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="chat-panel panel panel-primary">
-                        <div class="panel-heading">
-                            <i class="fa fa-comments fa-fw"></i>
-                            Comentarios
-                        </div>
-                        <div class="panel-footer">
-                            <div class="input-group">
-                                <input id="btn-input" type="text" class="form-control input-sm"  placeholder="Añadir un comentario.." />
-                                <span class="input-group-btn">
-                                    <button class="btn btn-warning btn-sm" id="btn-chat">
-                                        Enviar
-                                    </button>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="panel-body">
-                            <ul class="chat" ng-repeat="c in ctrl.comments">
-                                        <li class="left clearfix">
-                                            <span class="chat-img pull-left">
-                                                <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />
-                                            </span>
-                                            <div class="chat-body clearfix">
-                                                <div class="header">
-                                                    <strong class="primary-font"><span ng-bind="c.origen"></span></strong>
-                                                    <small class="pull-right text-muted">
-                                                        <i class="fa fa-clock-o fa-fw"></i><span ng-bind="c.desde"></span>
-                                                    </small>
-                                                </div>
-                                                <p>
-                                                    <span ng-bind="c.comentario"></span>
-                                                </p>
-
-                                            </div>
-                                </li>
-                            </ul>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-        
         
     
     <div class="modal fade" id="Modal_hv" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
