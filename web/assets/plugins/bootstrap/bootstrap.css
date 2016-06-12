@@ -3742,6 +3742,10 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   padding: 15px 15px;
   font-size: 18px;
   line-height: 20px;
+  
+}
+.navbar-brand img{
+    width:240px;
 }
 .navbar-brand:hover,
 .navbar-brand:focus {

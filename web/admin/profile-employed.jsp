@@ -47,8 +47,8 @@ if(session.getAttribute("user") == null){
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">
-                    <img src="../assets/img/logo.png" alt="" />
+                <a class="navbar-brand" href="index.jsp">
+                    <img src="../assets/img/logo.png" alt=""/>
                 </a>
             </div>
             <!-- end navbar-header -->
@@ -358,18 +358,6 @@ if(session.getAttribute("user") == null){
             </div>
 
             <div class="row">
-                <div class="col-lg-4" style="cursor: pointer;" onclick="Open_dialog_filter()">
-                    <div class="panel panel-primary text-center no-boder">
-                        <div class="panel-body blue">
-                            <img src="../assets/img/filter_icon.png" />
-                            <label>FILTROS</label>
-                        </div>
-                        <div class="panel-footer">
-                            <span class="panel-eyecandy-title">Mejorar mi busqueda
-                            </span>
-                        </div>
-                    </div>
-                </div>
                 
                 <div class="col-lg-12">
                     <!-- Advanced Tables -->
