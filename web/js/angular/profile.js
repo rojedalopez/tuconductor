@@ -494,19 +494,64 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
 		
     };
 
-}]).directive('sameAs', function() { 
-    return {
-        require : 'ngModel',
-        link : function(scope, elm, attrs, ngModelCtrl) {
-            ngModelCtrl.$validators.sameAs = function(modelValue, viewValue) {
-                var checkedVal = attrs.sameAs;
-                var thisInputVal = viewValue;
-                if (thisInputVal == checkedVal) {
-                    return true; // valid
-                } else {
-                    return false;
-                }
-            };
+}]).controller('ProfileEmpresaController', ['$scope', 'ProfileEmpresaService', function($scope, ProfileEmpresaService) {
+    var self = this;
+
+    self.GetUsuarioGeneral = function(){
+        ProfileEmpresaService.GetUsuarioGeneral().then(function(d) {
+            self.usuario_dp = d;
+            console.log(self.usuario_dp.fecha_nac);
+            self.usuario_dp.fecha_nac =  new Date(self.usuario_dp.fecha_nac);
+            console.log(self.usuario_dp.fecha_nac);
+            self.experiencias = d.exp_laborales;
+            self.formaciones = d.formacion;
+        },function(errResponse){
+            console.error('Error while fetching Currencies');
+        });
+    };
+          
+    self.GetUsuarioGeneral();
+          
+    self.submitExp = function(){
+        self.SaveExpUsuario(self.exp_laboral);
+    };
+
+    self.close = function(){
+        self.reset();
+        dialog.modal( "hide" );
+    };
+          
+    self.openExp = function(){
+        self.resetExp();
+        form_experiencia.modal( "show" );
+    };
+       
+    self.editExp = function(id){
+        for(var i = 0; i < self.experiencias.length; i++){
+            if(self.experiencias[i].id === id) {
+               self.exp_laboral = angular.copy(self.experiencias[i]);
+               form_experiencia.modal( "show" );
+               break;
+            }
         }
-    }; 
-});
+    };
+        
+    self.resetExp = function(){
+        self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", dpto:"", 
+         ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0};
+        $scope.exp_laboral.$setPristine();
+    };
+       
+}]).factory('ProfileEmpresaService', ['$http', '$q', function($http, $q){
+    return {
+        GetUsuarioGeneral: function() {
+            return $http.post('../usuario_general').then(function(response){
+                return response.data;
+            },function(errResponse){
+                console.error('Error while fetching expenses');
+                return $q.reject(errResponse);
+            });
+	}	
+    };
+
+}]);
