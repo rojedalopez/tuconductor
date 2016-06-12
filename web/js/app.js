@@ -4,7 +4,8 @@ angular.module('myApp',[
     'MyApp.Sign',
     'MyApp.Wall',
     'MyApp.Profile',
-    'MyApp.Oferta'
+    'MyApp.Oferta',
+    'datatables'
 ]);
 
 

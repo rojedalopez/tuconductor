@@ -22,6 +22,8 @@ import org.json.simple.JSONObject;
  */
 public class Listas {
     static SimpleDateFormat Fechaformateador = new SimpleDateFormat("yyyy-MM-dd 00:00");
+    static SimpleDateFormat Fecha = new SimpleDateFormat("yyyy-MM-dd");
+    static SimpleDateFormat Hora = new SimpleDateFormat("hh:mm");
     public static String ObtenerPublicacionesProfile(String id) throws SQLException{
         JSONObject obj = null;
         JSONArray lista = new JSONArray();
@@ -123,6 +125,50 @@ public class Listas {
         return lista.toJSONString();
     }
     
+     public static JSONArray ObtenerTrazaTknByEmpresa(String id) throws SQLException{
+        JSONObject obj = null;
+        JSONArray lista = new JSONArray();
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        Statement stm=null;
+        ResultSet datos=null;
+             
+        try{
+                    conn=conexion();
+                    String instruccion="";
+                     
+                    instruccion =   "SELECT DATE_FORMAT(fch_trazatoken,'%Y/%m/%d') AS Fecha, DATE_FORMAT(fch_trazatoken,'%h:%i %p') AS Hora, CASE WHEN tpo_token = 1 THEN 'Publico Oferta' ELSE concat('Compro Información de :',em.nbr_empleado) END " +
+                                    "FROM tblTrazaToken AS tt LEFT JOIN tblEmpleado AS em ON tt.cod_empleado = em.cod_empleado " +
+                                    "WHERE nit_empresa = ?;";
+                     
+                    insertar=conn.prepareStatement(instruccion);
+                    insertar.setString(1, id);
+                    datos=insertar.executeQuery();
+                    while (datos.next()) {
+                        obj = new JSONObject();
+                        obj.put("fecha", datos.getString(1));
+                        obj.put("hora", datos.getString(2));
+                        obj.put("evento", datos.getString(3));
+                        lista.add(obj);
+                    }
+                    datos.close();
+                    conn.close();
+                    return lista;
+             
+        }catch (SQLException e) {
+            System.out.println("error SQLException en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }catch (Exception e){
+                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }finally{
+                    if(!conn.isClosed()){
+                        conn.close();
+                    }
+                }
+        return lista;
+    }
+     
     public static JSONArray listaExpLaborales(String cod) throws SQLException{
         JSONObject obj = null;
         JSONArray lista = new JSONArray();

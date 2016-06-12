@@ -195,6 +195,21 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
     self.empleado={email:"", cod:"",nombre:"", apellido:"", puntaje:0, hoja_vida:"",experiencia:0};
     self.empleados=[];
     
+    self.info_empresa={nit:"",r_social:"", dir:"", tel:"", cam_com:"", doc_replegal:"",nombre_replegal:"", 
+    email_replegal:"", tel_replegal:"", demo:false, id_plan:0, tkn_disp:0, ofertas_disp:0, ult_compra:"", vence_compra:""}
+    self.list_trazas=[];
+    self.traza={fecha:"",hora:"",evento:""};
+    
+    self.GetEmpresaGeneral = function(){
+        WallEmpresaService.GetEmpresaGeneral().then(function(d) {
+            self.info_empresa = d;
+            self.list_trazas = d.trazas;
+            console.log(self.info_empresa);
+        },function(errResponse){
+            console.error('Error while fetching Currencies');
+        });
+    };
+    
     self.llenarEmpleados = function(){
         WallEmpresaService.llenarEmpleados().then(function(d) {
             self.empleados = d;
@@ -202,9 +217,24 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
             console.error('Error while fetching Currencies');
         });
     };
-          
+        
+    self.GetEmpresaGeneral();    
     self.llenarEmpleados();
     
+    self.dtOptions = {
+            scrollY: 500,
+            bAutoWidth:true,
+            stateSave: true,
+            language: {
+                "lengthMenu": "Mostrar _MENU_ registros",
+                "zeroRecords": "No se encontraron registros",
+                "info": "",
+                "infoEmpty": "No se encontraron registros",
+                "infoFiltered": "(filtrado de _MAX_ registros)",
+                "search": "Buscar"
+            }
+        };
+        
           
 }]).factory('WallEmpresaService', ['$http', '$q', function($http, $q){
     return {
@@ -215,40 +245,14 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
                 console.error('Error while fetching expenses');
                 return $q.reject(errResponse);
             });
-	}
-    };
-}]).directive('sameAs', function() { return {
-    require : 'ngModel',
-    link : function(scope, elm, attrs, ngModelCtrl) {
-        ngModelCtrl.$validators.sameAs = function(modelValue, viewValue) {
-            var checkedVal = attrs.sameAs;
-            var thisInputVal = viewValue;
-
-            if (thisInputVal == checkedVal) {
-                return true; // valid
-            } else {
-                return false;
-            }
-        };
-    }
-}; 
-}).directive('uploaderModel', ["$parse", function($parse){
-    return{
-        restrict : 'A',
-        link : function(scope, iElement, iAttrs){
-            iElement.on("change", function(e){
-                var f = iElement[0].files[0];
-                var reader = new FileReader();
-                reader.onload = (function(theFile) {
-                    return function(e) {
-                      // Render thumbnail.
-                      //scope.ctrl.paper.img = e.target.result;
-                    };
-                })(f);
-
-                reader.readAsDataURL(f);
-                $parse(iAttrs.uploaderModel).assign(scope, f); 
+	},
+        GetEmpresaGeneral: function() {
+            return $http.post('../empresa_general').then(function(response){
+                return response.data;
+            },function(errResponse){
+                console.error('Error while fetching expenses');
+                return $q.reject(errResponse);
             });
-        }
+	}	
     };
 }]);

@@ -23,10 +23,16 @@ if(session.getAttribute("user") == null){
     <link href="../assets/css/main-style.css" rel="stylesheet" />
     <!-- Page-Level CSS -->
     <link href="../assets/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
-    <link href="../assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+    <link href="../css/dataTables.bootstrap.min.css" rel="stylesheet" />
 
     <script type="text/javascript" src="../js/jquery-2.2.0.min.js"></script>
-    <script type="text/javascript" src="../js/angular.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="../js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript" src="../js/dataTables.responsive.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+    <script src="../js/dist/angular-datatables.min.js"></script>   
+    
     <script type="text/javascript" src="../js/app.js"></script>      
     <script type="text/javascript" src="../js/angular/profile.js"></script>
     <script type="text/javascript" src="../js/angular/sign.js"></script>
@@ -387,7 +393,7 @@ if(session.getAttribute("user") == null){
                     </div>
                 </div>
                 <div class="col-lg-4 tooltip-demo" style="cursor: pointer;" onclick="Open_dialog_tokens()">
-                    <div class="panel panel-primary text-center no-boder"   data-toggle="tooltip" data-placement="bottom" title="Ofertas disponibles: 3 / Ofertas disponibles: 3">
+                    <div class="panel panel-primary text-center no-boder" >
                         <div class="panel-body yellow">
                             <img src="../assets/img/token_icon.png" />
                         </div>
@@ -405,7 +411,7 @@ if(session.getAttribute("user") == null){
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <table class="table table-striped table-bordered dt-responsive nowrap compact table-hover" cellspacing="0" width="100%" datatable="ng" dt-options="ctrl.dtOptions" id="dataTables-example">
                                     <thead>
                                         <tr>
                                             <th>Puntaje</th>
@@ -418,8 +424,8 @@ if(session.getAttribute("user") == null){
                                             <th></th>
                                         </tr>
                                     </thead>
-                                    <tbody ng-repeat="emp in ctrl.empleados">
-                                        <tr class="gradeA tooltip-demo" >
+                                    <tbody >
+                                        <tr class="gradeA tooltip-demo" ng-repeat="emp in ctrl.empleados">
                                             <td style="text-align: center;"><spam ng-bind="emp.puntaje"></spam></td>
                                             <td>Camion</td>
                                             <td style="text-align: center;">C3</td>
@@ -475,12 +481,12 @@ if(session.getAttribute("user") == null){
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="alert alert-info text-center">
-                                <i class="fa fa-tags fa-3x"></i>&nbsp;<b>2 </b>Ofertas disponibles  
+                                <i class="fa fa-tags fa-3x"></i>&nbsp;<b> {{ctrl.info_empresa.ofertas_disp}} </b>Ofertas disponibles  
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="alert alert-info text-center">
-                                <i class="fa fa-eye fa-3x"></i>&nbsp;<b>10 </b>Vistas disponibles
+                                <i class="fa fa-eye fa-3x"></i>&nbsp;<b>{{ctrl.info_empresa.tkn_disp}} </b>Vistas disponibles
 
                             </div>
                         </div>
@@ -504,14 +510,12 @@ if(session.getAttribute("user") == null){
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <%for(int i=0;i<15;i++){%>
-                                        <tr class="gradeA tooltip-demo" >
-                                            <td style="text-align: center;">04/12/2016</td>
-                                            <td>09:08:07</td>
-                                            <td style="text-align: center;">Oferta</td>
+                                        <tr class="gradeA tooltip-demo" ng-repeat="tr in ctrl.list_trazas">
+                                            <td style="text-align: center;">{{tr.fecha}}</td>
+                                            <td>{{tr.hora}}</td>
+                                            <td style="text-align: center;">{{tr.evento}}</td>
                                             <td style="text-align: center; cursor: pointer;"><img src="../assets/img/hv_icon.png" class="btn_icon_red" data-toggle="tooltip" data-placement="left" title="Descargar H.V"/></td>
                                         </tr>
-                                        <%}%>
                                     </tbody>
                                 </table>
                             </div>
@@ -545,53 +549,7 @@ if(session.getAttribute("user") == null){
         function Open_dialog_tokens(){
             $( "#Modal_tokens" ).modal("show");
         }
-        $(document).ready(function () {
-            var ex= document.getElementById("dataTables-example");
-            if($.fn.DataTable.fnIsDataTable(ex)){
-                var oTable=$(ex).dataTable();
-                oTable.fnClearTable();
-                oTable.fnDestroy();
-            }
-            $('#dataTables-example').dataTable({
-                "bPagination": true,
-                "bSort": true,
-                "bAutoWidth":true,
-                "oLanguage":{
-                    "sLengthMenu":"Ver _MENU_ registros por pagina",
-                    "sZeroRecords":"No se encontro nada - disculpa",
-                    "sInfo":"Viendo _START_ de _END_ sobre _TOTAL_ registros",
-                    "sInfoEmpty":"Viendo 0 de 0 sobre 0 registros",
-                    "sInfoFiltered":"(filtered from _MAX_ total records)",
-                    "sSearch":"Buscar: "
-                }
-            });
-            $("#dataTables-example_filter label input:text").focus();
-            
-            
-            
-            var ex2= document.getElementById("dataTables-example2");
-            if($.fn.DataTable.fnIsDataTable(ex2)){
-                var oTable=$(ex2).dataTable();
-                oTable.fnClearTable();
-                oTable.fnDestroy();
-            }
-            $('#dataTables-example2').dataTable({
-                "bPagination": true,
-                "bSort": true,
-                "bAutoWidth":true,
-                "lengthMenu": [[5, 10, 20, -1], [5, 10, 20, "Todos"]],
-                "oLanguage":{
-                    "sLengthMenu":"Ver _MENU_ registros por pagina",
-                    "sZeroRecords":"No se encontro nada - disculpa",
-                    "sInfo":"Viendo _START_ de _END_ sobre _TOTAL_ registros",
-                    "sInfoEmpty":"Viendo 0 de 0 sobre 0 registros",
-                    "sInfoFiltered":"(filtered from _MAX_ total records)",
-                    "sSearch":"Buscar: "
-                }
-            });
-            $("#dataTables-example2_filter label input:text").focus();
-        });
-
+        
     </script>
 </body>
 

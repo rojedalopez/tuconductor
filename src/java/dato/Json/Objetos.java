@@ -87,8 +87,7 @@ public class Objetos {
                 }
         return "";
     }
-    
-    
+   
     public static String ObtenerDatosdeEmpresa(String id) throws SQLException{
         JSONObject obj = new JSONObject();
         Connection conn=null;
@@ -105,38 +104,27 @@ public class Objetos {
                                     "ofr_dis_empresa, ult_cmp_empresa, vnc_cmp_empresa " +
                                     "FROM tblEmpresa " +
                                     "WHERE nit_empresa = ?;";
-                     //self.empresa={nit:"",r_social:"", dir:"", tel:"", cam_com:null, rut:"", nombre_replegal:"", doc_replegal:"", email_replegal:"", tel_replegal:"", mail:"", password:""}
+                     
                     insertar=conn.prepareStatement(instruccion);
                     insertar.setString(1, id);
                     datos=insertar.executeQuery();
                     if (datos.next()) {
-                        obj.put("nit", datos.getString(1));
-                        obj.put("nombre", datos.getString(2));
-                        obj.put("direccion", datos.getString(3));
-                        obj.put("telefono", datos.getString(4));
+                        obj.put("nit", datos.getString(1)); 
+                        obj.put("r_social", datos.getString(2));
+                        obj.put("dir", datos.getString(3));
+                        obj.put("tel", datos.getString(4));
                         obj.put("cam_com", datos.getString(5));
-                        obj.put("documento", Fechaformateador.format(datos.getDate(6)));
-                        obj.put("genero", datos.getString(7));
-                        obj.put("est_civil", datos.getString(8));
-                        obj.put("movil", datos.getString(9));
-                        obj.put("tel", datos.getString(10));
-                        obj.put("pais", datos.getString(11));
-                        obj.put("ciudad", datos.getString(12));
-                        obj.put("depto", datos.getString(13));
-                        obj.put("dir", datos.getString(14));
-                        obj.put("naci", datos.getString(15));
-                        obj.put("la1", datos.getBoolean(16));
-                        obj.put("la2", datos.getBoolean(17));
-                        obj.put("lb1", datos.getBoolean(18));
-                        obj.put("lb2", datos.getBoolean(19));
-                        obj.put("lb3", datos.getBoolean(20));
-                        obj.put("lc1", datos.getBoolean(21));
-                        obj.put("lc2", datos.getBoolean(22));
-                        obj.put("lc3", datos.getBoolean(23));
-                        obj.put("perfil", datos.getString(24));
-                        obj.put("cargo", datos.getString(25));
-                        obj.put("exp_laborales", Listas.listaExpLaborales(id));
-                        obj.put("formacion", Listas.listaFormaciones(id));
+                        obj.put("doc_replegal", datos.getString(6));
+                        obj.put("nombre_replegal", datos.getString(7));
+                        obj.put("email_replegal", datos.getString(8));
+                        obj.put("tel_replegal", datos.getString(9));
+                        obj.put("demo", datos.getBoolean(10));
+                        obj.put("id_plan", datos.getInt(11));
+                        obj.put("tkn_disp", datos.getInt(12));
+                        obj.put("ofertas_disp", datos.getInt(13));
+                        obj.put("ult_compra", Fechaformateador.format(datos.getDate(14)));
+                        obj.put("vence_compra", Fechaformateador.format(datos.getDate(15)));
+                        obj.put("trazas", Listas.ObtenerTrazaTknByEmpresa(id));
                     }
                     datos.close();
                     conn.close();
@@ -156,6 +144,8 @@ public class Objetos {
                 }
         return "";
     }
+    
+    
     public static String ObtenerDatosGeneral(String id) throws SQLException{
         JSONObject obj = new JSONObject();
         Connection conn=null;
