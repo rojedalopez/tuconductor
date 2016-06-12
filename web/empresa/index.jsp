@@ -386,24 +386,13 @@ if(session.getAttribute("user") == null){
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-2 tooltip-demo" style="cursor: pointer;" onclick="Open_dialog_tokens()">
-                    <div class="panel panel-primary text-center no-boder">
+                <div class="col-lg-4 tooltip-demo" style="cursor: pointer;" onclick="Open_dialog_tokens()">
+                    <div class="panel panel-primary text-center no-boder"   data-toggle="tooltip" data-placement="bottom" title="Ofertas disponibles: 3 / Ofertas disponibles: 3">
                         <div class="panel-body yellow">
-                            <label style="font-size: 32px;">10</label>
+                            <img src="../assets/img/token_icon.png" />
                         </div>
                         <div class="panel-footer">
-                            <span class="panel-eyecandy-title"><i class="fa fa-tags"></i> Tokens Ofertas
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 tooltip-demo" style="cursor: pointer;" onclick="Open_dialog_tokens()">
-                    <div class="panel panel-primary text-center no-boder">
-                        <div class="panel-body yellow">
-                            <label style="font-size: 32px;">9</label> 
-                        </div>
-                        <div class="panel-footer">
-                            <span class="panel-eyecandy-title"><i class="fa fa-eye"></i> Tokens Vistas
+                            <span class="panel-eyecandy-title"><i class="fa fa-tags"></i> Mis Tokens
                             </span>
                         </div>
                     </div>
