@@ -16,6 +16,7 @@ if(session.getAttribute("user") == null){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>:::TuConductor:::</title>
     <!-- Core CSS - Include with every page -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
     <link href="../assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
     <link href="../assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="../assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />
@@ -23,7 +24,8 @@ if(session.getAttribute("user") == null){
     <link href="../assets/css/main-style.css" rel="stylesheet" />
     <!-- Page-Level CSS -->
     <link href="../assets/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
-    <link href="../assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+    <link href="../css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="../css/generales.css" rel="stylesheet" />
 
     <script type="text/javascript" src="../js/jquery-2.2.0.min.js"></script>
     <script type="text/javascript" src="../js/jquery.dataTables.min.js"></script>
@@ -31,12 +33,40 @@ if(session.getAttribute("user") == null){
     <script type="text/javascript" src="../js/dataTables.responsive.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
-    <script src="../js/dist/angular-datatables.min.js"></script> 
+    <script src="../js/dist/angular-datatables.min.js"></script>   
+    
     <script type="text/javascript" src="../js/app.js"></script>      
     <script type="text/javascript" src="../js/angular/profile.js"></script>
     <script type="text/javascript" src="../js/angular/sign.js"></script>
-    <script type="text/javascript" src="../js/angular/wall.js"></script>     
-    <script type="text/javascript" src="../js/angular/oferta.js"></script>     
+    <script type="text/javascript" src="../js/angular/wall.js"></script>
+    <script type="text/javascript" src="../js/angular/oferta.js"></script>
+    
+    <script src="../assets/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="../assets/plugins/pace/pace.js"></script>
+    <script src="../assets/scripts/siminta.js"></script>
+    <!-- Page-Level Plugin Scripts-->
+    <script src="../assets/plugins/morris/raphael-2.1.0.min.js"></script>
+    <script src="../assets/plugins/morris/morris.js"></script>
+    <script src="../assets/scripts/dashboard-demo.js"></script>
+    
+       <script type="text/javascript">
+        
+        function Open_menu_empresa(){
+            window.location.href="profile-company.jsp";
+        }
+        function Open_menu_conductor(){
+            window.location.href="profile-employed.jsp";
+        }
+        function Open_dialog_filter(){
+            $( "#Modal_filter" ).modal("show");
+        }
+        function Open_dialog_tokens(){
+            $( "#Modal_tokens" ).modal("show");
+        }
+
+    </script>
+    
+    
    </head>
 <body ng-app="myApp" class="ng-cloak">
     <!--  wrapper -->
@@ -512,80 +542,7 @@ if(session.getAttribute("user") == null){
     </div>
     <!-- end wrapper -->
     
-    
-    <!-- Core Scripts - Include with every page -->
-    <script src="../assets/plugins/jquery-1.10.2.js"></script>
-    <script src="../assets/plugins/bootstrap/bootstrap.min.js"></script>
-    <script src="../assets/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="../assets/plugins/pace/pace.js"></script>
-    <script src="../assets/scripts/siminta.js"></script>
-    <!-- Page-Level Plugin Scripts-->
-    <link href="../css/generales.css" rel="stylesheet" />
-    <script src="../assets/plugins/dataTables/jquery.dataTables.js"></script>
-    <script src="../assets/plugins/dataTables/dataTables.bootstrap.js"></script>
-
-    <script type="text/javascript">
-        
-        function Open_menu_empresa(){
-            window.location.href="profile-company.jsp";
-        }
-        function Open_menu_conductor(){
-            window.location.href="profile-employed.jsp";
-        }
-        function Open_dialog_filter(){
-            $( "#Modal_filter" ).modal("show");
-        }
-        function Open_dialog_tokens(){
-            $( "#Modal_tokens" ).modal("show");
-        }
-        $(document).ready(function () {
-            var ex= document.getElementById("dataTables-example");
-            if($.fn.DataTable.fnIsDataTable(ex)){
-                var oTable=$(ex).dataTable();
-                oTable.fnClearTable();
-                oTable.fnDestroy();
-            }
-            $('#dataTables-example').dataTable({
-                "bPagination": true,
-                "bSort": true,
-                "bAutoWidth":true,
-                "oLanguage":{
-                    "sLengthMenu":"Ver _MENU_ registros por pagina",
-                    "sZeroRecords":"No se encontro nada - disculpa",
-                    "sInfo":"Viendo _START_ de _END_ sobre _TOTAL_ registros",
-                    "sInfoEmpty":"Viendo 0 de 0 sobre 0 registros",
-                    "sInfoFiltered":"(filtered from _MAX_ total records)",
-                    "sSearch":"Buscar: "
-                }
-            });
-            $("#dataTables-example_filter label input:text").focus();
-            
-            
-            
-            var ex2= document.getElementById("dataTables-example2");
-            if($.fn.DataTable.fnIsDataTable(ex2)){
-                var oTable=$(ex2).dataTable();
-                oTable.fnClearTable();
-                oTable.fnDestroy();
-            }
-            $('#dataTables-example2').dataTable({
-                "bPagination": true,
-                "bSort": true,
-                "bAutoWidth":true,
-                "lengthMenu": [[5, 10, 20, -1], [5, 10, 20, "Todos"]],
-                "oLanguage":{
-                    "sLengthMenu":"Ver _MENU_ registros por pagina",
-                    "sZeroRecords":"No se encontro nada - disculpa",
-                    "sInfo":"Viendo _START_ de _END_ sobre _TOTAL_ registros",
-                    "sInfoEmpty":"Viendo 0 de 0 sobre 0 registros",
-                    "sInfoFiltered":"(filtered from _MAX_ total records)",
-                    "sSearch":"Buscar: "
-                }
-            });
-            $("#dataTables-example2_filter label input:text").focus();
-        });
-
-    </script>
+ 
 </body>
 
 </html>

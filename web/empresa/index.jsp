@@ -25,6 +25,7 @@ if(session.getAttribute("user") == null){
     <!-- Page-Level CSS -->
     <link href="../assets/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
     <link href="../css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="../css/generales.css" rel="stylesheet" />
 
     <script type="text/javascript" src="../js/jquery-2.2.0.min.js"></script>
     <script type="text/javascript" src="../js/jquery.dataTables.min.js"></script>
@@ -39,6 +40,28 @@ if(session.getAttribute("user") == null){
     <script type="text/javascript" src="../js/angular/sign.js"></script>
     <script type="text/javascript" src="../js/angular/wall.js"></script>
     <script type="text/javascript" src="../js/angular/oferta.js"></script>
+    
+    <script src="../assets/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="../assets/plugins/pace/pace.js"></script>
+    <script src="../assets/scripts/siminta.js"></script>
+    <!-- Page-Level Plugin Scripts-->
+    <script src="../assets/plugins/morris/raphael-2.1.0.min.js"></script>
+    <script src="../assets/plugins/morris/morris.js"></script>
+    <script src="../assets/scripts/dashboard-demo.js"></script>
+        
+    <script type="text/javascript">
+        
+        function Open_dialog_filter(){
+            $( "#Modal_filter" ).modal("show");
+        }
+        function Open_dialog_tokens(){
+            $( "#Modal_tokens" ).modal("show");
+        }
+       
+
+
+    </script>
+    
    </head>
 <body ng-app="myApp" class="ng-cloak">
     <!--  wrapper -->
@@ -412,7 +435,7 @@ if(session.getAttribute("user") == null){
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered dt-responsive nowrap compact table-hover" cellspacing="0" width="100%" datatable="ng" dt-options="ctrl.dtOptions" id="dataTables-example">
+                                <table class="table table-striped table-bordered dt-responsive nowrap compact table-hover" cellspacing="0" width="100%"  datatable="ng" dt-options="ctrl.dtOptions" id="dataTables-example">
                                     <thead>
                                         <tr>
                                             <th>Puntaje</th>
@@ -532,26 +555,7 @@ if(session.getAttribute("user") == null){
     <!-- end wrapper -->
     
     
-    <!-- Core Scripts - Include with every page -->
-    <script src="../assets/plugins/jquery-1.10.2.js"></script>
-    <script src="../assets/plugins/bootstrap/bootstrap.min.js"></script>
-    <script src="../assets/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="../assets/plugins/pace/pace.js"></script>
-    <script src="../assets/scripts/siminta.js"></script>
-    <!-- Page-Level Plugin Scripts-->
-    <script src="../assets/plugins/dataTables/jquery.dataTables.js"></script>
-    <script src="../assets/plugins/dataTables/dataTables.bootstrap.js"></script>
-
-    <script type="text/javascript">
-        
-        function Open_dialog_filter(){
-            $( "#Modal_filter" ).modal("show");
-        }
-        function Open_dialog_tokens(){
-            $( "#Modal_tokens" ).modal("show");
-        }
-        
-    </script>
+    
 </body>
 
 </html>

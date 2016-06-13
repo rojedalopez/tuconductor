@@ -16,6 +16,7 @@ if(session.getAttribute("user") == null){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>:::TuConductor:::</title>
     <!-- Core CSS - Include with every page -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
     <link href="../assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
     <link href="../assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="../assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />
@@ -23,16 +24,38 @@ if(session.getAttribute("user") == null){
     <link href="../assets/css/main-style.css" rel="stylesheet" />
     <!-- Page-Level CSS -->
     <link href="../assets/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <link href="../css/dataTables.bootstrap.min.css" rel="stylesheet" />
     <link href="../css/generales.css" rel="stylesheet" />
+
     <script type="text/javascript" src="../js/jquery-2.2.0.min.js"></script>
-    <script type="text/javascript" src="../js/angular.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="../js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript" src="../js/dataTables.responsive.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+    <script src="../js/dist/angular-datatables.min.js"></script>   
+    
     <script type="text/javascript" src="../js/app.js"></script>      
-    <script type="text/javascript" src="../js/date.js"></script>
     <script type="text/javascript" src="../js/angular/profile.js"></script>
     <script type="text/javascript" src="../js/angular/sign.js"></script>
     <script type="text/javascript" src="../js/angular/wall.js"></script>
     <script type="text/javascript" src="../js/angular/oferta.js"></script>
     
+    <script src="../assets/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="../assets/plugins/pace/pace.js"></script>
+    <script src="../assets/scripts/siminta.js"></script>
+    <!-- Page-Level Plugin Scripts-->
+    <script src="../assets/plugins/morris/raphael-2.1.0.min.js"></script>
+    <script src="../assets/plugins/morris/morris.js"></script>
+    <script src="../assets/scripts/dashboard-demo.js"></script>
+    
+    <script type="text/javascript">
+        var btn_guardar_cambios = $("#btn_guardar_cambios");
+        var form_experiencia = $("#form_experiencia");
+        var form_formacion = $("#form_formacion");
+        var btn_add_exp = $("#btn_add_exp");
+        var btn_add_formacion = $("#btn_add_formacion");
+    </script>
     
    </head>
 <body ng-app="myApp" class="ng-cloak">
@@ -754,28 +777,6 @@ if(session.getAttribute("user") == null){
     <!-- end wrapper -->
 
     
-    
-    
-    
-    
-    <!-- Core Scripts - Include with every page -->
-    <script src="../assets/plugins/jquery-1.10.2.js"></script>
-    <script src="../assets/plugins/bootstrap/bootstrap.min.js"></script>
-    <script src="../assets/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="../assets/plugins/pace/pace.js"></script>
-    <script src="../assets/scripts/siminta.js"></script>
-    <!-- Page-Level Plugin Scripts-->
-    <script src="../assets/plugins/morris/raphael-2.1.0.min.js"></script>
-    <script src="../assets/plugins/morris/morris.js"></script>
-    <script src="../assets/scripts/dashboard-demo.js"></script>
-
-    <script type="text/javascript">
-        var btn_guardar_cambios = $("#btn_guardar_cambios");
-        var form_experiencia = $("#form_experiencia");
-        var form_formacion = $("#form_formacion");
-        var btn_add_exp = $("#btn_add_exp");
-        var btn_add_formacion = $("#btn_add_formacion");
-    </script>
 </body>
 
 </html>
