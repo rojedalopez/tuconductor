@@ -1584,9 +1584,10 @@ table th[class*="col-"] {
 }
 @media (max-width: 767px) {
   .table-responsive {
-    width: 100%;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
     margin-bottom: 15px;
-    overflow-x: scroll;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar;
@@ -3659,7 +3660,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   max-height: 340px;
   padding-right: 15px;
   padding-left: 15px;
-  overflow-x: visible;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   border-top: 1px solid transparent;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1);
@@ -4896,6 +4897,13 @@ a.list-group-item-danger.active:focus {
 .panel > .table > tbody:first-child > tr:first-child td {
   border-top: 0;
 }
+
+.table-responsive{
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%;
+}
+
 .panel > .table-bordered,
 .panel > .table-responsive > .table-bordered {
   border: 0;

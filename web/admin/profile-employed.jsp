@@ -31,9 +31,26 @@ if(session.getAttribute("user") == null){
     <script type="text/javascript" src="../js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="../js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript" src="../js/dataTables.responsive.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/angular.min.js"></script>
     <script src="../js/dist/angular-datatables.min.js"></script>   
+    
+    <script type="text/javascript">
+        
+        $(document).ready(function (){
+            $("#Modal_infoadicional").modal("show");
+        });
+        
+        function Open_dialog_filter(){
+            $( "#Modal_filter" ).modal("show");
+        }
+        function Open_dialog_tokens(){
+            $( "#Modal_tokens" ).modal("show");
+        }
+        
+
+    </script>
+    
     
     <script type="text/javascript" src="../js/app.js"></script>      
     <script type="text/javascript" src="../js/angular/profile.js"></script>
@@ -49,17 +66,6 @@ if(session.getAttribute("user") == null){
     <script src="../assets/plugins/morris/morris.js"></script>
     <script src="../assets/scripts/dashboard-demo.js"></script>
     
-    <script type="text/javascript">
-        
-        function Open_dialog_filter(){
-            $( "#Modal_filter" ).modal("show");
-        }
-        function Open_dialog_tokens(){
-            $( "#Modal_tokens" ).modal("show");
-        }
-        
-
-    </script>
     
    </head>
 <body ng-app="myApp" class="ng-cloak">
@@ -395,7 +401,7 @@ if(session.getAttribute("user") == null){
                         </div>
                         <div class="panel-body">
                             <div>
-                                <table class="table table-striped table-bordered dt-responsive nowrap compact table-hover" cellspacing="0" datatable="ng" dt-options="ctrl.dtOptions" >
+                                <table class="table table-striped table-bordered dt-responsive nowrap compact table-hover" width="100%" cellspacing="0" datatable="ng" dt-options="ctrl.dtOptions" >
                                     <thead>
                                         <tr>
                                             <th>Puntaje</th>
@@ -454,64 +460,67 @@ if(session.getAttribute("user") == null){
         </div>
     </div>
         
-    <div class="modal fade" id="Modal_tokens" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="Modal_infoadicional" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Informacion Tokens</h4>
+                    <h4 class="modal-title" id="myModalLabel">Informacion Adicional</h4>
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-lg-4">
-                            <div class="alert alert-info text-center">
-                                <i class="fa fa-money fa-3x"></i>&nbsp;<b>20 </b>Tokens disponibles
+                        <div class="col-lg-12">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    MULTAS
+                                </div>
+                                <div class="panel-body">
+                                    <p ng-class="{ 'has-error': datos_personales.cargo.$error.required || datos_personales.cargo.$error.minlength}">
+                                        <label class="etiqueta_a">Cargo o titulo breve de su hoja de vida<i class="required">*</i>:</label>                                                                                  
+                                        <input type="text" name="cargo" ng-model="ctrl.usuario_dp.cargo" class="form-control area" placeholder="Ej: C" required minlength="15"/>
+                                        <!-- <span ng-show="datos_personales.cargo.$error.required && datos_personales.cargo.$dirty" class="required">Error requerido</span>
+                                        <span ng-show="datos_personales.cargo.$error.minlength && datos_personales.cargo.$dirty" class="required">Error tamaño</span>-->
+                                    </p>
+                                    <p ng-class="{ 'has-error': datos_personales.perfil.$error.required || datos_personales.perfil.$error.minlength}">
+                                        <label class="etiqueta_a">Decripcion breve de su perfil profesional:</label>                                                                                 
+                                        <textarea class="form-control area" name="perfil" ng-model="ctrl.usuario_dp.perfil" placeholder="Ej: C" rows="4" required minlength="50"></textarea>
+                                    </p>
 
-                            </div>
+                                    <div class="form-group">
+                                        <div class="form-group" style="text-align: right;">
+                                            <button type="submit" ng-disabled="datos_personales.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_guardar_cambios" class="btn btn-primary" >Guardar cambios</button>
+                                            <input type="reset" class="btn btn-default" value="Cancelar">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                        
                         </div>
-                        <div class="col-lg-4">
-                            <div class="alert alert-info text-center">
-                                <i class="fa fa-tags fa-3x"></i>&nbsp;<b>2 </b>Ofertas disponibles  
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="alert alert-info text-center">
-                                <i class="fa fa-eye fa-3x"></i>&nbsp;<b>10 </b>Vistas disponibles
+                        
+                        <div class="col-lg-12">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    MULTAS
+                                </div>
+                                <div class="panel-body">
+                                    <p ng-class="{ 'has-error': datos_personales.cargo.$error.required || datos_personales.cargo.$error.minlength}">
+                                        <label class="etiqueta_a">Cargo o titulo breve de su hoja de vida<i class="required">*</i>:</label>                                                                                  
+                                        <input type="text" name="cargo" ng-model="ctrl.usuario_dp.cargo" class="form-control area" placeholder="Ej: C" required minlength="15"/>
+                                        <!-- <span ng-show="datos_personales.cargo.$error.required && datos_personales.cargo.$dirty" class="required">Error requerido</span>
+                                        <span ng-show="datos_personales.cargo.$error.minlength && datos_personales.cargo.$dirty" class="required">Error tamaño</span>-->
+                                    </p>
+                                    <p ng-class="{ 'has-error': datos_personales.perfil.$error.required || datos_personales.perfil.$error.minlength}">
+                                        <label class="etiqueta_a">Decripcion breve de su perfil profesional:</label>                                                                                 
+                                        <textarea class="form-control area" name="perfil" ng-model="ctrl.usuario_dp.perfil" placeholder="Ej: C" rows="4" required minlength="50"></textarea>
+                                    </p>
 
-                            </div>
-                        </div>
-                        <!--end quick info section -->
-                    </div>
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                             Tabla de trazabilidad
-                        </div>
-                        <div class="panel-body">
-                            
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example2">
-                                    <thead>
-                                        <tr>
-                                            <th>Fecha</th>
-                                            <th>Hora</th>
-                                            <th>Opcion realizada</th>
-                                            <th>Informacion</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <%for(int i=0;i<15;i++){%>
-                                        <tr class="gradeA tooltip-demo" >
-                                            <td style="text-align: center;">04/12/2016</td>
-                                            <td>09:08:07</td>
-                                            <td style="text-align: center;">Oferta</td>
-                                            <td style="text-align: center; cursor: pointer;"><img src="../assets/img/hv_icon.png" class="btn_icon_red" data-toggle="tooltip" data-placement="left" title="Descargar H.V"/></td>
-                                        </tr>
-                                        <%}%>
-                                    </tbody>
-                                </table>
-                            </div>
-                            
+                                    <div class="form-group">
+                                        <div class="form-group" style="text-align: right;">
+                                            <button type="submit" ng-disabled="datos_personales.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_guardar_cambios" class="btn btn-primary" >Guardar cambios</button>
+                                            <input type="reset" class="btn btn-default" value="Cancelar">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                        
                         </div>
                     </div>
                 </div>
