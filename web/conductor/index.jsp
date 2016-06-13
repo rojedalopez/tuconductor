@@ -43,6 +43,16 @@ if(session.getAttribute("user") == null){
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
     <script src="../js/dist/angular-datatables.min.js"></script>   
     
+    <script type="text/javascript">
+        var popup = $( "#Modal_comment" );
+        var dialog_oferta;
+        $(document).ready(function(){
+           dialog_oferta= $("#Modal_viewoferta");
+        });
+        function open_modal_subirhv(){
+            $("#Modal_hv").modal("show");
+        }
+    </script>
     <script type="text/javascript" src="../js/app.js"></script>      
     <script type="text/javascript" src="../js/angular/profile.js"></script>
     <script type="text/javascript" src="../js/angular/sign.js"></script>
@@ -57,13 +67,7 @@ if(session.getAttribute("user") == null){
     <script src="../assets/plugins/morris/morris.js"></script>
     <script src="../assets/scripts/dashboard-demo.js"></script>
     
-    <script type="text/javascript">
-        var popup = $( "#Modal_comment" );
-        
-        function open_modal_subirhv(){
-            $("#Modal_hv").modal("show");
-        }
-    </script>
+    
     
    </head>
 <body ng-app="myApp" class="ng-cloak">
@@ -423,10 +427,9 @@ if(session.getAttribute("user") == null){
                     <div class="panel-body" >
                         
                         <div class="col-lg-12" ng-repeat="of in ctrl.ofertas">
-                            <div class="panel panel-info">
+                            <div class="panel panel-info" ng-click="ctrl.editOferta(of.id)" style="cursor: pointer;">
                                 <div class="panel-heading">    
-                                    <i class="fa fa-map-marker"> <b>Barranquilla</b></i>
-                                    <button type="button" ng-click="ctrl.ver(of.id)" class="close"><img src="../assets/img/vista_icon.png" width="18" height="18"></button>
+                                    <i class="fa fa-map-marker"> <b>Barranquilla</b></i>                                    
                                 </div>
                                 <div class="panel-body">
                                     <p style="font-size: 20px; color: #0088cc;"><span ng-bind="of.titulo"></span></p>
@@ -521,6 +524,41 @@ if(session.getAttribute("user") == null){
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary" ng-disabled="form_hv.$invalid">Subir hoja de vida</button>
+                    </div>
+                </form>
+
+                </div>
+                
+            </div>
+        </div>
+    </div>
+        
+        
+    <div class="modal fade" id="Modal_viewoferta" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Oferta seleccionada</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info">
+                        <label style="font-size: 16px;">{{ctrl.oferta.titulo}}</label>
+                    </div>
+                    <label style="font-size: 14px; color: #0088cc;">Descripción:</label><br/>
+                    <p>{{ctrl.oferta.descripcion}}</p>
+                    <label style="font-size: 14px; color: #0088cc;">Localizacion:</label>
+                    <p><i class="fa fa-map-marker"></i> Barranquilla</p>
+                    <label style="font-size: 14px; color: #0088cc;">Salario:</label>
+                    <p><i class="fa fa-dollar"></i> {{ctrl.oferta.salario}}</p>
+                    <label style="font-size: 14px; color: #0088cc;">Cantidad de vacantes:</label>
+                    <p><i class="fa fa-folder-open"></i> {{ctrl.oferta.vacante}}</p>
+                    <label style="font-size: 14px; color: #0088cc;">Fecha de contratación:</label>
+                    <p><i class="fa fa-calendar"></i> {{ctrl.oferta.fecha_contratacion}}</p>
+                <form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" ng-disabled="form_hv.$invalid" ng-click="ctrl.ver(ctrl.oferta.id)">Aplicar</button>
                     </div>
                 </form>
 

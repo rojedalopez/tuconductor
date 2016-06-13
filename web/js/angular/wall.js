@@ -36,6 +36,7 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
             console.error('Error while creating Paper.');
         });
     };
+    
           
     self.verOferta = function(id){
         WallService.verOferta(id).then(function(d) {
@@ -52,14 +53,33 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
         self.SaveUser(self.usuario); 
         self.close();
     };
-          
+    
+    self.editOferta = function(id){
+        console.log("entro");
+        for(var i = 0; i < self.ofertas.length; i++){
+                    console.log("entro");
+
+            if(self.ofertas[i].id === id) {
+               self.oferta = angular.copy(self.ofertas[i]);
+               self.oferta.fecha_contratacion = new Date(self.oferta.fecha_contratacion);
+               self.oferta.fecha_contratacion = self.oferta.fecha_contratacion.toString("yyyy/MM/dd");
+               dialog_oferta.modal( "show" );
+               break;
+            }
+        }
+    };
+
+    
+    
     self.close = function(){
         self.reset();
         dialog.modal( "hide" );
     };
            
     self.ver = function (id){
+        console.log("entro aca id");
         self.verOferta(id);
+        dialog_oferta.modal( "hide" );
     };           
     
 
