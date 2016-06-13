@@ -51,10 +51,11 @@ public class Aplicacion {
              
                 try{
                     conn=conexion();
-                    String instruccion="SELECT IFNULL(cod_empleado, nit_empresa) as cod, tblUsuario.eml_usuario, hsh_usuario, pwd_usuario, " +
-                                        "IFNULL(nbr_empleado, nbr_empresa) as nombre, apl_empleado, mvl_empleado, hv_empleado, up_hv_empleado, tkn_hv_empleado, tblUsuario.id_rol " +
+                    String instruccion="SELECT IFNULL(IFNULL(cod_empleado, nit_empresa),CONVERT(cod_usuarioadmin using utf8) collate utf8_spanish_ci) as cod, tblUsuario.eml_usuario, hsh_usuario, pwd_usuario, " +
+                                        "IFNULL(IFNULL(nbr_empleado, nbr_empresa),CONVERT(nbr_usuarioadmin using utf8) collate utf8_spanish_ci) as nombre, apl_empleado, mvl_empleado, hv_empleado, up_hv_empleado, tkn_hv_empleado, tblUsuario.id_rol " +
                                         "FROM tblUsuario LEFT JOIN tblEmpleado ON tblEmpleado.eml_usuario = tblUsuario.eml_usuario " +
                                         "LEFT JOIN tblEmpresa ON tblEmpresa.eml_usuario = tblUsuario.eml_usuario " +
+                                        "LEFT JOIN tblUsuarioAdmin ON tblUsuarioAdmin.eml_usuario = tblUsuario.eml_usuario " +
                                         "WHERE tblUsuario.eml_usuario = ? AND ver_usuario = 1;";
                     insertar=conn.prepareStatement(instruccion);
                     insertar.setString(1, correo);
