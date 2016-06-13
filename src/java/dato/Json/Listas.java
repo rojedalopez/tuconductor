@@ -247,6 +247,8 @@ public class Listas {
                                     "fch_ctr_oferta, sal_oferta, act_oferta FROM tuconductor.tblOferta ";
                     if(!cod.equals("")){
                         instruccion  += " WHERE nit_empresa = ? ";
+                    }else{
+                        instruccion  += " WHERE act_oferta = 1 ";
                     }
                     instruccion  += "ORDER BY fch_oferta DESC;";
                      

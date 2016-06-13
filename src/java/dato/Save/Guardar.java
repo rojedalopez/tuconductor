@@ -411,7 +411,45 @@ public class Guardar {
         Connection conn=null;
         PreparedStatement insertar=null;
         conn=conexion();        
-        try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_CrearVista(?, ?, ?)}")) {
+        try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_VerOferta(?, ?, ?)}")) {
+                cs.setString(1, cod);
+                cs.setInt(2, oferta);
+                cs.registerOutParameter(3, Types.INTEGER);
+                cs.executeQuery();
+
+                int retorno = cs.getInt(3);
+                
+                if(retorno==1){
+                    String info = Objetos.TituloOferta(oferta);
+                    String[] textoemail = info.split("\\|");
+                    Mails.SendMailOferta(textoemail[1], "VISTA OFERTA", "Su oferta con titulo: "+textoemail[0]+", ha sido vista por " + nombre);
+                    Mails.SendMailOferta(correo, "VISTA OFERTA", "Usted ha visto la oferta: "+textoemail[0]);
+                    return true;
+                }else{
+                    return false;
+                }
+
+            }catch (SQLException e) {
+                System.out.println("error SQLException en INSERTAR EMPRESA");
+                System.out.println(e.getMessage());
+            }catch (Exception e){
+                System.out.println("error Exception en INSERTAR EMPRESA");
+                System.out.println(e.getMessage());
+            }finally{
+                if(!conn.isClosed()){
+                    conn.close();
+                }
+            }
+            return false;
+    }
+    
+    public static boolean saveVistaEmpleado(String cod, int oferta, String correo, String nombre) throws ClassNotFoundException, SQLException, InvalidKeyException{ 
+         
+        boolean b=false;
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        conn=conexion();        
+        try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_VerEmpleado(?, ?, ?)}")) {
                 cs.setString(1, cod);
                 cs.setInt(2, oferta);
                 cs.registerOutParameter(3, Types.INTEGER);
