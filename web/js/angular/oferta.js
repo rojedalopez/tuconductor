@@ -59,6 +59,7 @@ angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'Of
             for(var i = 0; i < self.ofertas.length; i++){
                 if(self.ofertas[i].id === id) {
                    self.oferta = angular.copy(self.ofertas[i]);
+                   self.oferta.fecha_contratacion = new Date(self.oferta.fecha_contratacion);
                    dialog.modal( "show" );
                    break;
                 }

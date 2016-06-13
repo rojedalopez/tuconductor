@@ -50,12 +50,14 @@ if(session.getAttribute("user") == null){
     <script src="../assets/scripts/dashboard-demo.js"></script>
     
     <script type="text/javascript">
-        var btn_guardar_cambios = $("#btn_guardar_cambios");
-        var form_oferta = $("#form_oferta");
-        var dialog = $("#Modal_publicar");
-        var btn_add_exp = $("#btn_add_exp");
-        var btn_add_formacion = $("#btn_add_formacion");
-        
+          var btn_guardar_cambios, form_oferta, dialog, btn_add_exp, btn_add_formacion;
+        $(document).ready(function(){
+            btn_guardar_cambios = $("#btn_guardar_cambios");
+            form_oferta = $("#form_oferta");
+            dialog = $("#Modal_publicar").modal("show");
+            btn_add_exp = $("#btn_add_exp");
+            btn_add_formacion = $("#btn_add_formacion");
+        });
         
     </script>
     
