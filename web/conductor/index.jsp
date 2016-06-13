@@ -45,8 +45,9 @@ if(session.getAttribute("user") == null){
     
     <script type="text/javascript">
         var popup = $( "#Modal_comment" );
+        var dialog_oferta;
         $(document).ready(function(){
-           $("#Modal_viewoferta").modal("show"); 
+           dialog_oferta= $("#Modal_viewoferta");
         });
         function open_modal_subirhv(){
             $("#Modal_hv").modal("show");
@@ -426,10 +427,9 @@ if(session.getAttribute("user") == null){
                     <div class="panel-body" >
                         
                         <div class="col-lg-12" ng-repeat="of in ctrl.ofertas">
-                            <div class="panel panel-info">
+                            <div class="panel panel-info" ng-click="ctrl.editOferta(of.id)" style="cursor: pointer;">
                                 <div class="panel-heading">    
-                                    <i class="fa fa-map-marker"> <b>Barranquilla</b></i>
-                                    <button type="button" ng-click="ctrl.ver(of.id)" class="close"><img src="../assets/img/vista_icon.png" width="18" height="18"></button>
+                                    <i class="fa fa-map-marker"> <b>Barranquilla</b></i>                                    
                                 </div>
                                 <div class="panel-body">
                                     <p style="font-size: 20px; color: #0088cc;"><span ng-bind="of.titulo"></span></p>
@@ -543,22 +543,22 @@ if(session.getAttribute("user") == null){
                 </div>
                 <div class="modal-body">
                     <div class="alert alert-info">
-                        <label style="font-size: 16px;">Se Requiere ingeniero de sistemas,Se Requiere ingeniero de sistemas</label>
+                        <label style="font-size: 16px;">{{ctrl.oferta.titulo}}</label>
                     </div>
                     <label style="font-size: 14px; color: #0088cc;">Descripción:</label><br/>
-                    <p>Se requiere personal con experiencia mínima de 6 meses en ventas, atención al cliente, manejo de dinero, manejo de caja, datafono, salario: 689455 + prestaciones + Auxilio de Transporte. Horario: lunes a domingo, incluido festivos por turnos rotativos de 8 horas, se descansa un día cada 8 días.</p>
+                    <p>{{ctrl.oferta.descripcion}}</p>
                     <label style="font-size: 14px; color: #0088cc;">Localizacion:</label>
                     <p><i class="fa fa-map-marker"></i> Barranquilla</p>
                     <label style="font-size: 14px; color: #0088cc;">Salario:</label>
-                    <p><i class="fa fa-dollar"></i> 1.800.000</p>
+                    <p><i class="fa fa-dollar"></i> {{ctrl.oferta.salario}}</p>
                     <label style="font-size: 14px; color: #0088cc;">Cantidad de vacantes:</label>
-                    <p><i class="fa fa-folder-open"></i> 4</p>
+                    <p><i class="fa fa-folder-open"></i> {{ctrl.oferta.vacante}}</p>
                     <label style="font-size: 14px; color: #0088cc;">Fecha de contratación:</label>
-                    <p><i class="fa fa-calendar"></i> 09/08/2016</p>
+                    <p><i class="fa fa-calendar"></i> {{ctrl.oferta.fecha_contratacion}}</p>
                 <form>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary" ng-disabled="form_hv.$invalid">Aplicar</button>
+                        <button type="button" class="btn btn-primary" ng-disabled="form_hv.$invalid" ng-click="ctrl.ver(ctrl.oferta.id)">Aplicar</button>
                     </div>
                 </form>
 
