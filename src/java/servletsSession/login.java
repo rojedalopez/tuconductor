@@ -39,6 +39,8 @@ public class login extends HttpServlet {
                     session.setAttribute("cod", u.getCodigo());
                     session.setAttribute("session", true);
                     if(u.getRol()==1){
+                        String[] nombre = u.getNombre().split(" ");
+                        session.setAttribute("usr", nombre[0]);
                         response.sendRedirect("admin/");
                     }else if(u.getRol()==2){
                         session.setAttribute("usr", u.getNombre());
@@ -68,11 +70,7 @@ public class login extends HttpServlet {
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+
     @Override
     public String getServletInfo() {
         return "Short description";

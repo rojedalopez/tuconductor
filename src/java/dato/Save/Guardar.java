@@ -6,6 +6,7 @@
 package dato.Save;
 
 import static dato.Aplicacion.conexion;
+import dato.Get.Objetos;
 import dato.Mails;
 import dato.Metodos;
 import java.security.InvalidKeyException;
@@ -384,7 +385,6 @@ public class Guardar {
                 int retorno = cs.getInt(10);
                 
                 if(retorno==1){
-                    //Mails.SendMail(correo, token, "CONFIRMACIÓN DE CUENTA", "ACTIVAR");
                     return true;
                 }else{
                     return false;
@@ -404,5 +404,43 @@ public class Guardar {
             return false;
     }
     
+    
+    public static boolean saveVistaOferta(int id, String cod, int oferta, String correo, String nombre) throws ClassNotFoundException, SQLException, InvalidKeyException{ 
+         
+        boolean b=false;
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        conn=conexion();        
+        try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_CrearVista(?, ?, ?, ?)}")) {
+                cs.setInt(1, id);
+                cs.setString(2, cod);
+                cs.setInt(3, oferta);
+                cs.registerOutParameter(4, Types.INTEGER);
+                cs.executeQuery();
+
+                int retorno = cs.getInt(4);
+                
+                if(retorno==1){
+                    String[] textoemail = Objetos.TituloOferta(oferta).split("|");
+                    Mails.SendMailOferta(textoemail[1], "VISTA OFERTA", "Su oferta con titulo: "+textoemail[0]+", ha sido vista por :" + nombre);
+                    Mails.SendMailOferta(correo, "VISTA OFERTA", "Usted ha visto la oferta : "+textoemail[0]);
+                    return true;
+                }else{
+                    return false;
+                }
+
+            }catch (SQLException e) {
+                System.out.println("error SQLException en INSERTAR EMPRESA");
+                System.out.println(e.getMessage());
+            }catch (Exception e){
+                System.out.println("error Exception en INSERTAR EMPRESA");
+                System.out.println(e.getMessage());
+            }finally{
+                if(!conn.isClosed()){
+                    conn.close();
+                }
+            }
+            return false;
+    }
      
 }
