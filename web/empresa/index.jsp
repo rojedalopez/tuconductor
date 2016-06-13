@@ -434,7 +434,7 @@ if(session.getAttribute("user") == null){
                              Lista de conductores
                         </div>
                         <div class="panel-body">
-                            <div class="table-responsive">
+                            <div>
                                 <table class="table table-striped table-bordered dt-responsive nowrap compact table-hover" cellspacing="0" width="100%"  datatable="ng" dt-options="ctrl.dtOptions" id="dataTables-example">
                                     <thead>
                                         <tr>

@@ -159,7 +159,6 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
     self.llenarEmpleados();
     
     self.dtOptions = {
-            scrollY: 500,
             bAutoWidth:true,
             stateSave: true,
             language: {
