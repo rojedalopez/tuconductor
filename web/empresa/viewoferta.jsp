@@ -35,6 +35,20 @@ if(session.getAttribute("user") == null){
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
     <script src="../js/dist/angular-datatables.min.js"></script>   
     
+    
+    <script type="text/javascript">
+          var btn_guardar_cambios, form_oferta, btn_add_exp, btn_add_formacion;
+          var dialog_oferta;
+        $(document).ready(function(){
+            btn_guardar_cambios = $("#btn_guardar_cambios");
+            form_oferta = $("#form_oferta");
+            dialog_oferta = $("#Modal_publicar");
+            btn_add_exp = $("#btn_add_exp");
+            btn_add_formacion = $("#btn_add_formacion");
+        });
+        
+    </script>
+    
     <script type="text/javascript" src="../js/app.js"></script>      
     <script type="text/javascript" src="../js/angular/profile.js"></script>
     <script type="text/javascript" src="../js/angular/sign.js"></script>
@@ -49,17 +63,6 @@ if(session.getAttribute("user") == null){
     <script src="../assets/plugins/morris/morris.js"></script>
     <script src="../assets/scripts/dashboard-demo.js"></script>
     
-    <script type="text/javascript">
-          var btn_guardar_cambios, form_oferta, dialog, btn_add_exp, btn_add_formacion;
-        $(document).ready(function(){
-            btn_guardar_cambios = $("#btn_guardar_cambios");
-            form_oferta = $("#form_oferta");
-            dialog = $("#Modal_publicar").modal("show");
-            btn_add_exp = $("#btn_add_exp");
-            btn_add_formacion = $("#btn_add_formacion");
-        });
-        
-    </script>
     
    </head>
 <body ng-app="myApp" class="ng-cloak">

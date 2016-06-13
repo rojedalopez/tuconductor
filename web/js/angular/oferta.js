@@ -7,7 +7,7 @@ angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'Of
     self.SaveOferta = function(oferta){
         OfertaService.SaveOferta(oferta).then(function(d){
             if(d==="true"){
-                dialog.modal( "hide" );
+                dialog_oferta.modal( "hide" );
                 self.resetOferta();
                 self.listaOfertas();
             }
@@ -45,13 +45,13 @@ angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'Of
           
           self.close = function(){
               self.reset();
-              dialog.modal( "hide" );
+              dialog_oferta.modal( "hide" );
           };
           
           self.openOferta = function(){
               console.log("eentro aca");
               self.resetOferta();
-              dialog.modal( "show" );
+              dialog_oferta.modal( "show" );
           };
            
                
@@ -60,7 +60,7 @@ angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'Of
                 if(self.ofertas[i].id === id) {
                    self.oferta = angular.copy(self.ofertas[i]);
                    self.oferta.fecha_contratacion = new Date(self.oferta.fecha_contratacion);
-                   dialog.modal( "show" );
+                   dialog_oferta.modal( "show" );
                    break;
                 }
             }
