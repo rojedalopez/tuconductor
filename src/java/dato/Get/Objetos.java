@@ -28,7 +28,7 @@ public class Objetos {
                     conn=conexion();
                     String instruccion="";
                      
-                    instruccion =   "SELECT CONCAT(tit_oferta,', publicada el ', DATE_FORMAT(fch_oferta, '%Y-%m-%e'), ' a las ',  DATE_FORMAT(fch_oferta, '%h:%i %p')) AS texto, " +
+                    instruccion =   "SELECT CONCAT('<b>', tit_oferta,'</b>', ', publicada el ', DATE_FORMAT(fch_oferta, '%e de %b del %Y'), ' a las ',  DATE_FORMAT(fch_oferta, '%h:%i %p')) AS texto, " +
                                     "eml_usuario FROM tblOferta as o INNER JOIN tblEmpresa as a ON o.nit_empresa = a.nit_empresa WHERE id_oferta = ?;";
                      
                     insertar=conn.prepareStatement(instruccion);

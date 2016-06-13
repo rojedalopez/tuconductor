@@ -37,13 +37,13 @@ public class vista_oferta extends HttpServlet {
         } catch (Exception e) { e.printStackTrace(); }
  
         JSONParser parser = new JSONParser();
-        JSONObject joVistaOferta = null;
-        System.out.println(sb.toString());
-        joVistaOferta = (JSONObject) parser.parse(sb.toString());
+        JSONObject joComment = null;
+         System.out.println(sb.toString());
+        joComment = (JSONObject) parser.parse(sb.toString());
         
-        int id = Integer.parseInt(joVistaOferta.get("id").toString());
-        int id_oferta = Integer.parseInt(joVistaOferta.get("id_oferta").toString());        
-                        
+        int id_oferta = Integer.parseInt(joComment.get("id").toString());     
+        System.out.println(id_oferta);
+                                
         HttpSession session =  null;
  
         session = request.getSession(false);
@@ -52,7 +52,7 @@ public class vista_oferta extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
-                boolean b = Guardar.saveVistaOferta(id, u.getCodigo(), id_oferta, u.getCorreo(), u.getNombre() + " " + u.getApellido());
+                boolean b = Guardar.saveVistaOferta(u.getCodigo(), id_oferta, u.getCorreo(), u.getNombre() + " " + u.getApellido());
                 if(b){
                     out.print("true");
                 }else{

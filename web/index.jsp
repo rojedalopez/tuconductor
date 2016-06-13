@@ -1,4 +1,21 @@
+<%@page import="bean.usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% 
+response.setHeader("Pragma", "No-chache"); 
+response.setHeader("Expires", "0"); 
+response.setHeader("Cache-Control", "no-cache"); 
+response.setHeader("Cache", "no-cache"); 
+if(session.getAttribute("user") != null){
+   usuario u = (usuario)session.getAttribute("user");
+   if(u.getRol()==1){
+        response.sendRedirect("../admin/");
+   }else if(u.getRol()==2){
+        response.sendRedirect("../empresa/");
+   }else if(u.getRol()==3){
+        response.sendRedirect("../conductor/");
+   }
+}
+%>
 <!DOCTYPE html>
 <html>
 

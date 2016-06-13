@@ -1,3 +1,4 @@
+<%@page import="bean.usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% 
 response.setHeader("Pragma", "No-chache"); 
@@ -6,7 +7,14 @@ response.setHeader("Cache-Control", "no-cache");
 response.setHeader("Cache", "no-cache"); 
 if(session.getAttribute("user") == null){
    //redirijo al login
-    response.sendRedirect("../?mensaje=Acabo su sesion.");
+   response.sendRedirect("../?mensaje=Acabo su sesion.");
+}else{
+    usuario u = (usuario)session.getAttribute("user");
+   if(u.getRol()==1){
+        response.sendRedirect("../admin/");
+   }else if(u.getRol()==2){
+        response.sendRedirect("../empresa/");
+   }
 }
 %>
 <!DOCTYPE html>
@@ -391,9 +399,9 @@ if(session.getAttribute("user") == null){
                     <div class="alert alert-info text-center">
                         <!--<i class="fa fa-comment"></i>&nbsp;<a href="#" onclick="visualizar_addcomment()">Comparte una actualización</a>-->
                         <span class="form-inline">
-                            <label class="etiqueta_e"><i class="fa fa-edit"></i> Palabra clave:</label>
+                            <label ><i class="fa fa-edit"></i> Palabra clave:</label>
                             <input type="text" class="form-control texto_e" name="p_clave" placeholder="Palabra clave"/>  
-                            <label class="etiqueta_e"><i class="fa fa-map-marker"></i> Lugar:</label>
+                            <label ><i class="fa fa-map-marker"></i> Lugar:</label>
                             <select class="form-control selector_e_min" name="lugar" >
                                 <option>Lugar</option>
                             </select>                            
@@ -418,6 +426,7 @@ if(session.getAttribute("user") == null){
                             <div class="panel panel-info">
                                 <div class="panel-heading">    
                                     <i class="fa fa-map-marker"> <b>Barranquilla</b></i>
+                                    <button type="button" ng-click="ctrl.ver(of.id)" class="close"><img src="../assets/img/vista_icon.png" width="18" height="18"></button>
                                 </div>
                                 <div class="panel-body">
                                     <p style="font-size: 20px; color: #0088cc;"><span ng-bind="of.titulo"></span></p>

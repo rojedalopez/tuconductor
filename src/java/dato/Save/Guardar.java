@@ -405,25 +405,25 @@ public class Guardar {
     }
     
     
-    public static boolean saveVistaOferta(int id, String cod, int oferta, String correo, String nombre) throws ClassNotFoundException, SQLException, InvalidKeyException{ 
+    public static boolean saveVistaOferta(String cod, int oferta, String correo, String nombre) throws ClassNotFoundException, SQLException, InvalidKeyException{ 
          
         boolean b=false;
         Connection conn=null;
         PreparedStatement insertar=null;
         conn=conexion();        
-        try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_CrearVista(?, ?, ?, ?)}")) {
-                cs.setInt(1, id);
-                cs.setString(2, cod);
-                cs.setInt(3, oferta);
-                cs.registerOutParameter(4, Types.INTEGER);
+        try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_CrearVista(?, ?, ?)}")) {
+                cs.setString(1, cod);
+                cs.setInt(2, oferta);
+                cs.registerOutParameter(3, Types.INTEGER);
                 cs.executeQuery();
 
-                int retorno = cs.getInt(4);
+                int retorno = cs.getInt(3);
                 
                 if(retorno==1){
-                    String[] textoemail = Objetos.TituloOferta(oferta).split("|");
-                    Mails.SendMailOferta(textoemail[1], "VISTA OFERTA", "Su oferta con titulo: "+textoemail[0]+", ha sido vista por :" + nombre);
-                    Mails.SendMailOferta(correo, "VISTA OFERTA", "Usted ha visto la oferta : "+textoemail[0]);
+                    String info = Objetos.TituloOferta(oferta);
+                    String[] textoemail = info.split("\\|");
+                    Mails.SendMailOferta(textoemail[1], "VISTA OFERTA", "Su oferta con titulo: "+textoemail[0]+", ha sido vista por " + nombre);
+                    Mails.SendMailOferta(correo, "VISTA OFERTA", "Usted ha visto la oferta: "+textoemail[0]);
                     return true;
                 }else{
                     return false;

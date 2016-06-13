@@ -6,7 +6,7 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
     self.oferta={id:-1, titulo:"", descripcion:"", vacante:"", salario:0,tipo:1, estado:false, fecha_creacion:"", fecha_contratacion:""};
     self.ofertas=[];
     self.hoja_vida={file:null, fecha:"", token:"", nombre:"", archivo:""};
-
+    
     self.SaveHV = function(hoja_vida){
         WallService.SaveHV(hoja_vida).then(function(d){
             if(d==="true"){
@@ -37,7 +37,14 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
         });
     };
           
-
+    self.verOferta = function(id){
+        WallService.verOferta(id).then(function(d) {
+            console.log(d);
+       },function(errResponse){
+           console.error('Error while fetching Currencies');
+       });
+    };    
+    
     self.listaOfertas();
     self.getDatosUser();
           
@@ -51,7 +58,9 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
         dialog.modal( "hide" );
     };
            
-           
+    self.ver = function (id){
+        self.verOferta(id);
+    };           
     
 
     self.reset = function(){
@@ -91,7 +100,15 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
                 console.error('Error while fetching expenses');
                 return $q.reject(errResponse);
             });
-}
+        },
+        verOferta: function(id) {
+            return $http.post('../vista_oferta', {"id":id}).then(function(response){
+                return response.data;
+            },function(errResponse){
+                console.error('Error while fetching expenses');
+                return $q.reject(errResponse);
+            });
+        }
     };
 }]).directive('sameAs', function() { return {
     require : 'ngModel',
