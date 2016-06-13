@@ -538,7 +538,6 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     };
     
     self.dtOptions = {
-            scrollY: 500,
             bAutoWidth:true,
             stateSave: true,
             language: {
@@ -590,7 +589,6 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.llenarEmpleados();
     
     self.dtOptions = {
-            scrollY: 500,
             bAutoWidth:true,
             stateSave: true,
             language: {
