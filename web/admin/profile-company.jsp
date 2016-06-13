@@ -35,22 +35,13 @@ if(session.getAttribute("user") == null){
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
     <script src="../js/dist/angular-datatables.min.js"></script>   
     
-    <script type="text/javascript" src="../js/app.js"></script>      
-    <script type="text/javascript" src="../js/angular/profile.js"></script>
-    <script type="text/javascript" src="../js/angular/sign.js"></script>
-    <script type="text/javascript" src="../js/angular/wall.js"></script>
-    <script type="text/javascript" src="../js/angular/oferta.js"></script>
-    
-    <script src="../assets/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="../assets/plugins/pace/pace.js"></script>
-    <script src="../assets/scripts/siminta.js"></script>
-    <!-- Page-Level Plugin Scripts-->
-    <script src="../assets/plugins/morris/raphael-2.1.0.min.js"></script>
-    <script src="../assets/plugins/morris/morris.js"></script>
-    <script src="../assets/scripts/dashboard-demo.js"></script>
-    
-      <script type="text/javascript">
+    <script type="text/javascript">
         var btn_add_empresa = $("#btn_add_empresa");
+        var modal_editempresa, modal_editadicional;
+        $(document).ready(function (){
+            modal_editempresa=$("#Modal_editempresa");
+            modal_editadicional=$("#Modal_info");
+        });
         function Open_dialog_filter(){
             $( "#Modal_filter" ).modal("show");
         }
@@ -67,10 +58,26 @@ if(session.getAttribute("user") == null){
 
     </script>
     
+    
+    <script type="text/javascript" src="../js/app.js"></script>      
+    <script type="text/javascript" src="../js/angular/profile.js"></script>
+    <script type="text/javascript" src="../js/angular/sign.js"></script>
+    <script type="text/javascript" src="../js/angular/wall.js"></script>
+    <script type="text/javascript" src="../js/angular/oferta.js"></script>
+    
+    <script src="../assets/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="../assets/plugins/pace/pace.js"></script>
+    <script src="../assets/scripts/siminta.js"></script>
+    <!-- Page-Level Plugin Scripts-->
+    <script src="../assets/plugins/morris/raphael-2.1.0.min.js"></script>
+    <script src="../assets/plugins/morris/morris.js"></script>
+    <script src="../assets/scripts/dashboard-demo.js"></script>
+    
+      
    </head>
 <body ng-app="myApp" class="ng-cloak">
     <!--  wrapper -->
-    <div id="wrapper"  ng-controller="WallController as ctrl">
+    <div id="wrapper"  ng-controller="ProfileAdminController as ctrl">
         <!-- navbar top -->
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="navbar">
             <!-- navbar-header -->
@@ -399,8 +406,8 @@ if(session.getAttribute("user") == null){
                              Lista de Empresas
                         </div>
                         <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <div>
+                                <table class="table table-striped table-bordered dt-responsive nowrap compact table-hover" cellspacing="0" datatable="ng" dt-options="ctrl.dtOptions" id="dataTables-example">
                                     <thead>
                                         <tr>
                                             <th>NIT</th>
@@ -411,19 +418,17 @@ if(session.getAttribute("user") == null){
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <%for(int i=0;i<50;i++){%>
-                                        <tr class="gradeA tooltip-demo" >
-                                            <td style="text-align: center;">987654321</td>
-                                            <td>Logiseguridad ltda</td>
-                                            <td>Cra 53 # 64 - 72</td>
-                                            <td>3601087</td>
+                                        <tr class="gradeA tooltip-demo" ng-repeat="e in ctrl.list_empresas">
+                                            <td style="text-align: center;"><span ng-bind="e.nit"></span></td>
+                                            <td><span ng-bind="e.r_social"></span></td>
+                                            <td><span ng-bind="e.dir"></span></td>
+                                            <td><span ng-bind="e.tel"></span></td>
                                             <td style="text-align: center; cursor: pointer;">
-                                                <img src="../assets/img/cam_com_icon.png" class="btn_icon_red" data-toggle="tooltip" data-placement="left" title="Descargar Camara de comercio"/>
-                                                <img src="../assets/img/info_icon.png" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Informacion adicional" onclick="Open_dialog_info()"/>
-                                                <img src="../assets/img/edit2_icon.png" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Editar empresa" onclick="Open_dialog_edit()"/>
+                                                <img src="../assets/img/cam_com_icon.png" class="btn_icon_red" style="cursor: pointer;" data-toggle="tooltip" data-placement="left" title="Descargar Camara de comercio"/>
+                                                <img src="../assets/img/info_icon.png" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Informacion adicional" ng-click="ctrl.open_info_adicional(e.nit)"/>
+                                                <img src="../assets/img/edit2_icon.png" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Editar empresa" ng-click="ctrl.edit_empresa(e.nit)"/>
                                                 <img src="../assets/img/bloquear_icon.png" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Bloquear empresa"/></td>
-                                        </tr>
-                                        <%}%>
+                                        </tr>                                        
                                     </tbody>
                                 </table>
                             </div>
@@ -467,7 +472,7 @@ if(session.getAttribute("user") == null){
                             <div class="panel panel-primary text-center">
                                 <div class="panel-body blue">
                                     <img src="../assets/img/oferta_icon.png" />
-                                    <label>20</label>
+                                    <label>{{ctrl.empresa.tot_ofr}} </label>
                                 </div>
                                 <div class="panel-footer">
                                     <span class="panel-eyecandy-title">Ofertas realizadas 
@@ -479,7 +484,7 @@ if(session.getAttribute("user") == null){
                             <div class="panel panel-primary text-center">
                                 <div class="panel-body blue">
                                     <img src="../assets/img/vista_icon.png" />
-                                    <label>10</label>
+                                    <label>{{ctrl.empresa.tot_tkn}}</label>
                                 </div>
                                 <div class="panel-footer">
                                     <span class="panel-eyecandy-title">Vistas realizadas
@@ -518,10 +523,6 @@ if(session.getAttribute("user") == null){
                             <label class="etiqueta_e">Telefono<i class="required">*</i>:</label>
                             <input type="text" class="form-control texto_e" name="tel" ng-model="ctrl.empresa.tel" placeholder="Telefono de la empresa" minlength="7" required />
                         </p>
-                        <p>
-                            <label class="etiqueta_e">Camara de comercio:</label>
-                            <input type="file" class="form-control texto_e" name="cam_com" ng-model="ctrl.empresa.cam_com"  />
-                        </p>
                         <p  ng-class="{ 'has-error': add_empresa.nombre_replegal.$error.required || add_empresa.nombre_replegal.$error.minlength }">
                             <label class="etiqueta_e">Nombre Rep. legal<i class="required">*</i>:</label>
                             <input type="text" class="form-control texto_e" name="nombre_replegal" ng-model="ctrl.empresa.nombre_replegal" placeholder="Nombre del rep. legal de la empresa" minlength="6" required/>
@@ -538,18 +539,7 @@ if(session.getAttribute("user") == null){
                             <label class="etiqueta_e">Telefono Rep. legal:</label>
                             <input type="text" class="form-control texto_e" name="tel_replegal" ng-model="ctrl.empresa.tel_replegal" placeholder="Telefono del rep. legal de la empresa" />
                         </p>                        
-                        <p ng-class="{ 'has-error': add_empresa.mail.$error.required || add_empresa.mail.$error.minlength }">
-                            <label class="etiqueta_e">Usuario<i class="required">*</i>:</label>
-                            <input type="text" class="form-control texto_e" name="mail" ng-model="ctrl.empresa.mail" placeholder="Usuario (E-mail) de la empresa" minlength="6" required />
-                        </p>
-                        <p ng-class="{ 'has-error': add_empresa.password.$error.required || add_empresa.password.$error.minlength }">
-                            <label class="etiqueta_e">Contraseña<i class="required">*</i>:</label>
-                            <input type="password" class="form-control texto_e" name="password" ng-model="ctrl.empresa.password" placeholder="Contraseña de la empresa" minlength="6" required />
-                        </p>
-                        <p ng-class="{ 'has-error': add_empresa.passwordRepeat.$error.required || add_empresa.passwordRepeat.$error.minlength }">
-                            <label class="etiqueta_e">Confirmar contraseña<i class="required">*</i>:</label>
-                            <input type="password" class="form-control texto_e" name="passwordRepeat" ng-model="ctrl.empresa.passwordRepeat" placeholder="Confirmar la contraseña" minlength="6" required />
-                        </p>
+                        
                     </form>                    
                 </div>
                 <div class="modal-footer">
@@ -572,12 +562,12 @@ if(session.getAttribute("user") == null){
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="alert alert-info text-center">
-                                <i class="fa fa-tags fa-3x"></i>&nbsp;<b>2 </b>Ofertas disponibles  
+                                <i class="fa fa-tags fa-3x"></i>&nbsp;<b>{{ctrl.empresa.ofertas_disp}} </b>Ofertas disponibles  
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="alert alert-info text-center">
-                                <i class="fa fa-eye fa-3x"></i>&nbsp;<b>10 </b>Vistas disponibles
+                                <i class="fa fa-eye fa-3x"></i>&nbsp;<b>{{ctrl.empresa.tkn_disp}} </b>Vistas disponibles
 
                             </div>
                         </div>
@@ -591,7 +581,7 @@ if(session.getAttribute("user") == null){
                         <div class="panel-body">
                             
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example2">
+                                <table class="table table-striped table-bordered dt-responsive nowrap compact table-hover" cellspacing="0" width="100%"  datatable="ng" dt-options="ctrl.dtOptions">
                                     <thead>
                                         <tr>
                                             <th>Fecha</th>
@@ -601,14 +591,12 @@ if(session.getAttribute("user") == null){
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <%for(int i=0;i<15;i++){%>
-                                        <tr class="gradeA tooltip-demo" >
-                                            <td style="text-align: center;">04/12/2016</td>
-                                            <td>09:08:07</td>
-                                            <td style="text-align: center;">Oferta</td>
+                                        <tr class="gradeA tooltip-demo"  ng-repeat="tr in ctrl.empresa.trazas">
+                                            <td style="text-align: center;"><span ng-bind="tr.fecha"></span></td>
+                                            <td><span ng-bind="tr.hora"></span></td>
+                                            <td style="text-align: center;"><span ng-bind="tr.evento"></span></td>
                                             <td style="text-align: center; cursor: pointer;"><img src="../assets/img/hv_icon.png" class="btn_icon_red" data-toggle="tooltip" data-placement="left" title="Descargar H.V"/></td>
                                         </tr>
-                                        <%}%>
                                     </tbody>
                                 </table>
                             </div>

@@ -64,7 +64,7 @@ if(session.getAttribute("user") == null){
    </head>
 <body ng-app="myApp" class="ng-cloak">
     <!--  wrapper -->
-    <div id="wrapper"  ng-controller="WallController as ctrl">
+    <div id="wrapper"  ng-controller="ProfileAdmin_Conductor_Controller as ctrl">
         <!-- navbar top -->
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="navbar">
             <!-- navbar-header -->
@@ -394,8 +394,8 @@ if(session.getAttribute("user") == null){
                              Lista de Conductores
                         </div>
                         <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <div>
+                                <table class="table table-striped table-bordered dt-responsive nowrap compact table-hover" cellspacing="0" datatable="ng" dt-options="ctrl.dtOptions" >
                                     <thead>
                                         <tr>
                                             <th>Puntaje</th>
@@ -409,18 +409,16 @@ if(session.getAttribute("user") == null){
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <%for(int i=0;i<50;i++){%>
-                                        <tr class="gradeA tooltip-demo" >
-                                            <td style="text-align: center;">98</td>
+                                        <tr class="gradeA tooltip-demo" ng-repeat="emp in ctrl.list_empleados">
+                                            <td style="text-align: center;"><span ng-bind="emp.puntaje"></span></td>
                                             <td>Camion</td>
-                                            <td style="text-align: center;">C3</td>
-                                            <td style="text-align: center;">5</td>
-                                            <td>Juan Manuel</td>
-                                            <td>Castilla Barros</td>
+                                            <td style="text-align: center;"><span ng-bind="emp.cod"></span></td>
+                                            <td style="text-align: center;"><span ng-bind="emp.experiencia"></span></td>
+                                            <td><span ng-bind="emp.nombre"></span></td>
+                                            <td><span ng-bind="emp.apellido"></span></td>
                                             <td style="text-align: center; cursor: pointer;"><img src="../assets/img/hv_icon.png" class="btn_icon_red" data-toggle="tooltip" data-placement="left" title="Descargar H.V"/></td>
-                                            <td style="text-align: center; cursor: pointer;"><img src="../assets/img/token2_icon.png" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Obtener este conductor"/></td>
+                                            <td style="text-align: center; cursor: pointer;"><img src="../assets/img/edit2_icon.png" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Editar este conductor" ng-click="ctrl.edit_empleado(emp.cod)"/></td>
                                         </tr>
-                                        <%}%>
                                     </tbody>
                                 </table>
                             </div>

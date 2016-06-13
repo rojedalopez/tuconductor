@@ -101,7 +101,7 @@ public class Objetos {
                      
                     instruccion =   "SELECT nit_empresa, nbr_empresa, dir_empresa, tel_empresa, cam_com_empresa, doc_rep_empresa, " +
                                     "nbr_rep_empresa, eml_rep_empresa, tel_rep_empresa, dmo_empresa, id_plan, tkn_dis_empresa, " +
-                                    "ofr_dis_empresa, ult_cmp_empresa, vnc_cmp_empresa " +
+                                    "ofr_dis_empresa, ult_cmp_empresa, vnc_cmp_empresa, tot_tkn_empresa, tot_ofr_empresa " +
                                     "FROM tblEmpresa " +
                                     "WHERE nit_empresa = ?;";
                      
@@ -124,6 +124,8 @@ public class Objetos {
                         obj.put("ofertas_disp", datos.getInt(13));
                         obj.put("ult_compra", Fechaformateador.format(datos.getDate(14)));
                         obj.put("vence_compra", Fechaformateador.format(datos.getDate(15)));
+                        obj.put("tot_tkn", datos.getInt(16));
+                        obj.put("tot_ofr", datos.getInt(17));
                         obj.put("trazas", Listas.ObtenerTrazaTknByEmpresa(id));
                     }
                     datos.close();

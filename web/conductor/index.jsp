@@ -392,7 +392,7 @@ if(session.getAttribute("user") == null){
                         <!--<i class="fa fa-comment"></i>&nbsp;<a href="#" onclick="visualizar_addcomment()">Comparte una actualización</a>-->
                         <span class="form-inline">
                             <label class="etiqueta_e"><i class="fa fa-edit"></i> Palabra clave:</label>
-                            <input type="text" class="form-control" name="p_clave" placeholder="Palabra clave"/>  
+                            <input type="text" class="form-control texto_e" name="p_clave" placeholder="Palabra clave"/>  
                             <label class="etiqueta_e"><i class="fa fa-map-marker"></i> Lugar:</label>
                             <select class="form-control selector_e_min" name="lugar" >
                                 <option>Lugar</option>
@@ -414,16 +414,18 @@ if(session.getAttribute("user") == null){
                     
                     <div class="panel-body" >
                         
-                        <div class="panel panel-info">
-                            <div class="panel-heading">    
-                                <i class="fa fa-map-marker"> <b>Barranquilla</b></i>
-                            </div>
-                            <div class="panel-body">
-                                <p style="font-size: 20px; color: #0088cc;"><span ng-bind="of.titulo"></span></p>
-                                <p><span ng-bind="of.descripcion"></span></p>
-                            </div>
-                            <div class="panel-footer">                                            
-                                Publicado: <b><span ng-bind="of.fecha"></span></b>
+                        <div class="col-lg-12" ng-repeat="of in ctrl.ofertas">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">    
+                                    <i class="fa fa-map-marker"> <b>Barranquilla</b></i>
+                                </div>
+                                <div class="panel-body">
+                                    <p style="font-size: 20px; color: #0088cc;"><span ng-bind="of.titulo"></span></p>
+                                    <p><span ng-bind="of.descripcion"></span></p>
+                                </div>
+                                <div class="panel-footer">                                            
+                                    Publicado: <b><span ng-bind="of.fecha"></span></b>
+                                </div>
                             </div>
                         </div>
                         

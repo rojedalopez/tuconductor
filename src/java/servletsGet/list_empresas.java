@@ -22,11 +22,21 @@ import javax.servlet.http.HttpSession;
  *
  * @author HP I7
  */
-public class list_oferta extends HttpServlet {
+public class list_empresas extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
+        
         HttpSession session =  null;
  
         session = request.getSession(false);
@@ -34,11 +44,7 @@ public class list_oferta extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
-                String codigo = "";
-                if(u.getRol()==2){
-                    codigo = u.getCodigo();
-                }
-                String x = Listas.listaOfertas(codigo).toJSONString();//?
+                String x = Listas.listaEmpresas().toJSONString();//?
                 System.out.println(x);
                 out.print(x);
             }else{
@@ -46,16 +52,6 @@ public class list_oferta extends HttpServlet {
             }
         }
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -71,7 +67,7 @@ public class list_oferta extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(list_oferta.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(list_empresas.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

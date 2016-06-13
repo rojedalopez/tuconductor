@@ -494,4 +494,125 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
 		
     };
 
+}]).controller('ProfileAdminController', ['$scope', 'ProfileAdminService', function($scope, ProfileAdminService) {
+    var self = this;
+    self.traza={fecha:"",hora:"",evento:""};
+    //self.list_trazas=[];
+    self.empresa={nit:"",r_social:"", dir:"", tel:"", cam_com:"", doc_replegal:"",nombre_replegal:"", 
+    email_replegal:"", tel_replegal:"", demo:false, id_plan:0, tkn_disp:0, ofertas_disp:0, ult_compra:"", vence_compra:"", tot_tkn:0, tot_ofr:0, trazas:[]}
+    self.list_empresas=[];    
+    
+    self.llenarEmpresas = function(){
+        ProfileAdminService.llenarEmpresas().then(function(d) {
+            self.list_empresas = d;
+        },function(errResponse){
+            console.error('Error while fetching Currencies');
+        });
+    };
+        
+    self.edit_empresa = function(id){
+        for(var i = 0; i < self.list_empresas.length; i++){
+            if(self.list_empresas[i].nit === id) {
+               self.empresa = angular.copy(self.list_empresas[i]);
+               self.empresa.ult_compra=new Date(self.empresa.ult_compra);
+               self.empresa.vence_compra=new Date(self.empresa.vence_compra);
+               modal_editempresa.modal( "show" );
+               break;
+            }
+        }
+    };
+    
+    self.llenarEmpresas();
+    
+    self.open_info_adicional = function(id){
+        for(var i = 0; i < self.list_empresas.length; i++){
+            if(self.list_empresas[i].nit === id) {
+               self.empresa = angular.copy(self.list_empresas[i]);
+               self.empresa.ult_compra=new Date(self.empresa.ult_compra);
+               self.empresa.vence_compra=new Date(self.empresa.vence_compra);
+               self.list_trazas = self.empresa;
+               modal_editadicional.modal( "show" );
+               break;
+            }
+        }
+    };
+    
+    self.dtOptions = {
+            scrollY: 500,
+            bAutoWidth:true,
+            stateSave: true,
+            language: {
+                "lengthMenu": "Mostrar _MENU_ registros",
+                "zeroRecords": "No se encontraron registros",
+                "info": "",
+                "infoEmpty": "No se encontraron registros",
+                "infoFiltered": "(filtrado de _MAX_ registros)",
+                "search": "Buscar"
+            }
+        };
+        
+          
+}]).factory('ProfileAdminService', ['$http', '$q', function($http, $q){
+    return {
+        llenarEmpresas: function() {
+            return $http.post('../list_empresas').then(function(response){
+		return response.data;
+            },function(errResponse){
+                console.error('Error while fetching expenses');
+                return $q.reject(errResponse);
+            });
+	}
+    };
+}]).controller('ProfileAdmin_Conductor_Controller', ['$scope', 'ProfileAdmin_Conductor_Service', function($scope, ProfileAdmin_Conductor_Service) {
+    var self = this;
+    
+    self.empleado={email:"", cod:"",nombre:"", apellido:"", puntaje:0, hoja_vida:"",experiencia:0};
+    self.list_empleados=[];
+    
+    self.llenarEmpleados = function(){
+        ProfileAdmin_Conductor_Service.llenarEmpleados().then(function(d) {
+            self.list_empleados = d;
+        },function(errResponse){
+            console.error('Error while fetching Currencies');
+        });
+    };
+    
+    self.edit_empleado = function(id){
+        for(var i = 0; i < self.list_empleados.length; i++){
+            if(self.list_empleados[i].cod === id) {
+               self.empleado = angular.copy(self.list_empleados[i]);
+               modal_editempleado.modal( "show" );
+               break;
+            }
+        }
+    };
+    
+    self.llenarEmpleados();
+    
+    self.dtOptions = {
+            scrollY: 500,
+            bAutoWidth:true,
+            stateSave: true,
+            language: {
+                "lengthMenu": "Mostrar _MENU_ registros",
+                "zeroRecords": "No se encontraron registros",
+                "info": "",
+                "infoEmpty": "No se encontraron registros",
+                "infoFiltered": "(filtrado de _MAX_ registros)",
+                "search": "Buscar"
+            }
+        };
+        
+          
+}]).factory('ProfileAdmin_Conductor_Service', ['$http', '$q', function($http, $q){
+    return {
+        llenarEmpleados: function() {
+            return $http.post('../list_employes').then(function(response){
+		return response.data;
+            },function(errResponse){
+                console.error('Error while fetching expenses');
+                return $q.reject(errResponse);
+            });
+	}
+    };
 }]);

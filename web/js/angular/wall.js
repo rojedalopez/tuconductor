@@ -3,11 +3,8 @@
 angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallService', function($scope, WallService) {
     var self = this;
     self.usuario={mail:"", password:"",name:"", lastname:"", phone:""};
-    self.publicaciones=[];
-    self.publicacion={id:null, fecha:Date(), origen:"", cod_origen:"", destino:"", comentario:"", archivo:"", me_gusta:0, desde:"", num_comentario:0};
-    self.comments=[];
-    self.comment={id:null,fecha:Date(), origen:"", cod_origen:"", comentario:"", desde:"", id_publicacion:""};
-    self.comentario = "";
+    self.oferta={id:-1, titulo:"", descripcion:"", vacante:"", salario:0,tipo:1, estado:false, fecha_creacion:"", fecha_contratacion:""};
+    self.ofertas=[];
     self.hoja_vida={file:null, fecha:"", token:"", nombre:"", archivo:""};
 
     self.SaveHV = function(hoja_vida){
@@ -17,20 +14,6 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
             }
         },function(errResponse){
             console.error('Error while creating Paper.' + errResponse);
-        });
-    };
-          
-    self.SaveComment = function(comment){
-        WallService.SaveComment(comment).then(function(d){
-            if(d==="true"){
-                console.log(self.publicacion.comment.length);
-                self.publicacion.comment.push(self.comment);
-                console.log(self.publicacion.comment.length);
-            }else{
-                console.log("no entro");
-            }
-        },function(errResponse){
-            console.error('Error while creating Paper.');
         });
     };
           
@@ -46,23 +29,16 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
         });
     };
           
-    self.llenarPublicaciones = function(){
-        WallService.llenarPublicaciones().then(function(d) {
-            self.publicaciones = d;
+    self.listaOfertas = function(){
+        WallService.listaOfertas().then(function(d){
+            self.ofertas = d;
         },function(errResponse){
-            console.error('Error while fetching Currencies');
+            console.error('Error while creating Paper.');
         });
     };
           
-    self.llenarComentarios = function(id){
-        WallService.llenarComentarios(id).then(function(d) {
-            self.comments = d;
-        },function(errResponse){
-            console.error('Error while fetching Currencies');
-        });
-    };
-          
-    self.llenarPublicaciones();
+
+    self.listaOfertas();
     self.getDatosUser();
           
     self.submit = function() {
@@ -76,28 +52,7 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
     };
            
            
-    self.sendComment = function(id,codigo){
-        self.selectPublicacion(id);
-        self.comment.id = -1;
-        self.comment.cod_origen = codigo;
-        self.comment.id_publicacion = id;
-        self.comment.comentario = self.comentario;
-        self.SaveComment(self.comment);
-    };
-          
-    self.selectPublicacion = function(id){
-        for(var i = 0; i < self.publicaciones.length; i++){
-            if(self.publicaciones[i].id == id) {
-               self.publicacion = angular.copy(self.publicaciones[i]);
-               break;
-            }
-        }
-    };
-          
-    self.openComment = function(id){
-        self.llenarComentarios(id);
-        popup.modal( "show" );
-    };
+    
 
     self.reset = function(){
 
@@ -105,32 +60,6 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
           
 }]).factory('WallService', ['$http', '$q', function($http, $q){
     return {
-        SaveComment: function(comment){
-            return $http.post('../comment', comment).then(function(response){
-                console.log(response.data);
-                return response.data;
-            },function(errResponse){
-                console.error('Error while updating paper ' +errResponse);
-                return $q.reject(errResponse);
-            });
-	},
-        llenarPublicaciones: function() {
-            return $http.post('../profile').then(function(response){
-		return response.data;
-            },function(errResponse){
-                console.error('Error while fetching expenses');
-                return $q.reject(errResponse);
-            });
-	},
-        llenarComentarios: function(id) {
-            return $http.post('../listcomments?id='+id).then(function(response){
-                return response.data;
-            },function(errResponse){
-                console.error('Error while fetching expenses');
-                return $q.reject(errResponse);
-            });
-        },
-        
         SaveHV: function(hoja_vida){
             var fd = new FormData();
             fd.append("file", hoja_vida.file);
@@ -154,7 +83,15 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
 		console.error('Error while updating paper ' +errResponse);
 		return $q.reject(errResponse);
             });
-	}
+	},
+        listaOfertas: function() {
+            return $http.post('../list_oferta').then(function(response){
+                return response.data;
+            },function(errResponse){
+                console.error('Error while fetching expenses');
+                return $q.reject(errResponse);
+            });
+}
     };
 }]).directive('sameAs', function() { return {
     require : 'ngModel',
@@ -196,7 +133,7 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
     self.empleados=[];
     
     self.info_empresa={nit:"",r_social:"", dir:"", tel:"", cam_com:"", doc_replegal:"",nombre_replegal:"", 
-    email_replegal:"", tel_replegal:"", demo:false, id_plan:0, tkn_disp:0, ofertas_disp:0, ult_compra:"", vence_compra:""}
+    email_replegal:"", tel_replegal:"", demo:false, id_plan:0, tkn_disp:0, ofertas_disp:0, ult_compra:"", vence_compra:"", tot_tkn:0, tot_ofr:0};
     self.list_trazas=[];
     self.traza={fecha:"",hora:"",evento:""};
     

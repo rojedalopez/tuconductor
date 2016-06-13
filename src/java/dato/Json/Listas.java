@@ -244,11 +244,16 @@ public class Listas {
                     String instruccion="";
                      
                     instruccion =   "SELECT id_oferta, fch_oferta, vac_oferta, tit_oferta, dsc_oferta, tip_ctr_oferta, " +
-                                    "fch_ctr_oferta, sal_oferta, act_oferta " +
-                                    "FROM tuconductor.tblOferta WHERE nit_empresa = ? ORDER BY fch_oferta DESC;";
+                                    "fch_ctr_oferta, sal_oferta, act_oferta FROM tuconductor.tblOferta ";
+                    if(!cod.equals("")){
+                        instruccion  += " WHERE nit_empresa = ? ";
+                    }
+                    instruccion  += "ORDER BY fch_oferta DESC;";
                      
                     insertar=conn.prepareStatement(instruccion);
-                    insertar.setString(1, cod);
+                    if(!cod.equals("")){
+                        insertar.setString(1, cod);
+                    }
                     datos=insertar.executeQuery();
                     while (datos.next()) {
                         obj = new JSONObject();
@@ -361,6 +366,67 @@ public class Listas {
                         obj.put("hoja_vida", datos.getString(6));
                         obj.put("experiencia", datos.getInt(7));
                         
+                        lista.add(obj);
+                    }
+                    datos.close();
+                    conn.close();
+                    return lista;
+             
+        }catch (SQLException e) {
+            System.out.println("error SQLException en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }catch (Exception e){
+                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }finally{
+                    if(!conn.isClosed()){
+                        conn.close();
+                    }
+                }
+        return lista;
+    }
+    
+    
+    public static JSONArray listaEmpresas() throws SQLException{
+        JSONObject obj = null;
+        JSONArray lista = new JSONArray();
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        Statement stm=null;
+        ResultSet datos=null;
+             
+        try{
+                    conn=conexion();
+                    String instruccion="";
+                     
+                    instruccion =   "SELECT nit_empresa, nbr_empresa, dir_empresa, tel_empresa, cam_com_empresa, doc_rep_empresa,"+
+                                    "nbr_rep_empresa, eml_rep_empresa, tel_rep_empresa, dmo_empresa, id_plan, tkn_dis_empresa, "+
+                                    "ofr_dis_empresa, ult_cmp_empresa, vnc_cmp_empresa, tot_tkn_empresa, tot_ofr_empresa " +
+                                    "FROM tblEmpresa ORDER BY nbr_empresa";
+                     
+                    insertar=conn.prepareStatement(instruccion);
+                    
+                    datos=insertar.executeQuery();
+                    while (datos.next()) {
+                        obj = new JSONObject();
+                        obj.put("nit", datos.getString(1)); 
+                        obj.put("r_social", datos.getString(2));
+                        obj.put("dir", datos.getString(3));
+                        obj.put("tel", datos.getString(4));
+                        obj.put("cam_com", datos.getString(5));
+                        obj.put("doc_replegal", datos.getString(6));
+                        obj.put("nombre_replegal", datos.getString(7));
+                        obj.put("email_replegal", datos.getString(8));
+                        obj.put("tel_replegal", datos.getString(9));
+                        obj.put("demo", datos.getBoolean(10));
+                        obj.put("id_plan", datos.getInt(11));
+                        obj.put("tkn_disp", datos.getInt(12));
+                        obj.put("ofertas_disp", datos.getInt(13));
+                        obj.put("ult_compra", Fechaformateador.format(datos.getDate(14)));
+                        obj.put("vence_compra", Fechaformateador.format(datos.getDate(15)));
+                        obj.put("tot_tkn", datos.getInt(16));
+                        obj.put("tot_ofr", datos.getInt(17));
+                        obj.put("trazas", Listas.ObtenerTrazaTknByEmpresa(datos.getString(1)));
                         lista.add(obj);
                     }
                     datos.close();
