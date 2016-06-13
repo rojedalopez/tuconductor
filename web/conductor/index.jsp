@@ -43,6 +43,15 @@ if(session.getAttribute("user") == null){
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
     <script src="../js/dist/angular-datatables.min.js"></script>   
     
+    <script type="text/javascript">
+        var popup = $( "#Modal_comment" );
+        $(document).ready(function(){
+           $("#Modal_viewoferta").modal("show"); 
+        });
+        function open_modal_subirhv(){
+            $("#Modal_hv").modal("show");
+        }
+    </script>
     <script type="text/javascript" src="../js/app.js"></script>      
     <script type="text/javascript" src="../js/angular/profile.js"></script>
     <script type="text/javascript" src="../js/angular/sign.js"></script>
@@ -57,13 +66,7 @@ if(session.getAttribute("user") == null){
     <script src="../assets/plugins/morris/morris.js"></script>
     <script src="../assets/scripts/dashboard-demo.js"></script>
     
-    <script type="text/javascript">
-        var popup = $( "#Modal_comment" );
-        
-        function open_modal_subirhv(){
-            $("#Modal_hv").modal("show");
-        }
-    </script>
+    
     
    </head>
 <body ng-app="myApp" class="ng-cloak">
@@ -521,6 +524,41 @@ if(session.getAttribute("user") == null){
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary" ng-disabled="form_hv.$invalid">Subir hoja de vida</button>
+                    </div>
+                </form>
+
+                </div>
+                
+            </div>
+        </div>
+    </div>
+        
+        
+    <div class="modal fade" id="Modal_viewoferta" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Oferta seleccionada</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info">
+                        <label style="font-size: 16px;">Se Requiere ingeniero de sistemas,Se Requiere ingeniero de sistemas</label>
+                    </div>
+                    <label style="font-size: 14px; color: #0088cc;">Descripción:</label><br/>
+                    <p>Se requiere personal con experiencia mínima de 6 meses en ventas, atención al cliente, manejo de dinero, manejo de caja, datafono, salario: 689455 + prestaciones + Auxilio de Transporte. Horario: lunes a domingo, incluido festivos por turnos rotativos de 8 horas, se descansa un día cada 8 días.</p>
+                    <label style="font-size: 14px; color: #0088cc;">Localizacion:</label>
+                    <p><i class="fa fa-map-marker"></i> Barranquilla</p>
+                    <label style="font-size: 14px; color: #0088cc;">Salario:</label>
+                    <p><i class="fa fa-dollar"></i> 1.800.000</p>
+                    <label style="font-size: 14px; color: #0088cc;">Cantidad de vacantes:</label>
+                    <p><i class="fa fa-folder-open"></i> 4</p>
+                    <label style="font-size: 14px; color: #0088cc;">Fecha de contratación:</label>
+                    <p><i class="fa fa-calendar"></i> 09/08/2016</p>
+                <form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" ng-disabled="form_hv.$invalid">Aplicar</button>
                     </div>
                 </form>
 
