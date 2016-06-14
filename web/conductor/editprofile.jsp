@@ -341,11 +341,11 @@ if(session.getAttribute("user") == null){
                         </div>
                         <!--end search section-->
                     </li>
-                    <li class="selected">
-                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Inicio</a>
-                    </li>
                     <li>
-                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Perfil<span class="fa arrow"></span></a>
+                        <a href="index.jsp"><i class="fa fa-home fa-fw"></i>Inicio</a>
+                    </li>
+                    <li class="selected">
+                        <a href="#"><i class="fa fa-user fa-fw"></i> Perfil<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
                                 <a href="#editperfil.html">Editar perfil</a>
@@ -358,24 +358,6 @@ if(session.getAttribute("user") == null){
                             </li>
                         </ul>
                         <!-- second-level-items -->
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Mi Red<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="flot.html">Contactos</a>
-                            </li>
-                            <li>
-                                <a href="morris.html">Buscar contactos</a>
-                            </li>
-                        </ul>
-                        <!-- second-level-items -->
-                    </li>
-                    <li>
-                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Empleos</a>
-                    </li>
-                    <li>
-                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Intereses</a>
                     </li>
                 </ul>
                 <!-- end side-menu -->
