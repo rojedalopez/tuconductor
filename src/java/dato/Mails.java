@@ -312,7 +312,7 @@ public class Mails {
 "        </h2></center>\n" +
 "       <center style='padding: 20px 10px;'>\n" +
 "               <a style='color:white; background-color:red; border: solid 1px white;padding: 17px;text-decoration:none; \n" +
-"                  cursor:pointer;font-weight:bold;' href='http://tuconductor.xyz/admin/editprofile-employed.jsp?user="+user+"'>Revisar</a>\n" +
+"                  cursor:pointer;font-weight:bold;' href='http://tuconductor.xyz/admin/editprofile-employed.jsp?cod="+cod+"'>Revisar</a>\n" +
 "       </center>\n" +                     
 "       <p style='padding: 15px;'>\n" +
         mensaje+
