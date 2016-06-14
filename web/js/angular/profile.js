@@ -20,7 +20,8 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
 
     self.formaciones=[];
     self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0};
-
+    
+    self.Paises=[];
     self.dptos=[];
     self.dpto={id:0, departamento:"", ciudades:[]};
     self.ciudades=[];
@@ -92,6 +93,14 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         });
     };
     
+    self.listaPaises = function() {
+        ProfileService.listaPaises().then(function(d){
+            self.Paises = d;
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+        });
+    };
+
     self.selectDpto = function(id){
         for(var i = 0; i < self.dptos.length; i++){
             if(self.dptos[i].id === id) {
@@ -126,6 +135,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
           
     self.llenarAnios();
     self.GetUsuarioGeneral();
+    self.listaPaises();
     self.listaDptosCiudad();
     
     self.submitDP = function(){
@@ -237,243 +247,6 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         {'ID': 3, 'Value': 'Bachillerato / educacion Media'},
         {'ID': 4, 'Value': 'Universidad / Carrera Tecnica'}  
     ];
-
-    self.Paises = [
-        {ID: 'AF', Nombre : 'Afganistán'},
-        {ID: 'AL', Nombre : 'Albania'},
-        {ID: 'DE', Nombre : 'Alemania'},
-        {ID: 'AD', Nombre : 'Andorra'},
-        {ID: 'AO', Nombre : 'Angola'},
-        {ID: 'AI', Nombre : 'Anguilla'},
-        {ID: 'AQ', Nombre : 'Antártida'},
-        {ID: 'AG', Nombre : 'Antigua y Barbuda'},
-        {ID: 'AN', Nombre : 'Antillas Holandesas'},
-        {ID: 'SA', Nombre : 'Arabia Saudí'},
-        {ID: 'DZ', Nombre : 'Argelia'},
-        {ID: 'AR', Nombre : 'Argentina'},
-        {ID: 'AM', Nombre : 'Armenia'},
-        {ID: 'AW', Nombre : 'Aruba'},
-        {ID: 'AU', Nombre : 'Australia'},
-        {ID: 'AT', Nombre : 'Austria'},
-        {ID: 'AZ', Nombre : 'Azerbaiyán'},
-        {ID: 'BS', Nombre : 'Bahamas'},
-        {ID: 'BH', Nombre : 'Bahrein'},
-        {ID: 'BD', Nombre : 'Bangladesh'},
-        {ID: 'BB', Nombre : 'Barbados'},
-        {ID: 'BE', Nombre : 'Bélgica'},
-        {ID: 'BZ', Nombre : 'Belice'},
-        {ID: 'BJ', Nombre : 'Benin'},
-        {ID: 'BM', Nombre : 'Bermudas'},
-        {ID: 'BY', Nombre : 'Bielorrusia'},
-        {ID: 'MM', Nombre : 'Birmania'},
-        {ID: 'BO', Nombre : 'Bolivia'},
-        {ID: 'BA', Nombre : 'Bosnia y Herzegovina'},
-        {ID: 'BW', Nombre : 'Botswana'},
-        {ID: 'BR', Nombre : 'Brasil'},
-        {ID: 'BN', Nombre : 'Brunei'},
-        {ID: 'BG', Nombre : 'Bulgaria'},
-        {ID: 'BF', Nombre : 'Burkina Faso'},
-        {ID: 'BI', Nombre : 'Burundi'},
-        {ID: 'BT', Nombre : 'Bután'},
-        {ID: 'CV', Nombre : 'Cabo Verde'},
-        {ID: 'KH', Nombre : 'Camboya'},
-        {ID: 'CM', Nombre : 'Camerún'},
-        {ID: 'CA', Nombre : 'Canadá'},
-        {ID: 'TD', Nombre : 'Chad'},
-        {ID: 'CL', Nombre : 'Chile'},
-        {ID: 'CN', Nombre : 'China'},
-        {ID: 'CY', Nombre : 'Chipre'},
-        {ID: 'VA', Nombre : 'Ciudad del Vaticano (Santa Sede)'},
-        {ID: 'CO', Nombre : 'Colombia'},
-        {ID: 'KM', Nombre : 'Comores'},
-        {ID: 'CG', Nombre : 'Congo'},
-        {ID: 'CD', Nombre : 'Congo, República Democrática del'},
-        {ID: 'KR', Nombre : 'Corea'},
-        {ID: 'KP', Nombre : 'Corea del Norte'},
-        {ID: 'CI', Nombre : 'Costa de Marfíl'},
-        {ID: 'CR', Nombre : 'Costa Rica'},
-        {ID: 'HR', Nombre : 'Croacia (Hrvatska)'},
-        {ID: 'CU', Nombre : 'Cuba'},
-        {ID: 'DK', Nombre : 'Dinamarca'},
-        {ID: 'DJ', Nombre : 'Djibouti'},
-        {ID: 'DM', Nombre : 'Dominica'},
-        {ID: 'EC', Nombre : 'Ecuador'},
-        {ID: 'EG', Nombre : 'Egipto'},
-        {ID: 'SV', Nombre : 'El Salvador'},
-        {ID: 'AE', Nombre : 'Emiratos Árabes Unidos'},
-        {ID: 'ER', Nombre : 'Eritrea'},
-        {ID: 'SI', Nombre : 'Eslovenia'},
-        {ID: 'ES', Nombre : 'España'},
-        {ID: 'US', Nombre : 'Estados Unidos'},
-        {ID: 'EE', Nombre : 'Estonia'},
-        {ID: 'ET', Nombre : 'Etiopía'},
-        {ID: 'FJ', Nombre : 'Fiji'},
-        {ID: 'PH', Nombre : 'Filipinas'},
-        {ID: 'FI', Nombre : 'Finlandia'},
-        {ID: 'FR', Nombre : 'Francia'},
-        {ID: 'GA', Nombre : 'Gabón'},
-        {ID: 'GM', Nombre : 'Gambia'},
-        {ID: 'GE', Nombre : 'Georgia'},
-        {ID: 'GH', Nombre : 'Ghana'},
-        {ID: 'GI', Nombre : 'Gibraltar'},
-        {ID: 'GD', Nombre : 'Granada'},
-        {ID: 'GR', Nombre : 'Grecia'},
-        {ID: 'GL', Nombre : 'Groenlandia'},
-        {ID: 'GP', Nombre : 'Guadalupe'},
-        {ID: 'GU', Nombre : 'Guam'},
-        {ID: 'GT', Nombre : 'Guatemala'},
-        {ID: 'GY', Nombre : 'Guayana'},
-        {ID: 'GF', Nombre : 'Guayana Francesa'},
-        {ID: 'GN', Nombre : 'Guinea'},
-        {ID: 'GQ', Nombre : 'Guinea Ecuatorial'},
-        {ID: 'GW', Nombre : 'Guinea-Bissau'},
-        {ID: 'HT', Nombre : 'Haití'},
-        {ID: 'HN', Nombre : 'Honduras'},
-        {ID: 'HU', Nombre : 'Hungría'},
-        {ID: 'IN', Nombre : 'India'},
-        {ID: 'ID', Nombre : 'Indonesia'},
-        {ID: 'IQ', Nombre : 'Irak'},
-        {ID: 'IR', Nombre : 'Irán'},
-        {ID: 'IE', Nombre : 'Irlanda'},
-        {ID: 'BV', Nombre : 'Isla Bouvet'},
-        {ID: 'CX', Nombre : 'Isla de Christmas'},
-        {ID: 'IS', Nombre : 'Islandia'},
-        {ID: 'KY', Nombre : 'Islas Caimán'},
-        {ID: 'CK', Nombre : 'Islas Cook'},
-        {ID: 'CC', Nombre : 'Islas de Cocos o Keeling'},
-        {ID: 'FO', Nombre : 'Islas Faroe'},
-        {ID: 'HM', Nombre : 'Islas Heard y McDonald'},
-        {ID: 'FK', Nombre : 'Islas Malvinas'},
-        {ID: 'MP', Nombre : 'Islas Marianas del Norte'},
-        {ID: 'MH', Nombre : 'Islas Marshall'},
-        {ID: 'UM', Nombre : 'Islas menores de Estados Unidos'},
-        {ID: 'PW', Nombre : 'Islas Palau'},
-        {ID: 'SB', Nombre : 'Islas Salomñn'},
-        {ID: 'SJ', Nombre : 'Islas Svalbard y Jan Mayen'},
-        {ID: 'TK', Nombre : 'Islas Tokelau'},
-        {ID: 'TC', Nombre : 'Islas Turks y Caicos'},
-        {ID: 'VI', Nombre : 'Islas Vírgenes (EEUU)'},
-        {ID: 'VG', Nombre : 'Islas Vírgenes (Reino Unido)'},
-        {ID: 'WF', Nombre : 'Islas Wallis y Futuna'},
-        {ID: 'IL', Nombre : 'Israel'},
-        {ID: 'IT', Nombre : 'Italia'},
-        {ID: 'JM', Nombre : 'Jamaica'},
-        {ID: 'JP', Nombre : 'Japón'},
-        {ID: 'JO', Nombre : 'Jordania'},
-        {ID: 'KZ', Nombre : 'Kazajistán'},
-        {ID: 'KE', Nombre : 'Kenia'},
-        {ID: 'KG', Nombre : 'Kirguizistán'},
-        {ID: 'KI', Nombre : 'Kiribati'},
-        {ID: 'KW', Nombre : 'Kuwait'},
-        {ID: 'LA', Nombre : 'Laos'},
-        {ID: 'LS', Nombre : 'Lesotho'},
-        {ID: 'LV', Nombre : 'Letonia'},
-        {ID: 'LB', Nombre : 'Líbano'},
-        {ID: 'LR', Nombre : 'Liberia'},
-        {ID: 'LY', Nombre : 'Libia'},
-        {ID: 'LI', Nombre : 'Liechtenstein'},
-        {ID: 'LT', Nombre : 'Lituania'},
-        {ID: 'LU', Nombre : 'Luxemburgo'},
-        {ID: 'MK', Nombre : 'Macedonia, Ex-República Yugoslava de'},
-        {ID: 'MG', Nombre : 'Madagascar'},
-        {ID: 'MY', Nombre : 'Malasia'},
-        {ID: 'MW', Nombre : 'Malawi'},
-        {ID: 'MV', Nombre : 'Maldivas'},
-        {ID: 'ML', Nombre : 'Malí'},
-        {ID: 'MT', Nombre : 'Malta'},
-        {ID: 'MA', Nombre : 'Marruecos'},
-        {ID: 'MQ', Nombre : 'Martinica'},
-        {ID: 'MU', Nombre : 'Mauricio'},
-        {ID: 'MR', Nombre : 'Mauritania'},
-        {ID: 'YT', Nombre : 'Mayotte'},
-        {ID: 'MX', Nombre : 'México'},
-        {ID: 'FM', Nombre : 'Micronesia'},
-        {ID: 'MD', Nombre : 'Moldavia'},
-        {ID: 'MC', Nombre : 'Mñnaco'},
-        {ID: 'MN', Nombre : 'Mongolia'},
-        {ID: 'MS', Nombre : 'Montserrat'},
-        {ID: 'MZ', Nombre : 'Mozambique'},
-        {ID: 'NA', Nombre : 'Namibia'},
-        {ID: 'NR', Nombre : 'Nauru'},
-        {ID: 'NP', Nombre : 'Nepal'},
-        {ID: 'NI', Nombre : 'Nicaragua'},
-        {ID: 'NE', Nombre : 'Níger'},
-        {ID: 'NG', Nombre : 'Nigeria'},
-        {ID: 'NU', Nombre : 'Niue'},
-        {ID: 'NF', Nombre : 'Norfolk'},
-        {ID: 'NO', Nombre : 'Noruega'},
-        {ID: 'NC', Nombre : 'Nueva Caledonia'},
-        {ID: 'NZ', Nombre : 'Nueva Zelanda'},
-        {ID: 'OM', Nombre : 'Omán'},
-        {ID: 'NL', Nombre : 'Países Bajos'},
-        {ID: 'PA', Nombre : 'Panamá'},
-        {ID: 'PG', Nombre : 'Papúa Nueva Guinea'},
-        {ID: 'PK', Nombre : 'Paquistán'},
-        {ID: 'PY', Nombre : 'Paraguay'},
-        {ID: 'PE', Nombre : 'Perú'},
-        {ID: 'PN', Nombre : 'Pitcairn'},
-        {ID: 'PF', Nombre : 'Polinesia Francesa'},
-        {ID: 'PL', Nombre : 'Polonia'},
-        {ID: 'PT', Nombre : 'Portugal'},
-        {ID: 'PR', Nombre : 'Puerto Rico'},
-        {ID: 'QA', Nombre : 'Qatar'},
-        {ID: 'UK', Nombre : 'Reino Unido'},
-        {ID: 'CF', Nombre : 'República Centroafricana'},
-        {ID: 'CZ', Nombre : 'República Checa'},
-        {ID: 'ZA', Nombre : 'República de Sudáfrica'},
-        {ID: 'DO', Nombre : 'República Dominicana'},
-        {ID: 'SK', Nombre : 'República Eslovaca'},
-        {ID: 'RE', Nombre : 'Reuniñn'},
-        {ID: 'RW', Nombre : 'Ruanda'},
-        {ID: 'RO', Nombre : 'Rumania'},
-        {ID: 'RU', Nombre : 'Rusia'},
-        {ID: 'EH', Nombre : 'Sahara Occidental'},
-        {ID: 'KN', Nombre : 'Saint Kitts y Nevis'},
-        {ID: 'WS', Nombre : 'Samoa'},
-        {ID: 'AS', Nombre : 'Samoa Americana'},
-        {ID: 'SM', Nombre : 'San Marino'},
-        {ID: 'VC', Nombre : 'San Vicente y Granadinas'},
-        {ID: 'SH', Nombre : 'Santa Helena'},
-        {ID: 'LC', Nombre : 'Santa Lucía'},
-        {ID: 'ST', Nombre : 'Santo Tomé y Príncipe'},
-        {ID: 'SN', Nombre : 'Senegal'},
-        {ID: 'SC', Nombre : 'Seychelles'},
-        {ID: 'SL', Nombre : 'Sierra Leona'},
-        {ID: 'SG', Nombre : 'Singapur'},
-        {ID: 'SY', Nombre : 'Siria'},
-        {ID: 'SO', Nombre : 'Somalia'},
-        {ID: 'LK', Nombre : 'Sri Lanka'},
-        {ID: 'PM', Nombre : 'St Pierre y Miquelon'},
-        {ID: 'SZ', Nombre : 'Suazilandia'},
-        {ID: 'SD', Nombre : 'Sudán'},
-        {ID: 'SE', Nombre : 'Suecia'},
-        {ID: 'CH', Nombre : 'Suiza'},
-        {ID: 'SR', Nombre : 'Surinam'},
-        {ID: 'TH', Nombre : 'Tailandia'},
-        {ID: 'TW', Nombre : 'Taiwán'},
-        {ID: 'TZ', Nombre : 'Tanzania'},
-        {ID: 'TJ', Nombre : 'Tayikistán'},
-        {ID: 'TF', Nombre : 'Territorios franceses del Sur'},
-        {ID: 'TP', Nombre : 'Timor Oriental'},
-        {ID: 'TG', Nombre : 'Togo'},
-        {ID: 'TO', Nombre : 'Tonga'},
-        {ID: 'TT', Nombre : 'Trinidad y Tobago'},
-        {ID: 'TN', Nombre : 'Túnez'},
-        {ID: 'TM', Nombre : 'Turkmenistán'},
-        {ID: 'TR', Nombre : 'Turquía'},
-        {ID: 'TV', Nombre : 'Tuvalu'},
-        {ID: 'UA', Nombre : 'Ucrania'},
-        {ID: 'UG', Nombre : 'Uganda'},
-        {ID: 'UY', Nombre : 'Uruguay'},
-        {ID: 'UZ', Nombre : 'Uzbekistán'},
-        {ID: 'VU', Nombre : 'Vanuatu'},
-        {ID: 'VE', Nombre : 'Venezuela'},
-        {ID: 'VN', Nombre : 'Vietnam'},
-        {ID: 'YE', Nombre : 'Yemen'},
-        {ID: 'YU', Nombre : 'Yugoslavia'},
-        {ID: 'ZM', Nombre : 'Zambia'},
-        {ID: 'ZW', Nombre : 'Zimbabue'}
-    ];
         
 }]).factory('ProfileService', ['$http', '$q', function($http, $q){
     return {
@@ -536,8 +309,15 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
                 console.error('Error while fetching expenses');
                 return $q.reject(errResponse);
             });
-	}
-		
+	},
+	listaPaises: function() {
+            return $http.post('../assets/paises.json').then(function(response){
+                return response.data;
+            },function(errResponse){
+                console.error('Error while fetching expenses');
+                return $q.reject(errResponse);
+            });
+	}	
     };
 
 }]).controller('ProfileAdminController', ['$scope', 'ProfileAdminService', function($scope, ProfileAdminService) {
