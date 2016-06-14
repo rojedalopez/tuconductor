@@ -244,7 +244,7 @@ public class Listas {
                     String instruccion="";
                      
                     instruccion =   "SELECT id_oferta, fch_oferta, vac_oferta, tit_oferta, dsc_oferta, tip_ctr_oferta, " +
-                                    "fch_ctr_oferta, sal_oferta, act_oferta FROM tuconductor.tblOferta ";
+                                    "fch_ctr_oferta, sal_oferta, act_oferta, pais_oferta, dpt_oferta, nbr_dpt_oferta, ciu_oferta FROM tuconductor.tblOferta ";
                     if(!cod.equals("")){
                         instruccion  += " WHERE nit_empresa = ? ";
                     }else{
@@ -268,7 +268,10 @@ public class Listas {
                         obj.put("fecha_contratacion", Fechaformateador.format(datos.getDate(7)));
                         obj.put("salario", datos.getFloat(8));
                         obj.put("estado", datos.getBoolean(9));
-                        
+                        obj.put("pais", datos.getString(10));
+                        obj.put("depto", datos.getInt(11));
+                        obj.put("depart", datos.getString(12));
+                        obj.put("ciudad", datos.getString(13));
                         lista.add(obj);
                     }
                     datos.close();
@@ -305,7 +308,7 @@ public class Listas {
                     instruccion =   "SELECT x.id_oferta, fch_oferta, vac_oferta, tit_oferta, dsc_oferta, tip_ctr_oferta, " +
                                     "fch_ctr_oferta, sal_oferta, act_oferta, " +
                                     "ifnull((SELECT CASE WHEN id_oferta IS NULL THEN 0 ELSE 1 END FROM tblVistaOferta " +
-                                    "WHERE cod_empleado = ? and id_oferta = x.id_oferta),0) as ya_vio " +
+                                    "WHERE cod_empleado = ? and id_oferta = x.id_oferta),0) as ya_vio, pais_oferta, dpt_oferta, nbr_dpt_oferta, ciu_oferta " +
                                     "FROM tblOferta as x ";
                     
                     insertar=conn.prepareStatement(instruccion);
@@ -324,7 +327,10 @@ public class Listas {
                         obj.put("salario", datos.getFloat(8));
                         obj.put("estado", datos.getBoolean(9));
                         obj.put("visto", datos.getBoolean(10));
-                        
+                        obj.put("pais", datos.getString(10));
+                        obj.put("depto", datos.getInt(11));
+                        obj.put("depart", datos.getString(12));
+                        obj.put("ciudad", datos.getString(13));
                         lista.add(obj);
                     }
                     datos.close();

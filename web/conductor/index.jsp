@@ -430,7 +430,7 @@ if(session.getAttribute("user") == null){
                         <div class="col-lg-12" ng-repeat="of in ctrl.ofertas">
                             <div ng-class="{ 'panel panel-info': !of.visto, ' panel panel-danger': of.visto }" ng-click="ctrl.editOferta(of.id)" style="cursor: pointer;">
                                 <div class="panel-heading">    
-                                    <i class="fa fa-map-marker"> <b>Barranquilla</b></i>                                    
+                                    <i class="fa fa-map-marker"> <b>{{of.ciudad + ', '+ of.depart + ', ' + of.pais}}</b></i>                                
                                 </div>
                                 <div class="panel-body">
                                     <p style="font-size: 20px; color: #0088cc;"><span ng-bind="of.titulo"></span></p>

@@ -57,6 +57,7 @@ if(session.getAttribute("user") == null){
         
     </script>
     
+    <script type="text/javascript" src="../js/date.js"></script>
     <script type="text/javascript" src="../js/app.js"></script>      
     <script type="text/javascript" src="../js/angular/profile.js"></script>
     <script type="text/javascript" src="../js/angular/sign.js"></script>
@@ -447,7 +448,7 @@ if(session.getAttribute("user") == null){
                                 <div class="col-lg-12" ng-repeat="of in ctrl.ofertas">
                                     <div class="panel panel-info">
                                         <div class="panel-heading">    
-                                            <i class="fa fa-map-marker"> <b>Barranquilla</b></i>
+                                            <i class="fa fa-map-marker"> <b>{{of.ciudad + ', '+ of.depart + ', ' + of.pais}}</b></i>
                                             <button type="button" class="close"><img src="../assets/img/delete_icon.png" width="18" height="18"></button>
                                             <button type="button" class="close" ng-click="ctrl.editOferta(of.id)"><img src="../assets/img/edit_icon.png"  width="18" height="18"></button>                                                
                                         </div>
@@ -506,13 +507,13 @@ if(session.getAttribute("user") == null){
                         <p>
                             <label class="etiqueta_e" for="pais">Pais</label>                                        
                             <select class="form-control selector_e"  name="pais" ng-model="ctrl.oferta.pais" ng-options="Pais.ID as Pais.Nombre for Pais in ctrl.Paises" ng-selected="ctrl.selectPais(ctrl.oferta.pais)">
-                                    <option value="" selected>--Seleccione Pais--</option>
+                                    <option value="">--Seleccione Pais--</option>
                             </select>
                         </p>
                         <p>
                             <label class="etiqueta_e" for="depto">Departamento:</label>                                        
                             <select class="form-control selector_e" ng-show="ctrl.colombia" name="depto" ng-model="ctrl.oferta.depto" ng-options="dpto.id as dpto.departamento for dpto in ctrl.dptos" ng-selected="ctrl.selectDpto(ctrl.oferta.depto)">
-                                <option value=-1 selected>--Seleccione Departamento--</option>
+                                <option value="-1">--Seleccione Departamento--</option>
                             </select>
                             <input type="text" ng-show="!ctrl.colombia" class="form-control texto"  name="depart" ng-model="ctrl.oferta.depart" >
                         </p>
