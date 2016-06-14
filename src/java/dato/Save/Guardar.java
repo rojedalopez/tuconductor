@@ -277,7 +277,7 @@ public class Guardar {
 
     }
     
-    public static boolean saveHV(String codigo, String archivo, String token, String nombre) throws ClassNotFoundException, SQLException{
+    public static boolean saveHV(String codigo, String archivo, String token, String nombre, String nombre_persona) throws ClassNotFoundException, SQLException{
          
         Connection conn=null;
         PreparedStatement insertar=null;
@@ -295,6 +295,7 @@ public class Guardar {
         insertar.setString(4, codigo);
                  
         if(insertar.executeUpdate()==1){
+            Mails.SendMailAgregoHV("jmcastilla91@gmail.com","INGRESO DE HOJA DE VIDA", "<b>"+nombre_persona+"</b> HA INGRESADO SU HOJA DE VIDA HACE UN INSTANTE",codigo);
             return true;
         }
          

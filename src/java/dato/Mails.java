@@ -23,8 +23,8 @@ public class Mails {
     public static void SendMail(String user, String token, String as, String textoBoton){
         String servidorSMTP = "smtp.gmail.com";
         String puerto = "587";
-        String usuario = "info.sappyme@gmail.com";
-        String password = "vale,.,270414";
+        String usuario = "tuconductor.noreplay@gmail.com";
+        String password = "tcsas2016";
         String asunto = as;
  
         Properties props = new Properties();
@@ -41,7 +41,7 @@ public class Mails {
  
          MimeMultipart alternative = new MimeMultipart("alternative");
          MimeMessage message = new MimeMessage(session);
-         message.setFrom(new InternetAddress("Sappyme Colombia <info.sappyme@gmail.com>"));
+         message.setFrom(new InternetAddress("Tuconductor Colombia <tuconductor.noreplay@gmail.com>"));
          MimeBodyPart html = new MimeBodyPart();
  
              html.setContent("<div style='font-size: 12px;color: #424242;width:100%;margin-left:auto;margin-right:auto;padding:10px;background-color: #E0E0E0;'>\n" +
@@ -112,8 +112,8 @@ public class Mails {
     public static void SendMailForgot(String user, String token, String as, String textoBoton){
         String servidorSMTP = "smtp.gmail.com";
         String puerto = "587";
-        String usuario = "info.sappyme@gmail.com";
-        String password = "vale,.,270414";
+        String usuario = "tuconductor.noreplay@gmail.com";
+        String password = "tcsas2016";
         String asunto = as;
  
         Properties props = new Properties();
@@ -130,7 +130,7 @@ public class Mails {
  
          MimeMultipart alternative = new MimeMultipart("alternative");
          MimeMessage message = new MimeMessage(session);
-         message.setFrom(new InternetAddress("Sappyme Colombia <info.sappyme@gmail.com>"));
+         message.setFrom(new InternetAddress("TuConductor Colombia <tuconductor.noreplay@gmail.com>"));
          MimeBodyPart html = new MimeBodyPart();
  
              html.setContent("<div style='font-size: 12px;color: #424242;width:100%;margin-left:auto;margin-right:auto;padding:10px;background-color: #E0E0E0;'>\n" +
@@ -202,8 +202,8 @@ public class Mails {
     public static void SendMailOferta(String user, String as, String mensaje){
         String servidorSMTP = "smtp.gmail.com";
         String puerto = "587";
-        String usuario = "info.sappyme@gmail.com";
-        String password = "vale,.,270414";
+        String usuario = "tuconductor.noreplay@gmail.com";
+        String password = "tcsas2016";
         String asunto = as;
  
         Properties props = new Properties();
@@ -220,7 +220,7 @@ public class Mails {
  
          MimeMultipart alternative = new MimeMultipart("alternative");
          MimeMessage message = new MimeMessage(session);
-         message.setFrom(new InternetAddress("Sappyme Colombia <info.sappyme@gmail.com>"));
+         message.setFrom(new InternetAddress("TuConductor Colombia <tuconductor.noreplay@gmail.com>"));
          MimeBodyPart html = new MimeBodyPart();
  
              html.setContent("<div style='font-size: 12px;color: #424242;width:100%;margin-left:auto;margin-right:auto;padding:10px;background-color: #E0E0E0;'>\n" +
@@ -234,6 +234,86 @@ public class Mails {
 "        <center><h2 style='font-weight: 250;font-size: 2.5em;margin: 0.5em 0.25em;display: inline-block;color: #3E4156;'>\n" +
               as + 
 "        </h2></center>\n" +
+"       <p style='padding: 15px;'>\n" +
+        mensaje+
+"       </p>\n" +
+"      </div>\n" +
+"      <div style='border-top: 1px solid #E0E0E0;padding:25px;'>\n" +
+"       <center>Por favor no responder a este email.</center>\n" +
+"       <center>Los correos electrónicos enviados a esta dirección no serán contestados.</center>\n" +
+"        <center>© 2016 TuConductor</center>\n" +
+"      </div>\n" +
+"    </div>\n" +
+"    </div>        \n" +
+"  </div>", "text/html");
+ 
+         /*BodyPart imgPart = new MimeBodyPart();
+         String fileName = imagen;
+ 
+ 
+ 
+         DataSource ds = new FileDataSource(fileName);
+         imgPart.setDataHandler(new DataHandler(ds));
+         imgPart.setHeader("Content-ID", "<logoimg>");
+         alternative.addBodyPart(imgPart); */
+         alternative.addBodyPart(html);
+ 
+         //se recorre la lista de correos del contrato
+ 
+ 
+         message.addRecipient(Message.RecipientType.CC, new InternetAddress(user));
+         message.setSubject(asunto);
+         message.setContent(alternative);
+ 
+         Transport tr = session.getTransport("smtp");
+         tr.connect(servidorSMTP, usuario, password);
+         message.saveChanges();   
+         tr.sendMessage(message, message.getAllRecipients());
+         tr.close();
+ 
+        } catch (MessagingException e) {
+        }
+    }
+    
+    public static void SendMailAgregoHV(String user, String as, String mensaje, String cod){
+        String servidorSMTP = "smtp.gmail.com";
+        String puerto = "587";
+        String usuario = "tuconductor.noreplay@gmail.com";
+        String password = "tcsas2016";
+        String asunto = as;
+ 
+        Properties props = new Properties();
+ 
+        props.put("mail.debug", "true");
+        props.put("mail.smtp.auth", true);
+        props.put("mail.smtp.starttls.enable", true);
+        props.put("mail.smtp.host", servidorSMTP);
+        props.put("mail.smtp.port", puerto);
+ 
+        Session session = Session.getInstance(props, null);
+ 
+        try {
+ 
+         MimeMultipart alternative = new MimeMultipart("alternative");
+         MimeMessage message = new MimeMessage(session);
+         message.setFrom(new InternetAddress("TuConductor Colombia <tuconductor.noreplay@gmail.com>"));
+         MimeBodyPart html = new MimeBodyPart();
+ 
+             html.setContent("<div style='font-size: 12px;color: #424242;width:100%;margin-left:auto;margin-right:auto;padding:10px;background-color: #E0E0E0;'>\n" +
+"            <div style='width: 70%; margin: 0 auto;background-color: #ffffff;'>\n" +
+"    <div style='border-bottom: 1px solid #E0E0E0;'>\n" +
+"      <div style='width: 100%;margin-left: auto;margin-right: auto;background-color: navy;height: 15px;'>\n" +
+"      </div>\n" +
+"    </div>\n" +
+"    <div style='box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);width: 100%;margin-left: auto;margin-right: auto;'>\n" +
+"      <div style='box-sizing: border-box;'>\n" +
+"        <center><h2 style='font-weight: 250;font-size: 2.5em;margin: 0.5em 0.25em;display: inline-block;color: #3E4156;'>\n" +
+              as + 
+"        </h2></center>\n" +
+"       <center style='padding: 20px 10px;'>\n" +
+"               <a style='color:white; background-color:red; border: solid 1px white;padding: 17px;text-decoration:none; \n" +
+"                  cursor:pointer;font-weight:bold;' href='http://tuconductor.xyz/admin/editprofile-employed.jsp?user="+user+"'>Revisar</a>\n" +
+"       </center>\n" +                     
 "       <p style='padding: 15px;'>\n" +
         mensaje+
 "       </p>\n" +

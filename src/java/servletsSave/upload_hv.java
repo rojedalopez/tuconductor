@@ -71,7 +71,7 @@ public class upload_hv extends HttpServlet {
                 session.setAttribute("fch", new Date());
                 
                 usuario u = (usuario)session.getAttribute("user");
-                boolean b = Guardar.saveHV(u.getCodigo(), nuevo_nombre, token, filename);
+                boolean b = Guardar.saveHV(u.getCodigo(), nuevo_nombre, token, filename, u.getNombre() + " " + u.getApellido());
                 if(b){
                     out.print("true");
                 }else{
