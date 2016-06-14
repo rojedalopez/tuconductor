@@ -293,7 +293,7 @@ public class Listas {
     }
     
     
-    public static JSONArray listaOfertasEmpleado(String cod) throws SQLException{
+    public static JSONArray listaOfertasEmpleado(String cod, String txt, int dpto_select) throws SQLException{
         JSONObject obj = null;
         JSONArray lista = new JSONArray();
         Connection conn=null;
@@ -309,8 +309,26 @@ public class Listas {
                                     "fch_ctr_oferta, sal_oferta, act_oferta, " +
                                     "ifnull((SELECT CASE WHEN id_oferta IS NULL THEN 0 ELSE 1 END FROM tblVistaOferta " +
                                     "WHERE cod_empleado = ? and id_oferta = x.id_oferta),0) as ya_vio, pais_oferta, dpt_oferta, nbr_dpt_oferta, ciu_oferta " +
-                                    "FROM tblOferta as x ORDER BY fch_oferta DESC ";
+                                    "FROM tblOferta as x ";
                     
+                    if(!txt.equals("") || dpto_select!=-1){
+                        instruccion += " WHERE ";
+                    }
+                    
+                    boolean s = false;
+                    if(!txt.equals("")){
+                        instruccion+= " (tit_oferta like '%"+txt+"%' OR dsc_oferta like '%"+txt+"%') ";
+                        s = true;
+                    }
+                    
+                    if(dpto_select!=-1){
+                        instruccion += (s)?" and ":"";
+                        instruccion += " dpt_oferta="+dpto_select;
+                    }
+                    
+                    instruccion+=" ORDER BY fch_oferta DESC";
+                    
+                    System.out.println(instruccion);
                     insertar=conn.prepareStatement(instruccion);
                     insertar.setString(1, cod);
 

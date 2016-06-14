@@ -46,8 +46,12 @@ if(session.getAttribute("user") == null){
     <script type="text/javascript">
         var popup = $( "#Modal_comment" );
         var dialog_oferta;
+        //var palabra_clave;
+        //var departamento;
         $(document).ready(function(){
            dialog_oferta= $("#Modal_viewoferta");
+           //palabra_clave=$("#palabra_clave");
+           //departamento=$("#departamento");
         });
         function open_modal_subirhv(){
             $("#Modal_hv").modal("show");
@@ -147,86 +151,6 @@ if(session.getAttribute("user") == null){
                         </li>
                     </ul>
                     <!-- end dropdown-messages -->
-                </li>
-
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <span class="top-label label label-success">4</span>  <i class="fa fa-tasks fa-3x"></i>
-                    </a>
-                    <!-- dropdown tasks -->
-                    <ul class="dropdown-menu dropdown-tasks">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 1</strong>
-                                        <span class="pull-right text-muted">40% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                                            <span class="sr-only">40% Complete (success)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 2</strong>
-                                        <span class="pull-right text-muted">20% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
-                                            <span class="sr-only">20% Complete</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 3</strong>
-                                        <span class="pull-right text-muted">60% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                                            <span class="sr-only">60% Complete (warning)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 4</strong>
-                                        <span class="pull-right text-muted">80% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                            <span class="sr-only">80% Complete (danger)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>See All Tasks</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- end dropdown-tasks -->
                 </li>
 
                 <li class="dropdown">
@@ -400,23 +324,23 @@ if(session.getAttribute("user") == null){
             </div>
 
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-10">
                     <div class="alert alert-info text-center">
                         <!--<i class="fa fa-comment"></i>&nbsp;<a href="#" onclick="visualizar_addcomment()">Comparte una actualización</a>-->
                         <span class="form-inline">
                             <label ><i class="fa fa-edit"></i> Palabra clave:</label>
-                            <input type="text" class="form-control texto_e" name="p_clave" placeholder="Palabra clave"/>  
+                            <input type="text" class="form-control texto_e" ng-model="ctrl.palabra_clave" name="p_clave" placeholder="Palabra clave" id="palabra_clave"/>  
                             <label ><i class="fa fa-map-marker"></i> Lugar:</label>
-                            <select class="form-control selector_e_min" name="lugar" >
-                                <option>Lugar</option>
+                            <select class="form-control selector_e_min" ng-model="ctrl.lugar" name="departamento" id="departamento" ng-options="dpto.id as dpto.departamento for dpto in ctrl.dptos">
+                                <option value="">--Seleccione Departamento--</option>
                             </select>                            
-                            <button class="btn btn-warning" id="btn-filtrar">
+                            <button class="btn btn-warning" id="btn-filtrar" ng-click="ctrl.buscarOferta()">
                                     Buscar ofertas
                             </button>
                         </span>
                     </div>
                 </div>
-                <div class="col-lg-8">
+                <div class="col-lg-10">
                     <!-- Chat Panel Example-->
                 <div class="chat-panel panel panel-primary">
                     <div class="panel-heading">
@@ -450,7 +374,7 @@ if(session.getAttribute("user") == null){
                     <!--End Chat Panel Example-->
             </div>
                 
-            <div class="col-lg-4">
+            <div class="col-lg-2">
                 <div class="panel panel-primary text-center">
                     <div class="panel-body blue">
                         <i class="fa fa-tags fa-3x"></i>
@@ -462,6 +386,19 @@ if(session.getAttribute("user") == null){
                     </div>
                 </div>
             </div>
+            
+            <div class="col-lg-2">
+                <div class="panel panel-primary text-center">
+                    <div class="panel-body blue">
+                        <i class="fa fa-eye fa-3x"></i>
+                        <h3><span ng-bind="ctrl.ofertas.length"></span></h3>
+                    </div>
+                    <div class="panel-footer">
+                        <span class="panel-eyecandy-title">OFERTAS VISTAS
+                        </span>
+                    </div>
+                </div>
+            </div>    
             
                 
         </div>

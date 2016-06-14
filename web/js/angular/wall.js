@@ -7,6 +7,14 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
     self.ofertas=[];
     self.hoja_vida={file:null, fecha:"", token:"", nombre:"", archivo:""};
     
+    self.dptos=[];
+    self.dpto={id:0, departamento:"", ciudades:[]};
+    
+    self.lugar = "";
+    
+    self.palabra_clave = "";
+      
+    
     self.SaveHV = function(hoja_vida){
         WallService.SaveHV(hoja_vida).then(function(d){
             if(d==="true"){
@@ -29,14 +37,21 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
         });
     };
           
-    self.listaOfertas = function(){
-        WallService.listaOfertas().then(function(d){
+    self.listaOfertas = function(txt,dpto_select){
+        WallService.listaOfertas(txt,dpto_select).then(function(d){
             self.ofertas = d;
         },function(errResponse){
             console.error('Error while creating Paper.');
         });
     };
     
+    self.buscarOferta = function(){
+        WallService.listaOfertas(self.palabra_clave, (self.lugar==="")?-1:self.lugar).then(function(d){
+            self.ofertas = d;            
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+        });
+    };
           
     self.verOferta = function(id){
         WallService.verOferta(id).then(function(d) {
@@ -46,9 +61,20 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
        });
     };    
     
-    self.listaOfertas();
+    self.listaDptosCiudad = function(){
+        console.log("entro lista dptos");
+        WallService.listaDptosCiudad().then(function(d){
+            self.dptos = d;
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+        });
+    };
+    
+    self.listaDptosCiudad();
+    self.listaOfertas("","-1");
     self.getDatosUser();
-          
+    
+    
     self.submit = function() {
         self.SaveUser(self.usuario); 
         self.close();
@@ -113,8 +139,8 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
 		return $q.reject(errResponse);
             });
 	},
-        listaOfertas: function() {
-            return $http.post('../list_oferta_empleado').then(function(response){
+        listaOfertas: function(txt, dpto_select) {
+            return $http.post('../list_oferta_empleado', {'txt':txt,'dpto_select':dpto_select}).then(function(response){
                 return response.data;
             },function(errResponse){
                 console.error('Error while fetching expenses');
@@ -128,7 +154,14 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
                 console.error('Error while fetching expenses');
                 return $q.reject(errResponse);
             });
-        }
+        },listaDptosCiudad: function() {
+            return $http.post('../assets/colombia.json').then(function(response){
+                return response.data;
+            },function(errResponse){
+                console.error('Error while fetching expenses');
+                return $q.reject(errResponse);
+            });
+	}
     };
 }]).directive('sameAs', function() { return {
     require : 'ngModel',
