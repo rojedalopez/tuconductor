@@ -64,7 +64,10 @@ public class Aplicacion {
                         //valido las credenciales
                         String hash = datos.getString(3);
                         String pasw = datos.getString(4);
- 
+                        System.out.println(correo);
+                        System.out.println(hash);
+                        System.out.println(pasw);
+                        System.out.println(Metodos.sha256(pass, hash));
                         if(pasw.equals(Metodos.sha256(pass, hash))){
                             //obtengo el usuario
                             u = new usuario();
@@ -141,6 +144,44 @@ public class Aplicacion {
         return b;
     }
      
+    public static boolean ForgotPassword(String mail) throws ClassNotFoundException, SQLException, InvalidKeyException{
+        boolean b=false;
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        
+        try{
+        conn=conexion();
+        String hash = Metodos.RandomString(10, false);
+        String instruccion="UPDATE tblUsuario SET tkn_ver_usuario = ?, hsh_usuario = NULL, pwd_usuario = NULL, ver_usuario = 0 WHERE eml_usuario = ?;";
+         
+        insertar=conn.prepareStatement(instruccion);
+        
+        insertar.setString(1, hash);
+        insertar.setString(2, mail);         
+        
+        if(insertar.executeUpdate()==1){
+            Mails.SendMailForgot(mail, hash, "CAMBIO DE CONTRASEÑA", "CAMBIAR");
+            b=true;
+        }
+         
+        insertar.close();
+        conn.close();
+         
+         
+         
+        }catch (SQLException ex) {
+                System.out.println("error en InsertUsuario");
+            System.out.println(ex.getMessage());
+        }finally{
+            if(!conn.isClosed()){
+                conn.close();
+            }
+        }
+         
+        return b;
+    }
+    
+    
     public static boolean validarReset(String mail, String tkn) throws  SQLException{
         Connection conn=null;
         PreparedStatement insertar=null;

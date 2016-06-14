@@ -166,12 +166,12 @@ if(session.getAttribute("user") != null){
                     <h4 class="modal-title" id="myModalLabel">¿Olvidaste tu contraseña?</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" name="myForm">
+                    <form role="form" name="myForm_FG" action="forgot" method="POST">
                         <div class="form-group">
-                            <label>E-mail</label><span ng-show="myForm.mail.$invalid && myForm.mail.$dirty" class="errores">Ingrese E-Mail valido</span>
+                            <label>E-mail</label>
                             <div class="form-group input-group">
                                 <span class="input-group-addon"><img src="assets/img/email_icon.png" width="20" height="20" /></span>
-                                <input type="email" ng-model="ctrl.usuario.mail" class="form-control" name="mail" placeholder="Ingrese su E-mail" required>
+                                <input type="email" class="form-control" name="mail" placeholder="Ingrese su E-mail" required>
                             </div>
                         </div>
                         <div class="alert alert-info" id="Modal_forgotpass_success">
@@ -180,12 +180,11 @@ if(session.getAttribute("user") != null){
                         <div class="alert alert-danger" id="Modal_forgotpass_error">
                             <b>Se ha presentado un error.</b><br/>El correo ingresado no se encuentra registrado en la plataforma TuConductor.
                         </div>
-                        
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" ng-disabled="myForm.$invalid">Enviar correo</button>
+                        </div>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <button ng-click="ctrl.submit()" class="btn btn-primary" ng-disabled="myForm.$invalid">Enviar correo</button>
                 </div>
             </div>
         </div>
