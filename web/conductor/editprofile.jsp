@@ -43,6 +43,15 @@ if(session.getAttribute("user") == null){
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
     <script src="../js/dist/angular-datatables.min.js"></script>   
     
+    <script type="text/javascript">
+        var btn_guardar_cambios = $("#btn_guardar_cambios");
+        var form_experiencia = $("#form_experiencia");
+        var form_formacion = $("#form_formacion");
+        var btn_add_exp = $("#btn_add_exp");
+        var btn_add_formacion = $("#btn_add_formacion");
+    </script>
+    
+    <script type="text/javascript" src="../js/date.js"></script>      
     <script type="text/javascript" src="../js/app.js"></script>      
     <script type="text/javascript" src="../js/angular/profile.js"></script>
     <script type="text/javascript" src="../js/angular/sign.js"></script>
@@ -56,15 +65,7 @@ if(session.getAttribute("user") == null){
     <script src="../assets/plugins/morris/raphael-2.1.0.min.js"></script>
     <script src="../assets/plugins/morris/morris.js"></script>
     <script src="../assets/scripts/dashboard-demo.js"></script>
-    
-    <script type="text/javascript">
-        var btn_guardar_cambios = $("#btn_guardar_cambios");
-        var form_experiencia = $("#form_experiencia");
-        var form_formacion = $("#form_formacion");
-        var btn_add_exp = $("#btn_add_exp");
-        var btn_add_formacion = $("#btn_add_formacion");
-    </script>
-    
+        
    </head>
 <body ng-app="myApp" class="ng-cloak">
     <!--  wrapper -->
@@ -453,21 +454,23 @@ if(session.getAttribute("user") == null){
                                 </p>
                                 <p>
                                     <label class="etiqueta" for="pais">Pais</label>                                        
-                                    <select class="form-control selector"  name="pais" ng-model="ctrl.usuario_dp.pais" ng-options="Pais.ID as Pais.Nombre for Pais in ctrl.Paises">
+                                    <select class="form-control selector"  name="pais" ng-model="ctrl.usuario_dp.pais" ng-options="Pais.ID as Pais.Nombre for Pais in ctrl.Paises" ng-selected="ctrl.selectPais(ctrl.usuario_dp.pais)">
                                             <option value="" selected>--Seleccione Pais--</option>
                                     </select>
                                 </p>
                                 <p>
-                                    <label class="etiqueta" for="dpto">Departamento:</label>                                        
-                                    <select class="form-control selector" name="dpto" ng-model="ctrl.usuario_dp.dpto">
-                                        <option>Departamento</option>
+                                    <label class="etiqueta" for="depto">Departamento:</label>                                        
+                                    <select class="form-control selector" ng-show="ctrl.colombia" name="depto" ng-model="ctrl.usuario_dp.depto" ng-options="dpto.id as dpto.departamento for dpto in ctrl.dptos" ng-selected="ctrl.selectDpto(ctrl.usuario_dp.depto)">
+                                        <option value=-1 selected>--Seleccione Departamento--</option>
                                     </select>
+                                    <input type="text" ng-show="!ctrl.colombia" class="form-control texto"  name="depart" ng-model="ctrl.usuario_dp.depart" >
                                 </p>
                                 <p>
                                     <label class="etiqueta" for="ciudad">Ciudad:</label>                                        
-                                    <select class="form-control selector" name="ciudad" ng-model="ctrl.usuario_dp.ciudad">
-                                        <option>Ciudad</option>
+                                    <select class="form-control selector" ng-show="ctrl.colombia" name="ciudad" ng-model="ctrl.usuario_dp.ciudad" ng-options="ciudad for ciudad in ctrl.ciudades">
+                                        <option value="" selected>--Seleccione Ciudad--</option>
                                     </select>
+                                    <input type="text" ng-show="!ctrl.colombia" class="form-control texto"  name="ciudad" ng-model="ctrl.usuario_dp.ciudad" >
                                 </p>
                                 <p>
                                     <label class="etiqueta" for="dir">Direccion:</label>                                        

@@ -5,10 +5,12 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.usuario_dp={
           cod:"", nombre:"", apellido:"", tip_doc:"", 
           num_doc:"", fecha_nac:"", genero:"", est_civil:"", 
-          movil: "", tel:"", pais:"CO", depto:"", 
+          movil: "", tel:"", pais:"CO", depto:-1, depart:"" ,
           ciudad:"", dir:"", naci:"CO", la1:false, 
           la2:false, lb1:false, lb2:false, lb3:false, 
           lc1:false, lc2:false, lc3:false, cargo:"", perfil:""};
+      
+    self.colombia = true;  
 
     self.Anios=[]; 
           
@@ -19,6 +21,10 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.formaciones=[];
     self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0};
 
+    self.dptos=[];
+    self.dpto={id:0, departamento:"", ciudades:[]};
+    self.ciudades=[];
+    
     self.SaveDatosPersonales = function(usuario_dp){
         ProfileService.SaveDatosPersonales(usuario_dp).then(function(d){
             btn_guardar_cambios.button('reset');
@@ -66,6 +72,36 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
             console.error('Error while creating Paper.');
         });
     };
+    
+    self.selectPais = function(pais){
+        if(pais==="CO"){
+            self.colombia = true;  
+        }else{
+            self.colombia = false; 
+            self.usuario_dp.depart = "";
+            self.usuario_dp.ciudad = "";
+            self.usuario_dp.depto=-1;
+        }
+    };
+    
+    self.listaDptosCiudad = function(){
+        ProfileService.listaDptosCiudad().then(function(d){
+            self.dptos = d;
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+        });
+    };
+    
+    self.selectDpto = function(id){
+        for(var i = 0; i < self.dptos.length; i++){
+            if(self.dptos[i].id === id) {
+               self.dpto = angular.copy(self.dptos[i]);
+               self.ciudades=self.dpto.ciudades;
+               self.usuario_dp.depart = self.dpto.departamento;
+               break;
+            }
+        }
+    };
           
     self.GetUsuarioGeneral = function(){
         ProfileService.GetUsuarioGeneral().then(function(d) {
@@ -75,6 +111,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
             console.log(self.usuario_dp.fecha_nac);
             self.experiencias = d.exp_laborales;
             self.formaciones = d.formacion;
+            self.selectDpto(self.usuario_dp.depto);
         },function(errResponse){
             console.error('Error while fetching Currencies');
         });
@@ -89,7 +126,8 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
           
     self.llenarAnios();
     self.GetUsuarioGeneral();
-                   
+    self.listaDptosCiudad();
+    
     self.submitDP = function(){
         console.log("aqui entro");
         btn_guardar_cambios.button('loading');
@@ -485,6 +523,14 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         },
         listaFormaciones: function() {
             return $http.post('../list_formacion').then(function(response){
+                return response.data;
+            },function(errResponse){
+                console.error('Error while fetching expenses');
+                return $q.reject(errResponse);
+            });
+	},
+        listaDptosCiudad: function() {
+            return $http.post('../assets/colombia.json').then(function(response){
                 return response.data;
             },function(errResponse){
                 console.error('Error while fetching expenses');

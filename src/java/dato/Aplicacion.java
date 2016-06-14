@@ -64,10 +64,6 @@ public class Aplicacion {
                         //valido las credenciales
                         String hash = datos.getString(3);
                         String pasw = datos.getString(4);
-                        System.out.println(correo);
-                        System.out.println(hash);
-                        System.out.println(pasw);
-                        System.out.println(Metodos.sha256(pass, hash));
                         if(pasw.equals(Metodos.sha256(pass, hash))){
                             //obtengo el usuario
                             u = new usuario();

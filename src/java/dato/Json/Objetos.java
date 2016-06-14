@@ -53,7 +53,7 @@ public class Objetos {
                         obj.put("tel", datos.getString(10));
                         obj.put("pais", datos.getString(11));
                         obj.put("ciudad", datos.getString(12));
-                        obj.put("depto", datos.getString(13));
+                        obj.put("depto", datos.getInt(13));
                         obj.put("dir", datos.getString(14));
                         obj.put("naci", datos.getString(15));
                         obj.put("la1", datos.getBoolean(16));

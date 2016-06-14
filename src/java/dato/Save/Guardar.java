@@ -15,12 +15,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.text.SimpleDateFormat;
 
 /**
  *
  * @author SISTEMAS
  */
 public class Guardar {
+    static SimpleDateFormat Fechaformateador = new SimpleDateFormat("yyyy-MM-dd 00:00");
     
     public static boolean InsertUsuario(String correo, String contrasena, String nomb, String apellido, String telefono, String path) throws ClassNotFoundException, SQLException, InvalidKeyException{
         boolean b=false;
@@ -116,14 +118,14 @@ public class Guardar {
     
 
     public static boolean UpdateUsuarioDatosPersonales(String cod_, String nombre, String apellido, String tipo_doc_, String doc_, String fecha_, 
-            String genero_, String est_civil_, String movil, String tel_, String pais_, String ciudad_, String dpto_, String dir_,
+            String genero_, String est_civil_, String movil, String tel_, String pais_, String ciudad_, int dpto_, String nbr_dpto, String dir_,
             String nac_, boolean la1, boolean la2, boolean lb1, boolean lb2, boolean lb3, boolean lc1, boolean lc2, boolean lc3, String perfil, String cargo) throws ClassNotFoundException, SQLException{
         boolean b=false;
         Connection conn=null;
         PreparedStatement insertar=null;
         
         conn=conexion();
-            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveDatosPersonales(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)};")) {
+            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveDatosPersonales(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)};")) {
                 cs.setString(1, cod_);
                 cs.setString(2, nombre);
                 cs.setString(3, apellido);
@@ -136,23 +138,24 @@ public class Guardar {
                 cs.setString(10, tel_);
                 cs.setString(11, pais_);
                 cs.setString(12, ciudad_);
-                cs.setString(13, dpto_);
-                cs.setString(14, dir_);
-                cs.setString(15, nac_);
-                cs.setInt(16, (la1)?1:0);
-                cs.setInt(17, (la2)?1:0);
-                cs.setInt(18, (lb1)?1:0);
-                cs.setInt(19, (lb2)?1:0);
-                cs.setInt(20, (lb3)?1:0);
-                cs.setInt(21, (lc1)?1:0);
-                cs.setInt(22, (lc2)?1:0);
-                cs.setInt(23, (lc3)?1:0);
-                cs.setString(24, perfil);
-                cs.setString(25, cargo);
-                cs.registerOutParameter(26, Types.INTEGER);
+                cs.setInt(13, dpto_);
+                cs.setString(14, nbr_dpto);
+                cs.setString(15, dir_);
+                cs.setString(16, nac_);
+                cs.setInt(17, (la1)?1:0);
+                cs.setInt(18, (la2)?1:0);
+                cs.setInt(19, (lb1)?1:0);
+                cs.setInt(20, (lb2)?1:0);
+                cs.setInt(21, (lb3)?1:0);
+                cs.setInt(22, (lc1)?1:0);
+                cs.setInt(23, (lc2)?1:0);
+                cs.setInt(24, (lc3)?1:0);
+                cs.setString(25, perfil);
+                cs.setString(26, cargo);
+                cs.registerOutParameter(27, Types.INTEGER);
                 cs.executeQuery();
 
-                int retorno = cs.getInt(26);
+                int retorno = cs.getInt(27);
                 
                 if(retorno==1){
                     return true;

@@ -54,13 +54,16 @@ public class usuario_dp extends HttpServlet {
         String tip_doc = (String) joUser_dp.get("tip_doc");
         String num_doc = (String) joUser_dp.get("num_doc");
         String fecha_nac = (String) joUser_dp.get("date");
+        System.out.println(fecha_nac);
         String genero = (String) joUser_dp.get("genero");
         String est_civil = (String) joUser_dp.get("est_civil");
         String mov = (String) joUser_dp.get("movil");
         String tel = (String) joUser_dp.get("tel");
         String pais = (String) joUser_dp.get("pais");
         String ciudad = (String) joUser_dp.get("ciudad");
-        String dpto = (String) joUser_dp.get("dpto");
+        String nbr_dpto = (String) joUser_dp.get("depart");
+        int dpto = Integer.parseInt(joUser_dp.get("depto").toString());
+        System.out.println(ciudad + ", " + nbr_dpto + ", " + pais);
         String dir = (String) joUser_dp.get("dir");
         String naci = (String) joUser_dp.get("naci");
         boolean la1 = (Boolean) joUser_dp.get("la1");
@@ -83,7 +86,7 @@ public class usuario_dp extends HttpServlet {
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
                 boolean b = Guardar.UpdateUsuarioDatosPersonales(u.getCodigo(), nombre, apellido, tip_doc, 
-                        num_doc, fecha_nac, genero, est_civil, mov, tel, pais, ciudad, dpto, dir, naci, 
+                        num_doc, fecha_nac, genero, est_civil, mov, tel, pais, ciudad, dpto, nbr_dpto, dir, naci, 
                         la1, la2, lb1, lb2, lb3, lc1, lc2, lc3, perfil, cargo);
                 if(b){
                     out.print("true");
