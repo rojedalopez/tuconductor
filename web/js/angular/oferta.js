@@ -2,8 +2,13 @@
 
 angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'OfertaService', function($scope, OfertaService) {
     var self = this;
-    self.oferta={id:-1, titulo:"", descripcion:"", vacante:"", salario:0,tipo:1, estado:false, fecha_creacion:"", fecha_contratacion:""};
+    self.oferta={id:-1, titulo:"", descripcion:"", vacante:"", salario:0,tipo:1, estado:false, fecha_creacion:"", fecha_contratacion:"", pais:"CO", ciudad:"", depto:-1, dapart:"", };
     self.ofertas=[];
+    
+    self.Paises=[];
+    self.dptos=[];
+    self.dpto={id:0, departamento:"", ciudades:[]};
+    self.ciudades=[];
     
     self.SaveOferta = function(oferta){
         OfertaService.SaveOferta(oferta).then(function(d){
@@ -26,7 +31,44 @@ angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'Of
     };
           
 
-    self.listaOfertas();
+    
+    self.selectPais = function(pais){
+        if(pais==="CO"){
+            self.colombia = true;  
+        }else{
+            self.colombia = false; 
+            self.oferta.depart = "";
+            self.oferta.ciudad = "";
+            self.oferta.depto=-1;
+        }
+    };
+    
+    self.listaDptosCiudad = function(){
+        OfertaService.listaDptosCiudad().then(function(d){
+            self.dptos = d;
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+        });
+    };
+    
+    self.listaPaises = function() {
+        OfertaService.listaPaises().then(function(d){
+            self.Paises = d;
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+        });
+    };
+
+    self.selectDpto = function(id){
+        for(var i = 0; i < self.dptos.length; i++){
+            if(self.dptos[i].id === id) {
+               self.dpto = angular.copy(self.dptos[i]);
+               self.ciudades=self.dpto.ciudades;
+               self.oferta.depart = self.dpto.departamento;
+               break;
+            }
+        }
+    };
     
     self.GetUsuarioGeneral = function(){
         OfertaService.GetUsuarioGeneral().then(function(d) {
@@ -36,7 +78,10 @@ angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'Of
        });
     };
        
-          
+    self.listaOfertas();
+    self.listaPaises();
+    self.listaDptosCiudad();
+    
     //self.GetUsuarioGeneral();
 
     self.submitOferta = function(){
@@ -97,17 +142,30 @@ angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'Of
                                             );
             },
             listaOfertas: function() {
-                            return $http.post('../list_oferta')
-                                            .then(
-                                                            function(response){
-                                                                    return response.data;
-                                                            }, 
-                                                            function(errResponse){
-                                                                    console.error('Error while fetching expenses');
-                                                                    return $q.reject(errResponse);
-                                                            }
-                                            );
-            }
+                return $http.post('../list_oferta').then(function(response){
+                    return response.data;
+                }, 
+                function(errResponse){
+                    console.error('Error while fetching expenses');
+                    return $q.reject(errResponse);
+                });
+            },
+            listaDptosCiudad: function() {
+                return $http.post('../assets/colombia.json').then(function(response){
+                    return response.data;
+                },function(errResponse){
+                    console.error('Error while fetching expenses');
+                    return $q.reject(errResponse);
+                });
+            },
+            listaPaises: function() {
+                return $http.post('../assets/paises.json').then(function(response){
+                    return response.data;
+                },function(errResponse){
+                    console.error('Error while fetching expenses');
+                    return $q.reject(errResponse);
+                });
+            }	
 	};
 
 }]).directive('sameAs', function() { return {

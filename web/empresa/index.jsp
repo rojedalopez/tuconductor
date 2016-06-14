@@ -365,16 +365,7 @@ if(session.getAttribute("user") == null){
                         <!-- second-level-items -->
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Mi Red<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="flot.html">Contactos</a>
-                            </li>
-                            <li>
-                                <a href="morris.html">Buscar contactos</a>
-                            </li>
-                        </ul>
-                        <!-- second-level-items -->
+                        <a href="viewoferta.jsp"><i class="fa fa-bar-chart-o fa-fw"></i> Ofertas</a>                        
                     </li>
                     <li>
                         <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Empleos</a>

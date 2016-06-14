@@ -503,6 +503,32 @@ if(session.getAttribute("user") == null){
                                 <option value="">--- Seleccione Tipo ---</option>
                             </select>
                         </p>
+                        <p>
+                            <label class="etiqueta_e" for="pais">Pais</label>                                        
+                            <select class="form-control selector_e"  name="pais" ng-model="ctrl.oferta.pais" ng-options="Pais.ID as Pais.Nombre for Pais in ctrl.Paises" ng-selected="ctrl.selectPais(ctrl.oferta.pais)">
+                                    <option value="" selected>--Seleccione Pais--</option>
+                            </select>
+                        </p>
+                        <p>
+                            <label class="etiqueta_e" for="depto">Departamento:</label>                                        
+                            <select class="form-control selector_e" ng-show="ctrl.colombia" name="depto" ng-model="ctrl.oferta.depto" ng-options="dpto.id as dpto.departamento for dpto in ctrl.dptos" ng-selected="ctrl.selectDpto(ctrl.oferta.depto)">
+                                <option value=-1 selected>--Seleccione Departamento--</option>
+                            </select>
+                            <input type="text" ng-show="!ctrl.colombia" class="form-control texto"  name="depart" ng-model="ctrl.oferta.depart" >
+                        </p>
+                        <p>
+                            <label class="etiqueta_e" for="ciudad">Ciudad:</label>                                        
+                            <select class="form-control selector_e" ng-show="ctrl.colombia" name="ciudad" ng-model="ctrl.oferta.ciudad" ng-options="ciudad for ciudad in ctrl.ciudades">
+                                <option value="" selected>--Seleccione Ciudad--</option>
+                            </select>
+                            <input type="text" ng-show="!ctrl.colombia" class="form-control texto"  name="ciudad" ng-model="ctrl.oferta.ciudad" >
+                        </p>
+                        <p>
+                            <label class="etiqueta_e">Tipo contrato<i class="required">*</i>:</label>
+                            <select class="form-control selector_e" name="tipo" ng-model="ctrl.oferta.tipo" ng-options="Tipo.ID as Tipo.Value for Tipo in ctrl.TipoContrato" >
+                                <option value="">--- Seleccione Tipo ---</option>
+                            </select>
+                        </p>
                         <p  ng-class="{ 'has-error': form_oferta.vacantes.$error.required}">
                             <label class="etiqueta_e">Fecha contratación<i class="required">*</i>:</label>
                             <input type="date" class="form-control texto_e" name="fecha_contratacion" ng-model="ctrl.oferta.fecha_contratacion" required />
