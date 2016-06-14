@@ -3,7 +3,7 @@
 angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallService', function($scope, WallService) {
     var self = this;
     self.usuario={mail:"", password:"",name:"", lastname:"", phone:""};
-    self.oferta={id:-1, titulo:"", descripcion:"", vacante:"", salario:0,tipo:1, estado:false, fecha:"", fecha_contratacion:"", visto:false};
+    self.oferta={id:-1, titulo:"", descripcion:"", vacante:"", salario:0,tipo:1, estado:false, fecha:"", fecha_contratacion:"", visto:false, pais:"CO", ciudad:"", depto:-1, dapart:""};
     self.ofertas=[];
     self.hoja_vida={file:null, fecha:"", token:"", nombre:"", archivo:""};
     
