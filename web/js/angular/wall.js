@@ -3,7 +3,7 @@
 angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallService', function($scope, WallService) {
     var self = this;
     self.usuario={mail:"", password:"",name:"", lastname:"", phone:""};
-    self.oferta={id:-1, titulo:"", descripcion:"", vacante:"", salario:0,tipo:1, estado:false, fecha_creacion:"", fecha_contratacion:""};
+    self.oferta={id:-1, titulo:"", descripcion:"", vacante:"", salario:0,tipo:1, estado:false, fecha:"", fecha_contratacion:"", visto:false};
     self.ofertas=[];
     self.hoja_vida={file:null, fecha:"", token:"", nombre:"", archivo:""};
     
@@ -63,6 +63,9 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
                self.oferta = angular.copy(self.ofertas[i]);
                self.oferta.fecha_contratacion = new Date(self.oferta.fecha_contratacion);
                self.oferta.fecha_contratacion = self.oferta.fecha_contratacion.toString("yyyy/MM/dd");
+               self.oferta.fecha = new Date(self.oferta.fecha);
+               self.oferta.fecha = self.oferta.fecha.toString("yyyy/MM/dd");
+               
                dialog_oferta.modal( "show" );
                break;
             }
@@ -114,7 +117,7 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
             });
 	},
         listaOfertas: function() {
-            return $http.post('../list_oferta').then(function(response){
+            return $http.post('../list_oferta_empleado').then(function(response){
                 return response.data;
             },function(errResponse){
                 console.error('Error while fetching expenses');

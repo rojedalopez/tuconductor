@@ -53,6 +53,7 @@ if(session.getAttribute("user") == null){
             $("#Modal_hv").modal("show");
         }
     </script>
+    <script type="text/javascript" src="../js/date.js"></script>
     <script type="text/javascript" src="../js/app.js"></script>      
     <script type="text/javascript" src="../js/angular/profile.js"></script>
     <script type="text/javascript" src="../js/angular/sign.js"></script>
@@ -436,7 +437,7 @@ if(session.getAttribute("user") == null){
                                     <p><span ng-bind="of.descripcion"></span></p>
                                 </div>
                                 <div class="panel-footer">                                            
-                                    Publicado: <b><span ng-bind="of.fecha"></span></b>
+                                    Publicada: <b><span ng-bind="of.fecha"></span></b>
                                 </div>
                             </div>
                         </div>
@@ -452,8 +453,8 @@ if(session.getAttribute("user") == null){
             <div class="col-lg-4">
                 <div class="panel panel-primary text-center">
                     <div class="panel-body blue">
-                        <i class="fa fa-bar-chart-o fa-3x"></i>
-                        <h3>20,741 </h3>
+                        <i class="fa fa-tags fa-3x"></i>
+                        <h3><span ng-bind="ctrl.ofertas.length"></span></h3>
                     </div>
                     <div class="panel-footer">
                         <span class="panel-eyecandy-title">OFERTAS DISPONIBLES
@@ -545,6 +546,7 @@ if(session.getAttribute("user") == null){
                     <div class="alert alert-info">
                         <label style="font-size: 16px;">{{ctrl.oferta.titulo}}</label>
                     </div>
+                    <p style="text-align: right;"><i class="fa fa-calendar"></i> Publicada: {{ctrl.oferta.fecha}}</p>
                     <label style="font-size: 14px; color: #0088cc;">Descripción:</label><br/>
                     <p>{{ctrl.oferta.descripcion}}</p>
                     <label style="font-size: 14px; color: #0088cc;">Localizacion:</label>
@@ -558,7 +560,8 @@ if(session.getAttribute("user") == null){
                 <form>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary" ng-disabled="form_hv.$invalid" ng-click="ctrl.ver(ctrl.oferta.id)">Aplicar</button>
+                        
+                        <button type="button" class="btn btn-primary" ng-disabled="form_hv.$invalid" ng-click="ctrl.ver(ctrl.oferta.id)" ng-disabled="ctrl.oferta.visto">Aplicar</button>
                     </div>
                 </form>
 
