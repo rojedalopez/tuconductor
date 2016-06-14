@@ -3,7 +3,7 @@
 <% 
 response.setHeader("Pragma", "No-chache"); 
 response.setHeader("Expires", "0"); 
-response.setHeader("Cache-Control", "no-cache"); 
+response.setHeader("Cache-Control", "no-store"); 
 response.setHeader("Cache", "no-cache"); 
 if(session.getAttribute("user") == null){
    //redirijo al login
