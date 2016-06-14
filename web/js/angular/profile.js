@@ -348,7 +348,24 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         }
     };
     
+    self.ModificarEmpresas = function(empresa){
+        ProfileAdminService.ModificarEmpresas(empresa).then(function(d) {
+            if(d==="true"){
+                btn_add_empresa.button('reset');
+                modal_editempresa.modal( "hide" );
+                self.llenarEmpresas();
+            }
+        },function(errResponse){
+            console.error('Error while fetching Currencies');
+        });
+    };
+    
     self.llenarEmpresas();
+    
+    self.submitEmp = function(){
+        btn_add_empresa.button('loading');
+        self.ModificarEmpresas(self.empresa);
+    };
     
     self.open_info_adicional = function(id){
         for(var i = 0; i < self.list_empresas.length; i++){
@@ -357,7 +374,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
                self.empresa.ult_compra=new Date(self.empresa.ult_compra);
                self.empresa.vence_compra=new Date(self.empresa.vence_compra);
                self.list_trazas = self.empresa;
-               modal_editadicional.modal( "show" );
+               modal_editempresa.modal( "show" );
                break;
             }
         }
@@ -381,6 +398,15 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     return {
         llenarEmpresas: function() {
             return $http.post('../list_empresas').then(function(response){
+		return response.data;
+            },function(errResponse){
+                console.error('Error while fetching expenses');
+                return $q.reject(errResponse);
+            });
+	},
+        ModificarEmpresas: function(empresa) {
+            return $http.post('../empresa_byadmin', empresa).then(function(response){
+                console.log(response.data);
 		return response.data;
             },function(errResponse){
                 console.error('Error while fetching expenses');

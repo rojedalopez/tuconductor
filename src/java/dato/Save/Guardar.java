@@ -366,6 +366,50 @@ public class Guardar {
             return false;
     }
     
+    
+    public static boolean saveEmpresabyAdmin(String nit, String r_social, String dir, String tel, String nbr_rep, 
+            String doc_rep, String mail_rep, String tel_rep) throws ClassNotFoundException, SQLException{
+         
+        boolean b=false;
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        
+        conn=conexion();        
+        try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveEmpresabyAdmin(?, ?, ?, ?, ?, ?, ?, ?, ?)}")) {
+                cs.setString(1, nit);
+                cs.setString(2, r_social);
+                cs.setString(3, dir);
+                cs.setString(4, tel);
+                cs.setString(5, doc_rep);
+                cs.setString(6, nbr_rep);
+                cs.setString(7, mail_rep);
+                cs.setString(8, tel_rep);
+                cs.registerOutParameter(9, Types.INTEGER);
+                cs.executeQuery();
+
+                int retorno = cs.getInt(9);
+                
+                if(retorno==1){
+                    return true;
+                }else{
+                    return false;
+                }
+
+            }catch (SQLException e) {
+                System.out.println("error SQLException en INSERTAR EMPRESA");
+                System.out.println(e.getMessage());
+            }catch (Exception e){
+                System.out.println("error Exception en INSERTAR EMPRESA");
+                System.out.println(e.getMessage());
+            }finally{
+                if(!conn.isClosed()){
+                    conn.close();
+                }
+            }
+            return false;
+    }
+    
+    
     public static boolean saveOferta(int id, String titulo, String descripcion, int vacante, int tipo, String fecha, 
             float salario, boolean estado, String nit, String pais, int dpto, String nbr_dpto, String ciudad) throws ClassNotFoundException, SQLException, InvalidKeyException{ 
          

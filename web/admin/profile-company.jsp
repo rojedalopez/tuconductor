@@ -44,11 +44,12 @@ if(session.getAttribute("user") == null){
     <script src="../js/dist/angular-datatables.min.js"></script>   
     
     <script type="text/javascript">
-        var btn_add_empresa = $("#btn_add_empresa");
+        var btn_add_empresa;
         var modal_editempresa, modal_editadicional;
         $(document).ready(function (){
             modal_editempresa=$("#Modal_editempresa");
             modal_editadicional=$("#Modal_info");
+            btn_add_empresa = $("#btn_add_empresa");
         });
         function Open_dialog_filter(){
             $( "#Modal_filter" ).modal("show");
@@ -59,10 +60,6 @@ if(session.getAttribute("user") == null){
         function Open_dialog_info(){
             $("#Modal_info").modal("show");
         }
-        function Open_dialog_edit(){
-            $("#Modal_editempresa").modal("show");
-        }
-    
 
     </script>
     
@@ -514,10 +511,10 @@ if(session.getAttribute("user") == null){
                     <h4 class="modal-title" id="myModalLabel">Edición Empresa</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" ng-submit="ctrl.submitExp()" name="add_empresa" class="form-horizontal" novalidate>
-                        <p ng-class="{ 'has-error': add_empresa.nit.$error.required || add_empresa.nit.$error.minlength }">
+                    <form role="form" ng-submit="ctrl.submitEmp()" name="add_empresa" class="form-horizontal" novalidate>
+                        <p >
                             <label class="etiqueta_e">NIT<i class="required">*</i>:</label>
-                            <input type="text" class="form-control texto_e" name="nit" ng-model="ctrl.empresa.nit" placeholder="Nit de la empresa" minlength="6" required />
+                            <input type="text" ng-disabled="true" class="form-control texto_e" name="nit" ng-model="ctrl.empresa.nit" placeholder="Nit de la empresa" minlength="6" required />
                         </p>
                         <p ng-class="{ 'has-error': add_empresa.r_social.$error.required || add_empresa.r_social.$error.minlength }">
                             <label class="etiqueta_e">Razon social<i class="required">*</i>:</label>
@@ -546,13 +543,14 @@ if(session.getAttribute("user") == null){
                         <p>
                             <label class="etiqueta_e">Telefono Rep. legal:</label>
                             <input type="text" class="form-control texto_e" name="tel_replegal" ng-model="ctrl.empresa.tel_replegal" placeholder="Telefono del rep. legal de la empresa" />
-                        </p>                        
+                        </p> 
+                        
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" ng-disabled="add_empresa.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_empresa" class="btn btn-primary" >Editar</button>
+                        </div>
                         
                     </form>                    
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" ng-disabled="add_empresa.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_empresa" class="btn btn-primary" >Editar</button>
                 </div>
             </div>
         </div>
