@@ -309,7 +309,7 @@ public class Listas {
                                     "fch_ctr_oferta, sal_oferta, act_oferta, " +
                                     "ifnull((SELECT CASE WHEN id_oferta IS NULL THEN 0 ELSE 1 END FROM tblVistaOferta " +
                                     "WHERE cod_empleado = ? and id_oferta = x.id_oferta),0) as ya_vio, pais_oferta, dpt_oferta, nbr_dpt_oferta, ciu_oferta " +
-                                    "FROM tblOferta as x ";
+                                    "FROM tblOferta as x ORDER BY fch_oferta DESC ";
                     
                     insertar=conn.prepareStatement(instruccion);
                     insertar.setString(1, cod);
@@ -327,10 +327,10 @@ public class Listas {
                         obj.put("salario", datos.getFloat(8));
                         obj.put("estado", datos.getBoolean(9));
                         obj.put("visto", datos.getBoolean(10));
-                        obj.put("pais", datos.getString(10));
-                        obj.put("depto", datos.getInt(11));
-                        obj.put("depart", datos.getString(12));
-                        obj.put("ciudad", datos.getString(13));
+                        obj.put("pais", datos.getString(11));
+                        obj.put("depto", datos.getInt(12));
+                        obj.put("depart", datos.getString(13));
+                        obj.put("ciudad", datos.getString(14));
                         lista.add(obj);
                     }
                     datos.close();

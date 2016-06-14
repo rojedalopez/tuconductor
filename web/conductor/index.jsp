@@ -550,7 +550,7 @@ if(session.getAttribute("user") == null){
                     <label style="font-size: 14px; color: #0088cc;">Descripción:</label><br/>
                     <p>{{ctrl.oferta.descripcion}}</p>
                     <label style="font-size: 14px; color: #0088cc;">Localizacion:</label>
-                    <p><i class="fa fa-map-marker"></i> Barranquilla</p>
+                    <p><i class="fa fa-map-marker"></i> {{ctrl.oferta.ciudad + ', '+ ctrl.oferta.depart + ', ' + ctrl.oferta.pais}}</p>
                     <label style="font-size: 14px; color: #0088cc;">Salario:</label>
                     <p><i class="fa fa-dollar"></i> {{ctrl.oferta.salario}}</p>
                     <label style="font-size: 14px; color: #0088cc;">Cantidad de vacantes:</label>
