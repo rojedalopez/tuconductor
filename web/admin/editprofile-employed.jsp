@@ -43,6 +43,31 @@ if(session.getAttribute("user") == null){
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
     <script src="../js/dist/angular-datatables.min.js"></script>   
     
+    <script type="text/javascript">
+        var btn_guardar_cambios, form_experiencia, form_formacion, btn_add_exp, btn_add_formacion;
+        $(document).ready(function(){
+            eliminarOpciones();
+            verOpcion(1);
+            btn_guardar_cambios = $("#btn_guardar_cambios");
+            form_experiencia = $("#form_experiencia");
+            form_formacion = $("#form_formacion");
+            btn_add_exp = $("#btn_add_exp");
+            btn_add_formacion = $("#btn_add_formacion");   
+            
+        });
+        function eliminarOpciones(){
+            for(var i=1;i<8;i++){
+                $(".opcion"+i).hide();
+            }
+        }
+        function verOpcion(id){
+            eliminarOpciones();
+            $(".opcion"+id).show();
+        }
+        function abrir_admision(){
+            $("#form_admision").modal("show");
+        }
+    </script>
     <script type="text/javascript" src="../js/app.js"></script>      
     <script type="text/javascript" src="../js/angular/profile.js"></script>
     <script type="text/javascript" src="../js/angular/sign.js"></script>
@@ -57,16 +82,7 @@ if(session.getAttribute("user") == null){
     <script src="../assets/plugins/morris/morris.js"></script>
     <script src="../assets/scripts/dashboard-demo.js"></script>
     
-    <script type="text/javascript">
-        var btn_guardar_cambios, form_experiencia, form_formacion, btn_add_exp, btn_add_formacion;
-        $(document).ready(function(){
-            btn_guardar_cambios = $("#btn_guardar_cambios");
-            form_experiencia = $("#form_experiencia");
-            form_formacion = $("#form_formacion");
-            btn_add_exp = $("#btn_add_exp");
-            btn_add_formacion = $("#btn_add_formacion");
-        });
-    </script>
+    
     
    </head>
 <body ng-app="myApp" class="ng-cloak">
@@ -340,41 +356,38 @@ if(session.getAttribute("user") == null){
                         </div>
                         <!--end search section-->
                     </li>
+                    <li>
+                        <a href="index.jsp"><i class="fa fa-home fa-fw"></i>Inicio</a>
+                    </li>
                     <li class="selected">
-                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Inicio</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Perfil<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-user fa-fw"></i> Perfil<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="#editperfil.html">Editar perfil</a>
+                                <a href="#" onclick="verOpcion(1)">Datos personales</a>
                             </li>
                             <li>
-                                <a href="morris.html">Quién ha visto tu perfil</a>
+                                <a href="#" onclick="verOpcion(2)">Experiencial laboral</a>
                             </li>
                             <li>
-                                <a href="morris.html">Tus actualizaciones</a>
+                                <a href="#" onclick="verOpcion(3)">Formacion</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="verOpcion(4)">Multas</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="verOpcion(5)">Accidentes</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="verOpcion(6)">Procesos judiciales</a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="verOpcion(7)">Procesos disciplinarios</a>
                             </li>
                         </ul>
                         <!-- second-level-items -->
-                    </li>
+                    </li>                    
                     <li>
-                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Mi Red<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="flot.html">Contactos</a>
-                            </li>
-                            <li>
-                                <a href="morris.html">Buscar contactos</a>
-                            </li>
-                        </ul>
-                        <!-- second-level-items -->
-                    </li>
-                    <li>
-                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Empleos</a>
-                    </li>
-                    <li>
-                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Intereses</a>
+                        <a href="#" onclick="abrir_admision()"><i class="fa fa-check-square fa-fw"></i> Admision</a>
                     </li>
                 </ul>
                 <!-- end side-menu -->
@@ -390,13 +403,21 @@ if(session.getAttribute("user") == null){
                 <div class="col-lg-12">
                     <h1 class="page-header">Perfil empleado: {{ctrl.usuario_dp.nombre + ' ' + ctrl.usuario_dp.apellido}}</h1>
                 </div>
+                <div class="col-lg-12" style="text-align: center;">
+                    <div class="alert alert-success">
+                        <b>Estado:</b> <i class="fa fa-check-square"></i> ADMITIDO.
+                    </div>
+                    <div class="alert alert-danger">
+                        <b>Estado:</b> <i class="fa fa-exclamation-triangle"></i> PENDIENTE
+                    </div>
+                </div>
                 <!--End Page Header -->
             </div>
 
             <div class="row">
                 
                 <form ng-submit="ctrl.submitDP()" name="datos_personales" novalidate>
-                    <div class="col-lg-12">
+                    <div class="col-lg-12 opcion1">
                         <div class="panel panel-info">
                             <div class="panel-heading">
                                 DATOS PERSONALES
@@ -517,7 +538,7 @@ if(session.getAttribute("user") == null){
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-12">
+                    <div class="col-lg-12 opcion1" >
                         <div class="panel panel-info">
                             <div class="panel-heading">
                                 PERFIL PROFESIONAL
@@ -546,7 +567,7 @@ if(session.getAttribute("user") == null){
                     </div>
                     
                 </form>
-                <div class="col-lg-12">
+                <div class="col-lg-12 opcion2" >
                     <div class="panel panel-info">
                         <div class="panel-heading">
                             EXPERIENCIA LABORAL
@@ -578,7 +599,7 @@ if(session.getAttribute("user") == null){
                     </div>
                 </div>
                 
-                <div class="col-lg-12">
+                <div class="col-lg-12 opcion3" >
                     <div class="panel panel-info">
                         <div class="panel-heading">
                             FORMACIÓN
@@ -608,7 +629,7 @@ if(session.getAttribute("user") == null){
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-12 opcion4" >
                     <div class="panel panel-info">
                         <div class="panel-heading">
                             MULTAS
@@ -638,7 +659,7 @@ if(session.getAttribute("user") == null){
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-12 opcion5" >
                     <div class="panel panel-info">
                         <div class="panel-heading">
                             ACCIDENTES
@@ -668,7 +689,7 @@ if(session.getAttribute("user") == null){
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-12 opcion6" >
                     <div class="panel panel-info">
                         <div class="panel-heading">
                             PROCESOS JUDICIALES
@@ -698,7 +719,7 @@ if(session.getAttribute("user") == null){
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-12 opcion7" >
                     <div class="panel panel-info">
                         <div class="panel-heading">
                             PROCESOS DICIPLINARIOS
@@ -899,6 +920,28 @@ if(session.getAttribute("user") == null){
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                             <button type="submit" ng-disabled="form_formacion.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_formacion" class="btn btn-primary" >Añadir</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+        
+    <div class="modal fade" id="form_admision" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Formulario de Admision</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" ng-submit="ctrl.submitExp()" name="exp_laboral" class="form-horizontal" novalidate>
+                        <p><b>Conductor: </b>{{ctrl.usuario_dp.nombre + ' ' + ctrl.usuario_dp.apellido}}</p>
+                        <p>Verificando todos los datos de este conductor, desea usted darle la admision al sistema?</p>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" ng-disabled="exp_laboral.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Admitiendo..." id="btn_admitir" class="btn btn-primary" >Admitir</button>
                         </div>
                     </form>
                 </div>
