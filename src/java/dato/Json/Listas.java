@@ -289,6 +289,63 @@ public class Listas {
         return lista;
     }
     
+    
+    public static JSONArray listaOfertasEmpleado(String cod) throws SQLException{
+        JSONObject obj = null;
+        JSONArray lista = new JSONArray();
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        Statement stm=null;
+        ResultSet datos=null;
+             
+        try{
+                    conn=conexion();
+                    String instruccion="";
+                     
+                    instruccion =   "SELECT x.id_oferta, fch_oferta, vac_oferta, tit_oferta, dsc_oferta, tip_ctr_oferta, " +
+                                    "fch_ctr_oferta, sal_oferta, act_oferta, " +
+                                    "ifnull((SELECT CASE WHEN id_oferta IS NULL THEN 0 ELSE 1 END FROM tblVistaOferta " +
+                                    "WHERE cod_empleado = ? and id_oferta = x.id_oferta),0) as ya_vio " +
+                                    "FROM tblOferta as x ";
+                    
+                    insertar=conn.prepareStatement(instruccion);
+                    insertar.setString(1, cod);
+
+                    datos=insertar.executeQuery();
+                    while (datos.next()) {
+                        obj = new JSONObject();
+                        obj.put("id", datos.getInt(1));
+                        obj.put("fecha", datos.getString(2));
+                        obj.put("vacante", datos.getInt(3));
+                        obj.put("titulo", datos.getString(4));
+                        obj.put("descripcion", datos.getString(5));
+                        obj.put("tipo", datos.getInt(6));
+                        obj.put("fecha_contratacion", Fechaformateador.format(datos.getDate(7)));
+                        obj.put("salario", datos.getFloat(8));
+                        obj.put("estado", datos.getBoolean(9));
+                        obj.put("visto", datos.getBoolean(10));
+                        
+                        lista.add(obj);
+                    }
+                    datos.close();
+                    conn.close();
+                    return lista;
+             
+        }catch (SQLException e) {
+            System.out.println("error SQLException en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }catch (Exception e){
+                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }finally{
+                    if(!conn.isClosed()){
+                        conn.close();
+                    }
+                }
+        return lista;
+    }
+    
+    
     public static JSONArray listaFormaciones(String cod) throws SQLException{
         JSONObject obj = null;
         JSONArray lista = new JSONArray();

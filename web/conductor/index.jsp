@@ -428,7 +428,7 @@ if(session.getAttribute("user") == null){
                     <div class="panel-body" >
                         
                         <div class="col-lg-12" ng-repeat="of in ctrl.ofertas">
-                            <div class="panel panel-info" ng-click="ctrl.editOferta(of.id)" style="cursor: pointer;">
+                            <div ng-class="{ 'panel panel-info': !of.visto, ' panel panel-danger': of.visto }" ng-click="ctrl.editOferta(of.id)" style="cursor: pointer;">
                                 <div class="panel-heading">    
                                     <i class="fa fa-map-marker"> <b>Barranquilla</b></i>                                    
                                 </div>
@@ -543,7 +543,7 @@ if(session.getAttribute("user") == null){
                     <h4 class="modal-title" id="myModalLabel">Oferta seleccionada</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-info">
+                    <div ng-class="{ 'alert alert-info': !ctrl.oferta.visto, ' alert alert-danger': ctrl.oferta.visto }">
                         <label style="font-size: 16px;">{{ctrl.oferta.titulo}}</label>
                     </div>
                     <p style="text-align: right;"><i class="fa fa-calendar"></i> Publicada: {{ctrl.oferta.fecha}}</p>
@@ -561,7 +561,7 @@ if(session.getAttribute("user") == null){
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                         
-                        <button type="button" class="btn btn-primary" ng-disabled="form_hv.$invalid" ng-click="ctrl.ver(ctrl.oferta.id)" ng-disabled="ctrl.oferta.visto">Aplicar</button>
+                        <button type="button" class="btn btn-primary" ng-click="ctrl.ver(ctrl.oferta.id)" ng-disabled="ctrl.oferta.visto">Aplicar</button>
                     </div>
                 </form>
 

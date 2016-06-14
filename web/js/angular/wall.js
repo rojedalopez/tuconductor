@@ -55,17 +55,14 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
     };
     
     self.editOferta = function(id){
-        console.log("entro");
         for(var i = 0; i < self.ofertas.length; i++){
-                    console.log("entro");
-
             if(self.ofertas[i].id === id) {
                self.oferta = angular.copy(self.ofertas[i]);
                self.oferta.fecha_contratacion = new Date(self.oferta.fecha_contratacion);
                self.oferta.fecha_contratacion = self.oferta.fecha_contratacion.toString("yyyy/MM/dd");
                self.oferta.fecha = new Date(self.oferta.fecha);
                self.oferta.fecha = self.oferta.fecha.toString("yyyy/MM/dd");
-               
+               console.log(self.oferta.visto);
                dialog_oferta.modal( "show" );
                break;
             }

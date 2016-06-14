@@ -44,11 +44,14 @@ if(session.getAttribute("user") == null){
     <script src="../js/dist/angular-datatables.min.js"></script>   
     
     <script type="text/javascript">
-        var btn_guardar_cambios = $("#btn_guardar_cambios");
-        var form_experiencia = $("#form_experiencia");
-        var form_formacion = $("#form_formacion");
-        var btn_add_exp = $("#btn_add_exp");
-        var btn_add_formacion = $("#btn_add_formacion");
+        var btn_guardar_cambios, form_experiencia, form_formacion, btn_add_exp, btn_add_formacion;
+        $(document).ready(function(){
+            btn_guardar_cambios = $("#btn_guardar_cambios");
+            form_experiencia = $("#form_experiencia");
+            form_formacion = $("#form_formacion");
+            btn_add_exp = $("#btn_add_exp");
+            btn_add_formacion = $("#btn_add_formacion");
+        });
     </script>
     
     <script type="text/javascript" src="../js/date.js"></script>      
