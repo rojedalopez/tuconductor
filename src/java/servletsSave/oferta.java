@@ -29,15 +29,6 @@ import org.json.simple.parser.ParseException;
  */
 public class oferta extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException, ClassNotFoundException, SQLException, InvalidKeyException {
         response.setContentType("text/html;charset=UTF-8");
@@ -65,6 +56,12 @@ public class oferta extends HttpServlet {
         int vacante = Integer.parseInt(joOferta.get("vacante").toString());
         boolean estado = Boolean.parseBoolean(joOferta.get("estado").toString());
         String fecha = (String) joOferta.get("fecha_contratacion");
+        String pais = (String) joOferta.get("pais");
+        String ciudad = (String) joOferta.get("ciudad");
+        String nbr_dpto = (String) joOferta.get("depart");
+        int dpto = Integer.parseInt(joOferta.get("depto").toString());
+        System.out.println(ciudad + ", " + nbr_dpto + ", " + pais);
+        
         
                         
         HttpSession session =  null;
@@ -75,7 +72,7 @@ public class oferta extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
-                boolean b = Guardar.saveOferta(id, titulo, descripcion, vacante, tipo, fecha, salario, estado, u.getCodigo());
+                boolean b = Guardar.saveOferta(id, titulo, descripcion, vacante, tipo, fecha, salario, estado, u.getCodigo(), pais, dpto, nbr_dpto, ciudad);
                 if(b){
                     out.print("true");
                 }else{

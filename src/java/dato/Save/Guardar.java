@@ -366,13 +366,14 @@ public class Guardar {
             return false;
     }
     
-    public static boolean saveOferta(int id, String titulo, String descripcion, int vacante, int tipo, String fecha, float salario, boolean estado, String nit) throws ClassNotFoundException, SQLException, InvalidKeyException{ 
+    public static boolean saveOferta(int id, String titulo, String descripcion, int vacante, int tipo, String fecha, 
+            float salario, boolean estado, String nit, String pais, int dpto, String nbr_dpto, String ciudad) throws ClassNotFoundException, SQLException, InvalidKeyException{ 
          
         boolean b=false;
         Connection conn=null;
         PreparedStatement insertar=null;
         conn=conexion();        
-        try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveOferta(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}")) {
+        try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveOferta(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}")) {
                 cs.setInt(1, id);
                 cs.setInt(2, vacante);
                 cs.setString(3, titulo);
@@ -382,10 +383,14 @@ public class Guardar {
                 cs.setString(7, ""+salario);
                 cs.setBoolean(8, estado);
                 cs.setString(9, nit);
-                cs.registerOutParameter(10, Types.INTEGER);
+                cs.setString(10, pais);
+                cs.setInt(11, dpto);
+                cs.setString(12, nbr_dpto);
+                cs.setString(13, ciudad);
+                cs.registerOutParameter(14, Types.INTEGER);
                 cs.executeQuery();
 
-                int retorno = cs.getInt(10);
+                int retorno = cs.getInt(14);
                 
                 if(retorno==1){
                     return true;
