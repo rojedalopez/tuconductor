@@ -388,14 +388,14 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
             });
 	}
     };
-}]).controller('ProfileAdmin_Conductor_Controller', ['$scope', 'ProfileAdmin_Conductor_Service', function($scope, ProfileAdmin_Conductor_Service) {
+}]).controller('ProfileAdminConductorController', ['$scope', 'ProfileAdminConductorService', function($scope, ProfileAdminConductorService) {
     var self = this;
     
     self.empleado={email:"", cod:"",nombre:"", apellido:"", puntaje:0, hoja_vida:"",experiencia:0};
     self.list_empleados=[];
     
     self.llenarEmpleados = function(){
-        ProfileAdmin_Conductor_Service.llenarEmpleados().then(function(d) {
+        ProfileAdminConductorService.llenarEmpleados().then(function(d) {
             self.list_empleados = d;
         },function(errResponse){
             console.error('Error while fetching Currencies');
@@ -428,7 +428,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         };
         
           
-}]).factory('ProfileAdmin_Conductor_Service', ['$http', '$q', function($http, $q){
+}]).factory('ProfileAdminConductorService', ['$http', '$q', function($http, $q){
     return {
         llenarEmpleados: function() {
             return $http.post('../list_employes').then(function(response){
@@ -438,5 +438,168 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
                 return $q.reject(errResponse);
             });
 	}
+    };
+}]).controller('EditConductorbyAdminController', ['$scope', 'EditConductorbyAdminService', function($scope, EditConductorbyAdminService) {
+    var self = this;
+
+    self.usuario_dp={
+          cod:"", nombre:"", apellido:"", tip_doc:"", 
+          num_doc:"", fecha_nac:"", genero:"", est_civil:"", 
+          movil: "", tel:"", pais:"CO", depto:"", depart:"" ,
+          ciudad:"", dir:"", naci:"CO", la1:false, 
+          la2:false, lb1:false, lb2:false, lb3:false, 
+          lc1:false, lc2:false, lc3:false, cargo:"", perfil:""};
+      
+    self.colombia = true;  
+
+    self.Anios=[]; 
+          
+    self.experiencias=[];
+    self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", dpto:"", 
+        ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0};
+
+    self.formaciones=[];
+    self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0};
+    
+    self.Paises=[];
+    self.dptos=[];
+    self.dpto={id:0, departamento:"", ciudades:[]};
+    self.ciudades=[];
+    
+     self.getVarUrl = function(name) {
+            var regexS = "[\\?&]" + name + "=([^&#]*)";
+            var regex = new RegExp(regexS);
+            var tmpURL = window.location.href;
+            var results = regex.exec(tmpURL);
+            if (results == null)
+                return "";
+            else
+                return results[1];
+    };
+    
+    self.selectPais = function(pais){
+        if(pais==="CO"){
+            self.colombia = true;  
+        }else{
+            self.colombia = false; 
+            self.usuario_dp.depart = "";
+            self.usuario_dp.ciudad = "";
+            self.usuario_dp.depto=-1;
+        }
+    };
+    
+    self.listaDptosCiudad = function(){
+        EditConductorbyAdminService.listaDptosCiudad().then(function(d){
+            self.dptos = d;
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+        });
+    };
+    
+    self.listaPaises = function() {
+        EditConductorbyAdminService.listaPaises().then(function(d){
+            self.Paises = d;
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+        });
+    };
+
+    self.selectDpto = function(id){
+        for(var i = 0; i < self.dptos.length; i++){
+            if(self.dptos[i].id === id) {
+               self.dpto = angular.copy(self.dptos[i]);
+               self.ciudades=self.dpto.ciudades;
+               self.usuario_dp.depart = self.dpto.departamento;
+               break;
+            }
+        }
+    };
+    
+    self.getUsuario = function(){
+        var cod = self.getVarUrl("cod");
+        console.log(cod);
+        EditConductorbyAdminService.getUsuario(cod).then(function(d) {
+            self.usuario_dp = d;
+            self.usuario_dp.fecha_nac =  new Date(self.usuario_dp.fecha_nac);
+            self.experiencias = d.exp_laborales;
+            self.formaciones = d.formacion;
+            self.selectDpto(self.usuario_dp.depto);
+        },function(errResponse){
+            console.error('Error while fetching Currencies');
+        });
+    };
+    
+    self.listaPaises();
+    self.listaDptosCiudad();
+    self.getUsuario();
+    
+    
+    self.tipoIdents = [
+        {ID: 'CC', Tipo: 'Cedula de ciudadania'},
+        {ID: 'CE', Tipo: 'Cedula de extranjeria'},
+        {ID: 'PS', Tipo: 'Pasaporte'}
+    ];
+          
+          
+    self.estCiviles = [
+        {ID: 'S', Value: 'Soltero(a)'},
+        {ID: 'C', Value: 'Casado(a)'},
+        {ID: 'U', Value: 'Union libre'},
+        {ID: 'D', Value: 'Separado(a)/Divoriado(a)'},
+        {ID: 'V', Value: 'Viudo(a)'}
+    ];
+
+    self.Sexos = [
+        {ID: 'M', Tipo: 'Masculino'},
+        {ID: 'F', Tipo: 'Femenino'}
+    ];
+
+    self.Meses = [
+        {ID: 1, Mes: 'Enero'},
+        {ID: 2, Mes: 'Febrero'},
+        {ID: 3, Mes: 'Marzo'},
+        {ID: 4, Mes: 'Abril'},
+        {ID: 5, Mes: 'Mayo'},
+        {ID: 6, Mes: 'Junio'},
+        {ID: 7, Mes: 'Julio'},
+        {ID: 8, Mes: 'Agosto'},
+        {ID: 9, Mes: 'Septiembre'},
+        {ID: 10, Mes: 'Octubre'},
+        {ID: 11, Mes: 'Noviembre'},
+        {ID: 12, Mes: 'Diciembre'}
+    ];
+
+    self.NvlFormacion = [
+        {'ID': 1, 'Value': 'Educación Basica Primaria'},
+        {'ID': 2, 'Value': 'Educación Basica Secundaria'},
+        {'ID': 3, 'Value': 'Bachillerato / educacion Media'},
+        {'ID': 4, 'Value': 'Universidad / Carrera Tecnica'}  
+    ];
+}]).factory('EditConductorbyAdminService', ['$http', '$q', function($http, $q){
+    return {
+        getUsuario: function(cod) {
+            return $http.post('../usuario_general_byadmin', {"cod":cod}).then(function(response){
+		return response.data;
+            },function(errResponse){
+                console.error('Error while fetching expenses');
+                return $q.reject(errResponse);
+            });
+	},
+        listaDptosCiudad: function() {
+            return $http.post('../assets/colombia.json').then(function(response){
+                return response.data;
+            },function(errResponse){
+                console.error('Error while fetching expenses');
+                return $q.reject(errResponse);
+            });
+	},
+	listaPaises: function() {
+            return $http.post('../assets/paises.json').then(function(response){
+                return response.data;
+            },function(errResponse){
+                console.error('Error while fetching expenses');
+                return $q.reject(errResponse);
+            });
+	}	
     };
 }]);

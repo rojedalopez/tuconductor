@@ -46,7 +46,7 @@ if(session.getAttribute("user") == null){
     <script type="text/javascript">
         
         $(document).ready(function (){
-            $("#Modal_infoadicional").modal("show");
+            //$("#Modal_infoadicional").modal("show");
         });
         
         function Open_dialog_filter(){
@@ -78,7 +78,7 @@ if(session.getAttribute("user") == null){
    </head>
 <body ng-app="myApp" class="ng-cloak">
     <!--  wrapper -->
-    <div id="wrapper"  ng-controller="ProfileAdmin_Conductor_Controller as ctrl">
+    <div id="wrapper"  ng-controller="ProfileAdminConductorController as ctrl">
         <!-- navbar top -->
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="navbar">
             <!-- navbar-header -->
@@ -431,7 +431,7 @@ if(session.getAttribute("user") == null){
                                             <td><span ng-bind="emp.nombre"></span></td>
                                             <td><span ng-bind="emp.apellido"></span></td>
                                             <td style="text-align: center; cursor: pointer;"><img src="../assets/img/hv_icon.png" class="btn_icon_red" data-toggle="tooltip" data-placement="left" title="Descargar H.V"/></td>
-                                            <td style="text-align: center; cursor: pointer;"><img src="../assets/img/edit2_icon.png" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Editar este conductor" ng-click="ctrl.edit_empleado(emp.cod)"/></td>
+                                            <td style="text-align: center; cursor: pointer;"><a target="_blanck" href="editprofile-employed.jsp?cod={{emp.cod}}"><img src="../assets/img/edit2_icon.png" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Editar este conductor"/></a></td>
                                         </tr>
                                     </tbody>
                                 </table>
