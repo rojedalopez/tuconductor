@@ -10,21 +10,27 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
           la2:false, lb1:false, lb2:false, lb3:false, 
           lc1:false, lc2:false, lc3:false, cargo:"", perfil:""};
       
-    self.colombia = true;  
+    self.colombia = true;
+    self.colombiaExp = true;
 
     self.Anios=[]; 
           
     self.experiencias=[];
-    self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", dpto:"", 
+    self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", depto:"", depart:"" ,
         ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0};
 
     self.formaciones=[];
     self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0};
     
+    
     self.Paises=[];
+    self.PaisesExp=[];
     self.dptos=[];
+    self.dptosExp=[];
     self.dpto={id:0, departamento:"", ciudades:[]};
+    self.dptoExp={id:0, departamento:"", ciudades:[]};
     self.ciudades=[];
+    self.ciudadesExp=[];
     
     self.SaveDatosPersonales = function(usuario_dp){
         ProfileService.SaveDatosPersonales(usuario_dp).then(function(d){
@@ -81,13 +87,26 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
             self.colombia = false; 
             self.usuario_dp.depart = "";
             self.usuario_dp.ciudad = "";
-            self.usuario_dp.depto=-1;
+            self.usuario_dp.depto="";
+        }
+    };
+    
+    self.selectPaisExp = function(pais){
+        console.log(pais);
+        if(pais==="CO"){
+            self.colombiaExp = true;  
+        }else{
+            self.colombiaExp = false; 
+            self.exp_laboral.depart = "";
+            self.exp_laboral.ciudad = "";
+            self.exp_laboral.depto="";
         }
     };
     
     self.listaDptosCiudad = function(){
         ProfileService.listaDptosCiudad().then(function(d){
             self.dptos = d;
+            self.dptosExp = d;
         },function(errResponse){
             console.error('Error while creating Paper.');
         });
@@ -96,6 +115,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.listaPaises = function() {
         ProfileService.listaPaises().then(function(d){
             self.Paises = d;
+            self.PaisesExp = d;
         },function(errResponse){
             console.error('Error while creating Paper.');
         });
@@ -107,6 +127,17 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
                self.dpto = angular.copy(self.dptos[i]);
                self.ciudades=self.dpto.ciudades;
                self.usuario_dp.depart = self.dpto.departamento;
+               break;
+            }
+        }
+    };
+    
+    self.selectDptoExp = function(id){
+        for(var i = 0; i < self.dptosExp.length; i++){
+            if(self.dptosExp[i].id === id) {
+               self.dptoExp = angular.copy(self.dptosExp[i]);
+               self.ciudadesExp=self.dpto.ciudades;
+               self.exp_laboral.depart = self.dptoExp.departamento;
                break;
             }
         }
@@ -133,10 +164,11 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         }
     };
           
-    self.llenarAnios();
-    self.GetUsuarioGeneral();
     self.listaPaises();
     self.listaDptosCiudad();
+    self.llenarAnios();
+    self.GetUsuarioGeneral();
+    
     
     self.submitDP = function(){
         console.log("aqui entro");
@@ -169,7 +201,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     };
            
     self.openForm = function(){
-        self.resetExp();
+        self.resetFrom();
         form_formacion.modal( "show" );
     };   
         
@@ -374,7 +406,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
                self.empresa.ult_compra=new Date(self.empresa.ult_compra);
                self.empresa.vence_compra=new Date(self.empresa.vence_compra);
                self.list_trazas = self.empresa;
-               modal_editempresa.modal( "show" );
+               modal_editadicional.modal( "show" );
                break;
             }
         }
@@ -474,23 +506,28 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
           movil: "", tel:"", pais:"CO", depto:"", depart:"" ,
           ciudad:"", dir:"", naci:"CO", la1:false, 
           la2:false, lb1:false, lb2:false, lb3:false, 
-          lc1:false, lc2:false, lc3:false, cargo:"", perfil:""};
+          lc1:false, lc2:false, lc3:false, cargo:"", perfil:"", verificado:false};
       
-    self.colombia = true;  
+    self.colombia = true;
+    self.colombiaExp = true;
 
     self.Anios=[]; 
           
     self.experiencias=[];
-    self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", dpto:"", 
+    self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", dpto:"", depart:"",
         ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0};
 
     self.formaciones=[];
     self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0};
     
     self.Paises=[];
+    self.PaisesExp=[];
     self.dptos=[];
+    self.dptosExp=[];
     self.dpto={id:0, departamento:"", ciudades:[]};
+    self.dptoExp={id:0, departamento:"", ciudades:[]};
     self.ciudades=[];
+    self.ciudadesExp=[];
     
      self.getVarUrl = function(name) {
             var regexS = "[\\?&]" + name + "=([^&#]*)";
@@ -510,13 +547,26 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
             self.colombia = false; 
             self.usuario_dp.depart = "";
             self.usuario_dp.ciudad = "";
-            self.usuario_dp.depto=-1;
+            self.usuario_dp.depto="";
+        }
+    };
+    
+    self.selectPaisExp = function(pais){
+        console.log(pais);
+        if(pais==="CO"){
+            self.colombiaExp = true;  
+        }else{
+            self.colombiaExp = false; 
+            self.exp_laboral.depart = "";
+            self.exp_laboral.ciudad = "";
+            self.exp_laboral.depto="";
         }
     };
     
     self.listaDptosCiudad = function(){
         EditConductorbyAdminService.listaDptosCiudad().then(function(d){
             self.dptos = d;
+            self.dptosExp = d;
         },function(errResponse){
             console.error('Error while creating Paper.');
         });
@@ -524,6 +574,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     
     self.listaPaises = function() {
         EditConductorbyAdminService.listaPaises().then(function(d){
+            self.PaisesExp = d;
             self.Paises = d;
         },function(errResponse){
             console.error('Error while creating Paper.');
@@ -536,6 +587,17 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
                self.dpto = angular.copy(self.dptos[i]);
                self.ciudades=self.dpto.ciudades;
                self.usuario_dp.depart = self.dpto.departamento;
+               break;
+            }
+        }
+    };
+    
+    self.selectDptoExp = function(id){
+        for(var i = 0; i < self.dptosExp.length; i++){
+            if(self.dptosExp[i].id === id) {
+               self.dptoExp = angular.copy(self.dptosExp[i]);
+               self.ciudadesExp=self.dpto.ciudades;
+               self.exp_laboral.depart = self.dptoExp.departamento;
                break;
             }
         }
@@ -555,8 +617,57 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         });
     };
     
+    self.editExp = function(id){
+        for(var i = 0; i < self.experiencias.length; i++){
+            if(self.experiencias[i].id === id) {
+               self.exp_laboral = angular.copy(self.experiencias[i]);
+               form_experiencia.modal( "show" );
+               break;
+            }
+        }
+    };
+    
+    self.editForm = function(id){
+        for(var i = 0; i < self.formaciones.length; i++){
+            if(self.formaciones[i].id === id) {
+               self.formacion = angular.copy(self.formaciones[i]);
+               form_formacion.modal( "show" );
+               break;
+            }
+        }
+    };
+    
+    self.openExp = function(){
+        self.resetExp();
+        form_experiencia.modal( "show" );
+    };
+    
+    self.openForm = function(){
+        self.resetForm();
+        form_formacion.modal( "show" );
+    }; 
+    
+    self.resetExp = function(){
+        self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", dpto:"", 
+         ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0};
+        $scope.exp_laboral.$setPristine();
+    };
+          
+    self.resetForm = function(){
+        self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0};
+        $scope.form_formacion.$setPristine();
+    };
+    
+    self.llenarAnios = function(){
+        var Anio = new Date().getFullYear();
+        for(var a = Anio; a >= Anio - 100; a--){
+            self.Anios.push({ID:a, Year:a});
+        }
+    };
+    
     self.listaPaises();
     self.listaDptosCiudad();
+    self.llenarAnios();
     self.getUsuario();
     
     

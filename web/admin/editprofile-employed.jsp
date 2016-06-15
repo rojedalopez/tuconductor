@@ -404,10 +404,10 @@ if(session.getAttribute("user") == null){
                     <h1 class="page-header">Perfil empleado: {{ctrl.usuario_dp.nombre + ' ' + ctrl.usuario_dp.apellido}}</h1>
                 </div>
                 <div class="col-lg-12" style="text-align: center;">
-                    <div class="alert alert-success">
+                    <div class="alert alert-success" ng-show="ctrl.usuario_dp.verificado">
                         <b>Estado:</b> <i class="fa fa-check-square"></i> ADMITIDO.
                     </div>
-                    <div class="alert alert-danger">
+                    <div class="alert alert-danger" ng-show="!ctrl.usuario_dp.verificado">
                         <b>Estado:</b> <i class="fa fa-exclamation-triangle"></i> PENDIENTE
                     </div>
                 </div>
@@ -795,21 +795,23 @@ if(session.getAttribute("user") == null){
                         </p>
                         <p>
                             <label class="etiqueta_e">Pais:</label>
-                            <select class="form-control selector_e" name="pais" ng-model="ctrl.exp_laboral.pais" ng-options="Pais.ID as Pais.Nombre for Pais in ctrl.Paises">
+                            <select class="form-control selector_e" name="pais" ng-model="ctrl.exp_laboral.pais" ng-options="Pais.ID as Pais.Nombre for Pais in ctrl.PaisesExp" ng-selected="ctrl.selectPaisExp(ctrl.exp_laboral.pais)">
                                 <option>--- Seleccione Pais ---</option>
                             </select>
                         </p>
                         <p>
                             <label class="etiqueta_e">Dpto:</label>
-                            <select class="form-control selector_e" name="dpto" ng-model="ctrl.exp_laboral.dpto">
-                                <option>Departamento</option>
+                            <select class="form-control selector_e" ng-show="ctrl.colombiaExp" name="depto" ng-model="ctrl.exp_laboral.depto" ng-options="dpto.id as dpto.departamento for dpto in ctrl.dptosExp" ng-selected="ctrl.selectDptoExp(ctrl.exp_laboral.depto)">
+                                <option value="">--- Seleccione Departamento ---</option>
                             </select>
+                            <input type="text" ng-show="!ctrl.colombiaExp" class="form-control texto"  name="depart" ng-model="ctrl.exp_laboral.depart" >
                         </p>
                         <p>
                             <label class="etiqueta_e">Ciudad:</label>
-                            <select class="form-control selector_e" name="ciudad" ng-model="ctrl.exp_laboral.ciudad">
-                                <option>Ciudad</option>
+                            <select class="form-control selector_e" ng-show="ctrl.colombiaExp" name="ciudad" ng-model="ctrl.exp_laboral.ciudad" ng-options="ciudad for ciudad in ctrl.ciudadesExp">
+                                <option value="">--- Seleccione Ciudad ---</option>
                             </select>
+                            <input type="text" ng-show="!ctrl.colombiaExp" class="form-control texto"  name="ciudad" ng-model="ctrl.exp_laboral.ciudad" >
                         </p>
                         <p ng-class="{ 'has-error': exp_laboral.empresa.$error.required || exp_laboral.empresa.$error.minlength }">
                             <label class="etiqueta_e">Direccion<i class="required">*</i>:</label>
@@ -849,7 +851,7 @@ if(session.getAttribute("user") == null){
                         
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" ng-disabled="exp_laboral.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_exp" class="btn btn-primary" >Añadir</button>
+                            <button type="submit" ng-disabled="exp_laboral.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_exp" class="btn btn-primary" >{{(ctrl.exp_laboral.id===-1)?'Añadir':'Editar'}}</button>
                         </div>
                     </form>
                 </div>
@@ -919,7 +921,7 @@ if(session.getAttribute("user") == null){
                         </p>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" ng-disabled="form_formacion.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_formacion" class="btn btn-primary" >Añadir</button>
+                            <button type="submit" ng-disabled="form_formacion.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_formacion" class="btn btn-primary" >{{(ctrl.formacion.id===-1)?'Añadir':'Editar'}}</button>
                         </div>
                     </form>
                 </div>
@@ -938,10 +940,11 @@ if(session.getAttribute("user") == null){
                 <div class="modal-body">
                     <form role="form" ng-submit="ctrl.submitExp()" name="exp_laboral" class="form-horizontal" novalidate>
                         <p><b>Conductor: </b>{{ctrl.usuario_dp.nombre + ' ' + ctrl.usuario_dp.apellido}}</p>
-                        <p>Verificando todos los datos de este conductor, desea usted darle la admision al sistema?</p>
+                        <p>{{(ctrl.usuario_dp.verificado)?"Este conductor ya esta adminitido en la plataforma, ¿desea revocarle la adminsión?":"Verificando todos los datos de este conductor, ¿desea usted darle la admision al sistema?"}}</p>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" ng-disabled="exp_laboral.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Admitiendo..." id="btn_admitir" class="btn btn-primary" >Admitir</button>
+                            <button type="submit" ng-show="!ctrl.usuario_dp.verificado" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Admitiendo..." id="btn_admitir" class="btn btn-primary" >Admitir</button>                        
+                            <button type="submit" ng-show="ctrl.usuario_dp.verificado" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Retirando..." id="btn_admitir" class="btn btn-primary" >Retirar adminsión</button>
                         </div>
                     </form>
                 </div>

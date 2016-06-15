@@ -180,14 +180,14 @@ public class Guardar {
     
     
     public static boolean SaveExperiencia(String cod_, int id, String empresa, String cargo, float salario, float bonos, String supervisor, 
-            String telefono, String pais, String dpto, String ciudad, String dir, int mes_inicio, int anio_inicio, int mes_fin, int anio_fin, 
+            String telefono, String pais, int dpto, String nbr_depto, String ciudad, String dir, int mes_inicio, int anio_inicio, int mes_fin, int anio_fin, 
             boolean labora, String retiro) throws ClassNotFoundException, SQLException{
         boolean b=false;
         Connection conn=null;
         PreparedStatement insertar=null;
         
         conn=conexion();
-            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveExperiencia(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)};")) {
+            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveExperiencia(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)};")) {
                 cs.setString(1, cod_);
                 cs.setInt(2, id);
                 cs.setString(3, empresa);
@@ -197,19 +197,20 @@ public class Guardar {
                 cs.setString(7, supervisor);
                 cs.setString(8, telefono);
                 cs.setString(9, pais);
-                cs.setString(10, dpto);
-                cs.setString(11, ciudad);
-                cs.setString(12, dir);
-                cs.setInt(13, mes_inicio);
-                cs.setInt(14, anio_inicio);
-                cs.setInt(15, mes_fin);
-                cs.setInt(16, anio_fin);
-                cs.setInt(17, (labora)?1:0);
-                cs.setString(18, retiro);
-                cs.registerOutParameter(19, Types.INTEGER);
+                cs.setInt(10, dpto);
+                cs.setString(11, nbr_depto);
+                cs.setString(12, ciudad);
+                cs.setString(13, dir);
+                cs.setInt(14, mes_inicio);
+                cs.setInt(15, anio_inicio);
+                cs.setInt(16, mes_fin);
+                cs.setInt(17, anio_fin);
+                cs.setInt(18, (labora)?1:0);
+                cs.setString(19, retiro);
+                cs.registerOutParameter(20, Types.INTEGER);
                 cs.executeQuery();
 
-                int retorno = cs.getInt(19);
+                int retorno = cs.getInt(20);
                 
                 if(retorno==1){
                     return true;
@@ -295,7 +296,7 @@ public class Guardar {
         insertar.setString(4, codigo);
                  
         if(insertar.executeUpdate()==1){
-            Mails.SendMailAgregoHV("jmcastilla91@gmail.com","INGRESO DE HOJA DE VIDA", "<b>"+nombre_persona+"</b> HA INGRESADO SU HOJA DE VIDA HACE UN INSTANTE",codigo);
+            Mails.SendMailAgregoHV("rojedalopez@gmail.com","INGRESO DE HOJA DE VIDA", "<b>"+nombre_persona+"</b> HA INGRESADO SU HOJA DE VIDA HACE UN INSTANTE",codigo);
             return true;
         }
          

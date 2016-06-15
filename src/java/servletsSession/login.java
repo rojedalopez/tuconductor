@@ -38,18 +38,27 @@ public class login extends HttpServlet {
                     session.setAttribute("user", u);
                     session.setAttribute("cod", u.getCodigo());
                     session.setAttribute("session", true);
+                    String url = "";
+                    boolean url_forward = false;
+                    
+                    if(session.getAttribute("url_forward")!=null){
+                        url_forward = true;
+                        url = session.getAttribute("url_forward")+"";
+                    }
+                    
                     if(u.getRol()==1){
                         String[] nombre = u.getNombre().split(" ");
                         session.setAttribute("usr", nombre[0]);
-                        response.sendRedirect("admin/");
+                        response.sendRedirect((url_forward)?url:"admin/");
                     }else if(u.getRol()==2){
                         session.setAttribute("usr", u.getNombre());
-                        response.sendRedirect("empresa/");
+                        response.sendRedirect((url_forward)?url:"empresa/");
                     }else if(u.getRol()==3){
                         String[] nombre = u.getNombre().split(" ");
                         session.setAttribute("usr", nombre[0]);
-                        response.sendRedirect("conductor/");
+                        response.sendRedirect((url_forward)?url:"conductor/");
                     }
+                    
                  }else{
                     System.out.println("error en: " +u.getMensaje());
                     response.sendRedirect("?mensaje=Error en la autenticacion.");

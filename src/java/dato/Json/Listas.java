@@ -182,7 +182,7 @@ public class Listas {
                     String instruccion="";
                      
                     instruccion =   "SELECT id_explaboral, epr_explaboral, crg_explaboral, slr_explaboral, bon_explaboral, spv_explaboral, " +
-                                    "tel_spv_explaboral, dir_explaboral, cui_explaboral, dpt_explaboral, pais_explaboral, aun_explaboral, " +
+                                    "tel_spv_explaboral, dir_explaboral, cui_explaboral, dpt_explaboral, nbr_dpt_explaboral, pais_explaboral, aun_explaboral, " +
                                     "rzn_fin_explaboral, mes_ini_explaboral, anio_ini_explaboral, mes_fin_explaboral, " +
                                     "anio_fin_explaboral, mes_explaboral, anio_explaboral " +
                                     "FROM tuconductor.tblExpLaboral WHERE cod_empleado = ? ORDER BY aun_explaboral DESC, anio_ini_explaboral DESC, mes_ini_explaboral DESC;";
@@ -201,15 +201,16 @@ public class Listas {
                         obj.put("telefono", datos.getString(7));
                         obj.put("direccion", datos.getString(8));
                         obj.put("ciudad", datos.getString(9));
-                        obj.put("dpto", datos.getString(10));
-                        obj.put("pais", datos.getString(11));
-                        obj.put("labora", datos.getBoolean(12));
-                        obj.put("retiro", datos.getString(13));
-                        obj.put("mes_inicio", datos.getInt(14));
-                        obj.put("anio_inicio", datos.getInt(15));
-                        obj.put("mes_fin", datos.getInt(16));
-                        obj.put("anio_fin", datos.getInt(17));
-                        obj.put("exp_meses", datos.getInt(18));
+                        obj.put("depto", datos.getInt(10));
+                        obj.put("depart", datos.getString(11));
+                        obj.put("pais", datos.getString(12));
+                        obj.put("labora", datos.getBoolean(13));
+                        obj.put("retiro", datos.getString(14));
+                        obj.put("mes_inicio", datos.getInt(15));
+                        obj.put("anio_inicio", datos.getInt(16));
+                        obj.put("mes_fin", datos.getInt(17));
+                        obj.put("anio_fin", datos.getInt(18));
+                        obj.put("exp_meses", datos.getInt(19));
                         
                         lista.add(obj);
                     }

@@ -34,7 +34,7 @@ public class Objetos {
                      
                     instruccion =   "SELECT cod_empleado, nbr_empleado, apl_empleado, tpo_doc_empleado, doc_empleado, nto_empleado, gnr_empleado, sta_civ_empleado, " +
                                     "mvl_empleado, tel_empleado, pais_empleado, cui_empleado, dpt_empleado, dir_empleado, nac_empleado, lic_a1_empleado, " +
-                                    "lic_a2_empleado, lic_b1_empleado, lic_b2_empleado, lic_b3_empleado, lic_c1_empleado, lic_c2_empleado, lic_c3_empleado, prf_empleado, cgo_empleado " +
+                                    "lic_a2_empleado, lic_b1_empleado, lic_b2_empleado, lic_b3_empleado, lic_c1_empleado, lic_c2_empleado, lic_c3_empleado, prf_empleado, cgo_empleado, ver_empleado " +
                                     "FROM tblEmpleado WHERE cod_empleado = ?;";
                      
                     insertar=conn.prepareStatement(instruccion);
@@ -66,6 +66,7 @@ public class Objetos {
                         obj.put("lc3", datos.getBoolean(23));
                         obj.put("perfil", datos.getString(24));
                         obj.put("cargo", datos.getString(25));
+                        obj.put("verificado", datos.getBoolean(26));
                         obj.put("exp_laborales", Listas.listaExpLaborales(id));
                         obj.put("formacion", Listas.listaFormaciones(id));
                     }

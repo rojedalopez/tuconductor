@@ -53,7 +53,9 @@ public class experiencia_usuario extends HttpServlet {
         String supervisor = (String) joExperiencia_usr.get("supervisor");
         String telefono = (String) joExperiencia_usr.get("telefono");
         String pais = (String) joExperiencia_usr.get("pais");
-        String dpto = (String) joExperiencia_usr.get("dpto");
+        int dpto = Integer.parseInt(joExperiencia_usr.get("depto").toString());
+        System.out.print(dpto+"-------");
+        String depart = (String) joExperiencia_usr.get("depart");
         String ciudad = (String) joExperiencia_usr.get("ciudad");
         String direccion = (String) joExperiencia_usr.get("direccion");
         int mes_inicio = Integer.parseInt(joExperiencia_usr.get("mes_inicio").toString());
@@ -78,7 +80,7 @@ public class experiencia_usuario extends HttpServlet {
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
                 boolean b = Guardar.SaveExperiencia(u.getCodigo(), id, empresa, cargo, 
-                        salario, bonos, supervisor, telefono, pais, dpto, ciudad, direccion, mes_inicio, 
+                        salario, bonos, supervisor, telefono, pais, dpto, depart, ciudad, direccion, mes_inicio, 
                         anio_inicio, mes_fin, anio_fin, labora, retiro);
                 if(b){
                     out.print("true");
