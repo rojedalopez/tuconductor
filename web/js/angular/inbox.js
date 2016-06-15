@@ -2,147 +2,63 @@
 
 angular.module('MyApp.Inbox', []).controller('InboxController', ['$scope', 'InboxService', function($scope, InboxService) {
     var self = this;
-    self.oferta={id:-1, titulo:"", descripcion:"", vacante:"", salario:0,tipo:1, estado:false, fecha_creacion:"", fecha_contratacion:"", pais:"CO", ciudad:"", depto:-1, dapart:"" };
-    self.ofertas=[];
+    self.chats=[];
+    self.mensajes=[];
+    self.mensaje={id:0, fecha:"", rol:false, destino:"", n_destino:"", texto:""};
+    self.nuevo_mensaje={chat:"", origen:"", destino:"", texto:""};
+    self.chat={id:0, fecha:"", ult_mensaje:"", destino:"", n_destino:"", invisible:false, visto:false};
     
-    self.Paises=[];
-    self.dptos=[];
-    self.dpto={id:0, departamento:"", ciudades:[]};
-    self.ciudades=[];
-    
-    self.SaveInbox = function(oferta){
-        InboxService.SaveInbox(oferta).then(function(d){
-            if(d==="true"){
-                dialog_oferta.modal( "hide" );
-                self.resetInbox();
-                self.listaInboxs();
-            }
+    self.listaChats = function(){
+        InboxService.listaChats().then(function(d){
+            self.chats = d;
         },function(errResponse){
             console.error('Error while creating Paper.');
         });
     };
-          
-    self.listaInboxs = function(){
-        InboxService.listaInboxs().then(function(d){
+    
+    self.listaMensajes = function(id){
+        InboxService.listaMensajes(id).then(function(d){
+            self.mensajes = d;
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+        });
+    };
+    
+    self.sendMensaje = function(nuevo_mensaje){
+        InboxService.sendMensaje(nuevo_mensaje).then(function(d){
             self.ofertas = d;
         },function(errResponse){
             console.error('Error while creating Paper.');
         });
     };
-          
-
     
-    self.selectPais = function(pais){
-        if(pais==="CO"){
-            self.colombia = true;  
-        }else{
-            self.colombia = false; 
-            self.oferta.depart = "";
-            self.oferta.ciudad = "";
-            self.oferta.depto=-1;
-        }
-    };
-    
-    self.listaDptosCiudad = function(){
-        InboxService.listaDptosCiudad().then(function(d){
-            self.dptos = d;
-        },function(errResponse){
-            console.error('Error while creating Paper.');
-        });
-    };
-    
-    self.listaPaises = function() {
-        InboxService.listaPaises().then(function(d){
-            self.Paises = d;
-        },function(errResponse){
-            console.error('Error while creating Paper.');
-        });
-    };
-
-    self.selectDpto = function(id){
-        for(var i = 0; i < self.dptos.length; i++){
-            if(self.dptos[i].id === id) {
-               self.dpto = angular.copy(self.dptos[i]);
-               self.ciudades=self.dpto.ciudades;
-               self.oferta.depart = self.dpto.departamento;
+    self.listaChats();
+                 
+    self.selectChat = function(id){
+        for(var i = 0; i < self.chats.length; i++){
+            if(self.chats[i].id === id) {
+               self.chat = angular.copy(self.chats[i]);
+               self.nuevo_mensaje.chat = self.chat.id;
+               self.nuevo_mensaje.destino = self.chat.destino;
+               self.listaMensajes(self.chat.id);
                break;
             }
         }
     };
     
-    self.GetUsuarioGeneral = function(){
-        InboxService.GetUsuarioGeneral().then(function(d) {
-            self.ofertas = d.oferta;
-       },function(errResponse){
-           console.error('Error while fetching Currencies');
-       });
-    };
-       
-    self.listaInboxs();
-    self.listaPaises();
-    self.listaDptosCiudad();
-    
-    //self.GetUsuarioGeneral();
-
-    self.submitInbox = function(){
-        self.oferta.fecha_contratacion = self.oferta.fecha_contratacion.toString("yyyy-MM-dd");
-        self.SaveInbox(self.oferta);
-    };
-
-    self.close = function(){
+    self.submitMensaje = function(){
+        self.sendMensaje(self.nuevo_mensaje);
         self.reset();
-        dialog_oferta.modal( "hide" );
     };
-
-    self.openInbox = function(){
-        console.log("eentro aca");
-        self.resetInbox();
-        dialog_oferta.modal( "show" );
-    };
-           
-               
-    self.editInbox = function(id){
-        for(var i = 0; i < self.ofertas.length; i++){
-            if(self.ofertas[i].id === id) {
-               self.oferta = angular.copy(self.ofertas[i]);
-               self.oferta.fecha_contratacion = new Date(self.oferta.fecha_contratacion);
-               dialog_oferta.modal( "show" );
-               break;
-            }
-        }
-      };
-
-
-    self.TipoContrato = [
-        {"ID":1,"Value":"Termino Indefinido"},
-        {"ID":2,"Value":"Termino Definido"},
-        {"ID":3,"Value":"Obra Labor"},
-        {"ID":4,"Value":"Por Horas"}
-    ];
-
-    self.resetInbox = function(){
-        self.oferta={id:-1, titulo:"", descripcion:"", vacante:"", salario:0, tipo:1, estado:false, fecha_creacion:"", fecha_contratacion:"",};
-        $scope.form_oferta.$setPristine();
-      };
-        
+    
+    self.reset = function(){
+        self.nuevo_mensaje={chat:"", destino:"", texto:""};
+    }
+      
 }]).factory('InboxService', ['$http', '$q', function($http, $q){
-
 	return {
-                    
-            SaveInbox: function(oferta){
-            return $http.post('../oferta', oferta).then(
-                                                            function(response){
-                                                                    console.log(response.data);
-                                                                    return response.data;
-                                                            }, 
-                                                            function(errResponse){
-                                                                    console.error('Error guardando datos personales ' +errResponse);
-                                                                    return $q.reject(errResponse);
-                                                            }
-                                            );
-            },
-            listaInboxs: function() {
-                return $http.post('../list_oferta').then(function(response){
+            listaChats: function() {
+                return $http.post('../list_chats').then(function(response){
                     return response.data;
                 }, 
                 function(errResponse){
@@ -150,37 +66,33 @@ angular.module('MyApp.Inbox', []).controller('InboxController', ['$scope', 'Inbo
                     return $q.reject(errResponse);
                 });
             },
-            listaDptosCiudad: function() {
-                return $http.post('../assets/colombia.json').then(function(response){
+            listaMensajes: function(id) {
+                return $http.post('../list_mensajes',{'chat':id}).then(function(response){
                     return response.data;
-                },function(errResponse){
+                }, 
+                function(errResponse){
                     console.error('Error while fetching expenses');
                     return $q.reject(errResponse);
                 });
             },
-            listaPaises: function() {
-                return $http.post('../assets/paises.json').then(function(response){
+            sendMensaje: function(mensaje) {
+                return $http.post('../mensaje', mensaje).then(function(response){
                     return response.data;
-                },function(errResponse){
+                }, 
+                function(errResponse){
                     console.error('Error while fetching expenses');
                     return $q.reject(errResponse);
                 });
-            }	
+            }
 	};
 
-}]).directive('sameAs', function() { return {
-    require : 'ngModel',
-    link : function(scope, elm, attrs, ngModelCtrl) {
-
-        ngModelCtrl.$validators.sameAs = function(modelValue, viewValue) {
-            var checkedVal = attrs.sameAs;
-            var thisInputVal = viewValue;
-
-            if (thisInputVal == checkedVal) {
-                return true; // valid
-            } else {
-                return false;
-            }
-        };
+}]).directive('watchScope', [function () {
+  return {
+    scope: {
+      item: '=watchScope'
+    },
+    link: function (scope, element, attrs) {
+      console.log('element ' + scope.item.name + ' created');
     }
-}; });
+  };
+}]);

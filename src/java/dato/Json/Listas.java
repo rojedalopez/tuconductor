@@ -6,7 +6,6 @@
 package dato.Json;
 
 import static dato.Aplicacion.conexion;
-import static dato.Json.Objetos.Fechaformateador;
 import dato.Metodos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -124,6 +123,171 @@ public class Listas {
                 }
         return lista.toJSONString();
     }
+    
+    public static String ObtenerChats(String cod, int rol) throws SQLException{
+        JSONObject obj = null;
+        JSONArray lista = new JSONArray();
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        Statement stm=null;
+        ResultSet datos=null;
+             
+        try{
+                    conn=conexion();
+                    String instruccion="";
+                    
+                    if(rol==2){
+                        instruccion  =  "SELECT c.id_chat, CONCAT(e.nbr_empleado, ' ', e.apl_empleado) AS nombre, c.cod_empleado, c.fch_chat, c.ult_msn_chat, ";
+                        instruccion +=  " c.vis_epl_chat, c.inv_epl_chat FROM tblChat AS c INNER JOIN tblEmpleado AS e ON e.cod_empleado = c.cod_empleado ";
+                        instruccion +=  " WHERE nit_empresa = ?";
+                    }else{
+                        instruccion  = " SELECT c.id_chat, e.nbr_empresa, c.nit_empresa, c.fch_chat, c.ult_msn_chat, c.vis_emp_chat, c.inv_emp_chat " ;
+                        instruccion += " FROM tblChat AS c INNER JOIN tblEmpresa AS e ON e.nit_empresa = c.nit_empresa " ;
+                        instruccion += " WHERE cod_empleado = ?;";
+                    }
+                    System.out.println(instruccion + "                " + cod);
+                     
+                    insertar=conn.prepareStatement(instruccion);
+                    insertar.setString(1, cod);
+                    datos=insertar.executeQuery();
+                    while (datos.next()) {
+                        obj = new JSONObject();
+                        obj.put("id", datos.getInt(1));
+                        obj.put("n_destino", datos.getString(2));
+                        obj.put("destino", datos.getString(3));
+                        obj.put("fecha", Metodos.calcular(datos.getString(4)));
+                        obj.put("ult_mensaje", Metodos.calcular(datos.getString(5)));
+                        obj.put("visto", datos.getBoolean(6));
+                        obj.put("invisible", datos.getBoolean(7));
+                        lista.add(obj);
+                    }
+                    datos.close();
+                    conn.close();
+                    return lista.toJSONString();
+             
+        }catch (SQLException e) {
+            System.out.println("error SQLException en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }catch (Exception e){
+                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }finally{
+                    if(!conn.isClosed()){
+                        conn.close();
+                    }
+                }
+        return lista.toJSONString();
+    }
+    
+    public static String ObtenerMensajes(int id, int rol) throws SQLException{
+        JSONObject obj = null;
+        JSONArray lista = new JSONArray();
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        Statement stm=null;
+        ResultSet datos=null;
+             
+        try{
+                    conn=conexion();
+                    String instruccion="";
+                    
+                    if(rol==2){
+                        instruccion  =  "SELECT id_mensaje, CASE WHEN m.emp_rol_mensaje = 0 THEN ep.cod_empleado ELSE em.nit_empresa END AS cod_destino, " +
+                                        "CASE WHEN m.emp_rol_mensaje = 0 THEN ep.nbr_empleado ELSE em.nbr_empresa END AS n_destino, " +
+                                        "txt_mensaje, m.fch_mensaje, emp_rol_mensaje " +
+                                        "FROM tblMensaje AS m INNER JOIN tblChat AS c ON m.id_chat = c.id_chat " +
+                                        "INNER JOIN tblEmpleado AS ep ON ep.cod_empleado = c.cod_empleado " +
+                                        "INNER JOIN tblEmpresa AS em ON em.nit_empresa = c.nit_empresa WHERE m.id_chat = ?; ";
+                    }else{
+                        instruccion  = "SELECT id_mensaje, CASE WHEN m.epl_rol_mensaje = 0 THEN em.nit_empresa ELSE ep.cod_empleado END AS cod_destino, " +
+                                        "CASE WHEN m.epl_rol_mensaje = 0 THEN em.nbr_empresa ELSE ep.nbr_empleado END AS n_destino, " +
+                                        "txt_mensaje, m.fch_mensaje, epl_rol_mensaje " +
+                                        "FROM tblMensaje AS m INNER JOIN tblChat AS c ON m.id_chat = c.id_chat " +
+                                        "INNER JOIN tblEmpleado AS ep ON ep.cod_empleado = c.cod_empleado " +
+                                        "INNER JOIN tblEmpresa AS em ON em.nit_empresa = c.nit_empresa WHERE m.id_chat = ?; ";
+                    }
+                     
+                    insertar=conn.prepareStatement(instruccion);
+                    insertar.setInt(1, id);
+                    datos=insertar.executeQuery();
+                    while (datos.next()) {
+                        obj = new JSONObject();
+                        obj.put("id", datos.getInt(1));
+                        obj.put("destino", datos.getString(2));
+                        obj.put("n_destino", datos.getString(3));
+                        obj.put("texto", datos.getString(4));
+                        obj.put("fecha", Metodos.calcular(datos.getString(5)));
+                        obj.put("rol", datos.getBoolean(6));
+                        lista.add(obj);
+                    }
+                    datos.close();
+                    conn.close();
+                    return lista.toJSONString();
+             
+        }catch (SQLException e) {
+            System.out.println("error SQLException en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }catch (Exception e){
+                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }finally{
+                    if(!conn.isClosed()){
+                        conn.close();
+                    }
+                }
+        return lista.toJSONString();
+    }
+    
+    
+    public static String ObtenerMensajesByChat(int id) throws SQLException{
+        JSONObject obj = null;
+        JSONArray lista = new JSONArray();
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        Statement stm=null;
+        ResultSet datos=null;
+             
+        try{
+                    conn=conexion();
+                    String instruccion="";
+                     
+                    instruccion =   "SELECT c.id_comentario, CONCAT(e.nbr_empleado, \" \", e.apl_empleado) AS Origen, " +
+                                    "c.fch_comentario, c.cmn_comentario, e.cod_empleado, c.id_publicacion " +
+                                    "FROM tblComentario  AS c INNER JOIN tblEmpleado AS e ON c.cod_empleado = e.cod_empleado " +
+                                    "WHERE id_publicacion = ?;";
+                     
+                    insertar=conn.prepareStatement(instruccion);
+                    insertar.setInt(1, id);
+                    datos=insertar.executeQuery();
+                    while (datos.next()) {
+                        obj = new JSONObject();
+                        obj.put("id", datos.getInt(1));
+                        obj.put("origen", datos.getString(2));
+                        obj.put("fecha", Fechaformateador.format(datos.getDate(3)));
+                        obj.put("comentario", datos.getString(4));
+                        obj.put("cod_origen", datos.getString(5));
+                        obj.put("id_publicacion", datos.getInt(6));
+                        obj.put("desde", Metodos.calcular(datos.getString(3)));
+                        lista.add(obj);
+                    }
+                    datos.close();
+                    conn.close();
+                    return lista.toJSONString();
+             
+        }catch (SQLException e) {
+            System.out.println("error SQLException en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }catch (Exception e){
+                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }finally{
+                    if(!conn.isClosed()){
+                        conn.close();
+                    }
+                }
+        return lista.toJSONString();
+    }
+    
     
      public static JSONArray ObtenerTrazaTknByEmpresa(String id) throws SQLException{
         JSONObject obj = null;

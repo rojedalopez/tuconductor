@@ -72,27 +72,20 @@ public class Guardar {
     }
     
     
-    public static String InsertComment(int id, int publicacion, String cod, String comment) throws ClassNotFoundException, SQLException, InvalidKeyException{
+    public static String SaveMensaje(int chat, String destino, String texto) throws ClassNotFoundException, SQLException{
         boolean b=false;
         Connection conn=null;
         PreparedStatement insertar=null;
         
         conn=conexion();
-            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_Comentario(?, ?, ?, ?, ?)}")) {
-                System.out.println("prueba 1");
-                cs.setInt(1, id);
-                System.out.println(id);
-                cs.setInt(2, publicacion);
-                System.out.println(publicacion);
-                cs.setString(3, cod);
-                System.out.println(cod);
-                cs.setString(4, comment);
-                System.out.println(comment);
-                cs.registerOutParameter(5, Types.INTEGER);
+            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_Mensaje(?, ?, ?, ?)}")) {
+                cs.setInt(1, chat);
+                cs.setString(2, destino);
+                cs.setString(3, texto);
+                cs.registerOutParameter(4, Types.INTEGER);
                 cs.executeQuery();
 
-                System.out.println("prueba 1");
-                int retorno = cs.getInt(5);
+                int retorno = cs.getInt(4);
                 
                 System.out.println(retorno);
                 if(retorno==1){

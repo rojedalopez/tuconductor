@@ -77,7 +77,7 @@ if(session.getAttribute("user") == null){
    </head>
 <body ng-app="myApp" class="ng-cloak">
     <!--  wrapper -->
-    <div id="wrapper" ng-controller="OfertaController as ctrl">
+    <div id="wrapper" ng-controller="InboxController as ctrl">
         <!-- navbar top -->
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="navbar">
             <!-- navbar-header -->
@@ -357,29 +357,14 @@ if(session.getAttribute("user") == null){
                                                 <input id="btn-input" type="text" class="form-control" placeholder="Buscar contacto.." />
                                         </div>
                                         <div class="panel-body" style="height: 400px; overflow-y: scroll;">
-                                            <div class="list-group">
+                                            <div class="list-group" ng-repeat="ch in ctrl.chats"> 
                                                 
-                                                <a href="#" class="list-group-item">
-                                                    <img src="https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/1014251_10202212948658325_299875096_n.jpg?oh=26715f788a0bc8715ad33013759ca25e&oe=57CE6B55" width="24" height="24" class="img-circle"  /> Juan Castilla
-                                                    <span class="pull-right text-muted small"><em style="color: red;">No Leido</em>
+                                                <a href="#" class="list-group-item" ng-click="ctrl.selectChat(ch.id)" >
+                                                    <img src="https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/1014251_10202212948658325_299875096_n.jpg?oh=26715f788a0bc8715ad33013759ca25e&oe=57CE6B55" width="24" height="24" class="img-circle"  /> <span ng-bind="ch.n_destino"></span>
+                                                    <span class="pull-right text-muted small"><em style="color: {{(!ch)?'green':'red'}};">{{(!ch)?'Visto':'No Leido'}}</em>
                                                     </span>
                                                 </a>
-                                                <a href="#" class="list-group-item">
-                                                    <img src="https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/1014251_10202212948658325_299875096_n.jpg?oh=26715f788a0bc8715ad33013759ca25e&oe=57CE6B55" width="24" height="24" class="img-circle"  /> Juan Castilla
-                                                    <span class="pull-right text-muted small"><em style="color: green;">Visto</em>
-                                                    </span>
-                                                </a>
-                                                <a href="#" class="list-group-item">
-                                                    <img src="https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/1014251_10202212948658325_299875096_n.jpg?oh=26715f788a0bc8715ad33013759ca25e&oe=57CE6B55" width="24" height="24" class="img-circle"  /> Juan Castilla
-                                                    <span class="pull-right text-muted small"><em style="color: green;">Visto</em>
-                                                    </span>
-                                                </a>
-                                                <a href="#" class="list-group-item">
-                                                    <img src="https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/1014251_10202212948658325_299875096_n.jpg?oh=26715f788a0bc8715ad33013759ca25e&oe=57CE6B55" width="24" height="24" class="img-circle"  /> Juan Castilla
-                                                    <span class="pull-right text-muted small"><em style="color: green;">Visto</em>
-                                                    </span>
-                                                </a>
-
+                                                
                                             </div>
                                         </div>
 
@@ -396,129 +381,20 @@ if(session.getAttribute("user") == null){
                                         </div>
 
                                         <div class="panel-body" style="height: 400px; overflow-y: scroll;">
-                                            <ul class="chat">
-                                                <li class="left clearfix">
-                                                    <span class="chat-img pull-left">
+                                            <ul class="chat" ng-repeat="m in ctrl.mensajes" watch-scope="m">
+                                                <li  ng-class="{'left clearfix': m.rol, 'right clearfix': !m.rol }">
+                                                    <span ng-class="{'chat-img pull-left': m.rol, 'chat-img pull-right': !m.rol }">
                                                         <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />
                                                     </span>
                                                     <div class="chat-body clearfix">
                                                         <div class="header">
-                                                            <strong class="primary-font">Jack Sparrow</strong>
+                                                            <strong class="primary-font"><span ng-bind="m.n_destino"></span></strong>
                                                             <small class="pull-right text-muted">
-                                                                <i class="fa fa-clock-o fa-fw"></i>12 mins ago
+                                                                <i class="fa fa-clock-o fa-fw"></i><span ng-bind="m.fecha"></span>
                                                             </small>
                                                         </div>
                                                         <p>
-                                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
-                                                        </p>
-                                                    </div>
-                                                </li>
-                                                <li class="left clearfix">
-                                                    <span class="chat-img pull-left">
-                                                        <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />
-                                                    </span>
-                                                    <div class="chat-body clearfix">
-                                                        <div class="header">
-                                                            <strong class="primary-font">Jack Sparrow</strong>
-                                                            <small class="pull-right text-muted">
-                                                                <i class="fa fa-clock-o fa-fw"></i>12 mins ago
-                                                            </small>
-                                                        </div>
-                                                        <p>
-                                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
-                                                        </p>
-                                                    </div>
-                                                </li>
-                                                <li class="left clearfix">
-                                                    <span class="chat-img pull-left">
-                                                        <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />
-                                                    </span>
-                                                    <div class="chat-body clearfix">
-                                                        <div class="header">
-                                                            <strong class="primary-font">Jack Sparrow</strong>
-                                                            <small class="pull-right text-muted">
-                                                                <i class="fa fa-clock-o fa-fw"></i>12 mins ago
-                                                            </small>
-                                                        </div>
-                                                        <p>
-                                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
-                                                        </p>
-                                                    </div>
-                                                </li>
-                                                <li class="left clearfix">
-                                                    <span class="chat-img pull-left">
-                                                        <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />
-                                                    </span>
-                                                    <div class="chat-body clearfix">
-                                                        <div class="header">
-                                                            <strong class="primary-font">Jack Sparrow</strong>
-                                                            <small class="pull-right text-muted">
-                                                                <i class="fa fa-clock-o fa-fw"></i>12 mins ago
-                                                            </small>
-                                                        </div>
-                                                        <p>
-                                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
-                                                        </p>
-                                                    </div>
-                                                </li>
-                                                <li class="left clearfix">
-                                                    <span class="chat-img pull-left">
-                                                        <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />
-                                                    </span>
-                                                    <div class="chat-body clearfix">
-                                                        <div class="header">
-                                                            <strong class="primary-font">Jack Sparrow</strong>
-                                                            <small class="pull-right text-muted">
-                                                                <i class="fa fa-clock-o fa-fw"></i>12 mins ago
-                                                            </small>
-                                                        </div>
-                                                        <p>
-                                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
-                                                        </p>
-                                                    </div>
-                                                </li>
-                                                <li class="right clearfix">
-                                                    <span class="chat-img pull-right">
-                                                        <img src="http://placehold.it/50/FA6F57/fff" alt="User Avatar" class="img-circle" />
-                                                    </span>
-                                                    <div class="chat-body clearfix">
-                                                        <div class="header">
-                                                            <small class=" text-muted">
-                                                                <i class="fa fa-clock-o fa-fw"></i>13 mins ago</small>
-                                                            <strong class="pull-right primary-font">Bhaumik Patel</strong>
-                                                        </div>
-                                                        <p>
-                                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
-                                                        </p>
-                                                    </div>
-                                                </li>
-                                                <li class="left clearfix">
-                                                    <span class="chat-img pull-left">
-                                                        <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />
-                                                    </span>
-                                                    <div class="chat-body clearfix">
-                                                        <div class="header">
-                                                            <strong class="primary-font">Jack Sparrow</strong>
-                                                            <small class="pull-right text-muted">
-                                                                <i class="fa fa-clock-o fa-fw"></i>14 mins ago</small>
-                                                        </div>
-                                                        <p>
-                                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
-                                                        </p>
-                                                    </div>
-                                                </li>
-                                                <li class="right clearfix">
-                                                    <span class="chat-img pull-right">
-                                                        <img src="http://placehold.it/50/FA6F57/fff" alt="User Avatar" class="img-circle" />
-                                                    </span>
-                                                    <div class="chat-body clearfix">
-                                                        <div class="header">
-                                                            <small class=" text-muted">
-                                                                <i class="fa fa-clock-o fa-fw"></i>15 mins ago</small>
-                                                            <strong class="pull-right primary-font">Bhaumik Patel</strong>
-                                                        </div>
-                                                        <p>
-                                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
+                                                            <span ng-bind="m.texto"></span>
                                                         </p>
                                                     </div>
                                                 </li>
@@ -527,12 +403,16 @@ if(session.getAttribute("user") == null){
 
                                         <div class="panel-footer">
                                             <div class="input-group">
-                                                <input id="btn-input" type="text" class="form-control input-sm" placeholder="Escriba su mensaje aquí..." />
-                                                <span class="input-group-btn">
-                                                    <button class="btn btn-warning btn-sm" id="btn-chat">
-                                                        Enviar
-                                                    </button>
-                                                </span>
+                                                <form name="send_mensaje" novalidate>
+                                                    <input type="hidden" ng-model="ctrl.nuevo_mensaje.destino"/>
+                                                    <input type="hidden" ng-model="ctrl.nuevo_mensaje.chat"/>
+                                                    <input id="btn-input" type="text" ng-model="ctrl.nuevo_mensaje.texto" class="form-control input-sm" placeholder="Escriba su mensaje aquí..." />
+                                                    <span class="input-group-btn">
+                                                        <button type="submit" ng-disabled="send_mensaje.$invalid" class="btn btn-warning btn-sm" id="btn-chat">
+                                                            Enviar
+                                                        </button>
+                                                    </span>
+                                                </form>
                                             </div>
                                         </div>
 

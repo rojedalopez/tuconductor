@@ -1,32 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package servletsSave;
+package servletsGet;
 
+import bean.usuario;
+import dato.Json.Listas;
 import dato.Save.Guardar;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.security.InvalidKeyException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-@WebServlet("/comments")
-public class comment extends HttpServlet {
+
+public class list_mensajes extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ParseException, ClassNotFoundException, SQLException, InvalidKeyException {
+            throws ServletException, IOException, ParseException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         StringBuffer sb = new StringBuffer();
         
@@ -41,22 +37,28 @@ public class comment extends HttpServlet {
         } catch (Exception e) { e.printStackTrace(); }
  
         JSONParser parser = new JSONParser();
-        JSONObject joComment = null;
+        JSONObject joMensajes = null;
          
-        joComment = (JSONObject) parser.parse(sb.toString());
+        joMensajes = (JSONObject) parser.parse(sb.toString());
         
-        int id_p = Integer.parseInt(joComment.get("id_publicacion").toString());
-        int id = Integer.parseInt(joComment.get("id").toString());
-        String cod = (String) joComment.get("cod_origen");
-        String comentario = (String) joComment.get("comentario");
+        int chat = Integer.parseInt(joMensajes.get("chat").toString());
         
+        HttpSession session =  null;
+ 
+        session = request.getSession(false);        
         
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.print(Guardar.InsertComment(id, id_p, cod, comentario));
+            if(session.getAttribute("user")!=null){
+                usuario u = (usuario)session.getAttribute("user");
+                String x = Listas.ObtenerMensajes(chat, u.getRol());
+                out.print(x);
+            }else{
+                out.print("sesion");
+            }
         }
-        
     }
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -64,21 +66,12 @@ public class comment extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (ParseException ex) {
-            Logger.getLogger(comment.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(comment.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(list_mensajes.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(comment.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvalidKeyException ex) {
-            Logger.getLogger(comment.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(list_mensajes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
