@@ -63,6 +63,7 @@ if(session.getAttribute("user") == null){
     <script type="text/javascript" src="../js/angular/sign.js"></script>
     <script type="text/javascript" src="../js/angular/wall.js"></script>
     <script type="text/javascript" src="../js/angular/oferta.js"></script>
+    <script type="text/javascript" src="../js/angular/inbox.js"></script>
     
     <script src="../assets/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="../assets/plugins/pace/pace.js"></script>
