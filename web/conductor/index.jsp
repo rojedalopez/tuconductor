@@ -453,6 +453,65 @@ if(session.getAttribute("user") == null){
         </div>
     </div>
         
+    <div class="modal fade" id="Modal_hv" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Mi hoja de vida</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="form_hv" ng-submit="ctrl.submitHV()">
+                    <p>
+                        <label class="etiqueta_e">Seleccionar H.V:</label>
+                        <input name="file" type="file" uploader-model="ctrl.hoja_vida.file" accept=".pdf, .docx" class="form-control texto" required/>
+
+                    </p>
+                    <div class="panel panel-primary">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover table-striped" >
+                                            <thead>
+                                                <tr>
+                                                    <th>Fecha</th>
+                                                    <th>Hoja de vida</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class='tooltip-demo'>                                                
+                                                <tr>
+                                                    <td>{{ctrl.hoja_vida.fecha}}</td>
+                                                    <td>{{ctrl.hoja_vida.nombre}}</td>
+                                                    <td style="text-align: center;">
+                                                        <a target="_blank" href="../upload/{{ctrl.hoja_vida.archivo}}"><img src="../assets/img/hv_icon.png" width="18" height="18" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Descargar H.V"></a>
+                                                        <img src="../assets/img/delete_icon.png" width="18" height="18" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Eliminar H.V">                                                        
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" ng-disabled="form_hv.$invalid">Subir hoja de vida</button>
+                    </div>
+                </form>
+
+                </div>
+                
+            </div>
+        </div>
+    </div>
+        
         
     <div class="modal fade" id="Modal_viewoferta" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">

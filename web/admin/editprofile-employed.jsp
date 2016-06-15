@@ -48,6 +48,7 @@ if(session.getAttribute("user") == null){
         $(document).ready(function(){
             eliminarOpciones();
             verOpcion(1);
+            $("#form_accidente").modal("show");
             btn_guardar_cambios = $("#btn_guardar_cambios");
             form_experiencia = $("#form_experiencia");
             form_formacion = $("#form_formacion");
@@ -636,18 +637,18 @@ if(session.getAttribute("user") == null){
                         </div>
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-lg-12" ng-repeat="fm in ctrl.formaciones">
+                                <div class="col-lg-12" >
                                     <div class="panel panel-info">
                                         <div class="panel-heading">                                                
-                                            {{ctrl.NvlFormacion[fm.nivel_estudio-1].Value}}
+                                            Barranquilla
                                             <button type="button" class="close"><img src="../assets/img/delete_icon.png" width="18" height="18"></button>
-                                            <button type="button" class="close" ng-click="ctrl.editForm(fm.id)"><img src="../assets/img/edit_icon.png"  width="18" height="18"></button>                                                
+                                            <button type="button" class="close" ><img src="../assets/img/edit_icon.png"  width="18" height="18"></button>                                                
                                         </div>
                                         <div class="panel-body">
-                                            <p><span ng-bind="fm.c_educativo"></span></p>
+                                            <p>cargo xyz yxz yxz yxz</p>
                                         </div>
                                         <div class="panel-footer">
-                                            {{ctrl.Meses[fm.mes_inicio-1].Mes + " " + fm.anio_inicio}} - {{(fm.estado!==2)?(fm.estado===1)?'Cursando':'Aplazado/Abandonado':ctrl.Meses[fm.mes_fin-1].Mes + " " + fm.anio_fin}}
+                                            <label>Fecha: 2014/03/14</label>
                                         </div>
                                     </div>
                                 </div>
@@ -929,6 +930,88 @@ if(session.getAttribute("user") == null){
         </div>
     </div>
         
+    <div class="modal fade" id="form_multa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Formulario de multas</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="form_multa" ng-submit="ctrl.submitForm()" class="form-horizontal" novalidate>
+                        <p ng-class="{ 'has-error': form_multa.lugar.$error.required || form_multa.lugar.$error.minlength }">
+                            <label class="etiqueta_e">Lugar:<i class="required">*</i>:</label>                            
+                            <input type="text" class="form-control texto_e" name="lugar" ng-model="ctrl.multa.lugar" placeholder="Lugar de la multa" minlength="3" required />
+                        </p>
+                        <p ng-class="{ 'has-error': form_multa.fecha.$error.required }">
+                            <label class="etiqueta_e">Fecha:<i class="required">*</i>:</label>                            
+                            <input type="date" class="form-control texto_e" name="fecha" ng-model="ctrl.multa.fecha" placeholder="Fecha de la multa" required />
+                        </p>
+                        <p ng-class="{ 'has-error': form_multa.fecha.$error.required  || form_multa.lugar.$error.minlength }">
+                            <label class="etiqueta_e">Cargo:</label>
+                            <textarea class="form-control texto_e" name="cargo" ng-model="ctrl.multa.cargo" placeholder="Cargo de la multa" minlength="6" required ></textarea>
+                        </p>                        
+                        <p>
+                            <label class="etiqueta_e">Estado:</label>
+                            <div class="form-inline">
+                                <label class="checkbox-inline">
+                                    <input type="radio" value="1" name="estado" ng-model="ctrl.formacion.estado"> Pagado
+                                </label>
+                            </div>                                
+                        </p>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" ng-disabled="form_formacion.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_formacion" class="btn btn-primary" >{{(ctrl.formacion.id===-1)?'Añadir':'Editar'}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <div class="modal fade" id="form_accidente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Formulario de accidentes</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="form_accidente" ng-submit="ctrl.submitForm()" class="form-horizontal" novalidate>
+                        <p ng-class="{ 'has-error': form_accidente.lugar.$error.required || form_accidente.lugar.$error.minlength }">
+                            <label class="etiqueta_e">Lugar:<i class="required">*</i>:</label>                            
+                            <input type="text" class="form-control texto_e" name="lugar" ng-model="ctrl.accidente.lugar" placeholder="Lugar de la multa" minlength="3" required />
+                        </p>
+                        <p ng-class="{ 'has-error': form_accidente.fecha.$error.required }">
+                            <label class="etiqueta_e">Fecha:<i class="required">*</i>:</label>                            
+                            <input type="date" class="form-control texto_e" name="fecha" ng-model="ctrl.accidente.fecha" placeholder="Fecha de la multa" required />
+                        </p>
+                        <p>
+                            <label class="etiqueta_e">Tipo accidente:</label>                           
+                            <select class="form-control selector_e" name="tipo" ng-model="ctrl.accidente.tipo" ng-options="Nivel.ID as Nivel.Value for Nivel in ctrl.NvlFormacion">
+                                <option value="">--- Seleccione opción ---</option>
+                            </select>
+                        </p>
+                        <p ng-class="{ 'has-error': form_multa.fecha.$error.required  || form_multa.lugar.$error.minlength }">
+                            <label class="etiqueta_e">Eventos:</label>
+                            <div class="form-inline">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" value="1" name="evento_m" ng-model="ctrl.formacion.estado"> Muertes
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" value="1" name="evento_h" ng-model="ctrl.formacion.estado"> Heridos
+                                </label>
+                            </div>
+                        </p>  
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" ng-disabled="form_formacion.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_formacion" class="btn btn-primary" >{{(ctrl.formacion.id===-1)?'Añadir':'Editar'}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
         
     <div class="modal fade" id="form_admision" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
