@@ -381,7 +381,7 @@ if(session.getAttribute("user") == null){
                                             Chat
                                         </div>
 
-                                        <div class="panel-body" style="height: 400px; overflow-y: scroll;" reload>
+                                        <div class="panel-body" style="height: 400px; overflow-y: scroll;" id="contenedor_mensaje" reload>
                                             <ul class="chat" scroll="studentDetail">
                                                 <li  ng-class="{'left clearfix': m.rol, 'right clearfix': !m.rol }"  ng-repeat="m in ctrl.mensajes">
                                                     <span ng-class="{'chat-img pull-left': m.rol, 'chat-img pull-right': !m.rol }">

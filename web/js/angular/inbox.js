@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('MyApp.Inbox', []).controller('InboxController', ['$scope', 'InboxService', '$interval', 
-    function($scope, InboxService, $interval) {
+angular.module('MyApp.Inbox', []).controller('InboxController', ['$scope', 'InboxService', '$interval', '$timeout', 
+    function($scope, InboxService, $interval, $timeout) {
     var self = this;
     self.chats=[];
     self.mensajes=[];
@@ -21,7 +21,10 @@ angular.module('MyApp.Inbox', []).controller('InboxController', ['$scope', 'Inbo
     self.listaMensajes = function(id){
         InboxService.listaMensajes(id).then(function(d){
             self.mensajes = d;
-            console.log("entro");
+            $timeout(function() {
+                var scroller = document.getElementById("contenedor_mensaje");
+                scroller.scrollTop = scroller.scrollHeight;
+            }, 0, false);
         },function(errResponse){
             console.error('Error while creating Paper.');
         });
@@ -129,5 +132,5 @@ angular.module('MyApp.Inbox', []).controller('InboxController', ['$scope', 'Inbo
           element.on('$destroy', function() {
             $interval.cancel(stopTime);
           });
-        }
+        };
 }]);
