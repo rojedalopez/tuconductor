@@ -124,6 +124,58 @@ public class Listas {
         return lista.toJSONString();
     }
     
+    public static String ObtenerDestinos(String cod, int rol) throws SQLException{
+        JSONObject obj = null;
+        JSONArray lista = new JSONArray();
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        Statement stm=null;
+        ResultSet datos=null;
+             
+        try{
+                    conn=conexion();
+                    String instruccion="";
+                    
+                    if(rol==2){
+                        instruccion  =  " SELECT ee.cod_empleado, CONCAT(ep.nbr_empleado, ' ',  ep.apl_empleado) AS nombre ";
+                        instruccion +=  " FROM tblEmpresaEmpleado AS ee INNER JOIN tblEmpresa AS em ON ee.nit_empresa = em.nit_empresa ";
+                        instruccion +=  " INNER JOIN tblEmpleado AS ep ON ee.cod_empleado = ep.cod_empleado " ;
+                        instruccion +=  " WHERE ee.nit_empresa = ?";
+                    }else{
+                        instruccion  =  "SELECT ee.nit_empresa, nbr_empresa AS nombre ";
+                        instruccion += " FROM tblEmpresaEmpleado AS ee INNER JOIN tblEmpresa AS em ON ee.nit_empresa = em.nit_empresa " ;
+                        instruccion += " INNER JOIN tblEmpleado AS ep ON ee.cod_empleado = ep.cod_empleado " ;
+                        instruccion += " WHERE ee.cod_empleado = ?;";
+                    }
+                     
+                    insertar=conn.prepareStatement(instruccion);
+                    insertar.setString(1, cod);
+                    datos=insertar.executeQuery();
+                    while (datos.next()) {
+                        obj = new JSONObject();
+                        obj.put("destino", datos.getString(1));
+                        obj.put("n_destino", datos.getString(2));
+                        lista.add(obj);
+                    }
+                    datos.close();
+                    conn.close();
+                    return lista.toJSONString();
+             
+        }catch (SQLException e) {
+            System.out.println("error SQLException en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }catch (Exception e){
+                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }finally{
+                    if(!conn.isClosed()){
+                        conn.close();
+                    }
+                }
+        return lista.toJSONString();
+    }
+    
+    
     public static String ObtenerChats(String cod, int rol) throws SQLException{
         JSONObject obj = null;
         JSONArray lista = new JSONArray();

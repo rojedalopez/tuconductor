@@ -3,16 +3,28 @@
 angular.module('MyApp.Inbox', []).controller('InboxController', ['$scope', 'InboxService', '$interval', '$timeout', 
     function($scope, InboxService, $interval, $timeout) {
     var self = this;
+    
     self.chats=[];
     self.mensajes=[];
+    self.destinos=[];
+    self.dest={destino:"", n_destino:""};
     self.mensaje={id:0, fecha:"", rol:false, destino:"", n_destino:"", texto:""};
     self.nuevo_mensaje={chat:"", texto:""};
     self.chat={id:0, fecha:"", ult_mensaje:"", destino:"", n_destino:"", invisible:false, visto:false};
     self.interval = 10;
+    self.seleccion = "";
     
     self.listaChats = function(){
         InboxService.listaChats().then(function(d){
             self.chats = d;
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+        });
+    };
+    
+    self.listaDestinos = function(){
+        InboxService.listaDestinos().then(function(d){
+            self.destinos = d;
         },function(errResponse){
             console.error('Error while creating Paper.');
         });
@@ -85,6 +97,15 @@ angular.module('MyApp.Inbox', []).controller('InboxController', ['$scope', 'Inbo
                     return $q.reject(errResponse);
                 });
             },
+            listaDestinos: function() {
+                return $http.post('../list_destino').then(function(response){
+                    return response.data;
+                }, 
+                function(errResponse){
+                    console.error('Error while fetching expenses');
+                    return $q.reject(errResponse);
+                });
+            },
             sendMensaje: function(mensaje) {
                 console.log(mensaje);
                 return $http.post('../mensaje', mensaje).then(function(response){
@@ -133,4 +154,15 @@ angular.module('MyApp.Inbox', []).controller('InboxController', ['$scope', 'Inbo
             $interval.cancel(stopTime);
           });
         };
-}]);
+}]).directive('autoComplete', function($timeout) {
+    return function(scope, iElement, iAttrs) {
+            iElement.autocomplete({
+                source: scope[iAttrs.uiItems],
+                select: function() {
+                    $timeout(function() {
+                      iElement.trigger('input');
+                    }, 0);
+                }
+            });
+    };
+});

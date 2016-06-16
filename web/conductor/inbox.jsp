@@ -354,7 +354,7 @@ if(session.getAttribute("user") == null){
                                             <i class="fa fa-users fa-fw"></i> Mis contactos
                                         </div>
                                         <div class="panel-footer">
-                                                <input id="btn-input" type="text" class="form-control" placeholder="Buscar contacto.." />
+                                                <input id="btn-input" type="text" class="form-control" placeholder="Buscar contacto.." auto-complete ui-items="ctrl.destinos" ng-model="ctrl.seleccion"/>
                                         </div>
                                         <div class="panel-body" style="height: 400px; overflow-y: scroll;">
                                             <div class="list-group" ng-repeat="ch in ctrl.chats"> 
