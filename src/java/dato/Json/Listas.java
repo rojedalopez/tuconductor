@@ -192,15 +192,15 @@ public class Listas {
                     String instruccion="";
                     
                     if(rol==2){
-                        instruccion  =  "SELECT id_mensaje, CASE WHEN m.emp_rol_mensaje = 0 THEN ep.cod_empleado ELSE em.nit_empresa END AS cod_destino, " +
-                                        "CASE WHEN m.emp_rol_mensaje = 0 THEN ep.nbr_empleado ELSE em.nbr_empresa END AS n_destino, " +
+                        instruccion  =  "SELECT id_mensaje, CASE WHEN m.emp_rol_mensaje = 1 THEN ep.cod_empleado ELSE em.nit_empresa END AS cod_destino, " +
+                                        "CASE WHEN m.emp_rol_mensaje = 1 THEN ep.nbr_empleado ELSE em.nbr_empresa END AS n_destino, " +
                                         "txt_mensaje, m.fch_mensaje, emp_rol_mensaje " +
                                         "FROM tblMensaje AS m INNER JOIN tblChat AS c ON m.id_chat = c.id_chat " +
                                         "INNER JOIN tblEmpleado AS ep ON ep.cod_empleado = c.cod_empleado " +
                                         "INNER JOIN tblEmpresa AS em ON em.nit_empresa = c.nit_empresa WHERE m.id_chat = ?; ";
                     }else{
-                        instruccion  = "SELECT id_mensaje, CASE WHEN m.epl_rol_mensaje = 0 THEN em.nit_empresa ELSE ep.cod_empleado END AS cod_destino, " +
-                                        "CASE WHEN m.epl_rol_mensaje = 0 THEN em.nbr_empresa ELSE ep.nbr_empleado END AS n_destino, " +
+                        instruccion  = "SELECT id_mensaje, CASE WHEN m.epl_rol_mensaje = 1 THEN em.nit_empresa ELSE ep.cod_empleado END AS cod_destino, " +
+                                        "CASE WHEN m.epl_rol_mensaje = 1 THEN em.nbr_empresa ELSE ep.nbr_empleado END AS n_destino, " +
                                         "txt_mensaje, m.fch_mensaje, epl_rol_mensaje " +
                                         "FROM tblMensaje AS m INNER JOIN tblChat AS c ON m.id_chat = c.id_chat " +
                                         "INNER JOIN tblEmpleado AS ep ON ep.cod_empleado = c.cod_empleado " +

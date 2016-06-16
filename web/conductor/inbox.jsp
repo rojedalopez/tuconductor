@@ -12,8 +12,8 @@ if(session.getAttribute("user") == null){
     usuario u = (usuario)session.getAttribute("user");
    if(u.getRol()==1){
         response.sendRedirect("../admin/");
-   }else if(u.getRol()==3){
-        response.sendRedirect("../conductor/");
+   }else if(u.getRol()==2){
+        response.sendRedirect("../empresa/");
    }
 }
 %>

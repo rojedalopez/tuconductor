@@ -72,20 +72,26 @@ public class Guardar {
     }
     
     
-    public static String SaveMensaje(int chat, String destino, String texto) throws ClassNotFoundException, SQLException{
+    public static String SaveMensaje(int chat, String texto, int rol) throws ClassNotFoundException, SQLException{
         boolean b=false;
         Connection conn=null;
         PreparedStatement insertar=null;
         
         conn=conexion();
-            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_Mensaje(?, ?, ?, ?)}")) {
+            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_Mensaje(?, ?, ?, ?, ?)}")) {
                 cs.setInt(1, chat);
-                cs.setString(2, destino);
-                cs.setString(3, texto);
-                cs.registerOutParameter(4, Types.INTEGER);
+                if(rol==2){
+                    cs.setInt(2, 0);
+                    cs.setInt(3, 1);
+                }else{
+                    cs.setInt(2, 1);
+                    cs.setInt(3, 0);
+                }
+                cs.setString(4, texto);
+                cs.registerOutParameter(5, Types.INTEGER);
                 cs.executeQuery();
 
-                int retorno = cs.getInt(4);
+                int retorno = cs.getInt(5);
                 
                 System.out.println(retorno);
                 if(retorno==1){

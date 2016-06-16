@@ -5,7 +5,7 @@ angular.module('MyApp.Inbox', []).controller('InboxController', ['$scope', 'Inbo
     self.chats=[];
     self.mensajes=[];
     self.mensaje={id:0, fecha:"", rol:false, destino:"", n_destino:"", texto:""};
-    self.nuevo_mensaje={chat:"", origen:"", destino:"", texto:""};
+    self.nuevo_mensaje={chat:"", texto:""};
     self.chat={id:0, fecha:"", ult_mensaje:"", destino:"", n_destino:"", invisible:false, visto:false};
     
     self.listaChats = function(){
@@ -26,7 +26,7 @@ angular.module('MyApp.Inbox', []).controller('InboxController', ['$scope', 'Inbo
     
     self.sendMensaje = function(nuevo_mensaje){
         InboxService.sendMensaje(nuevo_mensaje).then(function(d){
-            self.ofertas = d;
+            self.listaMensajes(self.chat.id); 
         },function(errResponse){
             console.error('Error while creating Paper.');
         });
@@ -39,7 +39,6 @@ angular.module('MyApp.Inbox', []).controller('InboxController', ['$scope', 'Inbo
             if(self.chats[i].id === id) {
                self.chat = angular.copy(self.chats[i]);
                self.nuevo_mensaje.chat = self.chat.id;
-               self.nuevo_mensaje.destino = self.chat.destino;
                self.listaMensajes(self.chat.id);
                break;
             }
@@ -52,7 +51,7 @@ angular.module('MyApp.Inbox', []).controller('InboxController', ['$scope', 'Inbo
     };
     
     self.reset = function(){
-        self.nuevo_mensaje={chat:"", destino:"", texto:""};
+        self.nuevo_mensaje={chat:"", texto:""};
     }
       
 }]).factory('InboxService', ['$http', '$q', function($http, $q){
@@ -76,6 +75,7 @@ angular.module('MyApp.Inbox', []).controller('InboxController', ['$scope', 'Inbo
                 });
             },
             sendMensaje: function(mensaje) {
+                console.log(mensaje);
                 return $http.post('../mensaje', mensaje).then(function(response){
                     return response.data;
                 }, 
@@ -86,13 +86,15 @@ angular.module('MyApp.Inbox', []).controller('InboxController', ['$scope', 'Inbo
             }
 	};
 
-}]).directive('watchScope', [function () {
+}]).directive('scroll', function($timeout) {
   return {
-    scope: {
-      item: '=watchScope'
-    },
-    link: function (scope, element, attrs) {
-      console.log('element ' + scope.item.name + ' created');
+    restrict: 'A',
+    link: function(scope, element, attr) {
+      scope.$watchCollection(attr.scroll, function(newVal) {
+        $timeout(function() {
+         element[0].scrollTop = element[0].scrollHeight;
+        });
+      });
     }
-  };
-}]);
+  }
+});
