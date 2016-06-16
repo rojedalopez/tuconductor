@@ -30,6 +30,8 @@ angular.module('MyApp.Inbox', []).controller('InboxController', ['$scope', 'Inbo
     self.sendMensaje = function(nuevo_mensaje){
         InboxService.sendMensaje(nuevo_mensaje).then(function(d){
             self.listaMensajes(self.chat.id); 
+            self.nuevo_mensaje.chat = self.chat.id;
+            self.nuevo_mensaje.texto = "";
         },function(errResponse){
             console.error('Error while creating Paper.');
         });
@@ -50,12 +52,15 @@ angular.module('MyApp.Inbox', []).controller('InboxController', ['$scope', 'Inbo
     
     self.submitMensaje = function(){
         self.sendMensaje(self.nuevo_mensaje);
-        self.reset();
     };
     
     self.reset = function(){
-        self.nuevo_mensaje={chat:"", texto:""};
-    }
+        self.nuevo_mensaje={texto:""};
+        console.log(self.chat.id);
+        if(self.chat.id!=="0"){
+            self.nuevo_mensaje.chat = self.chat.id;
+        }
+    };
       
 }]).factory('InboxService', ['$http', '$q', function($http, $q){
 	return {
