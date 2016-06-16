@@ -55,6 +55,7 @@ if(session.getAttribute("user") == null){
             btn_add_formacion = $("#btn_add_formacion");
         });
         
+        
     </script>
     
     <script type="text/javascript" src="../js/date.js"></script>
@@ -380,7 +381,7 @@ if(session.getAttribute("user") == null){
                                             Chat
                                         </div>
 
-                                        <div class="panel-body" style="height: 400px; overflow-y: scroll;">
+                                        <div class="panel-body" style="height: 400px; overflow-y: scroll;" reload>
                                             <ul class="chat" scroll="studentDetail">
                                                 <li  ng-class="{'left clearfix': m.rol, 'right clearfix': !m.rol }"  ng-repeat="m in ctrl.mensajes">
                                                     <span ng-class="{'chat-img pull-left': m.rol, 'chat-img pull-right': !m.rol }">

@@ -1,12 +1,14 @@
 'use strict';
 
-angular.module('MyApp.Inbox', []).controller('InboxController', ['$scope', 'InboxService', function($scope, InboxService) {
+angular.module('MyApp.Inbox', []).controller('InboxController', ['$scope', 'InboxService', '$interval', 
+    function($scope, InboxService, $interval) {
     var self = this;
     self.chats=[];
     self.mensajes=[];
     self.mensaje={id:0, fecha:"", rol:false, destino:"", n_destino:"", texto:""};
     self.nuevo_mensaje={chat:"", texto:""};
     self.chat={id:0, fecha:"", ult_mensaje:"", destino:"", n_destino:"", invisible:false, visto:false};
+    self.interval = 10;
     
     self.listaChats = function(){
         InboxService.listaChats().then(function(d){
@@ -19,6 +21,7 @@ angular.module('MyApp.Inbox', []).controller('InboxController', ['$scope', 'Inbo
     self.listaMensajes = function(id){
         InboxService.listaMensajes(id).then(function(d){
             self.mensajes = d;
+            console.log("entro");
         },function(errResponse){
             console.error('Error while creating Paper.');
         });
@@ -97,4 +100,29 @@ angular.module('MyApp.Inbox', []).controller('InboxController', ['$scope', 'Inbo
       });
     }
   }
-});
+}).directive('reload', ['$interval',
+      function($interval) {
+        // return the directive link function. (compile function not needed)
+        return function(scope, element, attrs) {
+          var stopTime; // so that we can cancel the time updates
+          
+          function updateTime() {
+              if(scope.ctrl.chat.id!==0){
+                scope.ctrl.listaMensajes(scope.ctrl.chat.id); 
+            }
+          }  
+            
+          // watch the expression, and update the UI on change.
+          scope.$watch(attrs.myCurrentTime, function() {
+              updateTime();
+          });
+
+          stopTime = $interval(updateTime, 10000);
+
+          // listen on DOM destroy (removal) event, and cancel the next UI update
+          // to prevent updating time after the DOM element was removed.
+          element.on('$destroy', function() {
+            $interval.cancel(stopTime);
+          });
+        }
+}]);
