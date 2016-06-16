@@ -384,7 +384,7 @@ if(session.getAttribute("user") == null){
                                             <ul class="chat" scroll="studentDetail">
                                                 <li  ng-class="{'left clearfix': m.rol, 'right clearfix': !m.rol }"  ng-repeat="m in ctrl.mensajes">
                                                     <span ng-class="{'chat-img pull-left': m.rol, 'chat-img pull-right': !m.rol }">
-                                                        <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />
+                                                        <img src="{{(m.rol)?'http://placehold.it/50/FA6F57/fff':'http://placehold.it/50/55C1E7/fff'}}http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />
                                                     </span>
                                                     <div class="chat-body clearfix">
                                                         <div class="header">
