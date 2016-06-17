@@ -73,7 +73,10 @@ if(session.getAttribute("user") == null){
         function Open_dialog_tokens(){
             $( "#Modal_tokens" ).modal("show");
         }
-       
+        
+        function Open_confirmation(){
+            $( "#Modal_confirmacion" ).modal("show");
+        }
 
 
     </script>
