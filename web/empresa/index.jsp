@@ -462,13 +462,11 @@ if(session.getAttribute("user") == null){
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
-                            
+                            </div>                            
                         </div>
                     </div>
                     <!--End Advanced Tables -->
                 </div>
-
             </div>
 
 
@@ -490,6 +488,25 @@ if(session.getAttribute("user") == null){
                 </div>
                 <div class="modal-body">
                     prueba
+                </div>
+            </div>
+        </div>
+    </div>
+        
+        
+    <div class="modal fade" id="Modal_confirmacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Confirmación</h4>
+                </div>
+                <div class="modal-body">
+                    ¿Desea usted obtener la informacion total y detallada de este conductor?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" ng-disabled="form_formacion.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_formacion" class="btn btn-primary" >Adquirir</button>
                 </div>
             </div>
         </div>
