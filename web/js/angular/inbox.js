@@ -11,8 +11,6 @@ angular.module('MyApp.Inbox', []).controller('InboxController', ['$scope', 'Inbo
     self.mensaje={id:0, fecha:"", rol:false, destino:"", n_destino:"", texto:""};
     self.nuevo_mensaje={chat:"", texto:""};
     self.chat={id:0, fecha:"", ult_mensaje:"", destino:"", n_destino:"", invisible:false, visto:false};
-    self.interval = 10;
-    self.seleccion = "";
     
     self.listaChats = function(){
         InboxService.listaChats().then(function(d){
@@ -154,15 +152,4 @@ angular.module('MyApp.Inbox', []).controller('InboxController', ['$scope', 'Inbo
             $interval.cancel(stopTime);
           });
         };
-}]).directive('autoComplete', function($timeout) {
-    return function(scope, iElement, iAttrs) {
-            iElement.autocomplete({
-                source: scope[iAttrs.uiItems],
-                select: function() {
-                    $timeout(function() {
-                      iElement.trigger('input');
-                    }, 0);
-                }
-            });
-    };
-});
+}]);
