@@ -277,6 +277,46 @@ public class Guardar {
 
     }
     
+    //PROC_SaveFormacion
+    public static boolean SaveMulta(String cod_, int id, String lgr_multa, String fch_multa, String cgo_multa, boolean pgo_multa) throws ClassNotFoundException, SQLException{
+        boolean b=false;
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        
+        conn=conexion();
+            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveMulta(?, ?, ?, ?, ?, ?, ?)};")) {
+                cs.setString(1, cod_);
+                cs.setInt(2, id);
+                cs.setString(3, lgr_multa);
+                cs.setString(4, fch_multa);
+                cs.setString(5, cgo_multa);
+                cs.setInt(6, (pgo_multa)?1:0);
+                cs.registerOutParameter(7, Types.INTEGER);
+                cs.executeQuery();
+
+                int retorno = cs.getInt(11);
+                
+                if(retorno==1){
+                    return true;
+                }else{
+                    return false;
+                }
+
+            }catch (SQLException e) {
+                System.out.println("error SQLException en SAVE MULTA USUARIO");
+                System.out.println(e.getMessage());
+            }catch (Exception e){
+                System.out.println("error Exception en SAVE MULTA USUARIO");
+                System.out.println(e.getMessage());
+            }finally{
+                if(!conn.isClosed()){
+                    conn.close();
+                }
+            }
+            return false;
+
+    }
+    
     public static boolean saveHV(String codigo, String archivo, String token, String nombre, String nombre_persona) throws ClassNotFoundException, SQLException{
          
         Connection conn=null;

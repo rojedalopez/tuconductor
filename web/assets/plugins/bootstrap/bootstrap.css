@@ -5089,6 +5089,7 @@ a.list-group-item-danger.active:focus {
   padding: 9px;
   border-radius: 3px;
 }
+
 .close {
   float: right;
   font-size: 21px;
@@ -5107,6 +5108,16 @@ a.list-group-item-danger.active:focus {
   filter: alpha(opacity=50);
   opacity: .5;
 }
+
+.close2 {
+  float: right;
+  font-size: 21px;
+  font-weight: bold;
+  line-height: 1;
+  text-shadow: 0 1px 0 #fff;
+  cursor: pointer;
+}
+
 
 .btn_icon {
   text-shadow: 0 1px 0 #fff;

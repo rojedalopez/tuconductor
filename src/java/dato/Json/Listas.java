@@ -400,7 +400,7 @@ public class Listas {
                     instruccion =   "SELECT id_explaboral, epr_explaboral, crg_explaboral, slr_explaboral, bon_explaboral, spv_explaboral, " +
                                     "tel_spv_explaboral, dir_explaboral, cui_explaboral, dpt_explaboral, nbr_dpt_explaboral, pais_explaboral, aun_explaboral, " +
                                     "rzn_fin_explaboral, mes_ini_explaboral, anio_ini_explaboral, mes_fin_explaboral, " +
-                                    "anio_fin_explaboral, mes_explaboral, anio_explaboral " +
+                                    "anio_fin_explaboral, mes_explaboral, anio_explaboral, cod_empleado " +
                                     "FROM tuconductor.tblExpLaboral WHERE cod_empleado = ? ORDER BY aun_explaboral DESC, anio_ini_explaboral DESC, mes_ini_explaboral DESC;";
                      
                     insertar=conn.prepareStatement(instruccion);
@@ -427,6 +427,7 @@ public class Listas {
                         obj.put("mes_fin", datos.getInt(17));
                         obj.put("anio_fin", datos.getInt(18));
                         obj.put("exp_meses", datos.getInt(19));
+                        obj.put("cod", datos.getString(20));
                         
                         lista.add(obj);
                     }
@@ -600,7 +601,7 @@ public class Listas {
                     String instruccion="";
                      
                     instruccion =   "SELECT id_formacion, ins_formacion, id_nvlformacion, area_formacion, id_estformacion, mes_ini_formacin, " +
-                                    "anio_ini_formacion, mes_fin_formacion, anio_fin_formacion FROM tblFormacion " +
+                                    "anio_ini_formacion, mes_fin_formacion, anio_fin_formacion, cod_empleado FROM tblFormacion " +
                                     "WHERE cod_empleado = ? ORDER BY id_nvlformacion DESC;";
                      
                     insertar=conn.prepareStatement(instruccion);
@@ -617,7 +618,55 @@ public class Listas {
                         obj.put("anio_inicio", datos.getInt(7));
                         obj.put("mes_fin", datos.getInt(8));
                         obj.put("anio_fin", datos.getInt(9));
+                        obj.put("cod", datos.getString(10));
                         
+                        lista.add(obj);
+                    }
+                    datos.close();
+                    conn.close();
+                    return lista;
+             
+        }catch (SQLException e) {
+            System.out.println("error SQLException en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }catch (Exception e){
+                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }finally{
+                    if(!conn.isClosed()){
+                        conn.close();
+                    }
+                }
+        return lista;
+    }
+    
+    public static JSONArray listaMultas(String cod) throws SQLException{
+        JSONObject obj = null;
+        JSONArray lista = new JSONArray();
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        Statement stm=null;
+        ResultSet datos=null;
+             
+        try{
+                    conn=conexion();
+                    String instruccion="";
+                     
+                    instruccion =   "SELECT id_multa, lgr_multa, fch_multa, cgo_multa, pgo_multa, cod_empleado " +
+                                    "FROM tblMulta " +
+                                    "WHERE cod_empleado = ? ORDER BY fch_multa DESC;";
+                     
+                    insertar=conn.prepareStatement(instruccion);
+                    insertar.setString(1, cod);
+                    datos=insertar.executeQuery();
+                    while (datos.next()) {
+                        obj = new JSONObject();
+                        obj.put("id", datos.getInt(1));
+                        obj.put("lgr_multa", datos.getString(2));
+                        obj.put("fch_multa", datos.getInt(3));
+                        obj.put("cgo_multa", datos.getString(4));
+                        obj.put("pgo_multa", datos.getInt(5));
+                        obj.put("cod_empleado", datos.getInt(6));
                         lista.add(obj);
                     }
                     datos.close();

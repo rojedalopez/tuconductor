@@ -52,7 +52,7 @@ if(session.getAttribute("user") == null){
             form_oferta = $("#form_oferta");
             dialog_oferta = $("#Modal_publicar");
             btn_add_exp = $("#btn_add_exp");
-            btn_add_formacion = $("#btn_add_formacion");
+            btn_add_formacion = $("#btn_add_formacion");       
         });
         
     </script>
@@ -351,10 +351,11 @@ if(session.getAttribute("user") == null){
                                     <!-- Notifications-->
                                     <div class="panel panel-primary">
                                         <div class="panel-heading">
-                                            <i class="fa fa-users fa-fw"></i> Mis contactos
+                                            <i class="fa fa-users fa-fw"></i> Mis contactos 
+                                            <i class="fa fa-plus-square fa-fw close2" ></i>
                                         </div>
                                         <div class="panel-footer">
-                                                <input id="btn-input" type="text" class="form-control" placeholder="Buscar contacto.." />
+                                                <input id="btn-input" type="text" class="form-control" placeholder="Buscar contacto.."  data-provide="typeahead" />
                                         </div>
                                         <div class="panel-body" style="height: 400px; overflow-y: scroll;">
                                             <div class="list-group" ng-repeat="ch in ctrl.chats"> 
@@ -429,6 +430,27 @@ if(session.getAttribute("user") == null){
 
 
         </div>
+            
+    <div class="modal fade" id="form_addchat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Iniciar chat</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" ng-submit="ctrl.submitExp()" name="exp_laboral" class="form-horizontal" novalidate>
+                        <label class="etiqueta_e">Iniciar chat con:</label>
+                        <input type="text" name="userchat"  class="form-control texto_e"/>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" ng-disabled="form_formacion.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_formacion" class="btn btn-primary" >{{(ctrl.formacion.id===-1)?'Añadir':'Editar'}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <!-- end wrapper -->    
     </div>

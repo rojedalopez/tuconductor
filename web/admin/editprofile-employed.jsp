@@ -18,7 +18,7 @@ if(session.getAttribute("user") == null){
 }
 %>
 <!DOCTYPE html>
-<html>
+<html lang="ES">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -773,6 +773,7 @@ if(session.getAttribute("user") == null){
                         <p ng-class="{ 'has-error': exp_laboral.empresa.$error.required || exp_laboral.empresa.$error.minlength }">
                             <label class="etiqueta_e">Empresa<i class="required">*</i>:</label>
                             <input type="hidden" name="id" ng-model="ctrl.exp_laboral.id"/>
+                            <input type="hidden" name="cod" ng-model="ctrl.exp_laboral.cod"/>
                             <input type="text" class="form-control texto_e" name="empresa" ng-model="ctrl.exp_laboral.empresa"  placeholder="Nombre de la empresa" minlength="5" required/>
                         </p>
                         <p ng-class="{ 'has-error': exp_laboral.cargo.$error.required || exp_laboral.cargo.$error.minlength }">

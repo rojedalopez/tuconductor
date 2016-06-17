@@ -23,6 +23,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0};
     
     
+    
     self.Paises=[];
     self.PaisesExp=[];
     self.dptos=[];
@@ -237,6 +238,8 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0};
         $scope.form_formacion.$setPristine();
     };
+    
+    
           
     self.tipoIdents = [
         {ID: 'CC', Tipo: 'Cedula de ciudadania'},
@@ -514,11 +517,14 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.Anios=[]; 
           
     self.experiencias=[];
-    self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", dpto:"", depart:"",
-        ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0};
+    self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", depto:"", depart:"",
+        ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0, cod:""};
 
     self.formaciones=[];
-    self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0};
+    self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, cod:""};
+    
+    self.multas=[];
+    self.multa={id:-1, lugar:"", fecha: "", cargo:"", estado:false, cod:""};
     
     self.Paises=[];
     self.PaisesExp=[];
@@ -528,6 +534,65 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.dptoExp={id:0, departamento:"", ciudades:[]};
     self.ciudades=[];
     self.ciudadesExp=[];
+    
+    self.SaveMultaUsuario = function(multa){
+        EditConductorbyAdminService.SaveMultaUsuario(multa).then(function(d){
+            if(d==="true"){
+                form_multa.modal( "hide" );
+                self.resetMulta();
+                self.listaMultas();
+            }
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+	});
+    };
+    self.listaMultas = function(){
+        var cod = self.getVarUrl("cod");
+        EditConductorbyAdminService.listaMultas(cod).then(function(d){
+            self.multas = d;
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+	});
+    };
+    
+    self.SaveFormUsuario = function(formacion){
+        EditConductorbyAdminService.SaveFormUsuario(formacion).then(function(d){
+            if(d==="true"){
+                form_formacion.modal( "hide" );
+                self.resetForm();
+                self.listaFormaciones();
+            }
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+	});
+    };
+    self.listaExperiencias = function(){
+        var cod = self.getVarUrl("cod");
+        EditConductorbyAdminService.listaExperiencias(cod).then(function(d){
+            self.experiencias = d;
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+	});
+    };
+    self.SaveExpUsuario = function(exp_laboral){
+        EditConductorbyAdminService.SaveExpUsuario(exp_laboral).then(function(d){
+            if(d==="true"){
+                form_experiencia.modal( "hide" );
+                self.resetExp();
+                self.listaExperiencias();
+            }
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+	});
+    };
+    self.listaFormaciones = function(){
+        var cod = self.getVarUrl("cod");
+        EditConductorbyAdminService.listaFormaciones(cod).then(function(d){
+            self.formaciones = d;
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+	});
+    };
     
      self.getVarUrl = function(name) {
             var regexS = "[\\?&]" + name + "=([^&#]*)";
@@ -596,7 +661,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         for(var i = 0; i < self.dptosExp.length; i++){
             if(self.dptosExp[i].id === id) {
                self.dptoExp = angular.copy(self.dptosExp[i]);
-               self.ciudadesExp=self.dpto.ciudades;
+               self.ciudadesExp=self.dptoExp.ciudades;
                self.exp_laboral.depart = self.dptoExp.departamento;
                break;
             }
@@ -615,6 +680,16 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         },function(errResponse){
             console.error('Error while fetching Currencies');
         });
+    };
+    
+    self.editMulta = function(id){
+        for(var i = 0; i < self.multas.length; i++){
+            if(self.multas[i].id === id) {
+               self.multa = angular.copy(self.multas[i]);
+               form_multa.modal( "show" );
+               break;
+            }
+        }
     };
     
     self.editExp = function(id){
@@ -637,9 +712,26 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         }
     };
     
+    self.openMulta = function(){
+        self.resetMulta();
+        form_multa.modal( "show" );
+    };
+    
+    self.submitMulta = function(){
+        self.SaveMultaUsuario(self.multa);
+    };
+    
     self.openExp = function(){
         self.resetExp();
         form_experiencia.modal( "show" );
+    };
+    
+    self.submitExp = function(){
+        self.SaveExpUsuario(self.exp_laboral);
+    };
+    
+    self.submitForm = function(){
+        self.SaveFormUsuario(self.formacion);
     };
     
     self.openForm = function(){
@@ -647,14 +739,26 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         form_formacion.modal( "show" );
     }; 
     
+    self.resetMulta = function(){
+        var cod = self.getVarUrl("cod");
+        self.multa={id:-1, lugar:"", fecha: "", cargo:"", estado:false};
+        self.multa.cod = cod; 
+        $scope.form_formacion.$setPristine();
+    };
+    
     self.resetExp = function(){
-        self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", dpto:"", 
+        var cod = self.getVarUrl("cod");
+        self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", depto:"", 
          ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0};
+        self.exp_laboral.cod = cod; 
         $scope.exp_laboral.$setPristine();
     };
-          
+    
+
     self.resetForm = function(){
+        var cod = self.getVarUrl("cod");
         self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0};
+        self.formacion.cod = cod; 
         $scope.form_formacion.$setPristine();
     };
     
@@ -722,6 +826,60 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
                 return $q.reject(errResponse);
             });
 	},
+        SaveExpUsuario: function(exp_laboral){
+            return $http.post('../experiencia_byadmin', exp_laboral).then(function(response){
+                console.log(response.data);
+                return response.data;
+            }, 
+            function(errResponse){
+                    console.error('Error guardando datos personales ' +errResponse);
+                    return $q.reject(errResponse);
+            });
+        },
+        listaExperiencias: function(cod) {
+            return $http.post('../list_experiencia_byadmin', {'cod':cod}).then(function(response){
+                return response.data;
+            },function(errResponse){
+                console.error('Error while fetching expenses');
+                return $q.reject(errResponse);
+            });
+        },
+        SaveFormUsuario: function(exp_laboral){
+            return $http.post('../formacion_byadmin', exp_laboral).then(function(response){
+                console.log(response.data);
+                return response.data;
+            }, 
+            function(errResponse){
+                    console.error('Error guardando datos personales ' +errResponse);
+                    return $q.reject(errResponse);
+            });
+        },
+        listaFormaciones: function(cod) {
+            return $http.post('../list_formacion_byadmin', {'cod':cod}).then(function(response){
+                return response.data;
+            },function(errResponse){
+                console.error('Error while fetching expenses');
+                return $q.reject(errResponse);
+            });
+        },
+        SaveMultaUsuario: function(exp_laboral){
+            return $http.post('../multa_byadmin', exp_laboral).then(function(response){
+                console.log(response.data);
+                return response.data;
+            }, 
+            function(errResponse){
+                    console.error('Error guardando datos personales ' +errResponse);
+                    return $q.reject(errResponse);
+            });
+        },
+        listaMultas: function(cod) {
+            return $http.post('../list_multa_byadmin', {'cod':cod}).then(function(response){
+                return response.data;
+            },function(errResponse){
+                console.error('Error while fetching expenses');
+                return $q.reject(errResponse);
+            });
+        },
         listaDptosCiudad: function() {
             return $http.post('../assets/colombia.json').then(function(response){
                 return response.data;
