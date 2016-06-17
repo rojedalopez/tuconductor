@@ -140,12 +140,12 @@ public class Listas {
                         instruccion  =  " SELECT ee.cod_empleado, CONCAT(ep.nbr_empleado, ' ',  ep.apl_empleado) AS nombre ";
                         instruccion +=  " FROM tblEmpresaEmpleado AS ee INNER JOIN tblEmpresa AS em ON ee.nit_empresa = em.nit_empresa ";
                         instruccion +=  " INNER JOIN tblEmpleado AS ep ON ee.cod_empleado = ep.cod_empleado " ;
-                        instruccion +=  " WHERE ee.nit_empresa = ?";
+                        instruccion +=  " WHERE ee.nit_empresa = ? AND not exists(SELECT 1 from tblChat  AS ch WHERE ch.cod_empleado = ep.cod_empleado );";
                     }else{
                         instruccion  =  "SELECT ee.nit_empresa, nbr_empresa AS nombre ";
                         instruccion += " FROM tblEmpresaEmpleado AS ee INNER JOIN tblEmpresa AS em ON ee.nit_empresa = em.nit_empresa " ;
                         instruccion += " INNER JOIN tblEmpleado AS ep ON ee.cod_empleado = ep.cod_empleado " ;
-                        instruccion += " WHERE ee.cod_empleado = ?;";
+                        instruccion += " WHERE ee.cod_empleado = ? AND not exists(ELECT 1 from tblChat  AS ch WHERE ch.nit_empresa = em.nit_empresa );";
                     }
                      
                     insertar=conn.prepareStatement(instruccion);

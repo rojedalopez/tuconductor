@@ -25,6 +25,7 @@ if(session.getAttribute("user") == null){
     <title>:::TuConductor:::</title>
     <!-- Core CSS - Include with every page -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">
     <link href="../assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
     <link href="../assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="../assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />
@@ -40,7 +41,14 @@ if(session.getAttribute("user") == null){
     <script type="text/javascript" src="../js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript" src="../js/dataTables.responsive.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+    <!-- Angular Material requires Angular.js Libraries -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
+
+    <!-- Angular Material Library -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
     <script src="../js/dist/angular-datatables.min.js"></script>   
     
     
@@ -355,7 +363,27 @@ if(session.getAttribute("user") == null){
                                             <i class="fa fa-users fa-fw"></i> Mis contactos
                                         </div>
                                         <div class="panel-footer">
-                                                <input id="btn-input" type="text" class="form-control" placeholder="Buscar contacto.." />
+                                                <md-content layout-padding layout="column">
+                                                <form ng-submit="$event.preventDefault()">
+                                                  <md-autocomplete
+                                                      ng-disabled="ctrl.isDisabled"
+                                                      md-selected-item="ctrl.selectedItem"
+                                                      md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
+                                                      md-search-text="ctrl.searchText"
+                                                      md-selected-item-change="ctrl.selectedItemChange(item)"
+                                                      md-items="item in ctrl.querySearch(ctrl.searchText)"
+                                                      md-item-text="item.n_destino"
+                                                      md-min-length="0"
+                                                      placeholder="Seleccione usuario, para iniciar Chat"
+                                                      md-menu-class="autocomplete-custom-template">
+                                                    <md-item-template>
+                                                      <span class="item-title">
+                                                        <span> {{item.n_destino}} </span>
+                                                      </span>
+                                                    </md-item-template>
+                                                  </md-autocomplete>
+                                                </form>
+                                                </md-content>
                                         </div>
                                         <div class="panel-body" style="height: 400px; overflow-y: scroll;">
                                             <div class="list-group" ng-repeat="ch in ctrl.chats"> 

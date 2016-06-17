@@ -6,7 +6,8 @@ angular.module('myApp',[
     'MyApp.Profile',
     'MyApp.Oferta',
     'MyApp.Inbox',
-    'datatables'
+    'datatables',
+    'ngMaterial'
 ]);
 
 
