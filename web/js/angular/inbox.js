@@ -44,8 +44,13 @@ angular.module('MyApp.Inbox', []).controller('InboxController', ['$scope', 'Inbo
       $log.info('Text changed to ' + text);
     }
     function selectedItemChange(item) {
-      self.nuevo_mensaje.destino = item.destino;
-      self.nuevo_mensaje.chat = -1;
+        self.mensajes=[];
+        self.mensaje={id:0, fecha:"", rol:false, destino:"", n_destino:"", texto:""};
+        self.nuevo_mensaje={chat:"", texto:"", destino:""};
+        self.chat={id:0, fecha:"", ult_mensaje:"", destino:"", n_destino:"", invisible:false, visto:false};
+        self.chat.id=-1;
+        self.nuevo_mensaje.destino = item.destino;
+        self.nuevo_mensaje.chat = -1;
     }
     
     self.listaChats = function(){

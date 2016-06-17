@@ -41,6 +41,7 @@ public class mensaje extends HttpServlet {
         
         int chat = Integer.parseInt(joMensaje.get("chat").toString());
         String texto = (String) joMensaje.get("texto");
+        String destino = (String) joMensaje.get("destino");
         System.out.println(chat);
         System.out.println(texto);
         
@@ -52,7 +53,7 @@ public class mensaje extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
-                out.println(Guardar.SaveMensaje(chat, texto, u.getRol()));
+                out.println(Guardar.SaveMensaje(chat, texto, u.getRol(), u.getCodigo(), destino));
             }else{
                 out.print("session");
             }

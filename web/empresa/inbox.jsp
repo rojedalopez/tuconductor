@@ -389,7 +389,7 @@ if(session.getAttribute("user") == null){
                                             <div class="list-group" ng-repeat="ch in ctrl.chats"> 
                                                 
                                                 <a style="cursor: pointer;" class="list-group-item" ng-click="ctrl.selectChat(ch.id)" >
-                                                    <img src="https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/1014251_10202212948658325_299875096_n.jpg?oh=26715f788a0bc8715ad33013759ca25e&oe=57CE6B55" width="24" height="24" class="img-circle"  /> <span ng-bind="ch.n_destino"></span>
+                                                    <span ng-bind="ch.n_destino"></span>
                                                     <span class="pull-right text-muted small"><em style="color: {{(!ch)?'green':'red'}};">{{(!ch)?'Visto':'No Leido'}}</em>
                                                     </span>
                                                 </a>
@@ -413,7 +413,7 @@ if(session.getAttribute("user") == null){
                                             <ul class="chat" scroll="studentDetail">
                                                 <li  ng-class="{'left clearfix': m.rol, 'right clearfix': !m.rol }"  ng-repeat="m in ctrl.mensajes">
                                                     <span ng-class="{'chat-img pull-left': m.rol, 'chat-img pull-right': !m.rol }">
-                                                        <img src="{{(m.rol)?'http://placehold.it/50/FA6F57/fff':'http://placehold.it/50/55C1E7/fff'}}http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />
+                                                        <!--<img src="{{(m.rol)?'http://placehold.it/50/FA6F57/fff':'http://placehold.it/50/55C1E7/fff'}}http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />-->
                                                     </span>
                                                     <div class="chat-body clearfix">
                                                         <div class="header">
