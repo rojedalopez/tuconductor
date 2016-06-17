@@ -67,6 +67,7 @@ public class list_multa_byadmin extends HttpServlet {
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
                 String x = Listas.listaMultas(cod).toJSONString();
+                System.out.println(x);
                 out.print(x);
             }else{
                 out.print("session");

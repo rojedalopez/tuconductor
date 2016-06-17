@@ -28,15 +28,6 @@ import org.json.simple.parser.ParseException;
  */
 public class multa_byadmin extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException, ClassNotFoundException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
@@ -60,10 +51,11 @@ public class multa_byadmin extends HttpServlet {
         System.out.println(id);
         String lgr_multa = (String) joMulta.get("lgr_multa");
         String cgo_multa = (String) joMulta.get("cgo_multa");
-        String fch_multa = (String) joMulta.get("fch_multa");
+        String fch_multa = (String) joMulta.get("date");
+        System.out.println("prueba= "+fch_multa);
         String codigoConductor = (String) joMulta.get("cod");
         boolean pgo_multa =(Boolean) joMulta.get("pgo_multa");
-                        
+        System.out.println("prueba= "+pgo_multa);
         HttpSession session =  null;
  
         session = request.getSession(false);

@@ -524,7 +524,10 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, cod:""};
     
     self.multas=[];
-    self.multa={id:-1, lugar:"", fecha: "", cargo:"", estado:false, cod:""};
+    self.multa={id:-1, date:"", lgr_multa:"", fch_multa: "", cgo_multa:"", pgo_multa:false, cod:""};
+    
+    self.accidentes=[];
+    self.accidente={id:-1, date:"", lgr_multa:"", fch_multa: "", cgo_multa:"", pgo_multa:false, cod:""};
     
     self.Paises=[];
     self.PaisesExp=[];
@@ -538,6 +541,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.SaveMultaUsuario = function(multa){
         EditConductorbyAdminService.SaveMultaUsuario(multa).then(function(d){
             if(d==="true"){
+                btn_guardar_multa.button('reset');
                 form_multa.modal( "hide" );
                 self.resetMulta();
                 self.listaMultas();
@@ -549,6 +553,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.listaMultas = function(){
         var cod = self.getVarUrl("cod");
         EditConductorbyAdminService.listaMultas(cod).then(function(d){
+            
             self.multas = d;
         },function(errResponse){
             console.error('Error while creating Paper.');
@@ -617,7 +622,6 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     };
     
     self.selectPaisExp = function(pais){
-        console.log(pais);
         if(pais==="CO"){
             self.colombiaExp = true;  
         }else{
@@ -676,6 +680,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
             self.usuario_dp.fecha_nac =  new Date(self.usuario_dp.fecha_nac);
             self.experiencias = d.exp_laborales;
             self.formaciones = d.formacion;
+            self.multas = d.multas;
             self.selectDpto(self.usuario_dp.depto);
         },function(errResponse){
             console.error('Error while fetching Currencies');
@@ -686,6 +691,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         for(var i = 0; i < self.multas.length; i++){
             if(self.multas[i].id === id) {
                self.multa = angular.copy(self.multas[i]);
+               self.multa.fch_multa = new Date(self.multa.fch_multa);
                form_multa.modal( "show" );
                break;
             }
@@ -718,6 +724,8 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     };
     
     self.submitMulta = function(){
+        btn_guardar_multa.button('loading');
+        self.multa.date = new Date(self.multa.fch_multa).toString("yyyy-MM-dd");
         self.SaveMultaUsuario(self.multa);
     };
     
@@ -741,9 +749,9 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     
     self.resetMulta = function(){
         var cod = self.getVarUrl("cod");
-        self.multa={id:-1, lugar:"", fecha: "", cargo:"", estado:false};
+        self.multa={id:-1, lgr_multa:"", fch_multa: "", cgo_multa:"", pgo_multa:false};
         self.multa.cod = cod; 
-        $scope.form_formacion.$setPristine();
+        $scope.form_multa.$setPristine();
     };
     
     self.resetExp = function(){

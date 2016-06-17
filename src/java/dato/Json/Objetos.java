@@ -69,6 +69,7 @@ public class Objetos {
                         obj.put("verificado", datos.getBoolean(26));
                         obj.put("exp_laborales", Listas.listaExpLaborales(id));
                         obj.put("formacion", Listas.listaFormaciones(id));
+                        obj.put("multas", Listas.listaMultas(id));
                     }
                     datos.close();
                     conn.close();

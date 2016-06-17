@@ -663,10 +663,10 @@ public class Listas {
                         obj = new JSONObject();
                         obj.put("id", datos.getInt(1));
                         obj.put("lgr_multa", datos.getString(2));
-                        obj.put("fch_multa", datos.getInt(3));
+                        obj.put("fch_multa", Fechaformateador.format(datos.getDate(3)));
                         obj.put("cgo_multa", datos.getString(4));
-                        obj.put("pgo_multa", datos.getInt(5));
-                        obj.put("cod_empleado", datos.getInt(6));
+                        obj.put("pgo_multa", datos.getBoolean(5));
+                        obj.put("cod", datos.getString(6));
                         lista.add(obj);
                     }
                     datos.close();

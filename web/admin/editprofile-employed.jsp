@@ -36,6 +36,7 @@ if(session.getAttribute("user") == null){
     <link href="../css/generales.css" rel="stylesheet" />
 
     <script type="text/javascript" src="../js/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="../js/date.js"></script>
     <script type="text/javascript" src="../js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="../js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript" src="../js/dataTables.responsive.min.js"></script>
@@ -51,14 +52,19 @@ if(session.getAttribute("user") == null){
     <script src="../js/dist/angular-datatables.min.js"></script>   
     
     <script type="text/javascript">
-        var btn_guardar_cambios, form_experiencia, form_formacion, btn_add_exp, btn_add_formacion;
+        var btn_guardar_cambios, form_experiencia, form_formacion, form_multa, form_accidente, btn_add_exp, btn_add_formacion, 
+                btn_guardar_multa, btn_guardar_accidente;
+        
         $(document).ready(function(){
-            eliminarOpciones();
             verOpcion(1);
             $("#form_accidente").modal("show");
+            btn_guardar_multa = $("#btn_guardar_multa");
+            btn_guardar_accidente = $("#btn_guardar_accidente");
             btn_guardar_cambios = $("#btn_guardar_cambios");
             form_experiencia = $("#form_experiencia");
             form_formacion = $("#form_formacion");
+            form_multa = $("#form_multa");
+            form_accidente = $("#form_accidente");
             btn_add_exp = $("#btn_add_exp");
             btn_add_formacion = $("#btn_add_formacion");   
             
@@ -486,13 +492,13 @@ if(session.getAttribute("user") == null){
                                 </p>
                                 <p>
                                     <label class="etiqueta" for="pais">Pais</label>                                        
-                                    <select class="form-control selector"  name="pais" ng-model="ctrl.usuario_dp.pais" ng-options="Pais.ID as Pais.Nombre for Pais in ctrl.Paises" ng-selected="ctrl.selectPais(ctrl.usuario_dp.pais)">
+                                    <select class="form-control selector"  name="pais" ng-model="ctrl.usuario_dp.pais" ng-options="Pais.ID as Pais.Nombre for Pais in ctrl.Paises" ng-change="ctrl.selectPais(ctrl.usuario_dp.pais)">
                                             <option value="" selected>--Seleccione Pais--</option>
                                     </select>
                                 </p>
                                 <p>
                                     <label class="etiqueta" for="depto">Departamento:</label>                                        
-                                    <select class="form-control selector" ng-show="ctrl.colombia" name="depto" ng-model="ctrl.usuario_dp.depto" ng-options="dpto.id as dpto.departamento for dpto in ctrl.dptos" ng-selected="ctrl.selectDpto(ctrl.usuario_dp.depto)">
+                                    <select class="form-control selector" ng-show="ctrl.colombia" name="depto" ng-model="ctrl.usuario_dp.depto" ng-options="dpto.id as dpto.departamento for dpto in ctrl.dptos" ng-change="ctrl.selectDpto(ctrl.usuario_dp.depto)">
                                         <option value="" selected>--Seleccione Departamento--</option>
                                     </select>
                                     <input type="text" ng-show="!ctrl.colombia" class="form-control texto"  name="depart" ng-model="ctrl.usuario_dp.depart" >
@@ -645,18 +651,18 @@ if(session.getAttribute("user") == null){
                         </div>
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-lg-12" >
+                                <div class="col-lg-12" ng-repeat="m in ctrl.multas">
                                     <div class="panel panel-info">
                                         <div class="panel-heading">                                                
-                                            Barranquilla
+                                            {{m.lgr_multa}}
                                             <button type="button" class="close"><img src="../assets/img/delete_icon.png" width="18" height="18"></button>
-                                            <button type="button" class="close" ><img src="../assets/img/edit_icon.png"  width="18" height="18"></button>                                                
+                                            <button type="button" class="close"  ng-click="ctrl.editMulta(m.id)"><img src="../assets/img/edit_icon.png"  width="18" height="18"></button>                                                
                                         </div>
                                         <div class="panel-body">
-                                            <p>cargo xyz yxz yxz yxz</p>
+                                            <p><span ng-bind="m.cgo_multa"></span></p>
                                         </div>
                                         <div class="panel-footer">
-                                            <label>Fecha: 2014/03/14</label>
+                                            <label>Fecha: <span ng-bind="m.fch_multa"></span></label>
                                         </div>
                                     </div>
                                 </div>
@@ -664,7 +670,7 @@ if(session.getAttribute("user") == null){
                             <div class="row">
                             <div class="col-lg-12"><br/></div>
                             </div>
-                            <button type="button" class="btn btn-primary btn-lg center-block" ng-click="ctrl.openForm()">Añadir Multa</button>
+                            <button type="button" class="btn btn-primary btn-lg center-block" ng-click="ctrl.openMulta()">Añadir Multa</button>
                         </div>
                     </div>
                 </div>
@@ -805,13 +811,13 @@ if(session.getAttribute("user") == null){
                         </p>
                         <p>
                             <label class="etiqueta_e">Pais:</label>
-                            <select class="form-control selector_e" name="pais" ng-model="ctrl.exp_laboral.pais" ng-options="Pais.ID as Pais.Nombre for Pais in ctrl.PaisesExp" ng-selected="ctrl.selectPaisExp(ctrl.exp_laboral.pais)">
+                            <select class="form-control selector_e" name="pais" ng-model="ctrl.exp_laboral.pais" ng-options="Pais.ID as Pais.Nombre for Pais in ctrl.PaisesExp" ng-change="ctrl.selectPaisExp(ctrl.exp_laboral.pais)">
                                 <option>--- Seleccione Pais ---</option>
                             </select>
                         </p>
                         <p>
                             <label class="etiqueta_e">Dpto:</label>
-                            <select class="form-control selector_e" ng-show="ctrl.colombiaExp" name="depto" ng-model="ctrl.exp_laboral.depto" ng-options="dpto.id as dpto.departamento for dpto in ctrl.dptosExp" ng-selected="ctrl.selectDptoExp(ctrl.exp_laboral.depto)">
+                            <select class="form-control selector_e" ng-show="ctrl.colombiaExp" name="depto" ng-model="ctrl.exp_laboral.depto" ng-options="dpto.id as dpto.departamento for dpto in ctrl.dptosExp" ng-change="ctrl.selectDptoExp(ctrl.exp_laboral.depto)">
                                 <option value="">--- Seleccione Departamento ---</option>
                             </select>
                             <input type="text" ng-show="!ctrl.colombiaExp" class="form-control texto"  name="depart" ng-model="ctrl.exp_laboral.depart" >
@@ -947,30 +953,30 @@ if(session.getAttribute("user") == null){
                     <h4 class="modal-title" id="myModalLabel">Formulario de multas</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" name="form_multa" ng-submit="ctrl.submitForm()" class="form-horizontal" novalidate>
-                        <p ng-class="{ 'has-error': form_multa.lugar.$error.required || form_multa.lugar.$error.minlength }">
+                    <form role="form" name="form_multa" ng-submit="ctrl.submitMulta()" class="form-horizontal" novalidate>
+                        <p ng-class="{ 'has-error': form_multa.lgr_multa.$error.required || form_multa.lgr_multa.$error.minlength }">
                             <label class="etiqueta_e">Lugar:<i class="required">*</i>:</label>                            
-                            <input type="text" class="form-control texto_e" name="lugar" ng-model="ctrl.multa.lugar" placeholder="Lugar de la multa" minlength="3" required />
+                            <input type="text" class="form-control texto_e" name="lgr_multa" ng-model="ctrl.multa.lgr_multa" placeholder="Lugar de la multa" minlength="3" required />
                         </p>
-                        <p ng-class="{ 'has-error': form_multa.fecha.$error.required }">
+                        <p ng-class="{ 'has-error': form_multa.fch_multa.$error.required }">
                             <label class="etiqueta_e">Fecha:<i class="required">*</i>:</label>                            
-                            <input type="date" class="form-control texto_e" name="fecha" ng-model="ctrl.multa.fecha" placeholder="Fecha de la multa" required />
+                            <input type="date" class="form-control texto_e" name="fch_multa" ng-model="ctrl.multa.fch_multa" placeholder="Fecha de la multa" required />
                         </p>
-                        <p ng-class="{ 'has-error': form_multa.fecha.$error.required  || form_multa.lugar.$error.minlength }">
+                        <p ng-class="{ 'has-error': form_multa.cgo_multa.$error.required  || form_multa.cgo_multa.$error.minlength }">
                             <label class="etiqueta_e">Cargo:</label>
-                            <textarea class="form-control texto_e" name="cargo" ng-model="ctrl.multa.cargo" placeholder="Cargo de la multa" minlength="6" required ></textarea>
+                            <textarea class="form-control texto_e" name="cgo_multa" ng-model="ctrl.multa.cgo_multa" placeholder="Cargo de la multa" minlength="6" required ></textarea>
                         </p>                        
                         <p>
                             <label class="etiqueta_e">Estado:</label>
                             <div class="form-inline">
                                 <label class="checkbox-inline">
-                                    <input type="radio" value="1" name="estado" ng-model="ctrl.formacion.estado"> Pagado
+                                    <input type="radio" value="1" name="pgo_multa" ng-model="ctrl.multa.pgo_multa"> Pagado
                                 </label>
                             </div>                                
                         </p>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" ng-disabled="form_formacion.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_formacion" class="btn btn-primary" >{{(ctrl.formacion.id===-1)?'Añadir':'Editar'}}</button>
+                            <button type="submit" ng-disabled="form_multa.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_guardar_multa" class="btn btn-primary" >{{(ctrl.multa.id===-1)?'Añadir':'Editar'}}</button>
                         </div>
                     </form>
                 </div>

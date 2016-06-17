@@ -294,7 +294,7 @@ public class Guardar {
                 cs.registerOutParameter(7, Types.INTEGER);
                 cs.executeQuery();
 
-                int retorno = cs.getInt(11);
+                int retorno = cs.getInt(7);
                 
                 if(retorno==1){
                     return true;
