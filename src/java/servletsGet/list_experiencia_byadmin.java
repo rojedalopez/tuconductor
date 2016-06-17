@@ -29,20 +29,10 @@ import org.json.simple.parser.ParseException;
  */
 public class list_experiencia_byadmin extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        
+         
         StringBuffer sb = new StringBuffer();
         
         try
@@ -78,14 +68,6 @@ public class list_experiencia_byadmin extends HttpServlet {
     }
 
     
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -98,11 +80,7 @@ public class list_experiencia_byadmin extends HttpServlet {
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+
     @Override
     public String getServletInfo() {
         return "Short description";

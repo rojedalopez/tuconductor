@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servletsSave;
 
 import bean.usuario;
@@ -22,14 +17,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-/**
- *
- * @author HP I7
- */
-public class multa_byadmin extends HttpServlet {
+public class accidente_byadmin extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ParseException, ClassNotFoundException, SQLException {
+            throws ServletException, IOException, ClassNotFoundException, SQLException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
         StringBuffer sb = new StringBuffer();
         
@@ -49,13 +40,12 @@ public class multa_byadmin extends HttpServlet {
         joMulta = (JSONObject) parser.parse(sb.toString());
         int id = Integer.parseInt(joMulta.get("id").toString());
         System.out.println(id);
-        String lgr_multa = (String) joMulta.get("lgr_multa");
-        String cgo_multa = (String) joMulta.get("cgo_multa");
-        String fch_multa = (String) joMulta.get("date");
-        System.out.println("prueba= "+fch_multa);
+        int muertes = Integer.parseInt(joMulta.get("muertos").toString());
+        int heridos = Integer.parseInt(joMulta.get("heridos").toString());
+        int tipo = Integer.parseInt(joMulta.get("tipo").toString());
+        String fecha = (String) joMulta.get("date");
         String codigoConductor = (String) joMulta.get("cod");
-        boolean pgo_multa =(Boolean) joMulta.get("pgo_multa");
-        System.out.println("prueba= "+pgo_multa);
+
         HttpSession session =  null;
  
         session = request.getSession(false);
@@ -64,7 +54,7 @@ public class multa_byadmin extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
-                boolean b = Guardar.SaveMulta(codigoConductor, id, lgr_multa, fch_multa, cgo_multa, pgo_multa);
+                boolean b = Guardar.SaveAccidente(codigoConductor, id, tipo, muertes, heridos, fecha);
                 if(b){
                     out.print("true");
                 }else{
@@ -76,21 +66,22 @@ public class multa_byadmin extends HttpServlet {
         }
     }
 
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             processRequest(request, response);
         } catch (ParseException ex) {
-            Logger.getLogger(multa_byadmin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(procdiciplinal_byadmin.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(multa_byadmin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(procdiciplinal_byadmin.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(multa_byadmin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(procdiciplinal_byadmin.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-
+    
+    
     @Override
     public String getServletInfo() {
         return "Short description";

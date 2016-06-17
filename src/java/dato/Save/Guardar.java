@@ -319,6 +319,122 @@ public class Guardar {
 
     }
     
+    public static boolean SaveAccidente(String cod_, int id, int tipo, int muertes, int heridos, String fecha) throws ClassNotFoundException, SQLException{
+        boolean b=false;
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        
+        conn=conexion();
+            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveAccidente(?, ?, ?, ?, ?, ?, ?)};")) {
+                cs.setString(1, cod_);
+                cs.setInt(2, id);
+                cs.setInt(3, tipo);
+                cs.setInt(4, muertes);
+                cs.setInt(5, heridos);
+                cs.setString(6, fecha);
+                cs.registerOutParameter(7, Types.INTEGER);
+                cs.executeQuery();
+
+                int retorno = cs.getInt(7);
+                
+                if(retorno==1){
+                    return true;
+                }else{
+                    return false;
+                }
+
+            }catch (SQLException e) {
+                System.out.println("error SQLException en SAVE MULTA USUARIO");
+                System.out.println(e.getMessage());
+            }catch (Exception e){
+                System.out.println("error Exception en SAVE MULTA USUARIO");
+                System.out.println(e.getMessage());
+            }finally{
+                if(!conn.isClosed()){
+                    conn.close();
+                }
+            }
+            return false;
+
+    }
+    
+    public static boolean SaveProcDiciplinal(String cod_, int id, String delito, boolean activo, String fecha) throws ClassNotFoundException, SQLException{
+        boolean b=false;
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        
+        conn=conexion();
+            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveProcDiciplinal(?, ?, ?, ?, ?, ?)};")) {
+                cs.setString(1, cod_);
+                cs.setInt(2, id);
+                cs.setString(3, delito);
+                cs.setInt(4, (activo)?1:0);
+                cs.setString(5, fecha);
+                cs.registerOutParameter(6, Types.INTEGER);
+                cs.executeQuery();
+
+                int retorno = cs.getInt(6);
+                
+                if(retorno==1){
+                    return true;
+                }else{
+                    return false;
+                }
+
+            }catch (SQLException e) {
+                System.out.println("error SQLException en PROC_SaveProcDiciplinal");
+                System.out.println(e.getMessage());
+            }catch (Exception e){
+                System.out.println("error Exception en PROC_SaveProcDiciplinal");
+                System.out.println(e.getMessage());
+            }finally{
+                if(!conn.isClosed()){
+                    conn.close();
+                }
+            }
+            return false;
+
+    }
+    
+    public static boolean SaveProcJudicial(String cod_, int id, String delito, boolean activo, String fecha) throws ClassNotFoundException, SQLException{
+        boolean b=false;
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        
+        conn=conexion();
+            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveProcJudicial(?, ?, ?, ?, ?, ?)};")) {
+                cs.setString(1, cod_);
+                cs.setInt(2, id);
+                cs.setString(3, delito);
+                cs.setInt(4, (activo)?1:0);
+                cs.setString(5, fecha);
+                cs.registerOutParameter(6, Types.INTEGER);
+                cs.executeQuery();
+
+                int retorno = cs.getInt(6);
+                
+                if(retorno==1){
+                    return true;
+                }else{
+                    return false;
+                }
+
+            }catch (SQLException e) {
+                System.out.println("error SQLException en PROC_SaveProcJudicial");
+                System.out.println(e.getMessage());
+            }catch (Exception e){
+                System.out.println("error Exception en PROC_SaveProcJudicial");
+                System.out.println(e.getMessage());
+            }finally{
+                if(!conn.isClosed()){
+                    conn.close();
+                }
+            }
+            return false;
+
+    }
+    
+    
     public static boolean saveHV(String codigo, String archivo, String token, String nombre, String nombre_persona) throws ClassNotFoundException, SQLException{
          
         Connection conn=null;

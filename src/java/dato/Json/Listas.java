@@ -686,6 +686,146 @@ public class Listas {
                 }
         return lista;
     }
+    
+    
+    public static JSONArray listaAccidentes(String cod) throws SQLException{
+        JSONObject obj = null;
+        JSONArray lista = new JSONArray();
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        Statement stm=null;
+        ResultSet datos=null;
+             
+        try{
+                    conn=conexion();
+                    String instruccion="";
+                     
+                    instruccion =   "SELECT id_accidente, cod_empleado, fch_accidente, tpo_accidente, mte_accidente, hdo_accidente " +
+                                    "FROM tblAccidente WHERE cod_empleado = ? ORDER BY fch_accidente DESC;";
+                     
+                    insertar=conn.prepareStatement(instruccion);
+                    insertar.setString(1, cod);
+                    datos=insertar.executeQuery();
+                    while (datos.next()) {
+                        obj = new JSONObject();
+                        obj.put("id", datos.getInt(1));
+                        obj.put("cod", datos.getString(2));
+                        obj.put("fecha", Fechaformateador.format(datos.getDate(3)));
+                        obj.put("tipo", datos.getInt(4));
+                        obj.put("muertos", datos.getInt(5));
+                        obj.put("heridos", datos.getInt(6));
+                        lista.add(obj);
+                    }
+                    datos.close();
+                    conn.close();
+                    return lista;
+             
+        }catch (SQLException e) {
+            System.out.println("error SQLException en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }catch (Exception e){
+                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }finally{
+                    if(!conn.isClosed()){
+                        conn.close();
+                    }
+                }
+        return lista;
+    }
+    
+    
+    public static JSONArray listaProcDiciplinal(String cod) throws SQLException{
+        JSONObject obj = null;
+        JSONArray lista = new JSONArray();
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        Statement stm=null;
+        ResultSet datos=null;
+             
+        try{
+                    conn=conexion();
+                    String instruccion="";
+                     
+                    instruccion =   "SELECT id_procdisciplina, cod_empleado, del_procdisciplina, fch_procdisciplina, act_procdisciplina " +
+                                    "FROM tblProcDisciplina WHERE cod_empleado = ? ORDER BY fch_procdisciplina DESC; " ;
+                     
+                    insertar=conn.prepareStatement(instruccion);
+                    insertar.setString(1, cod);
+                    datos=insertar.executeQuery();
+                    while (datos.next()) {
+                        obj = new JSONObject();
+                        obj.put("id", datos.getInt(1));
+                        obj.put("cod", datos.getString(2));
+                        obj.put("delito", datos.getString(3));
+                        obj.put("fecha", Fechaformateador.format(datos.getDate(4)));
+                        obj.put("activo", datos.getBoolean(5));
+                        lista.add(obj);
+                    }
+                    datos.close();
+                    conn.close();
+                    return lista;
+             
+        }catch (SQLException e) {
+            System.out.println("error SQLException en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }catch (Exception e){
+                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }finally{
+                    if(!conn.isClosed()){
+                        conn.close();
+                    }
+                }
+        return lista;
+    }
+    
+    
+    
+    public static JSONArray listaProcJudicial(String cod) throws SQLException{
+        JSONObject obj = null;
+        JSONArray lista = new JSONArray();
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        Statement stm=null;
+        ResultSet datos=null;
+             
+        try{
+                    conn=conexion();
+                    String instruccion="";
+                     
+                    instruccion =   "SELECT id_procjudicial, cod_empleado, del_procjudicial, fch_procjudicial, act_procjudicial " +
+                                    "FROM tblProcDisciplina WHERE cod_empleado = ? ORDER BY fch_procdisciplina DESC; " ;
+                     
+                    insertar=conn.prepareStatement(instruccion);
+                    insertar.setString(1, cod);
+                    datos=insertar.executeQuery();
+                    while (datos.next()) {
+                        obj = new JSONObject();
+                        obj.put("id", datos.getInt(1));
+                        obj.put("cod", datos.getString(2));
+                        obj.put("delito", datos.getString(3));
+                        obj.put("fecha", Fechaformateador.format(datos.getDate(4)));
+                        obj.put("activo", datos.getBoolean(5));
+                        lista.add(obj);
+                    }
+                    datos.close();
+                    conn.close();
+                    return lista;
+             
+        }catch (SQLException e) {
+            System.out.println("error SQLException en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }catch (Exception e){
+                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }finally{
+                    if(!conn.isClosed()){
+                        conn.close();
+                    }
+                }
+        return lista;
+    }
    
     public static JSONArray listaEmpleados() throws SQLException{
         JSONObject obj = null;

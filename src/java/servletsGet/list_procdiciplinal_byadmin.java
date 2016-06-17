@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package servletsSave;
+package servletsGet;
 
 import bean.usuario;
-import dato.Save.Guardar;
+import dato.Json.Listas;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,14 +17,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-/**
- *
- * @author HP I7
- */
-public class multa_byadmin extends HttpServlet {
+public class list_procdiciplinal_byadmin extends HttpServlet {
+
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ParseException, ClassNotFoundException, SQLException {
+            throws ServletException, IOException, SQLException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
         StringBuffer sb = new StringBuffer();
         
@@ -44,49 +36,37 @@ public class multa_byadmin extends HttpServlet {
         } catch (Exception e) { e.printStackTrace(); }
  
         JSONParser parser = new JSONParser();
-        JSONObject joMulta = null;
-        System.out.println(sb.toString());
-        joMulta = (JSONObject) parser.parse(sb.toString());
-        int id = Integer.parseInt(joMulta.get("id").toString());
-        System.out.println(id);
-        String lgr_multa = (String) joMulta.get("lgr_multa");
-        String cgo_multa = (String) joMulta.get("cgo_multa");
-        String fch_multa = (String) joMulta.get("date");
-        System.out.println("prueba= "+fch_multa);
-        String codigoConductor = (String) joMulta.get("cod");
-        boolean pgo_multa =(Boolean) joMulta.get("pgo_multa");
-        System.out.println("prueba= "+pgo_multa);
+        JSONObject joComment = null;
+         System.out.println(sb.toString());
+        joComment = (JSONObject) parser.parse(sb.toString());
+        
+        String cod = (String)joComment.get("cod");
+        System.out.println(cod);
         HttpSession session =  null;
  
         session = request.getSession(false);
-        
+         
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
-                boolean b = Guardar.SaveMulta(codigoConductor, id, lgr_multa, fch_multa, cgo_multa, pgo_multa);
-                if(b){
-                    out.print("true");
-                }else{
-                    out.print("false");
-                }
+                String x = Listas.listaProcDiciplinal(cod).toJSONString();
+                out.print(x);
             }else{
                 out.print("session");
             }
         }
     }
 
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             processRequest(request, response);
-        } catch (ParseException ex) {
-            Logger.getLogger(multa_byadmin.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(multa_byadmin.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(multa_byadmin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(list_procdiciplinal_byadmin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(list_procdiciplinal_byadmin.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
