@@ -681,18 +681,19 @@ if(session.getAttribute("user") == null){
                         </div>
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-lg-12" ng-repeat="fm in ctrl.formaciones">
+                                <div class="col-lg-12" ng-repeat="a in ctrl.accidentes">
                                     <div class="panel panel-info">
                                         <div class="panel-heading">                                                
-                                            {{ctrl.NvlFormacion[fm.nivel_estudio-1].Value}}
+                                            {{ctrl.tipoAccidentes[0].Tipo}}
                                             <button type="button" class="close"><img src="../assets/img/delete_icon.png" width="18" height="18"></button>
-                                            <button type="button" class="close" ng-click="ctrl.editForm(fm.id)"><img src="../assets/img/edit_icon.png"  width="18" height="18"></button>                                                
+                                            <button type="button" class="close" ng-click="ctrl.editAccidente(a.id)"><img src="../assets/img/edit_icon.png"  width="18" height="18"></button>                                                
                                         </div>
                                         <div class="panel-body">
-                                            <p><span ng-bind="fm.c_educativo"></span></p>
+                                            <p>Muertos: <span ng-bind="a.muertos"></span></p>
+                                            <p>Heridos: <span ng-bind="a.heridos"></span></p>
                                         </div>
                                         <div class="panel-footer">
-                                            {{ctrl.Meses[fm.mes_inicio-1].Mes + " " + fm.anio_inicio}} - {{(fm.estado!==2)?(fm.estado===1)?'Cursando':'Aplazado/Abandonado':ctrl.Meses[fm.mes_fin-1].Mes + " " + fm.anio_fin}}
+                                            <label>Fecha: <span ng-bind="a.fch_accidente"></span></label>
                                         </div>
                                     </div>
                                 </div>
@@ -700,7 +701,7 @@ if(session.getAttribute("user") == null){
                             <div class="row">
                             <div class="col-lg-12"><br/></div>
                             </div>
-                            <button type="button" class="btn btn-primary btn-lg center-block" ng-click="ctrl.openForm()">Añadir Accidente</button>
+                            <button type="button" class="btn btn-primary btn-lg center-block" ng-click="ctrl.openAccidente()">Añadir Accidente</button>
                         </div>
                     </div>
                 </div>
@@ -992,35 +993,35 @@ if(session.getAttribute("user") == null){
                     <h4 class="modal-title" id="myModalLabel">Formulario de accidentes</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" name="form_accidente" ng-submit="ctrl.submitForm()" class="form-horizontal" novalidate>
-                        <p ng-class="{ 'has-error': form_accidente.lugar.$error.required || form_accidente.lugar.$error.minlength }">
+                    <form role="form" name="form_accidente" ng-submit="ctrl.submitAccidente()" class="form-horizontal" novalidate>
+                        <!--<p ng-class="{ 'has-error': form_accidente.lugar.$error.required || form_accidente.lugar.$error.minlength }">
                             <label class="etiqueta_e">Lugar:<i class="required">*</i>:</label>                            
                             <input type="text" class="form-control texto_e" name="lugar" ng-model="ctrl.accidente.lugar" placeholder="Lugar de la multa" minlength="3" required />
-                        </p>
-                        <p ng-class="{ 'has-error': form_accidente.fecha.$error.required }">
+                        </p>-->
+                        <p ng-class="{ 'has-error': form_accidente.fch_accidente.$error.required }">
                             <label class="etiqueta_e">Fecha:<i class="required">*</i>:</label>                            
-                            <input type="date" class="form-control texto_e" name="fecha" ng-model="ctrl.accidente.fecha" placeholder="Fecha de la multa" required />
+                            <input type="date" class="form-control texto_e" name="fch_accidente" ng-model="ctrl.accidente.fch_accidente" placeholder="Fecha de la multa" required />
                         </p>
                         <p>
                             <label class="etiqueta_e">Tipo accidente:</label>                           
-                            <select class="form-control selector_e" name="tipo" ng-model="ctrl.accidente.tipo" ng-options="Nivel.ID as Nivel.Value for Nivel in ctrl.NvlFormacion">
+                            <select class="form-control selector_e" name="tipo" ng-model="ctrl.accidente.tipo" ng-options="Tipo.ID as Tipo.Tipo for Tipo in ctrl.tipoAccidentes">
                                 <option value="">--- Seleccione opción ---</option>
                             </select>
                         </p>
-                        <p ng-class="{ 'has-error': form_multa.fecha.$error.required  || form_multa.lugar.$error.minlength }">
+                        <p>
                             <label class="etiqueta_e">Eventos:</label>
                             <div class="form-inline">
                                 <label class="checkbox-inline">
-                                    <input type="checkbox" value="1" name="evento_m" ng-model="ctrl.formacion.estado"> Muertes
+                                    <input type="checkbox" name="muertos" ng-model="ctrl.accidente.muertos"> Muertes
                                 </label>
                                 <label class="checkbox-inline">
-                                    <input type="checkbox" value="1" name="evento_h" ng-model="ctrl.formacion.estado"> Heridos
+                                    <input type="checkbox"  name="heridos" ng-model="ctrl.accidente.heridos"> Heridos
                                 </label>
                             </div>
                         </p>  
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" ng-disabled="form_formacion.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_formacion" class="btn btn-primary" >{{(ctrl.formacion.id===-1)?'Añadir':'Editar'}}</button>
+                            <button type="submit" ng-disabled="form_accidente.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_guardar_accidente" class="btn btn-primary" >{{(ctrl.accidente.id===-1)?'Añadir':'Editar'}}</button>
                         </div>
                     </form>
                 </div>

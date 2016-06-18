@@ -319,7 +319,7 @@ public class Guardar {
 
     }
     
-    public static boolean SaveAccidente(String cod_, int id, int tipo, int muertes, int heridos, String fecha) throws ClassNotFoundException, SQLException{
+    public static boolean SaveAccidente(String cod_, int id, String tipo, int muertes, int heridos, String fecha) throws ClassNotFoundException, SQLException{
         boolean b=false;
         Connection conn=null;
         PreparedStatement insertar=null;
@@ -328,7 +328,7 @@ public class Guardar {
             try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveAccidente(?, ?, ?, ?, ?, ?, ?)};")) {
                 cs.setString(1, cod_);
                 cs.setInt(2, id);
-                cs.setInt(3, tipo);
+                cs.setString(3, tipo);
                 cs.setInt(4, muertes);
                 cs.setInt(5, heridos);
                 cs.setString(6, fecha);

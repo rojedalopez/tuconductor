@@ -710,14 +710,15 @@ public class Listas {
                         obj = new JSONObject();
                         obj.put("id", datos.getInt(1));
                         obj.put("cod", datos.getString(2));
-                        obj.put("fecha", Fechaformateador.format(datos.getDate(3)));
-                        obj.put("tipo", datos.getInt(4));
+                        obj.put("fch_accidente", Fechaformateador.format(datos.getDate(3)));
+                        obj.put("tipo", datos.getString(4));
                         obj.put("muertos", datos.getInt(5));
                         obj.put("heridos", datos.getInt(6));
                         lista.add(obj);
                     }
                     datos.close();
                     conn.close();
+                    System.out.println(lista);
                     return lista;
              
         }catch (SQLException e) {

@@ -527,7 +527,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.multa={id:-1, date:"", lgr_multa:"", fch_multa: "", cgo_multa:"", pgo_multa:false, cod:""};
     
     self.accidentes=[];
-    self.accidente={id:-1, date:"", lgr_multa:"", fch_multa: "", cgo_multa:"", pgo_multa:false, cod:""};
+    self.accidente={id:-1, date:"", fch_accidente:"", muertos:false, heridos: false, tipo:"", cod:""};
     
     self.Paises=[];
     self.PaisesExp=[];
@@ -555,6 +555,28 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         EditConductorbyAdminService.listaMultas(cod).then(function(d){
             
             self.multas = d;
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+	});
+    };
+    
+    self.SaveAccidenteUsuario = function(accidente){
+        EditConductorbyAdminService.SaveAccidenteUsuario(accidente).then(function(d){
+            if(d==="true"){
+                btn_guardar_accidente.button('reset');
+                form_accidente.modal( "hide" );
+                self.resetAccidente();
+                self.listaAccidentes();
+            }
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+	});
+    };
+    self.listaAccidentes = function(){
+        var cod = self.getVarUrl("cod");
+        EditConductorbyAdminService.listaAccidentes(cod).then(function(d){
+            
+            self.accidentes = d;
         },function(errResponse){
             console.error('Error while creating Paper.');
 	});
@@ -681,6 +703,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
             self.experiencias = d.exp_laborales;
             self.formaciones = d.formacion;
             self.multas = d.multas;
+            self.accidentes = d.accidentes;
             self.selectDpto(self.usuario_dp.depto);
         },function(errResponse){
             console.error('Error while fetching Currencies');
@@ -693,6 +716,27 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
                self.multa = angular.copy(self.multas[i]);
                self.multa.fch_multa = new Date(self.multa.fch_multa);
                form_multa.modal( "show" );
+               break;
+            }
+        }
+    };
+    
+    self.editAccidente = function(id){
+        for(var i = 0; i < self.accidentes.length; i++){
+            if(self.accidentes[i].id === id) {
+               self.accidente = angular.copy(self.accidentes[i]);
+               if(self.accidente.muertos===1){
+                   self.accidente.muertos=true;
+               }else{
+                   self.accidente.muertos=false;
+               }               
+               if(self.accidente.heridos===1){
+                   self.accidente.heridos=true;
+               }else{
+                   self.accidente.heridos=false;
+               }
+               self.accidente.fch_accidente = new Date(self.accidente.fch_accidente);
+               form_accidente.modal( "show" );
                break;
             }
         }
@@ -729,6 +773,17 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         self.SaveMultaUsuario(self.multa);
     };
     
+    self.openAccidente = function(){
+        self.resetAccidente();
+        form_accidente.modal( "show" );
+    };
+    
+    self.submitAccidente = function(){
+        btn_guardar_accidente.button('loading');
+        self.accidente.date = new Date(self.accidente.fch_accidente).toString("yyyy-MM-dd");
+        self.SaveAccidenteUsuario(self.accidente);
+    };
+    
     self.openExp = function(){
         self.resetExp();
         form_experiencia.modal( "show" );
@@ -752,6 +807,13 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         self.multa={id:-1, lgr_multa:"", fch_multa: "", cgo_multa:"", pgo_multa:false};
         self.multa.cod = cod; 
         $scope.form_multa.$setPristine();
+    };
+    
+    self.resetAccidente = function(){
+        var cod = self.getVarUrl("cod");
+        self.accidente={id:-1, date:"", fch_accidente:"", muertos:false, heridos: false, tipo:""};
+        self.accidente.cod = cod; 
+        $scope.form_accidente.$setPristine();
     };
     
     self.resetExp = function(){
@@ -787,6 +849,12 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         {ID: 'CC', Tipo: 'Cedula de ciudadania'},
         {ID: 'CE', Tipo: 'Cedula de extranjeria'},
         {ID: 'PS', Tipo: 'Pasaporte'}
+    ];
+    
+    self.tipoAccidentes = [
+        {ID: 'F', Tipo: 'Frontales'},
+        {ID: 'S', Tipo: 'Laterales'},
+        {ID: 'T', Tipo: 'Volcamiento'}
     ];
           
           
@@ -882,6 +950,24 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         },
         listaMultas: function(cod) {
             return $http.post('../list_multa_byadmin', {'cod':cod}).then(function(response){
+                return response.data;
+            },function(errResponse){
+                console.error('Error while fetching expenses');
+                return $q.reject(errResponse);
+            });
+        },
+        SaveAccidenteUsuario: function(accidente){
+            return $http.post('../accidente_byadmin', accidente).then(function(response){
+                console.log(response.data);
+                return response.data;
+            }, 
+            function(errResponse){
+                    console.error('Error guardando datos personales ' +errResponse);
+                    return $q.reject(errResponse);
+            });
+        },
+        listaAccidentes: function(cod) {
+            return $http.post('../list_accidentes_byadmin', {'cod':cod}).then(function(response){
                 return response.data;
             },function(errResponse){
                 console.error('Error while fetching expenses');

@@ -40,12 +40,18 @@ public class accidente_byadmin extends HttpServlet {
         joMulta = (JSONObject) parser.parse(sb.toString());
         int id = Integer.parseInt(joMulta.get("id").toString());
         System.out.println(id);
-        int muertes = Integer.parseInt(joMulta.get("muertos").toString());
-        int heridos = Integer.parseInt(joMulta.get("heridos").toString());
-        int tipo = Integer.parseInt(joMulta.get("tipo").toString());
+        boolean bmuertes=Boolean.parseBoolean(joMulta.get("muertos").toString());
+        int muertes = (bmuertes) ? 1 : 0;
+        System.out.println(muertes);
+        boolean bheridos=Boolean.parseBoolean(joMulta.get("heridos").toString());
+        int heridos = (bheridos) ? 1 : 0;
+        System.out.println(heridos);
+        String tipo = joMulta.get("tipo").toString();
+        System.out.println(tipo);
         String fecha = (String) joMulta.get("date");
+        System.out.println(fecha);
         String codigoConductor = (String) joMulta.get("cod");
-
+        System.out.println(id+" - "+muertes+" - "+heridos+" - "+tipo+" - "+fecha+" - "+codigoConductor);
         HttpSession session =  null;
  
         session = request.getSession(false);

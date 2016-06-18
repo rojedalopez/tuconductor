@@ -70,6 +70,7 @@ public class Objetos {
                         obj.put("exp_laborales", Listas.listaExpLaborales(id));
                         obj.put("formacion", Listas.listaFormaciones(id));
                         obj.put("multas", Listas.listaMultas(id));
+                        obj.put("accidentes", Listas.listaAccidentes(id));
                     }
                     datos.close();
                     conn.close();
