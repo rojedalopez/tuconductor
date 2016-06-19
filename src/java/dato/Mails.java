@@ -277,11 +277,11 @@ public class Mails {
         }
     }
     
-    public static void SendCompraEmpleado(String user, String as, String mensaje, String archivo){
+    public static void SendCompraEmpleado(String user, String as, String mensaje, String archivo, String ruta, String hojavida){
         String servidorSMTP = "smtp.gmail.com";
         String puerto = "587";
-        String usuario = "sistemas@logiseguridad.com";
-        String password = "R0B3RTO22";
+        String usuario = "tuconductor.noreplay@gmail.com";
+        String password = "tcsas2016";
         String asunto = as;
  
         Properties props = new Properties();
@@ -325,12 +325,15 @@ public class Mails {
 "    </div>        \n" +
 "  </div>", "text/html");
  
-        /*BodyPart adjunto = new MimeBodyPart();
-        System.out.println("paso1");
-        adjunto.setDataHandler(new DataHandler(new FileDataSource("C:/Users/ROJEDALOPEZ/Dropbox/git/tuconductor/web/excel/nuevo.xlsx")));
-        System.out.println("paso2");
-        adjunto.setFileName("nuevo.xlsx");
-        System.out.println("paso3");
+        BodyPart adjunto = new MimeBodyPart();
+        BodyPart adjunto2 = new MimeBodyPart();
+        adjunto.setDataHandler(new DataHandler(new FileDataSource(ruta+"/excel/"+archivo)));
+        adjunto.setFileName(archivo);
+        
+        if( hojavida.length() != 0 ){
+            adjunto2.setDataHandler(new DataHandler(new FileDataSource(ruta+"/upload/"+hojavida)));
+            adjunto2.setFileName(hojavida);
+        }
         /*BodyPart imgPart = new MimeBodyPart();
          String fileName = imagen;
          DataSource ds = new FileDataSource(fileName);
@@ -338,12 +341,16 @@ public class Mails {
          imgPart.setHeader("Content-ID", "<logoimg>");
          alternative.addBodyPart(imgPart); */
          alternative.addBodyPart(html);
-         //alternative.addBodyPart(adjunto);
- 
+         alternative.addBodyPart(adjunto);
+         if( hojavida.length() != 0 ){
+            alternative.addBodyPart(adjunto2);
+         }
          //se recorre la lista de correos del contrato
  
  
-         message.addRecipient(Message.RecipientType.CC, new InternetAddress(user));
+         message.addRecipient(Message.RecipientType.TO, new InternetAddress(user));
+         message.addRecipient(Message.RecipientType.TO, new InternetAddress("jmcastilla91@gmail.com"));
+         message.addRecipient(Message.RecipientType.TO, new InternetAddress("rojedalopez@gmail.com"));
          message.setSubject(asunto);
          message.setContent(alternative);
  

@@ -6,6 +6,7 @@
 package dato.Save;
 
 import static dato.Aplicacion.conexion;
+import dato.ExcelGeneratorReport;
 import dato.Get.Objetos;
 import dato.Mails;
 import dato.Metodos;
@@ -654,7 +655,7 @@ public class Guardar {
             return false;
     }
     
-    public static boolean saveVistaEmpleado(String cod, int oferta, String correo, String nombre) throws ClassNotFoundException, SQLException, InvalidKeyException{ 
+    public static boolean saveVistaEmpleado(String cod, String empresa, String correo, String ruta) throws ClassNotFoundException, SQLException{ 
          
         boolean b=false;
         Connection conn=null;
@@ -662,17 +663,17 @@ public class Guardar {
         conn=conexion();        
         try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_VerEmpleado(?, ?, ?)}")) {
                 cs.setString(1, cod);
-                cs.setInt(2, oferta);
+                cs.setString(2, empresa);
                 cs.registerOutParameter(3, Types.INTEGER);
                 cs.executeQuery();
 
                 int retorno = cs.getInt(3);
                 
                 if(retorno==1){
-                    String info = Objetos.TituloOferta(oferta);
+                    String info = Objetos.InfoEmpleado(cod);
                     String[] textoemail = info.split("\\|");
-                    Mails.SendMailOferta(textoemail[1], "VISTA OFERTA", "Su oferta con titulo: "+textoemail[0]+", ha sido vista por " + nombre);
-                    Mails.SendMailOferta(correo, "VISTA OFERTA", "Usted ha visto la oferta: "+textoemail[0]);
+                    ExcelGeneratorReport.createExcel(cod, ruta);
+                    Mails.SendCompraEmpleado(correo, "OBTENCIÓN DE INFO DE EMPLEADO", "USTED HA ADQUIRIDO LA INFORMACION DEL SR. "+textoemail[0], cod+".xlsx",ruta,textoemail[2]);
                     return true;
                 }else{
                     return false;
@@ -691,5 +692,8 @@ public class Guardar {
             }
             return false;
     }
+    
+    
+    
      
 }

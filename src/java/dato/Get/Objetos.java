@@ -54,5 +54,39 @@ public class Objetos {
         return "";
     }
     
-    
+    public static String InfoEmpleado(String id) throws SQLException{
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        Statement stm=null;
+        ResultSet datos=null;
+             
+        try{
+                    conn=conexion();
+                    String instruccion="";
+                     
+                    instruccion =   "SELECT CONCAT('<br> ' ,nbr_empleado, ' ' ,apl_empleado, '</br> ' ), eml_usuario, hv_empleado FROM tblEmpleado " +
+                                    "WHERE cod_empleado = ?;";
+                     
+                    insertar=conn.prepareStatement(instruccion);
+                    insertar.setString(1, id);
+                    datos=insertar.executeQuery();
+                    if (datos.next()) {
+                        return datos.getString(1)+"|"+datos.getString(2)+"|"+datos.getString(3);
+                    }
+                    datos.close();
+                    conn.close();
+             
+        }catch (SQLException e) {
+            System.out.println("error SQLException en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }catch (Exception e){
+                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }finally{
+                    if(!conn.isClosed()){
+                        conn.close();
+                    }
+                }
+        return "";
+    }
 }

@@ -492,7 +492,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
 }]).factory('ProfileAdminConductorService', ['$http', '$q', function($http, $q){
     return {
         llenarEmpleados: function() {
-            return $http.post('../list_employes').then(function(response){
+            return $http.post('../list_employes_byadmin').then(function(response){
 		return response.data;
             },function(errResponse){
                 console.error('Error while fetching expenses');

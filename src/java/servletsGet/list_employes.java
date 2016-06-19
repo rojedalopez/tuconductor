@@ -13,12 +13,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.simple.parser.ParseException;
 
 
 public class list_employes extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException {
+            throws ServletException, IOException, SQLException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session =  null;
  
@@ -27,7 +28,7 @@ public class list_employes extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
-                String x = Listas.listaEmpleados().toJSONString();//?
+                String x = Listas.listaEmpleados(u.getCodigo()).toJSONString();//?
                 System.out.println(x);
                 out.print(x);
             }else{
@@ -43,6 +44,8 @@ public class list_employes extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
+            Logger.getLogger(list_employes.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
             Logger.getLogger(list_employes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

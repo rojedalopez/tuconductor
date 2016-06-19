@@ -199,19 +199,32 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
     };
 }]).controller('WallEmpresaController', ['$scope', 'WallEmpresaService', function($scope, WallEmpresaService) {
     var self = this;
-    self.empleado={email:"", cod:"",nombre:"", apellido:"", puntaje:0, hoja_vida:"",experiencia:0};
+    self.empleado={email:"", cod:"",nombre:"", apellido:"", puntaje:0, hoja_vida:"",experiencia:0, adquirir:false};
     self.empleados=[];
     
     self.info_empresa={nit:"",r_social:"", dir:"", tel:"", cam_com:"", doc_replegal:"",nombre_replegal:"", 
     email_replegal:"", tel_replegal:"", demo:false, id_plan:0, tkn_disp:0, ofertas_disp:0, ult_compra:"", vence_compra:"", tot_tkn:0, tot_ofr:0};
     self.list_trazas=[];
     self.traza={fecha:"",hora:"",evento:""};
+    self.mensajeModal="";
     
     self.GetEmpresaGeneral = function(){
         WallEmpresaService.GetEmpresaGeneral().then(function(d) {
             self.info_empresa = d;
             self.list_trazas = d.trazas;
             console.log(self.info_empresa);
+        },function(errResponse){
+            console.error('Error while fetching Currencies');
+        });
+    };
+    
+    self.ComprarEmpleado = function(cod){
+        WallEmpresaService.ComprarEmpleado(cod).then(function(d) {
+            if(d==="true"){
+                self.mensajeModal="Usted ha adquirido la informacion correctamente y ha sido enviada a su correo.";
+                btn_add_compra.button('reset');
+                self.llenarEmpleados();
+            }
         },function(errResponse){
             console.error('Error while fetching Currencies');
         });
@@ -227,6 +240,21 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
         
     self.GetEmpresaGeneral();    
     self.llenarEmpleados();
+    
+    self.adquirirEmp = function(cod){
+        self.ComprarEmpleado(cod);
+        btn_add_compra.button('loading');
+    };
+    
+    self.openAdquirir = function(cod){
+        for(var i = 0; i < self.empleados.length; i++){
+            if(self.empleados[i].cod === cod) {
+               self.empleado = angular.copy(self.empleados[i]);
+               Modal_confirmacion.modal("show");
+               break;
+            }
+        }
+    };
     
     self.dtOptions = {
             bAutoWidth:true,
@@ -254,6 +282,13 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
 	},
         GetEmpresaGeneral: function() {
             return $http.post('../empresa_general').then(function(response){
+                return response.data;
+            },function(errResponse){
+                console.error('Error while fetching expenses');
+                return $q.reject(errResponse);
+            });
+	}, ComprarEmpleado: function(cod) {
+            return $http.post('../compra_empleado', {'cod':cod}).then(function(response){
                 return response.data;
             },function(errResponse){
                 console.error('Error while fetching expenses');

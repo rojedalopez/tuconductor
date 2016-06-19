@@ -7,7 +7,6 @@ package dato;
 
 import bean.usuario;
 import static dato.Aplicacion.conexion;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.Date;
@@ -24,7 +23,6 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Footer;
 import org.apache.poi.ss.usermodel.Header;
-import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -38,21 +36,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class ExcelGeneratorReport {
 
- private CellStyle cs = null;
- private XSSFCellStyle csBold = null;
- private XSSFCellStyle csNoBold = null;
+ static CellStyle cs = null;
+ static XSSFCellStyle csBold = null;
+ static XSSFCellStyle csNoBold = null;
  
- public static void main(String[] args) {
-
-  ExcelGeneratorReport myReport = new ExcelGeneratorReport();
-  myReport.createExcel();
-  File f = new File("C:\\Users\\ROJEDALOPEZ\\Dropbox\\git\\tuconductor\\web\\excel\\nuevo2.xlsx");
-  if(f.exists()){
-    Mails.SendCompraEmpleado("rojedalopez@gmail.com","OBTENCIÓN DE INFO DE EMPLEADO", "USTED HA ADQUIRIDO LA INFORMACION DEL SR. ROBERTO OJEDA LOPEZ", "");
-  }
- }
-
- public void createExcel() {
+ public static void createExcel(String cod, String ruta) {
 
   try{
 
@@ -102,11 +90,11 @@ public class ExcelGeneratorReport {
 
 
    int rowIndex = 1;
-   rowIndex = sheetDatosPersonales(datos_personales, rowIndex, "fykUa776BN8M34up607E");
+   rowIndex = sheetDatosPersonales(datos_personales, rowIndex, cod);
 
    //Write the Excel file
    FileOutputStream fileOut = null;
-   fileOut = new FileOutputStream("C:\\Users\\ROJEDALOPEZ\\Dropbox\\git\\tuconductor\\web\\excel\\nuevo2.xlsx");
+   fileOut = new FileOutputStream(ruta + "/excel/"+cod+".xlsx");
    wb.write(fileOut);
    fileOut.close();
 
@@ -117,7 +105,7 @@ public class ExcelGeneratorReport {
 
  }
 
- private void setCellStyles(Workbook wb) {
+ private static void setCellStyles(Workbook wb) {
 
   //font size 10
   Font f = wb.createFont();
@@ -158,7 +146,7 @@ public class ExcelGeneratorReport {
 
  }
 
- private int sheetDatosPersonales(Sheet sheet, int index, String cod) throws SQLException{
+ private static int sheetDatosPersonales(Sheet sheet, int index, String cod) throws SQLException{
     int rowIndex = index;
     Row row = null;
     Cell c = null;

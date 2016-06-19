@@ -50,6 +50,29 @@ if(session.getAttribute("user") == null){
     <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
     <script src="../js/dist/angular-datatables.min.js"></script>   
     
+    
+    <script type="text/javascript">
+        var Modal_confirmacion, btn_add_compra;
+        
+        $(document).ready(function(){
+            Modal_confirmacion = $("#Modal_confirmacion");
+            btn_add_compra = $("#btn_add_compra");
+        });
+        
+        function Open_dialog_filter(){
+            $( "#Modal_filter" ).modal("show");
+        }
+        function Open_dialog_tokens(){
+            $( "#Modal_tokens" ).modal("show");
+        }
+        
+        function Open_confirmation(){
+            $( "#Modal_confirmacion" ).modal("show");
+        }
+
+
+    </script>
+    
     <script type="text/javascript" src="../js/app.js"></script>      
     <script type="text/javascript" src="../js/angular/profile.js"></script>
     <script type="text/javascript" src="../js/angular/sign.js"></script>
@@ -65,21 +88,6 @@ if(session.getAttribute("user") == null){
     <script src="../assets/plugins/morris/morris.js"></script>
     <script src="../assets/scripts/dashboard-demo.js"></script>
         
-    <script type="text/javascript">
-        
-        function Open_dialog_filter(){
-            $( "#Modal_filter" ).modal("show");
-        }
-        function Open_dialog_tokens(){
-            $( "#Modal_tokens" ).modal("show");
-        }
-        
-        function Open_confirmation(){
-            $( "#Modal_confirmacion" ).modal("show");
-        }
-
-
-    </script>
     
    </head>
 <body ng-app="myApp" class="ng-cloak">
@@ -461,7 +469,7 @@ if(session.getAttribute("user") == null){
                                             <td><spam ng-bind="emp.nombre"></spam></td>
                                             <td><spam ng-bind="emp.apellido"></spam></td>
                                             <td style="text-align: center; cursor: pointer;"><a href="../upload/{{emp.hoja_vida}}"><img src="../assets/img/hv_icon.png" class="btn_icon_red" data-toggle="tooltip" data-placement="left" title="Descargar H.V"/></a></td>
-                                            <td style="text-align: center; cursor: pointer;"><img src="../assets/img/token2_icon.png" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Obtener este conductor"/></td>
+                                            <td style="text-align: center; cursor: pointer;"><a  ng-click="ctrl.openAdquirir(emp.cod)"><img src="../assets/img/token2_icon.png" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Obtener este conductor"/></a></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -505,11 +513,12 @@ if(session.getAttribute("user") == null){
                     <h4 class="modal-title" id="myModalLabel">Confirmación</h4>
                 </div>
                 <div class="modal-body">
-                    ¿Desea usted obtener la informacion total y detallada de este conductor?
+                    ¿Desea usted obtener la informacion total y detallada del Sr(a) {{ctrl.empleado.nombre}} {{ctrl.empleado.apellido}}?
+                    {{ctrl.mensajeModal}}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" ng-disabled="form_formacion.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_formacion" class="btn btn-primary" >Adquirir</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" ng-disabled="ctrl.empleado.adquirir" ng-click="ctrl.adquirirEmp(ctrl.empleado.cod)" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Ejecutando..." id="btn_add_compra" class="btn btn-primary" >Adquirir</button>
                 </div>
             </div>
         </div>
