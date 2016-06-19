@@ -5,6 +5,7 @@
  */
 package servletsGet;
 
+import bean.usuario;
 import dato.Json.Listas;
 import java.io.IOException;
 import java.io.PrintWriter;

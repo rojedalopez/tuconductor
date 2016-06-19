@@ -83,6 +83,7 @@ public class experiencia_byadmin extends HttpServlet {
             anio_fin = Integer.parseInt(joExperiencia_usr.get("anio_fin").toString());
         }
         boolean labora = (Boolean) joExperiencia_usr.get("labora");
+        boolean eliminar = (Boolean) joExperiencia_usr.get("eliminar");
         String retiro = (String) joExperiencia_usr.get("retiro");
                         
         HttpSession session =  null;
@@ -95,7 +96,7 @@ public class experiencia_byadmin extends HttpServlet {
                 usuario u = (usuario)session.getAttribute("user");
                 boolean b = Guardar.SaveExperiencia(codigoConductor, id, empresa, cargo, 
                         salario, bonos, supervisor, telefono, pais, dpto, depart, ciudad, direccion, mes_inicio, 
-                        anio_inicio, mes_fin, anio_fin, labora, retiro);
+                        anio_inicio, mes_fin, anio_fin, labora, eliminar, retiro);
                 if(b){
                     out.print("true");
                 }else{

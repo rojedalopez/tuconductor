@@ -26,8 +26,7 @@ import org.json.simple.parser.ParseException;
  *
  * @author SISTEMAS
  */
-
-public class usuario_dp extends HttpServlet {
+public class usuario_dp_byadmin extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException, ClassNotFoundException, SQLException {
@@ -49,6 +48,7 @@ public class usuario_dp extends HttpServlet {
         JSONObject joUser_dp = null;
         joUser_dp = (JSONObject) parser.parse(sb.toString());
                 
+        String cod = (String) joUser_dp.get("cod");
         String nombre = (String) joUser_dp.get("nombre");
         String apellido = (String) joUser_dp.get("apellido");
         String tip_doc = (String) joUser_dp.get("tip_doc");
@@ -74,10 +74,10 @@ public class usuario_dp extends HttpServlet {
         boolean lc1 = (Boolean) joUser_dp.get("lc1");
         boolean lc2 = (Boolean) joUser_dp.get("lc2");
         boolean lc3 = (Boolean) joUser_dp.get("lc3");
+        boolean admitir = (Boolean) joUser_dp.get("verificado");
         String perfil = (String) joUser_dp.get("perfil");
         String cargo = (String) joUser_dp.get("cargo");
-        boolean admitir = (Boolean) joUser_dp.get("verificado");
-                
+        
         HttpSession session =  null;
  
         session = request.getSession(false);
@@ -86,7 +86,7 @@ public class usuario_dp extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
-                boolean b = Guardar.UpdateUsuarioDatosPersonales(u.getCodigo(), nombre, apellido, tip_doc, 
+                boolean b = Guardar.UpdateUsuarioDatosPersonales(cod, nombre, apellido, tip_doc, 
                         num_doc, fecha_nac, genero, est_civil, mov, tel, pais, ciudad, dpto, nbr_dpto, dir, naci, 
                         la1, la2, lb1, lb2, lb3, lc1, lc2, lc3, perfil, cargo, admitir);
                 if(b){
@@ -113,7 +113,6 @@ public class usuario_dp extends HttpServlet {
             Logger.getLogger(usuario_dp.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
     @Override
     public String getServletInfo() {
         return "Short description";

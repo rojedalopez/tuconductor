@@ -365,7 +365,7 @@ public class Mails {
     }
     
     
-    public static void SendMailAgregoHV(String user, String as, String mensaje, String cod){
+    public static void SendMailAgregoHV(String as, String mensaje, String cod){
         String servidorSMTP = "smtp.gmail.com";
         String puerto = "587";
         String usuario = "tuconductor.noreplay@gmail.com";
@@ -431,7 +431,8 @@ public class Mails {
          //se recorre la lista de correos del contrato
  
  
-         message.addRecipient(Message.RecipientType.CC, new InternetAddress(user));
+         message.addRecipient(Message.RecipientType.TO, new InternetAddress("jmcastilla91@gmail.com"));
+         message.addRecipient(Message.RecipientType.TO, new InternetAddress("rojedalopez@gmail.com"));
          message.setSubject(asunto);
          message.setContent(alternative);
  

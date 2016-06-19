@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dato;
 
 import bean.usuario;
@@ -23,6 +18,7 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Footer;
 import org.apache.poi.ss.usermodel.Header;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -30,15 +26,12 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-/**
- *
- * @author ROJEDALOPEZ
- */
-public class ExcelGeneratorReport {
+public class ExcelReport {
 
  static CellStyle cs = null;
  static XSSFCellStyle csBold = null;
  static XSSFCellStyle csNoBold = null;
+ static XSSFCellStyle csNoBoldNum = null;
  
  public static void createExcel(String cod, String ruta) {
 
@@ -60,6 +53,9 @@ public class ExcelGeneratorReport {
    datos_personales.setColumnWidth(1, 6000); 
    datos_personales.setColumnWidth(2, 12000);
    
+   //Set Column Widths
+   exp_laboral.setColumnWidth(1, 5000); 
+   exp_laboral.setColumnWidth(2, 10000);
    
    //Setup the Page margins - Left, Right, Top and Bottom
    datos_personales.setMargin(Sheet.LeftMargin, 0.25);
@@ -67,9 +63,19 @@ public class ExcelGeneratorReport {
    datos_personales.setMargin(Sheet.TopMargin, 0.75);
    datos_personales.setMargin(Sheet.BottomMargin, 0.75);
 
+   //Setup the Page margins - Left, Right, Top and Bottom
+   exp_laboral.setMargin(Sheet.LeftMargin, 0.25);
+   exp_laboral.setMargin(Sheet.RightMargin, 0.25);
+   exp_laboral.setMargin(Sheet.TopMargin, 0.75);
+   exp_laboral.setMargin(Sheet.BottomMargin, 0.75);
+
    //Setup the Header and Footer Margins
    datos_personales.setMargin(Sheet.HeaderMargin, 0.25);
    datos_personales.setMargin(Sheet.FooterMargin, 0.25);
+   
+   //Setup the Header and Footer Margins
+   exp_laboral.setMargin(Sheet.HeaderMargin, 0.25);
+   exp_laboral.setMargin(Sheet.FooterMargin, 0.25);
    
    //If you are using HSSFWorkbook() instead of XSSFWorkbook()
    //HSSFPrintSetup ps = (HSSFPrintSetup) sheet.getPrintSetup();
@@ -89,8 +95,11 @@ public class ExcelGeneratorReport {
      HeaderFooter.numPages() );
 
 
-   int rowIndex = 1;
-   rowIndex = sheetDatosPersonales(datos_personales, rowIndex, cod);
+   int rowIndexDP = 1;
+   rowIndexDP = sheetDatosPersonales(datos_personales, rowIndexDP, cod);
+   
+   int rowIndexExp = 1;
+   rowIndexDP = sheetExperienciaLaboral(exp_laboral, rowIndexExp, cod);
 
    //Write the Excel file
    FileOutputStream fileOut = null;
@@ -143,6 +152,13 @@ public class ExcelGeneratorReport {
   csNoBold.setBorderBottom(CellStyle.BORDER_THIN);
   csNoBold.setFont(f);
   
+  csNoBoldNum = (XSSFCellStyle) wb.createCellStyle();
+  csNoBoldNum.setBorderTop(CellStyle.BORDER_THIN);
+  csNoBoldNum.setBorderRight(CellStyle.BORDER_THIN);
+  csNoBoldNum.setBorderLeft(CellStyle.BORDER_THIN);
+  csNoBoldNum.setBorderBottom(CellStyle.BORDER_THIN);
+  csNoBoldNum.setAlignment(HorizontalAlignment.LEFT);
+  csNoBoldNum.setFont(f);
 
  }
 
@@ -318,4 +334,166 @@ public class ExcelGeneratorReport {
         return rowIndex;
 }
 
+ private static int sheetExperienciaLaboral(Sheet sheet, int index, String cod) throws SQLException{
+    int rowIndex = index;
+    Row row = null;
+    Cell c = null;
+  
+    usuario u = null;
+    Connection conn=null;
+    PreparedStatement insertar=null;
+    Statement stm=null;
+    ResultSet datos=null;
+
+        try{
+            conn=conexion();
+            String instruccion="SELECT epr_explaboral, crg_explaboral, slr_explaboral, bon_explaboral, spv_explaboral, tel_spv_explaboral,\n" +
+                                "dir_explaboral, CONCAT(cui_explaboral,', ',nbr_dpt_explaboral,', ',pais_explaboral), \n" +
+                                "CASE WHEN aun_explaboral = 1 THEN 'Si' ELSE 'No' END, rzn_fin_explaboral, \n" +
+                                "CONCAT(TextoExperiencia(mes_ini_explaboral, anio_ini_explaboral),' - ',TextoExperiencia(mes_fin_explaboral,anio_fin_explaboral)),\n" +
+                                "TiempoExperiencia(mes_explaboral, anio_explaboral, mes_ini_explaboral, anio_ini_explaboral,mes_fin_explaboral,anio_fin_explaboral)\n" +
+                                "FROM tblExpLaboral WHERE cod_empleado = ?;";
+
+            insertar=conn.prepareStatement(instruccion);
+            insertar.setString(1, cod);
+            datos=insertar.executeQuery();
+            while (datos.next()) {
+                System.out.println(datos.getString(1));
+                rowIndex++;
+                row = sheet.createRow(rowIndex);
+                c = row.createCell(1);
+                c.setCellValue("Empresa:");
+                c.setCellStyle(csBold);
+                c = row.createCell(2);
+                c.setCellValue(datos.getString(1));
+                c.setCellStyle(csNoBold);
+
+                rowIndex++;
+                row = sheet.createRow(rowIndex);
+                c = row.createCell(1);
+                c.setCellValue("Dirección:");
+                c.setCellStyle(csBold);
+                c = row.createCell(2);
+                c.setCellValue(datos.getString(7));
+                c.setCellStyle(csNoBold);
+
+                rowIndex++;
+                row = sheet.createRow(rowIndex);
+                c = row.createCell(1);
+                c.setCellValue("Ciudad/Dpto/Pais:");
+                c.setCellStyle(csBold);
+                c = row.createCell(2);
+                c.setCellValue(datos.getString(8));
+                c.setCellStyle(csNoBold);
+                
+                rowIndex++;
+                row = sheet.createRow(rowIndex);
+                c = row.createCell(1);
+                c.setCellValue("Cargo:");
+                c.setCellStyle(csBold);
+                c = row.createCell(2);
+                c.setCellValue(datos.getString(2));
+                c.setCellStyle(csNoBold);
+
+                rowIndex++;
+                row = sheet.createRow(rowIndex);
+                c = row.createCell(1);
+                c.setCellValue("Salario:");
+                c.setCellStyle(csBold);
+                c = row.createCell(2);
+                c.setCellValue(datos.getFloat(3));
+                c.setCellStyle(csNoBoldNum);
+
+                rowIndex++;
+                row = sheet.createRow(rowIndex);
+                c = row.createCell(1);
+                c.setCellValue("Bonos:");
+                c.setCellStyle(csBold);
+                c = row.createCell(2);
+                c.setCellValue(datos.getFloat(4));
+                c.setCellStyle(csNoBoldNum);
+
+                rowIndex++;
+                row = sheet.createRow(rowIndex);
+                c = row.createCell(1);
+                c.setCellValue("Supervisor:");
+                c.setCellStyle(csBold);
+                c = row.createCell(2);
+                c.setCellValue(datos.getString(5));
+                c.setCellStyle(csNoBold);
+
+                rowIndex++;
+                row = sheet.createRow(rowIndex);
+                c = row.createCell(1);
+                c.setCellValue("Telefono Sup:");
+                c.setCellStyle(csBold);
+                c = row.createCell(2);
+                c.setCellValue(datos.getString(6));
+                c.setCellStyle(csNoBold);
+
+                rowIndex++;
+                row = sheet.createRow(rowIndex);
+                c = row.createCell(1);
+                c.setCellValue("Aún labora?:");
+                c.setCellStyle(csBold);
+                c = row.createCell(2);
+                c.setCellValue(datos.getString(9));
+                c.setCellStyle(csNoBold);
+
+                if(datos.getString(9).equals("No")){
+                    rowIndex++;
+                    row = sheet.createRow(rowIndex);
+                    c = row.createCell(1);
+                    c.setCellValue("Razon Retiro:");
+                    c.setCellStyle(csBold);
+                    c = row.createCell(2);
+                    c.setCellValue(datos.getString(10));
+                    c.setCellStyle(csNoBold);
+
+                }
+                
+                rowIndex++;
+                row = sheet.createRow(rowIndex);
+                c = row.createCell(1);
+                c.setCellValue("Lapso laboral:");
+                c.setCellStyle(csBold);
+                c = row.createCell(2);
+                c.setCellValue(datos.getString(11));
+                c.setCellStyle(csNoBold);
+                    
+                rowIndex++;
+                row = sheet.createRow(rowIndex);
+                c = row.createCell(1);
+                c.setCellValue("Tiempo Experiencia:");
+                c.setCellStyle(csBold);
+                c = row.createCell(2);
+                c.setCellValue(datos.getString(12));
+                c.setCellStyle(csNoBold);
+
+                rowIndex++;
+                rowIndex++;
+
+            }
+            
+            datos.close();
+            conn.close();
+            
+            return rowIndex;
+            
+}catch (SQLException e) {
+    System.out.println("error SQLException en ObtenerUsuario");
+            System.out.println(e.getMessage());
+}catch (Exception e){
+            System.out.println("error Exception en ObtenerUsuario");
+            System.out.println(e.getMessage());
+        }finally{
+            if(conn!=null){
+                if(!conn.isClosed()){
+                    conn.close();
+                }
+            }
+        }
+
+        return rowIndex;
+}
 }

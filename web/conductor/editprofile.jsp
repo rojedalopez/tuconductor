@@ -51,7 +51,8 @@ if(session.getAttribute("user") == null){
     <script src="../js/dist/angular-datatables.min.js"></script>   
     
     <script type="text/javascript">
-        var btn_guardar_cambios, form_experiencia, form_formacion, btn_add_exp, btn_add_formacion;
+        var form_experiencia, form_formacion, btn_add_formacion;
+        var btn_guardar_cambios, btn_add_exp;
         $(document).ready(function(){
             btn_guardar_cambios = $("#btn_guardar_cambios");
             form_experiencia = $("#form_experiencia");
@@ -447,13 +448,13 @@ if(session.getAttribute("user") == null){
                                 </p>
                                 <p>
                                     <label class="etiqueta" for="pais">Pais</label>                                        
-                                    <select class="form-control selector"  name="pais" ng-model="ctrl.usuario_dp.pais" ng-options="Pais.ID as Pais.Nombre for Pais in ctrl.Paises" ng-selected="ctrl.selectPais(ctrl.usuario_dp.pais)">
+                                    <select class="form-control selector"  name="pais" ng-model="ctrl.usuario_dp.pais" ng-options="Pais.ID as Pais.Nombre for Pais in ctrl.Paises" ng-change="ctrl.selectPais(ctrl.usuario_dp.pais)">
                                             <option value="" selected>--Seleccione Pais--</option>
                                     </select>
                                 </p>
                                 <p>
                                     <label class="etiqueta" for="depto">Departamento:</label>                                        
-                                    <select class="form-control selector" ng-show="ctrl.colombia" name="depto" ng-model="ctrl.usuario_dp.depto" ng-options="dpto.id as dpto.departamento for dpto in ctrl.dptos" ng-selected="ctrl.selectDpto(ctrl.usuario_dp.depto)">
+                                    <select class="form-control selector" ng-show="ctrl.colombia" name="depto" ng-model="ctrl.usuario_dp.depto" ng-options="dpto.id as dpto.departamento for dpto in ctrl.dptos" ng-change="ctrl.selectDpto(ctrl.usuario_dp.depto)">
                                         <option value=-1 selected>--Seleccione Departamento--</option>
                                     </select>
                                     <input type="text" ng-show="!ctrl.colombia" class="form-control texto"  name="depart" ng-model="ctrl.usuario_dp.depart" >
@@ -548,7 +549,7 @@ if(session.getAttribute("user") == null){
                                     <div class="panel panel-info">
                                         <div class="panel-heading">                                                
                                             <span ng-bind="ex.cargo" ></span>
-                                            <button type="button" class="close"><img src="../assets/img/delete_icon.png" width="18" height="18"></button>
+                                            <button type="button" ng-click="ctrl.deleteExp(ex.id)" class="close"><img src="../assets/img/delete_icon.png" width="18" height="18"></button>
                                             <button type="button" ng-click="ctrl.editExp(ex.id)" class="close"><img src="../assets/img/edit_icon.png"  width="18" height="18"></button>                                                
                                         </div>
                                         <div class="panel-body">
@@ -645,13 +646,13 @@ if(session.getAttribute("user") == null){
                         </p>
                         <p>
                             <label class="etiqueta_e">Pais:</label>
-                            <select class="form-control selector_e" name="pais" ng-model="ctrl.exp_laboral.pais" ng-options="Pais.ID as Pais.Nombre for Pais in ctrl.PaisesExp" ng-selected="ctrl.selectPaisExp(ctrl.exp_laboral.pais)">
+                            <select class="form-control selector_e" name="pais" ng-model="ctrl.exp_laboral.pais" ng-options="Pais.ID as Pais.Nombre for Pais in ctrl.PaisesExp" ng-change="ctrl.selectPaisExp(ctrl.exp_laboral.pais)">
                                 <option>--- Seleccione Pais ---</option>
                             </select>
                         </p>
                         <p>
                             <label class="etiqueta_e">Dpto:</label>
-                            <select class="form-control selector_e" ng-show="ctrl.colombiaExp" name="depto" ng-model="ctrl.exp_laboral.depto" ng-options="dpto.id as dpto.departamento for dpto in ctrl.dptosExp" ng-selected="ctrl.selectDptoExp(ctrl.exp_laboral.depto)">
+                            <select class="form-control selector_e" ng-show="ctrl.colombiaExp" name="depto" ng-model="ctrl.exp_laboral.depto" ng-options="dpto.id as dpto.departamento for dpto in ctrl.dptosExp" ng-change="ctrl.selectDptoExp(ctrl.exp_laboral.depto)">
                                 <option value="">--- Seleccione Departamento ---</option>
                             </select>
                             <input type="text" ng-show="!ctrl.colombiaExp" class="form-control texto"  name="depart" ng-model="ctrl.exp_laboral.depart" >

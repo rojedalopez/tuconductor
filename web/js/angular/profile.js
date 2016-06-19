@@ -17,10 +17,10 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
           
     self.experiencias=[];
     self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", depto:"", depart:"" ,
-        ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0};
+        ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0, eliminar:false};
 
     self.formaciones=[];
-    self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0};
+    self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, eliminar:false};
     
     
     
@@ -45,6 +45,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         ProfileService.SaveExpUsuario(exp_laboral).then(function(d){
             if(d==="true"){
                 form_experiencia.modal( "hide" );
+                btn_add_exp.button('reset');
                 self.resetExp();
                 self.listaExperiencias();
             }
@@ -93,7 +94,6 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     };
     
     self.selectPaisExp = function(pais){
-        console.log(pais);
         if(pais==="CO"){
             self.colombiaExp = true;  
         }else{
@@ -137,7 +137,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         for(var i = 0; i < self.dptosExp.length; i++){
             if(self.dptosExp[i].id === id) {
                self.dptoExp = angular.copy(self.dptosExp[i]);
-               self.ciudadesExp=self.dpto.ciudades;
+               self.ciudadesExp=self.dptoExp.ciudades;
                self.exp_laboral.depart = self.dptoExp.departamento;
                break;
             }
@@ -147,9 +147,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.GetUsuarioGeneral = function(){
         ProfileService.GetUsuarioGeneral().then(function(d) {
             self.usuario_dp = d;
-            console.log(self.usuario_dp.fecha_nac);
             self.usuario_dp.fecha_nac =  new Date(self.usuario_dp.fecha_nac);
-            console.log(self.usuario_dp.fecha_nac);
             self.experiencias = d.exp_laborales;
             self.formaciones = d.formacion;
             self.selectDpto(self.usuario_dp.depto);
@@ -172,14 +170,25 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     
     
     self.submitDP = function(){
-        console.log("aqui entro");
         btn_guardar_cambios.button('loading');
         self.usuario_dp.date = self.usuario_dp.fecha_nac.toString("yyyy-MM-dd");
         self.SaveDatosPersonales(self.usuario_dp);
     };
           
     self.submitExp = function(){
+        btn_add_exp.button('loading');
         self.SaveExpUsuario(self.exp_laboral);
+    };
+    
+    self.deleteExp = function(id){
+        for(var i = 0; i < self.experiencias.length; i++){
+            if(self.experiencias[i].id === id) {
+               self.exp_laboral = angular.copy(self.experiencias[i]);
+               self.exp_laboral.eliminar = true;
+               self.SaveExpUsuario(self.exp_laboral);
+               break;
+            }
+        }
     };
           
     self.submitForm = function(){
@@ -230,7 +239,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         
     self.resetExp = function(){
         self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", dpto:"", 
-         ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0};
+         ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0, eliminar:false};
         $scope.exp_laboral.$setPristine();
     };
           
@@ -518,16 +527,16 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
           
     self.experiencias=[];
     self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", depto:"", depart:"",
-        ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0, cod:""};
+        ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0, cod:"", eliminar:false};
 
     self.formaciones=[];
-    self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, cod:""};
+    self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, cod:"", eliminar:false};
     
     self.multas=[];
-    self.multa={id:-1, date:"", lgr_multa:"", fch_multa: "", cgo_multa:"", pgo_multa:false, cod:""};
+    self.multa={id:-1, date:"", lgr_multa:"", fch_multa: "", cgo_multa:"", pgo_multa:false, cod:"", eliminar:false};
     
     self.accidentes=[];
-    self.accidente={id:-1, date:"", fch_accidente:"", muertos:false, heridos: false, tipo:"", cod:""};
+    self.accidente={id:-1, date:"", fch_accidente:"", muertos:false, heridos: false, tipo:"", cod:"", eliminar:false};
     
     self.Paises=[];
     self.PaisesExp=[];
@@ -550,6 +559,23 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
             console.error('Error while creating Paper.');
 	});
     };
+    
+    self.SaveDatosPersonales = function(usuario_dp){
+        EditConductorbyAdminService.SaveDatosPersonales(usuario_dp).then(function(d){
+            btn_guardar_cambios.button('reset');
+            btn_admitir.button('reset');
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+        });
+    };
+
+
+    self.submitDP = function(){
+        btn_guardar_cambios.button('loading');
+        self.usuario_dp.date = self.usuario_dp.fecha_nac.toString("yyyy-MM-dd");
+        self.SaveDatosPersonales(self.usuario_dp);
+    };
+    
     self.listaMultas = function(){
         var cod = self.getVarUrl("cod");
         EditConductorbyAdminService.listaMultas(cod).then(function(d){
@@ -572,6 +598,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
             console.error('Error while creating Paper.');
 	});
     };
+    
     self.listaAccidentes = function(){
         var cod = self.getVarUrl("cod");
         EditConductorbyAdminService.listaAccidentes(cod).then(function(d){
@@ -793,8 +820,26 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         self.SaveExpUsuario(self.exp_laboral);
     };
     
+    self.deleteExp = function(id){
+        for(var i = 0; i < self.experiencias.length; i++){
+            if(self.experiencias[i].id === id) {
+               self.exp_laboral = angular.copy(self.experiencias[i]);
+               self.exp_laboral.eliminar = true;
+               self.SaveExpUsuario(self.exp_laboral);
+               break;
+            }
+        }
+    };
+    
     self.submitForm = function(){
         self.SaveFormUsuario(self.formacion);
+    };
+    
+    self.submitAdminision = function(){
+        btn_admitir.button('loading');
+        self.usuario_dp.verificado = true;
+        self.usuario_dp.date = self.usuario_dp.fecha_nac.toString("yyyy-MM-dd");
+        self.SaveDatosPersonales(self.usuario_dp);
     };
     
     self.openForm = function(){
@@ -819,7 +864,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.resetExp = function(){
         var cod = self.getVarUrl("cod");
         self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", depto:"", 
-         ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0};
+         ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0, eliminar:false};
         self.exp_laboral.cod = cod; 
         $scope.exp_laboral.$setPristine();
     };
@@ -899,6 +944,14 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
 		return response.data;
             },function(errResponse){
                 console.error('Error while fetching expenses');
+                return $q.reject(errResponse);
+            });
+	},SaveDatosPersonales: function(usuario_dp){
+            return $http.post('../usuario_dp_byadmin', usuario_dp).then(function(response){
+                console.log(response.data);
+                return response.data;
+            },function(errResponse){
+                console.error('Error guardando datos personales ' +errResponse);
                 return $q.reject(errResponse);
             });
 	},

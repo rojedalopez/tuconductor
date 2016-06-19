@@ -53,11 +53,10 @@ if(session.getAttribute("user") == null){
     
     <script type="text/javascript">
         var btn_guardar_cambios, form_experiencia, form_formacion, form_multa, form_accidente, btn_add_exp, btn_add_formacion, 
-                btn_guardar_multa, btn_guardar_accidente;
+                btn_guardar_multa, btn_guardar_accidente, btn_admitir;
         
         $(document).ready(function(){
             verOpcion(1);
-            $("#form_accidente").modal("show");
             btn_guardar_multa = $("#btn_guardar_multa");
             btn_guardar_accidente = $("#btn_guardar_accidente");
             btn_guardar_cambios = $("#btn_guardar_cambios");
@@ -67,7 +66,7 @@ if(session.getAttribute("user") == null){
             form_accidente = $("#form_accidente");
             btn_add_exp = $("#btn_add_exp");
             btn_add_formacion = $("#btn_add_formacion");   
-            
+            btn_admitir = $("#btn_admitir");
         });
         function eliminarOpciones(){
             for(var i=1;i<8;i++){
@@ -1037,7 +1036,7 @@ if(session.getAttribute("user") == null){
                     <h4 class="modal-title" id="myModalLabel">Formulario de Admision</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" ng-submit="ctrl.submitExp()" name="exp_laboral" class="form-horizontal" novalidate>
+                    <form role="form" ng-submit="ctrl.submitAdminision()" name="exp_laboral" class="form-horizontal" novalidate>
                         <p><b>Conductor: </b>{{ctrl.usuario_dp.nombre + ' ' + ctrl.usuario_dp.apellido}}</p>
                         <p>{{(ctrl.usuario_dp.verificado)?"Este conductor ya esta adminitido en la plataforma, ¿desea revocarle la adminsión?":"Verificando todos los datos de este conductor, ¿desea usted darle la admision al sistema?"}}</p>
                         <div class="modal-footer">

@@ -6,7 +6,7 @@
 package dato.Save;
 
 import static dato.Aplicacion.conexion;
-import dato.ExcelGeneratorReport;
+import dato.ExcelReport;
 import dato.Get.Objetos;
 import dato.Mails;
 import dato.Metodos;
@@ -121,13 +121,13 @@ public class Guardar {
 
     public static boolean UpdateUsuarioDatosPersonales(String cod_, String nombre, String apellido, String tipo_doc_, String doc_, String fecha_, 
             String genero_, String est_civil_, String movil, String tel_, String pais_, String ciudad_, int dpto_, String nbr_dpto, String dir_,
-            String nac_, boolean la1, boolean la2, boolean lb1, boolean lb2, boolean lb3, boolean lc1, boolean lc2, boolean lc3, String perfil, String cargo) throws ClassNotFoundException, SQLException{
+            String nac_, boolean la1, boolean la2, boolean lb1, boolean lb2, boolean lb3, boolean lc1, boolean lc2, boolean lc3, String perfil, String cargo, boolean admitir) throws ClassNotFoundException, SQLException{
         boolean b=false;
         Connection conn=null;
         PreparedStatement insertar=null;
         
         conn=conexion();
-            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveDatosPersonales(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)};")) {
+            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveDatosPersonales(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)};")) {
                 cs.setString(1, cod_);
                 cs.setString(2, nombre);
                 cs.setString(3, apellido);
@@ -154,10 +154,11 @@ public class Guardar {
                 cs.setInt(24, (lc3)?1:0);
                 cs.setString(25, perfil);
                 cs.setString(26, cargo);
-                cs.registerOutParameter(27, Types.INTEGER);
+                cs.setInt(27, (admitir)?1:0);
+                cs.registerOutParameter(28, Types.INTEGER);
                 cs.executeQuery();
 
-                int retorno = cs.getInt(27);
+                int retorno = cs.getInt(28);
                 
                 if(retorno==1){
                     return true;
@@ -183,13 +184,13 @@ public class Guardar {
     
     public static boolean SaveExperiencia(String cod_, int id, String empresa, String cargo, float salario, float bonos, String supervisor, 
             String telefono, String pais, int dpto, String nbr_depto, String ciudad, String dir, int mes_inicio, int anio_inicio, int mes_fin, int anio_fin, 
-            boolean labora, String retiro) throws ClassNotFoundException, SQLException{
+            boolean labora, boolean eliminar, String retiro) throws ClassNotFoundException, SQLException{
         boolean b=false;
         Connection conn=null;
         PreparedStatement insertar=null;
         
         conn=conexion();
-            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveExperiencia(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)};")) {
+            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveExperiencia(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)};")) {
                 cs.setString(1, cod_);
                 cs.setInt(2, id);
                 cs.setString(3, empresa);
@@ -208,11 +209,12 @@ public class Guardar {
                 cs.setInt(16, mes_fin);
                 cs.setInt(17, anio_fin);
                 cs.setInt(18, (labora)?1:0);
-                cs.setString(19, retiro);
-                cs.registerOutParameter(20, Types.INTEGER);
+                cs.setInt(19, (eliminar)?1:0);
+                cs.setString(20, retiro);
+                cs.registerOutParameter(21, Types.INTEGER);
                 cs.executeQuery();
 
-                int retorno = cs.getInt(20);
+                int retorno = cs.getInt(21);
                 
                 if(retorno==1){
                     return true;
@@ -454,7 +456,7 @@ public class Guardar {
         insertar.setString(4, codigo);
                  
         if(insertar.executeUpdate()==1){
-            Mails.SendMailAgregoHV("rojedalopez@gmail.com","INGRESO DE HOJA DE VIDA", "<b>"+nombre_persona+"</b> HA INGRESADO SU HOJA DE VIDA HACE UN INSTANTE",codigo);
+            Mails.SendMailAgregoHV("INGRESO DE HOJA DE VIDA", "<b>"+nombre_persona+"</b> HA INGRESADO SU HOJA DE VIDA HACE UN INSTANTE",codigo);
             return true;
         }
          
@@ -672,7 +674,7 @@ public class Guardar {
                 if(retorno==1){
                     String info = Objetos.InfoEmpleado(cod);
                     String[] textoemail = info.split("\\|");
-                    ExcelGeneratorReport.createExcel(cod, ruta);
+                    ExcelReport.createExcel(cod, ruta);
                     Mails.SendCompraEmpleado(correo, "OBTENCIÓN DE INFO DE EMPLEADO", "USTED HA ADQUIRIDO LA INFORMACION DEL SR. "+textoemail[0], cod+".xlsx",ruta,textoemail[2]);
                     return true;
                 }else{

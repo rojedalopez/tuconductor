@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.json.simple.JSONObject;
 
 /**
@@ -46,7 +47,11 @@ public class Objetos {
                         obj.put("apellido", datos.getString(3));
                         obj.put("tip_doc", datos.getString(4));
                         obj.put("num_doc", datos.getString(5));
-                        obj.put("fecha_nac", Fechaformateador.format(datos.getDate(6)));
+                        if(datos.getString(6) == null){
+                            obj.put("fecha_nac", Fechaformateador.format(new Date()));
+                        }else{
+                            obj.put("fecha_nac", Fechaformateador.format(datos.getDate(6)));
+                        }
                         obj.put("genero", datos.getString(7));
                         obj.put("est_civil", datos.getString(8));
                         obj.put("movil", datos.getString(9));
@@ -79,10 +84,10 @@ public class Objetos {
              
         }catch (SQLException e) {
             System.out.println("error SQLException en ObtenerCliente");
-                    System.out.println(e.getMessage());
+                    System.out.println(e.toString());
         }catch (Exception e){
                     System.out.println("error Exception en ObtenerCliente");
-                    System.out.println(e.getMessage());
+                    System.out.println(e.toString());
         }finally{
                     if(!conn.isClosed()){
                         conn.close();
