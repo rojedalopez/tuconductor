@@ -190,6 +190,17 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
             }
         }
     };
+    
+    self.deleteForm = function(id){
+        for(var i = 0; i < self.formaciones.length; i++){
+            if(self.formaciones[i].id === id) {
+               self.formacion = angular.copy(self.formaciones[i]);
+               self.formacion.eliminar = true;
+               self.SaveFormacion(self.formacion);
+               break;
+            }
+        }
+    };
           
     self.submitForm = function(){
         self.SaveFormacion(self.formacion);
@@ -235,7 +246,8 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
             }
         }
     };
-        
+      
+    
         
     self.resetExp = function(){
         self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", dpto:"", 
@@ -807,6 +819,11 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         }
     };
     
+    self.formatDate = function(date){
+        var dateOut = new Date(date);
+        return dateOut;
+    };
+    
     self.textAccidente = function(tip){
         var texto="";
         for(var i = 0; i < self.tipoAccidentes.length; i++){
@@ -916,7 +933,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     
     self.resetAccidente = function(){
         var cod = self.getVarUrl("cod");
-        self.accidente={id:-1, date:"", fch_accidente:"", muertos:false, heridos: false, tipo:"", , eliminar:false};
+        self.accidente={id:-1, date:"", fch_accidente:"", muertos:false, heridos: false, tipo:"", eliminar:false};
         self.accidente.cod = cod; 
         $scope.form_accidente.$setPristine();
     };
@@ -939,7 +956,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
 
     self.resetForm = function(){
         var cod = self.getVarUrl("cod");
-        self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, , eliminar:false};
+        self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0,eliminar:false};
         self.formacion.cod = cod; 
         $scope.form_formacion.$setPristine();
     };

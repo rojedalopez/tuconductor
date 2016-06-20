@@ -514,7 +514,7 @@ if(session.getAttribute("user") == null){
                 </div>
                 <div class="modal-body">
                     ¿Desea usted obtener la informacion total y detallada del Sr(a) {{ctrl.empleado.nombre}} {{ctrl.empleado.apellido}}?
-                    {{ctrl.mensajeModal}}
+                    <div style="color: green;font-style: italic;">{{ctrl.mensajeModal}}</div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>

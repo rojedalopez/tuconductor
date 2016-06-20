@@ -56,6 +56,7 @@ public class formacion_usuario extends HttpServlet {
         if(joFormacion.get("anio_fin")!=null){
             anio_fin = Integer.parseInt(joFormacion.get("anio_fin").toString());
         }
+        boolean eliminar = (Boolean) joFormacion.get("eliminar");
                         
         HttpSession session =  null;
  
@@ -66,7 +67,7 @@ public class formacion_usuario extends HttpServlet {
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
                 boolean b = Guardar.SaveFormacion(u.getCodigo(), id, c_educativo, nivel, 
-                        area, estado, mes_inicio, anio_inicio, mes_fin, anio_fin);
+                        area, estado, mes_inicio, anio_inicio, mes_fin, anio_fin, eliminar);
                 if(b){
                     out.print("true");
                 }else{

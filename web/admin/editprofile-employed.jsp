@@ -663,7 +663,7 @@ if(session.getAttribute("user") == null){
                                             <p><span ng-bind="m.cgo_multa"></span></p>
                                         </div>
                                         <div class="panel-footer">
-                                            <label>Fecha: <span ng-bind="m.fch_multa"></span></label>
+                                            <label>Fecha: {{ctrl.formatDate(m.fch_multa) | date:"dd MMM 'de' yyyy"}}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -694,7 +694,7 @@ if(session.getAttribute("user") == null){
                                             <p>Heridos: {{(a.heridos)?'Si':'No'}}</p>
                                         </div>
                                         <div class="panel-footer">
-                                            <label>Fecha: {{a.fch_accidente.toString("yyyy-MM-dd")}}</label>
+                                            <label>Fecha: {{ctrl.formatDate(a.fch_accidente) | date:"dd MMM 'de' yyyy"}}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -716,15 +716,15 @@ if(session.getAttribute("user") == null){
                                 <div class="col-lg-12" ng-repeat="pj in ctrl.judiciales">
                                     <div class="panel panel-info">
                                         <div class="panel-heading">                                                
-                                            {{pj.act_procjudicial}}
+                                            <span ng-bind="pj.del_procjudicial"></span>
                                             <button type="button" class="close"><img src="../assets/img/delete_icon.png" width="18" height="18"></button>
                                             <button type="button" class="close" ng-click="ctrl.editJudicial(pj.id)"><img src="../assets/img/edit_icon.png"  width="18" height="18"></button>                                                
                                         </div>
                                         <div class="panel-body">
-                                            <p><span ng-bind="pj.del_procjudicial"></span></p>
+                                            <p>{{(pj.act_procjudicial)?'El procedimiento se encuentra actualmente activo.':'El procedimiento se encuentra finalizado.'}}</p>
                                         </div>
                                         <div class="panel-footer">
-                                            <label>Fecha: <span ng-bind="pj.fch_procjudicial"></span></label>
+                                            <label>Fecha: {{ctrl.formatDate(pj.fch_procjudicial) | date:"dd MMM 'de' yyyy"}}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -972,7 +972,7 @@ if(session.getAttribute("user") == null){
                             <label class="etiqueta_e">Estado:</label>
                             <div class="form-inline">
                                 <label class="checkbox-inline">
-                                    <input type="radio" value="1" name="pgo_multa" ng-model="ctrl.multa.pgo_multa"> Pagado
+                                    <input type="checkbox" value="1" name="pgo_multa" ng-model="ctrl.multa.pgo_multa"> Pagado
                                 </label>
                             </div>                                
                         </p>

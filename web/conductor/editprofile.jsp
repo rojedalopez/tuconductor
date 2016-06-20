@@ -581,7 +581,7 @@ if(session.getAttribute("user") == null){
                                     <div class="panel panel-info">
                                         <div class="panel-heading">                                                
                                             {{ctrl.NvlFormacion[fm.nivel_estudio-1].Value}}
-                                            <button type="button" class="close"><img src="../assets/img/delete_icon.png" width="18" height="18"></button>
+                                            <button type="button" class="close" ng-click="ctrl.deleteForm(fm.id)"><img src="../assets/img/delete_icon.png" width="18" height="18"></button>
                                             <button type="button" class="close" ng-click="ctrl.editForm(fm.id)"><img src="../assets/img/edit_icon.png"  width="18" height="18"></button>                                                
                                         </div>
                                         <div class="panel-body">
@@ -628,13 +628,13 @@ if(session.getAttribute("user") == null){
                             <label class="etiqueta_e">Cargo<i class="required">*</i>:</label>
                             <input type="text" class="form-control texto_e" name="cargo" ng-model="ctrl.exp_laboral.cargo" placeholder="Cargo realizado" minlength="5" required/>
                         </p>
-                        <p>
+                        <p ng-class="{ 'has-error': !exp_laboral.salario.$valid }">
                             <label class="etiqueta_e">Salario:</label>
-                            <input type="number" class="form-control texto_e_min" name="salario" ng-model="ctrl.exp_laboral.salario" placeholder="$" />
+                            <input type="number" class="form-control texto_e_min" min="0" name="salario" ng-model="ctrl.exp_laboral.salario" placeholder="$" />
                         </p>
-                        <p>
+                        <p ng-class="{ 'has-error': !exp_laboral.bonos.$valid }">
                             <label class="etiqueta_e">Bonos:</label>
-                            <input type="number" class="form-control texto_e_min" name="bonos" ng-model="ctrl.exp_laboral.bonos" placeholder="$" />
+                            <input type="number" class="form-control texto_e_min" min="0" name="bonos" ng-model="ctrl.exp_laboral.bonos" placeholder="$" />
                         </p>
                         <p ng-class="{ 'has-error': exp_laboral.supervisor.$error.required || exp_laboral.supervisor.$error.minlength }">
                             <label class="etiqueta_e">Supervisor<i class="required">*</i>:</label>
@@ -669,7 +669,7 @@ if(session.getAttribute("user") == null){
                             <label class="etiqueta_e">Direccion<i class="required">*</i>:</label>
                             <input type="text" class="form-control texto_e" name="direccion" ng-model="ctrl.exp_laboral.direccion" placeholder="Direccion"  minlength="6" required />
                         </p>
-                        <p  ng-class="{ 'has-error': exp_laboral.mes_inicio.$error.required || exp_laboral.anio_inicio.$error.required}">
+                        <p ng-class="{ 'has-error': exp_laboral.mes_inicio.$error.required || exp_laboral.anio_inicio.$error.required}">
                             <label class="etiqueta_e">Inicio<i class="required">*</i>:</label>
                             <div class="form-group form-inline">
                                 <select class="form-control selector_e_min" name="mes_inicio" ng-model="ctrl.exp_laboral.mes_inicio" ng-options="Mes.ID as Mes.Mes for Mes in ctrl.Meses" required>
@@ -725,15 +725,15 @@ if(session.getAttribute("user") == null){
                             <label class="etiqueta_e">Centro educativo<i class="required">*</i>:</label>                            
                             <input type="text" class="form-control texto_e" name="c_educativo" ng-model="ctrl.formacion.c_educativo" placeholder="Nombre del centro educativo" minlength="6" required />
                         </p>
-                        <p>
+                        <p ng-class="{ 'has-error': form_formacion.nivel_estudio.$error.required}">
                             <label class="etiqueta_e">Nivel de estudios:</label>                           
-                            <select class="form-control selector_e" name="nivel_estudio" ng-model="ctrl.formacion.nivel_estudio" ng-options="Nivel.ID as Nivel.Value for Nivel in ctrl.NvlFormacion">
+                            <select class="form-control selector_e" name="nivel_estudio" ng-model="ctrl.formacion.nivel_estudio" ng-options="Nivel.ID as Nivel.Value for Nivel in ctrl.NvlFormacion" required>
                                 <option value="">--- Seleccione opción ---</option>
                             </select>
                         </p>
-                        <p ng-class="{ 'has-error': form_formacion.area_estudio.$error.required || form_formacion.area_estudio.$error.minlength }">
+                        <p>
                             <label class="etiqueta_e">Area de estudio<i class="required">*</i>:</label>
-                            <input type="text" class="form-control texto_e" name="area_estudio" ng-model="ctrl.formacion.area_estudio" placeholder="Area de estudio" minlength="5" required />
+                            <input type="text" class="form-control texto_e" name="area_estudio" ng-model="ctrl.formacion.area_estudio" placeholder="Area de estudio" />
                         </p>
                         <p>
                             <label class="etiqueta_e">Estado:</label>

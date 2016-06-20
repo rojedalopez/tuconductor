@@ -75,7 +75,7 @@
         padding-left: 15px;
         width:400px;
     }
-
+    
 @media screen and (max-width: 992px) {
     .texto, .selector, .area, .texto_e, .texto_e_min, .selector_e, .selector_e_min, .area_e{
         width: 90%;

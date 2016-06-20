@@ -239,13 +239,13 @@ public class Guardar {
     
     //PROC_SaveFormacion
     public static boolean SaveFormacion(String cod_, int id, String c_educativo, int nivel, String area, int estado,
-            int mes_inicio, int anio_inicio, int mes_fin, int anio_fin) throws ClassNotFoundException, SQLException{
+            int mes_inicio, int anio_inicio, int mes_fin, int anio_fin, boolean eliminar) throws ClassNotFoundException, SQLException{
         boolean b=false;
         Connection conn=null;
         PreparedStatement insertar=null;
         
         conn=conexion();
-            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveFormacion(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)};")) {
+            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveFormacion(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)};")) {
                 cs.setString(1, cod_);
                 cs.setInt(2, id);
                 cs.setString(3, c_educativo);
@@ -256,10 +256,11 @@ public class Guardar {
                 cs.setInt(8, anio_inicio);
                 cs.setInt(9, mes_fin);
                 cs.setInt(10, anio_fin);
-                cs.registerOutParameter(11, Types.INTEGER);
+                cs.setInt(11, (eliminar)?1:0);
+                cs.registerOutParameter(12, Types.INTEGER);
                 cs.executeQuery();
 
-                int retorno = cs.getInt(11);
+                int retorno = cs.getInt(12);
                 
                 if(retorno==1){
                     return true;

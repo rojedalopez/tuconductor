@@ -55,7 +55,7 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
           
     self.verOferta = function(id){
         WallService.verOferta(id).then(function(d) {
-            console.log(d);
+            self.listaOfertas();
        },function(errResponse){
            console.error('Error while fetching Currencies');
        });
@@ -242,6 +242,7 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
     self.llenarEmpleados();
     
     self.adquirirEmp = function(cod){
+        self.empleado.adquirir = true;
         self.ComprarEmpleado(cod);
         btn_add_compra.button('loading');
     };

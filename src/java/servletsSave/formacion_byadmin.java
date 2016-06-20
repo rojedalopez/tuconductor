@@ -28,15 +28,6 @@ import org.json.simple.parser.ParseException;
  */
 public class formacion_byadmin extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException, ClassNotFoundException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
@@ -73,6 +64,7 @@ public class formacion_byadmin extends HttpServlet {
         if(joFormacion.get("anio_fin")!=null){
             anio_fin = Integer.parseInt(joFormacion.get("anio_fin").toString());
         }
+        boolean eliminar = (Boolean) joFormacion.get("eliminar");
                         
         HttpSession session =  null;
  
@@ -83,7 +75,7 @@ public class formacion_byadmin extends HttpServlet {
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
                 boolean b = Guardar.SaveFormacion(codigoConductor, id, c_educativo, nivel, 
-                        area, estado, mes_inicio, anio_inicio, mes_fin, anio_fin);
+                        area, estado, mes_inicio, anio_inicio, mes_fin, anio_fin, eliminar);
                 if(b){
                     out.print("true");
                 }else{
