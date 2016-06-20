@@ -244,7 +244,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     };
           
     self.resetForm = function(){
-        self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0};
+        self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, eliminar:false};
         $scope.form_formacion.$setPristine();
     };
     
@@ -369,7 +369,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.traza={fecha:"",hora:"",evento:""};
     //self.list_trazas=[];
     self.empresa={nit:"",r_social:"", dir:"", tel:"", cam_com:"", doc_replegal:"",nombre_replegal:"", 
-    email_replegal:"", tel_replegal:"", demo:false, id_plan:0, tkn_disp:0, ofertas_disp:0, ult_compra:"", vence_compra:"", tot_tkn:0, tot_ofr:0, trazas:[]}
+    email_replegal:"", tel_replegal:"", demo:false, id_plan:0, tkn_disp:0, ofertas_disp:0, ult_compra:"", vence_compra:"", tot_tkn:0, tot_ofr:0, trazas:[], eliminar:false}
     self.list_empresas=[];    
     
     self.llenarEmpresas = function(){
@@ -461,7 +461,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
 }]).controller('ProfileAdminConductorController', ['$scope', 'ProfileAdminConductorService', function($scope, ProfileAdminConductorService) {
     var self = this;
     
-    self.empleado={email:"", cod:"",nombre:"", apellido:"", puntaje:0, hoja_vida:"",experiencia:0};
+    self.empleado={email:"", cod:"",nombre:"", apellido:"", puntaje:0, hoja_vida:"",experiencia:0, eliminar:false};
     self.list_empleados=[];
     
     self.llenarEmpleados = function(){
@@ -613,7 +613,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     };
     
     self.SaveJudicialUsuario = function(judicial){
-        EditConductorbyAdminService.SaveAccidenteUsuario(judicial).then(function(d){
+        EditConductorbyAdminService.SaveJudicialUsuario(judicial).then(function(d){
             if(d==="true"){
                 btn_guardar_judicial.button('reset');
                 form_judicial.modal( "hide" );
@@ -800,16 +800,22 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         for(var i = 0; i < self.judiciales.length; i++){
             if(self.judiciales[i].id === id) {
                self.judicial = angular.copy(self.judiciales[i]);
-               if(self.judicial.act_procjudicial===1){
-                   self.judicial.act_procjudicial=true;
-               }else{
-                   self.judicial.act_procjudicial=false;
-               }
-               self.accidente.fch_procjudicial = new Date(self.accidente.fch_procjudicial);
+               self.judicial.fch_procjudicial = new Date(self.judicial.fch_procjudicial);
                form_judicial.modal( "show" );
                break;
             }
         }
+    };
+    
+    self.textAccidente = function(tip){
+        var texto="";
+        for(var i = 0; i < self.tipoAccidentes.length; i++){
+            if(self.tipoAccidentes[i].ID === tip) {
+               texto = self.tipoAccidentes[i].Tipo;
+               break;
+            }
+        }
+        return texto;
     };
     
     self.editExp = function(id){
@@ -903,14 +909,14 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     
     self.resetMulta = function(){
         var cod = self.getVarUrl("cod");
-        self.multa={id:-1, lgr_multa:"", fch_multa: "", cgo_multa:"", pgo_multa:false};
+        self.multa={id:-1, lgr_multa:"", fch_multa: "", cgo_multa:"", pgo_multa:false, eliminar:false};
         self.multa.cod = cod; 
         $scope.form_multa.$setPristine();
     };
     
     self.resetAccidente = function(){
         var cod = self.getVarUrl("cod");
-        self.accidente={id:-1, date:"", fch_accidente:"", muertos:false, heridos: false, tipo:""};
+        self.accidente={id:-1, date:"", fch_accidente:"", muertos:false, heridos: false, tipo:"", , eliminar:false};
         self.accidente.cod = cod; 
         $scope.form_accidente.$setPristine();
     };
@@ -933,7 +939,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
 
     self.resetForm = function(){
         var cod = self.getVarUrl("cod");
-        self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0};
+        self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, , eliminar:false};
         self.formacion.cod = cod; 
         $scope.form_formacion.$setPristine();
     };

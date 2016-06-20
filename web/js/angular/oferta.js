@@ -2,7 +2,7 @@
 
 angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'OfertaService', function($scope, OfertaService) {
     var self = this;
-    self.oferta={id:-1, titulo:"", descripcion:"", vacante:"", salario:0,tipo:1, estado:false, fecha_creacion:"", fecha_contratacion:"", pais:"CO", ciudad:"", depto:-1, dapart:"" };
+    self.oferta={id:-1, titulo:"", descripcion:"", vacante:"", salario:0,tipo:1, estado:false, fecha_creacion:"", fecha_contratacion:"", pais:"CO", ciudad:"", depto:-1, dapart:"", eliminar:false };
     self.ofertas=[];
     
     self.Paises=[];
@@ -121,7 +121,7 @@ angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'Of
     ];
 
     self.resetOferta = function(){
-        self.oferta={id:-1, titulo:"", descripcion:"", vacante:"", salario:0, tipo:1, estado:false, fecha_creacion:"", fecha_contratacion:"",};
+        self.oferta={id:-1, titulo:"", descripcion:"", vacante:"", salario:0, tipo:1, estado:false, fecha_creacion:"", fecha_contratacion:"", eliminar:false};
         $scope.form_oferta.$setPristine();
       };
         

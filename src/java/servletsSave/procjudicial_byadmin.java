@@ -45,7 +45,7 @@ public class procjudicial_byadmin extends HttpServlet {
         System.out.println(sb.toString());
         joMulta = (JSONObject) parser.parse(sb.toString());
         int id = Integer.parseInt(joMulta.get("id").toString());
-        System.out.println("-  "+id);
+        System.out.println(id);
         
         String fecha = (String) joMulta.get("date");
         System.out.println(fecha);

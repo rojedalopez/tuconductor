@@ -685,16 +685,16 @@ if(session.getAttribute("user") == null){
                                 <div class="col-lg-12" ng-repeat="a in ctrl.accidentes">
                                     <div class="panel panel-info">
                                         <div class="panel-heading">                                                
-                                            {{ctrl.tipoAccidentes[0].Tipo}}
+                                            {{ctrl.textAccidente(a.tipo)}}
                                             <button type="button" class="close"><img src="../assets/img/delete_icon.png" width="18" height="18"></button>
                                             <button type="button" class="close" ng-click="ctrl.editAccidente(a.id)"><img src="../assets/img/edit_icon.png"  width="18" height="18"></button>                                                
                                         </div>
                                         <div class="panel-body">
-                                            <p>Muertos: <span ng-bind="a.muertos"></span></p>
-                                            <p>Heridos: <span ng-bind="a.heridos"></span></p>
+                                            <p>Muertos: {{(a.muertos)?'Si':'No'}}</p>
+                                            <p>Heridos: {{(a.heridos)?'Si':'No'}}</p>
                                         </div>
                                         <div class="panel-footer">
-                                            <label>Fecha: <span ng-bind="a.fch_accidente"></span></label>
+                                            <label>Fecha: {{a.fch_accidente.toString("yyyy-MM-dd")}}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -724,7 +724,7 @@ if(session.getAttribute("user") == null){
                                             <p><span ng-bind="pj.del_procjudicial"></span></p>
                                         </div>
                                         <div class="panel-footer">
-                                            <label>Fecha: <span ng-bind="a.fch_procjudicial"></span></label>
+                                            <label>Fecha: <span ng-bind="pj.fch_procjudicial"></span></label>
                                         </div>
                                     </div>
                                 </div>
@@ -1049,13 +1049,13 @@ if(session.getAttribute("user") == null){
                         </p>
                         <p ng-class="{ 'has-error': form_judicial.del_procjudicial.$error.required  || form_judicial.del_procjudicial.$error.minlength }">
                             <label class="etiqueta_e">Delito:</label>                           
-                            <textarea class="form-control texto_e" name="del_procjudicial" ng-model="ctrl.judicial.del_procjudicial" placeholder="Fecha del delito" minlength="4" required ></textarea>
+                            <textarea class="form-control texto_e" name="del_procjudicial" ng-model="ctrl.judicial.del_procjudicial" placeholder="Descripcion del delito" minlength="4" required ></textarea>
                         </p>
                         <p>
                             <label class="etiqueta_e">Eventos:</label>
                             <div class="form-inline">
                                 <label class="checkbox-inline">
-                                    <input type="checkbox" name="act_procjudicial" ng-model="ctrl.judicial.act_procjudicial"> Activo
+                                    <input type="checkbox" value="1" name="act_procjudicial" ng-model="ctrl.judicial.act_procjudicial"> Activo
                                 </label>
                             </div>
                         </p>  
