@@ -211,7 +211,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     };
            
     self.openForm = function(){
-        self.resetFrom();
+        self.resetForm();
         form_formacion.modal( "show" );
     };   
         
@@ -538,6 +538,9 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.accidentes=[];
     self.accidente={id:-1, date:"", fch_accidente:"", muertos:false, heridos: false, tipo:"", cod:"", eliminar:false};
     
+    self.judiciales=[];
+    self.judicial={id:-1, date:"", del_procjudicial:"", fch_procjudicial:"", act_procjudicial:false, cod:"", eliminar:false};
+    
     self.Paises=[];
     self.PaisesExp=[];
     self.dptos=[];
@@ -604,6 +607,29 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         EditConductorbyAdminService.listaAccidentes(cod).then(function(d){
             
             self.accidentes = d;
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+	});
+    };
+    
+    self.SaveJudicialUsuario = function(judicial){
+        EditConductorbyAdminService.SaveAccidenteUsuario(judicial).then(function(d){
+            if(d==="true"){
+                btn_guardar_judicial.button('reset');
+                form_judicial.modal( "hide" );
+                self.resetJudicial();
+                self.listaJudiciales();
+            }
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+	});
+    };
+    
+    self.listaJudiciales = function(){
+        var cod = self.getVarUrl("cod");
+        EditConductorbyAdminService.listaJudiciales(cod).then(function(d){
+            
+            self.judiciales = d;
         },function(errResponse){
             console.error('Error while creating Paper.');
 	});
@@ -731,6 +757,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
             self.formaciones = d.formacion;
             self.multas = d.multas;
             self.accidentes = d.accidentes;
+            self.judiciales = d.judiciales;
             self.selectDpto(self.usuario_dp.depto);
         },function(errResponse){
             console.error('Error while fetching Currencies');
@@ -764,6 +791,22 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
                }
                self.accidente.fch_accidente = new Date(self.accidente.fch_accidente);
                form_accidente.modal( "show" );
+               break;
+            }
+        }
+    };
+    
+    self.editJudicial = function(id){
+        for(var i = 0; i < self.judiciales.length; i++){
+            if(self.judiciales[i].id === id) {
+               self.judicial = angular.copy(self.judiciales[i]);
+               if(self.judicial.act_procjudicial===1){
+                   self.judicial.act_procjudicial=true;
+               }else{
+                   self.judicial.act_procjudicial=false;
+               }
+               self.accidente.fch_procjudicial = new Date(self.accidente.fch_procjudicial);
+               form_judicial.modal( "show" );
                break;
             }
         }
@@ -809,6 +852,17 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         btn_guardar_accidente.button('loading');
         self.accidente.date = new Date(self.accidente.fch_accidente).toString("yyyy-MM-dd");
         self.SaveAccidenteUsuario(self.accidente);
+    };
+    
+    self.openJudicial = function(){
+        self.resetJudicial();
+        form_judicial.modal( "show" );
+    };
+    
+    self.submitJudicial = function(){
+        btn_guardar_judicial.button('loading');
+        self.judicial.date = new Date(self.judicial.fch_procjudicial).toString("yyyy-MM-dd");
+        self.SaveJudicialUsuario(self.judicial);
     };
     
     self.openExp = function(){
@@ -859,6 +913,13 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         self.accidente={id:-1, date:"", fch_accidente:"", muertos:false, heridos: false, tipo:""};
         self.accidente.cod = cod; 
         $scope.form_accidente.$setPristine();
+    };
+    
+    self.resetJudicial = function(){
+        var cod = self.getVarUrl("cod");
+        self.judicial={id:-1, date:"", del_procjudicial:"", fch_procjudicial:"", act_procjudicial:false, eliminar:false};
+        self.judicial.cod = cod; 
+        $scope.form_judicial.$setPristine();
     };
     
     self.resetExp = function(){
@@ -1021,6 +1082,24 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         },
         listaAccidentes: function(cod) {
             return $http.post('../list_accidentes_byadmin', {'cod':cod}).then(function(response){
+                return response.data;
+            },function(errResponse){
+                console.error('Error while fetching expenses');
+                return $q.reject(errResponse);
+            });
+        },
+        SaveJudicialUsuario: function(judicial){
+            return $http.post('../procjudicial_byadmin', judicial).then(function(response){
+                console.log(response.data);
+                return response.data;
+            }, 
+            function(errResponse){
+                    console.error('Error guardando datos personales ' +errResponse);
+                    return $q.reject(errResponse);
+            });
+        },
+        listaJudiciales: function(cod) {
+            return $http.post('../list_procjudicial_byadmin', {'cod':cod}).then(function(response){
                 return response.data;
             },function(errResponse){
                 console.error('Error while fetching expenses');

@@ -796,7 +796,7 @@ public class Listas {
                     String instruccion="";
                      
                     instruccion =   "SELECT id_procjudicial, cod_empleado, del_procjudicial, fch_procjudicial, act_procjudicial " +
-                                    "FROM tblProcDisciplina WHERE cod_empleado = ? ORDER BY fch_procdisciplina DESC; " ;
+                                    "FROM tblProcJudicial WHERE cod_empleado = ? ORDER BY fch_procjudicial DESC; " ;
                      
                     insertar=conn.prepareStatement(instruccion);
                     insertar.setString(1, cod);
@@ -805,9 +805,9 @@ public class Listas {
                         obj = new JSONObject();
                         obj.put("id", datos.getInt(1));
                         obj.put("cod", datos.getString(2));
-                        obj.put("delito", datos.getString(3));
-                        obj.put("fecha", Fechaformateador.format(datos.getDate(4)));
-                        obj.put("activo", datos.getBoolean(5));
+                        obj.put("del_procjudicial", datos.getString(3));
+                        obj.put("fch_procjudicial", Fechaformateador.format(datos.getDate(4)));
+                        obj.put("act_procjudicial", datos.getBoolean(5));
                         lista.add(obj);
                     }
                     datos.close();

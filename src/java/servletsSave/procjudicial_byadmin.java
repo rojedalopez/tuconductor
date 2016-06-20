@@ -45,11 +45,17 @@ public class procjudicial_byadmin extends HttpServlet {
         System.out.println(sb.toString());
         joMulta = (JSONObject) parser.parse(sb.toString());
         int id = Integer.parseInt(joMulta.get("id").toString());
-        System.out.println(id);
-        String delito = (String) joMulta.get("delito");
+        System.out.println("-  "+id);
+        
         String fecha = (String) joMulta.get("date");
+        System.out.println(fecha);
+        
         String codigoConductor = (String) joMulta.get("cod");
-        boolean activo =(Boolean) joMulta.get("activo");
+        System.out.println(codigoConductor);
+        boolean activo =(Boolean) joMulta.get("act_procjudicial");
+        System.out.println(activo);
+        String delito = (String) joMulta.get("del_procjudicial");
+        System.out.println(delito);
 
         HttpSession session =  null;
  
