@@ -43,6 +43,8 @@ public class list_oferta_empleado extends HttpServlet {
         System.out.println(txt);
         int dpto = Integer.parseInt(joOferta.get("dpto_select").toString());
         System.out.println(dpto);
+        int pagina = Integer.parseInt(joOferta.get("pagina").toString());
+        System.out.println(pagina);
         HttpSession session =  null;
         
         session = request.getSession(false);
@@ -51,8 +53,8 @@ public class list_oferta_empleado extends HttpServlet {
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
                 
-                String x = Listas.listaOfertasEmpleado(u.getCodigo(), txt, dpto).toJSONString();//?
-                System.out.println(x);
+                String x = Listas.listaOfertasEmpleado(u.getCodigo(), txt, dpto, pagina).toJSONString();//?
+                System.out.println(x+"objeto");
                 out.print(x);
             }else{
                 out.print("session");

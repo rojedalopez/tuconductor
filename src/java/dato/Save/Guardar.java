@@ -620,9 +620,8 @@ public class Guardar {
     }
     
     
-    public static boolean saveVistaOferta(String cod, int oferta, String correo, String nombre) throws ClassNotFoundException, SQLException, InvalidKeyException{ 
+    public static int saveVistaOferta(String cod, int oferta, String correo, String nombre) throws ClassNotFoundException, SQLException, InvalidKeyException{ 
          
-        boolean b=false;
         Connection conn=null;
         PreparedStatement insertar=null;
         conn=conexion();        
@@ -639,9 +638,9 @@ public class Guardar {
                     String[] textoemail = info.split("\\|");
                     Mails.SendMailOferta(textoemail[1], "VISTA OFERTA", "Su oferta con titulo: "+textoemail[0]+", ha sido vista por " + nombre);
                     Mails.SendMailOferta(correo, "VISTA OFERTA", "Usted ha visto la oferta: "+textoemail[0]);
-                    return true;
+                    return 1;
                 }else{
-                    return false;
+                    return retorno;
                 }
 
             }catch (SQLException e) {
@@ -655,7 +654,7 @@ public class Guardar {
                     conn.close();
                 }
             }
-            return false;
+            return 0;
     }
     
     public static boolean saveVistaEmpleado(String cod, String empresa, String correo, String ruta) throws ClassNotFoundException, SQLException{ 

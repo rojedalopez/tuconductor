@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallService', function($scope, WallService) {
+angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallService', 'PagerService', 
+    function($scope, WallService, PagerService) {
     var self = this;
     self.usuario={mail:"", password:"",name:"", lastname:"", phone:""};
     self.oferta={id:-1, titulo:"", descripcion:"", vacante:"", salario:0,tipo:1, estado:false, fecha:"", fecha_contratacion:"", visto:false, pais:"CO", ciudad:"", depto:-1, dapart:""};
@@ -9,12 +10,40 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
     
     self.dptos=[];
     self.dpto={id:0, departamento:"", ciudades:[]};
-    
+    self.tamano = 0;
     self.lugar = "";
-    
+    self.mensaje = "Se ha ejecutado el proceso correctamente...";
+    self.error = false;
     self.palabra_clave = "";
+    self.pag = 1;
       
+    self.pager = {};
     
+    self.setPage = function(page){
+        console.log(page);
+        if (page < 1 || page > self.pager.totalPages) {
+            return;
+        }
+        self.pag = page;
+        self.listaOfertas(page);
+    };
+    
+    self.listaOfertas = function(pagina){
+        console.log(pagina);
+        WallService.listaOfertas(self.palabra_clave, (self.lugar===null||self.lugar==="")?"-1":self.lugar,pagina).then(function(d){
+            self.ofertas = d.lista;
+            self.tamano = d.tamano;
+            self.pager = PagerService.GetPager(self.tamano, pagina);
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+        });
+    };
+    
+    self.initController = function() {
+        // initialize to page 1
+        self.setPage(1);
+    };
+        
     self.SaveHV = function(hoja_vida){
         WallService.SaveHV(hoja_vida).then(function(d){
             if(d==="true"){
@@ -36,18 +65,11 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
             console.error('Error while fetching Currencies');
         });
     };
-          
-    self.listaOfertas = function(txt,dpto_select){
-        WallService.listaOfertas(txt,dpto_select).then(function(d){
-            self.ofertas = d;
-        },function(errResponse){
-            console.error('Error while creating Paper.');
-        });
-    };
-    
+       
     self.buscarOferta = function(){
-        WallService.listaOfertas(self.palabra_clave, (self.lugar===null)?"-1":self.lugar).then(function(d){
-            self.ofertas = d;            
+        WallService.listaOfertas(self.palabra_clave, (self.lugar===null)?"-1":self.lugar,1).then(function(d){
+            self.ofertas = d.lista;  
+            self.setPage(1);
         },function(errResponse){
             console.error('Error while creating Paper.');
         });
@@ -55,7 +77,20 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
           
     self.verOferta = function(id){
         WallService.verOferta(id).then(function(d) {
-            self.listaOfertas();
+            btn_aplicacion.button("reset");
+            dialog_oferta.modal( "hide" );
+            if(d==="1"){
+                Modal_Mensaje.modal("show");
+                self.setPage(self.pag);
+            }else if(d==="2"){
+                self.error = true;
+                self.mensaje = "Se ha ocurrido un error, no puede aplicar dos veces a una oferta...";
+                Modal_Mensaje.modal("show");
+            }else if(d==="-1"){
+                self.error = true;
+                self.mensaje = "Se ha ocurrido un error, no puede aplicar a una oferta, hasta no ser admitido por nuestro equipo...";
+                Modal_Mensaje.modal("show");
+            }
        },function(errResponse){
            console.error('Error while fetching Currencies');
        });
@@ -71,13 +106,17 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
     };
     
     self.listaDptosCiudad();
-    self.listaOfertas("","-1");
     self.getDatosUser();
-    
+    self.initController();
     
     self.submit = function() {
         self.SaveUser(self.usuario); 
         self.close();
+    };
+    
+    self.formatDate = function(date){
+        var dateOut = new Date(date);
+        return dateOut;
     };
     
     self.editOferta = function(id){
@@ -103,9 +142,8 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
     };
            
     self.ver = function (id){
-        console.log("entro aca id");
+        btn_aplicacion.button("loading");
         self.verOferta(id);
-        dialog_oferta.modal( "hide" );
     };           
     
 
@@ -113,6 +151,65 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
 
     };
           
+}]).factory('PagerService', ['$http', '$q', function($http, $q){
+    // default to first page
+    // service definition
+        var service = {};
+
+        service.GetPager = GetPager;
+
+        return service;
+
+        // service implementation
+        function GetPager(totalItems, currentPage, pageSize) {
+            // default to first page
+            currentPage = currentPage || 1;
+
+            // default page size is 10
+            pageSize = pageSize || 20;
+
+            // calculate total pages
+            var totalPages = Math.ceil(totalItems / pageSize);
+
+            var startPage, endPage;
+            if (totalPages <= 10) {
+                // less than 10 total pages so show all
+                startPage = 1;
+                endPage = totalPages;
+            } else {
+                // more than 10 total pages so calculate start and end pages
+                if (currentPage <= 6) {
+                    startPage = 1;
+                    endPage = 10;
+                } else if (currentPage + 4 >= totalPages) {
+                    startPage = totalPages - 9;
+                    endPage = totalPages;
+                } else {
+                    startPage = currentPage - 5;
+                    endPage = currentPage + 4;
+                }
+            }
+
+            // calculate start and end item indexes
+            var startIndex = (currentPage - 1) * pageSize;
+            var endIndex = startIndex + pageSize;
+
+            // create an array of pages to ng-repeat in the pager control
+            var pages = _.range(startPage, endPage + 1);
+
+            // return object with all pager properties required by the view
+            return {
+                totalItems: totalItems,
+                currentPage: currentPage,
+                pageSize: pageSize,
+                totalPages: totalPages,
+                startPage: startPage,
+                endPage: endPage,
+                startIndex: startIndex,
+                endIndex: endIndex,
+                pages: pages
+            };
+        }
 }]).factory('WallService', ['$http', '$q', function($http, $q){
     return {
         SaveHV: function(hoja_vida){
@@ -139,8 +236,8 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
 		return $q.reject(errResponse);
             });
 	},
-        listaOfertas: function(txt, dpto_select) {
-            return $http.post('../list_oferta_empleado', {'txt':txt,'dpto_select':dpto_select}).then(function(response){
+        listaOfertas: function(txt, dpto_select, pagina) {
+            return $http.post('../list_oferta_empleado', {'txt':txt,'dpto_select':dpto_select,'pagina':pagina}).then(function(response){
                 return response.data;
             },function(errResponse){
                 console.error('Error while fetching expenses');

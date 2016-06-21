@@ -52,12 +52,8 @@ public class vista_oferta extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
-                boolean b = Guardar.saveVistaOferta(u.getCodigo(), id_oferta, u.getCorreo(), u.getNombre() + " " + u.getApellido());
-                if(b){
-                    out.print("true");
-                }else{
-                    out.print("false");
-                }
+                int retorno = Guardar.saveVistaOferta(u.getCodigo(), id_oferta, u.getCorreo(), u.getNombre() + " " + u.getApellido());
+                out.print(retorno);
                 
             }else{
                 out.print("session");

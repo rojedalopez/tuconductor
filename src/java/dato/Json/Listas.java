@@ -511,13 +511,15 @@ public class Listas {
     }
     
     
-    public static JSONArray listaOfertasEmpleado(String cod, String txt, int dpto_select) throws SQLException{
+    public static JSONObject listaOfertasEmpleado(String cod, String txt, int dpto_select, int pagina) throws SQLException{
         JSONObject obj = null;
+        JSONObject todo = new JSONObject();;
         JSONArray lista = new JSONArray();
         Connection conn=null;
         PreparedStatement insertar=null;
         Statement stm=null;
         ResultSet datos=null;
+        int limite = (pagina-1) * 20;
              
         try{
                     conn=conexion();
@@ -544,12 +546,13 @@ public class Listas {
                         instruccion += " dpt_oferta="+dpto_select;
                     }
                     
-                    instruccion+=" ORDER BY fch_oferta DESC";
+                    instruccion+=" ORDER BY fch_oferta DESC limit ?,20;";
                     
                     System.out.println(instruccion);
                     insertar=conn.prepareStatement(instruccion);
                     insertar.setString(1, cod);
-
+                    insertar.setInt(2, limite);
+                    
                     datos=insertar.executeQuery();
                     while (datos.next()) {
                         obj = new JSONObject();
@@ -568,23 +571,79 @@ public class Listas {
                         obj.put("depart", datos.getString(13));
                         obj.put("ciudad", datos.getString(14));
                         lista.add(obj);
+                        
                     }
                     datos.close();
                     conn.close();
-                    return lista;
+                    todo.put("lista",lista);
+                    todo.put("tamano",listaOfertasTamanio(cod, txt, dpto_select));
+                    return todo;
              
         }catch (SQLException e) {
             System.out.println("error SQLException en ObtenerCliente");
                     System.out.println(e.getMessage());
         }catch (Exception e){
-                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println("error Exception en ObtenerCliente"+e.toString());
                     System.out.println(e.getMessage());
         }finally{
                     if(!conn.isClosed()){
                         conn.close();
                     }
                 }
-        return lista;
+        return todo;
+    }
+    
+    public static int listaOfertasTamanio(String cod, String txt, int dpto_select) throws SQLException{
+        int retorno=0;
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        Statement stm=null;
+        ResultSet datos=null;
+        
+        try{
+                    conn=conexion();
+                    String instruccion="";
+                     
+                    instruccion =   "SELECT count(1) FROM tblOferta as x ";
+                    
+                    if(!txt.equals("") || dpto_select!=-1){
+                        instruccion += " WHERE ";
+                    }
+                    
+                    boolean s = false;
+                    if(!txt.equals("")){
+                        instruccion+= " (tit_oferta like '%"+txt+"%' OR dsc_oferta like '%"+txt+"%') ";
+                        s = true;
+                    }
+                    
+                    if(dpto_select!=-1){
+                        instruccion += (s)?" and ":"";
+                        instruccion += " dpt_oferta="+dpto_select;
+                    }
+                    
+                    
+                    System.out.println(instruccion);
+                    insertar=conn.prepareStatement(instruccion);
+
+                    datos=insertar.executeQuery();
+                    if (datos.next()) {
+                        return datos.getInt(1);
+                    }
+                    
+                    return 0;
+             
+        }catch (SQLException e) {
+            System.out.println("error SQLException en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }catch (Exception e){
+                    System.out.println("error Exception en ObtenerCliente"+e.toString());
+                    System.out.println(e.getMessage());
+        }finally{
+                    if(!conn.isClosed()){
+                        conn.close();
+                    }
+                }
+        return 0;
     }
     
     

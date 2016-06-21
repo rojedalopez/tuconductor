@@ -53,10 +53,14 @@ if(session.getAttribute("user") == null){
     <script type="text/javascript">
         var popup = $( "#Modal_comment" );
         var dialog_oferta;
+        var Modal_Mensaje;
+        var btn_aplicacion;
         //var palabra_clave;
         //var departamento;
         $(document).ready(function(){
            dialog_oferta= $("#Modal_viewoferta");
+           Modal_Mensaje=$("#Modal_Mensaje");
+           btn_aplicacion=$("#btn_aplicacion");
            //palabra_clave=$("#palabra_clave");
            //departamento=$("#departamento");
         });
@@ -64,6 +68,7 @@ if(session.getAttribute("user") == null){
             $("#Modal_hv").modal("show");
         }
     </script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     <script type="text/javascript" src="../js/date.js"></script>
     <script type="text/javascript" src="../js/app.js"></script>      
     <script type="text/javascript" src="../js/angular/profile.js"></script>
@@ -79,7 +84,11 @@ if(session.getAttribute("user") == null){
     <script src="../assets/plugins/morris/raphael-2.1.0.min.js"></script>
     <script src="../assets/plugins/morris/morris.js"></script>
     <script src="../assets/scripts/dashboard-demo.js"></script>
-    
+    <style>
+        .pager {
+            cursor: pointer;
+        }
+    </style>
     
     
    </head>
@@ -324,7 +333,7 @@ if(session.getAttribute("user") == null){
                             <select class="form-control selector_e_min" ng-model="ctrl.lugar" name="departamento" id="departamento" ng-options="dpto.id as dpto.departamento for dpto in ctrl.dptos">
                                 <option value="">--Seleccione Departamento--</option>
                             </select>                            
-                            <button class="btn btn-warning" id="btn-filtrar" ng-click="ctrl.buscarOferta()">
+                            <button class="btn btn-warning" id="btn-filtrar" ng-click="ctrl.setPage(1)">
                                     Buscar ofertas
                             </button>
                         </span>
@@ -347,15 +356,34 @@ if(session.getAttribute("user") == null){
                                     <i class="fa fa-map-marker"> <b>{{of.ciudad + ', '+ of.depart + ', ' + of.pais}}</b></i>                                
                                 </div>
                                 <div class="panel-body">
-                                    <p style="font-size: 20px; color: #0088cc;"><span ng-bind="of.titulo"></span></p>
-                                    <p><span ng-bind="of.descripcion"></span></p>
+                                    <p style="font-size: 16px; color: #0088cc;"> Empresa reconocida solicita <b><span ng-bind="of.titulo"></span></b></p>
+                                    <p>No. de vacantes: <b><span ng-bind="of.vacante"></span></b></p>
+                                    <p>Fecha de contratación: <b>{{ctrl.formatDate(of.fecha_contratacion) | date:"dd MMM 'de' yyyy"}}</b></p>
                                 </div>
                                 <div class="panel-footer">                                            
-                                    Publicada: <b><span ng-bind="of.fecha"></span></b>
+                                    Publicada: <b>{{ctrl.formatDate(of.fecha) | date:"yyyy/MM/dd hh:mma"}}</b>
                                 </div>
                             </div>
                         </div>
-                        
+                        <div class="col-lg-12">
+                            <ul ng-if="ctrl.pager.pages.length" class="pagination">
+                                <li ng-class="{disabled:ctrl.pager.currentPage === 1}">
+                                    <a class="pager" ng-click="ctrl.setPage(1)">First</a>
+                                </li>
+                                <li ng-class="{disabled:ctrl.pager.currentPage === 1}">
+                                    <a class="pager" ng-click="ctrl.setPage(ctrl.pager.currentPage - 1)">Previous</a>
+                                </li>
+                                <li ng-repeat="page in ctrl.pager.pages" ng-class="{active:ctrl.pager.currentPage === page}">
+                                    <a class="pager" ng-click="ctrl.setPage(page)">{{page}}</a>
+                                </li>                
+                                <li ng-class="{disabled:ctrl.pager.currentPage === ctrl.pager.totalPages}">
+                                    <a class="pager" ng-click="ctrl.setPage(ctrl.pager.currentPage + 1)">Next</a>
+                                </li>
+                                <li ng-class="{disabled:ctrl.pager.currentPage === ctrl.pager.totalPages}">
+                                    <a class="pager" ng-click="ctrl.setPage(ctrl.pager.totalPages)">Last</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
 
@@ -368,7 +396,7 @@ if(session.getAttribute("user") == null){
                 <div class="panel panel-primary text-center">
                     <div class="panel-body blue">
                         <i class="fa fa-tags fa-3x"></i>
-                        <h3><span ng-bind="ctrl.ofertas.length"></span></h3>
+                        <h3><span ng-bind="ctrl.tamano"></span></h3>
                     </div>
                     <div class="panel-footer">
                         <span class="panel-eyecandy-title">OFERTAS DISPONIBLES
@@ -381,7 +409,7 @@ if(session.getAttribute("user") == null){
                 <div class="panel panel-primary text-center">
                     <div class="panel-body blue">
                         <i class="fa fa-eye fa-3x"></i>
-                        <h3><span ng-bind="ctrl.ofertas.length"></span></h3>
+                        <h3><span ng-bind="ctrl.tamano"></span></h3>
                     </div>
                     <div class="panel-footer">
                         <span class="panel-eyecandy-title">OFERTAS VISTAS
@@ -530,15 +558,13 @@ if(session.getAttribute("user") == null){
                 </div>
                 <div class="modal-body">
                     <div ng-class="{ 'alert alert-info': !ctrl.oferta.visto, ' alert alert-danger': ctrl.oferta.visto }">
-                        <label style="font-size: 16px;">{{ctrl.oferta.titulo}}</label>
+                        <label style="font-size: 16px;">Se requiere {{ctrl.oferta.titulo}}</label>
                     </div>
                     <p style="text-align: right;"><i class="fa fa-calendar"></i> Publicada: {{ctrl.oferta.fecha}}</p>
-                    <label style="font-size: 14px; color: #0088cc;">Descripción:</label><br/>
-                    <p>{{ctrl.oferta.descripcion}}</p>
                     <label style="font-size: 14px; color: #0088cc;">Localizacion:</label>
                     <p><i class="fa fa-map-marker"></i> {{ctrl.oferta.ciudad + ', '+ ctrl.oferta.depart + ', ' + ctrl.oferta.pais}}</p>
                     <label style="font-size: 14px; color: #0088cc;">Salario:</label>
-                    <p><i class="fa fa-dollar"></i> {{ctrl.oferta.salario}}</p>
+                    <p><i class="fa fa-dollar"></i> {{ctrl.oferta.salario | currency:"$":0}}</p>
                     <label style="font-size: 14px; color: #0088cc;">Cantidad de vacantes:</label>
                     <p><i class="fa fa-folder-open"></i> {{ctrl.oferta.vacante}}</p>
                     <label style="font-size: 14px; color: #0088cc;">Fecha de contratación:</label>
@@ -547,7 +573,7 @@ if(session.getAttribute("user") == null){
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                         
-                        <button type="button" class="btn btn-primary" ng-click="ctrl.ver(ctrl.oferta.id)" ng-disabled="ctrl.oferta.visto">Aplicar</button>
+                        <button type="button" class="btn btn-primary" ng-click="ctrl.ver(ctrl.oferta.id)" ng-disabled="ctrl.oferta.visto" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Aplicando..." id="btn_aplicacion">Aplicar</button>
                     </div>
                 </form>
 
@@ -557,6 +583,30 @@ if(session.getAttribute("user") == null){
         </div>
     </div>
     
+        
+    <div class="modal fade" id="Modal_Mensaje" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Oferta seleccionada</h4>
+                </div>
+                <div class="modal-body">
+                    <div ng-class="{ 'alert alert-info': !ctrl.error, ' alert alert-danger': ctrl.error }">
+                        <label style="font-size: 16px;">{{ctrl.mensaje}}</label>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    </div>
+                
+
+                </div>
+                
+            </div>
+        </div>
+    </div>
+        
+        
     </div>
     <!-- end wrapper -->
     
