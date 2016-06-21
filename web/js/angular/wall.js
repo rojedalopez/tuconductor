@@ -46,7 +46,7 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
     };
     
     self.buscarOferta = function(){
-        WallService.listaOfertas(self.palabra_clave, (self.lugar==="")?-1:self.lugar).then(function(d){
+        WallService.listaOfertas(self.palabra_clave, (self.lugar===null)?"-1":self.lugar).then(function(d){
             self.ofertas = d;            
         },function(errResponse){
             console.error('Error while creating Paper.');

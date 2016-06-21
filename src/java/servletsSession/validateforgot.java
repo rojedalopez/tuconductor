@@ -17,33 +17,36 @@ public class validateforgot extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ClassNotFoundException, InvalidKeyException {
-        response.setContentType("text/html;charset=UTF-8");
         
-        String user = request.getParameter("user");
-        String tkn = request.getParameter("tkn");
-        String pwd = request.getParameter("pass");
-         
-        try {
-            if(Aplicacion.validarReset(user, tkn)){
-                if(Aplicacion.ActivarUsuario(user, pwd)){
-                    response.sendRedirect("?exito");
-                }else{
-                    response.sendRedirect("?error");
-                }
-            }else{
-                response.sendRedirect("activacion.jsp?error");
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex.toString());
-        }
     }
 
    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
         try {
-            processRequest(request, response);
+            String user = request.getParameter("user");
+            String tkn = request.getParameter("tkn");
+            String pwd = request.getParameter("pass");
+
+            try {
+                if(Aplicacion.validarReset(user, tkn)){
+                    System.out.println("valido");
+                    if(Aplicacion.ActivarUsuario(user, pwd)){
+                        System.out.println("activo");
+                        response.sendRedirect("activacion.jsp");
+                    }else{
+                        System.out.println("no activo");
+                        response.sendRedirect("activacion.jsp?error");
+                    }
+                }else{
+                    System.out.println("ocurrio error");
+                    response.sendRedirect("activacion.jsp?error");
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.toString());
+            }
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(validateforgot.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InvalidKeyException ex) {
@@ -51,11 +54,24 @@ public class validateforgot extends HttpServlet {
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try {
+            String user = request.getParameter("user");
+            String tkn = request.getParameter("tkn");
+
+            if(Aplicacion.validarReset(user, tkn)){
+                response.sendRedirect("editpassword.jsp?tkn="+tkn+"&user="+user);    
+            }else{
+                response.sendRedirect("activacion.jsp?error");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(validateforgot.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     @Override
     public String getServletInfo() {
         return "Short description";

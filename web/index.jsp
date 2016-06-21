@@ -127,12 +127,12 @@ if(session.getAttribute("user") != null){
                             <label class="etiqueta_e">E-mail</label>
                             <input type="email" ng-model="ctrl.usuario.mail" class="form-control texto_e" name="mail" placeholder="Ingrese su E-mail" required>
                         </p>
-                        <p ng-class="{ 'has-error': !myForm.password.$error.minlength && myForm.password.$error.pattern && myForm.password.$dirty }">
+                        <p ng-class="{ 'has-error': !add_conductor.password.$error.minlength && add_conductor.password.$error.pattern && add_conductor.password.$dirty }">
                             <label class="etiqueta_e">Contraseña</label>
                             <input type="password" ng-model="ctrl.usuario.password" class="form-control texto_e" name="password" placeholder="Ingrese su contraseña" ng-pattern="/(?=.*[a-z])(?=.*[^a-zA-Z])/" 
                             minlength="8"  data-toggle="tooltip" data-placement="top" title="Debe contener por lo menos un numero o un simbolo. Debe tener tamaño minimo de 8">
                         </p>
-                        <p ng-class="{ 'has-error': myForm.passwordRepeat.$invalid && myForm.passwordRepeat.$dirty }">
+                        <p ng-class="{ 'has-error': add_conductor.passwordRepeat.$invalid && add_conductor.passwordRepeat.$dirty }">
                             <label class="etiqueta_e">Confirmar contraseña</label>
                             <input type="password" class="form-control texto_e" placeholder="Ingrese su contraseña" name="passwordRepeat" 
                             ng-model="ctrl.usuario.passwordRepeat" same-as="{{ctrl.usuario.password}}"
@@ -142,12 +142,13 @@ if(session.getAttribute("user") != null){
                             <label class="etiqueta_e">Telefono</label>
                             <input type="text" ng-model="ctrl.usuario.phone" class="form-control texto_e" name="phone" placeholder="Ingrese su telefono">
                         </p>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button class="btn btn-primary" ng-disabled="add_conductor.$invalid">Registrarme</button>
+                        </div>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <button ng-click="ctrl.submit()" class="btn btn-primary" ng-disabled="add_conductor.$invalid">Registrarme</button>
-                </div>
+                
             </div>
         </div>
     </div>
@@ -160,12 +161,12 @@ if(session.getAttribute("user") != null){
                     <h4 class="modal-title" id="myModalLabel">¿Olvidaste tu contraseña?</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" name="myForm_FG" action="forgot" method="POST">
+                    <form role="form" name="form_forgot" ng-submit="ctrl.sendingForgot()">
                         <div class="form-group">
                             <label>E-mail</label>
                             <div class="form-group input-group">
                                 <span class="input-group-addon"><img src="assets/img/email_icon.png" width="20" height="20" /></span>
-                                <input type="email" class="form-control" name="mail" placeholder="Ingrese su E-mail" required>
+                                <input type="email" class="form-control" ng-model="ctrl.mail" name="mail" placeholder="Ingrese su E-mail" required>
                             </div>
                         </div>
                         <div class="alert alert-info" id="Modal_forgotpass_success">
@@ -176,7 +177,7 @@ if(session.getAttribute("user") != null){
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary" ng-disabled="myForm.$invalid">Enviar correo</button>
+                            <button type="submit" class="btn btn-primary" ng-disabled="form_forgot.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Enviando correo..." id="btn_sending_mail">Enviar correo</button>
                         </div>
                     </form>
                 </div>
@@ -308,7 +309,9 @@ if(session.getAttribute("user") != null){
     <script type="text/javascript">
         var dialog ;        
         var dialog2 ;
+        var btn_sending_mail;
             $(document).ready(function() {
+                btn_sending_mail = $("#btn_sending_mail");
                 dialog = $("#Modal_Conductor");
                 dialog2 = $("#Modal_Empresa");
             } );
@@ -321,13 +324,12 @@ if(session.getAttribute("user") != null){
             $("#"+modal).modal("show");
         }
         function open_message_forgot(valor){
-            if(valor=="true"){
+            if(valor===true){
                 $( "#Modal_forgotpass_error" ).hide();
                 $( "#Modal_forgotpass_success" ).show("slow");                
             }else{
                 $( "#Modal_forgotpass_success" ).hide();
                 $( "#Modal_forgotpass_error" ).show("slow");
-                
             }
             
         }

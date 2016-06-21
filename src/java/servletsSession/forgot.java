@@ -1,6 +1,7 @@
 package servletsSession;
 
 import dato.Aplicacion;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.InvalidKeyException;
@@ -11,6 +12,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class forgot extends HttpServlet {
 
@@ -18,13 +22,35 @@ public class forgot extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        StringBuffer sb = new StringBuffer();
+  
+        try
+        {
+          BufferedReader reader = request.getReader();
+          String line = null;
+          while ((line = reader.readLine()) != null)
+          {
+            sb.append(line);
+          }
+        } catch (Exception e) { e.printStackTrace(); }
+ 
+        JSONParser parser = new JSONParser();
+        JSONObject joCliente = null;
+         
+        try {
+            joCliente = (JSONObject) parser.parse(sb.toString());
+        } catch (ParseException ex) {
+            Logger.getLogger(forgot.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
-        String correo = request.getParameter("mail");
+        String mail = (String) joCliente.get("mail");
         
         try (PrintWriter out = response.getWriter()) {
             try {
-                if(Aplicacion.ForgotPassword(correo)){
-                    response.sendRedirect("?ya");
+                if(Aplicacion.ForgotPassword(mail)){
+                    JSONObject jSONObject = new JSONObject();
+                    jSONObject.put("forgot",true);
+                    out.print(jSONObject.toJSONString());
                 }
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(forgot.class.getName()).log(Level.SEVERE, null, ex);

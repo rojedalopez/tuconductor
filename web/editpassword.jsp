@@ -9,8 +9,8 @@
     <link href="assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />
-   <link href="assets/css/style.css" rel="stylesheet" />
-      <link href="assets/css/main-style.css" rel="stylesheet" />
+    <link href="assets/css/style.css" rel="stylesheet" />
+    <link href="assets/css/main-style.css" rel="stylesheet" />
       
       
 
@@ -78,7 +78,6 @@
     <script src="assets/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script type="text/javascript">
         $( "#message_error" ).hide();
-        $('#myModal').modal('show');
         function open_message(valor){
             if(valor=="true"){
                 $( "#message_error" ).hide();

@@ -4,7 +4,8 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
     var self = this;
     self.usuario={mail:"", password:"",name:"", lastname:"", phone:""};
     self.empresa={nit:"",r_social:"", dir:"", tel:"", cam_com:null, rut:"", nombre_replegal:"", doc_replegal:"", email_replegal:"", tel_replegal:"", mail:"", password:""}
-
+    self.mail="";
+    
     self.SaveUser = function(usuario){
         SignUpService.SaveSign(usuario).then(self.reset, function(errResponse){
             console.error('Error while creating Paper.');
@@ -16,7 +17,16 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
             console.error('Error while creating Paper.');
         });
     };
-          
+     
+    self.sendForgot = function(mail){
+        SignUpService.sendForgot(mail).then(function(d){
+            open_message_forgot(d.forgot);
+            btn_sending_mail.button('reset');
+        }), function(errResponse){
+            console.error('Error while creating Paper.');
+        };
+    };
+    
     self.submit = function() {
       self.SaveUser(self.usuario); 
       self.close();
@@ -26,7 +36,12 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
         self.SaveEmpresa(self.empresa); 
         self.close();
     };
-          
+    
+    self.sendingForgot = function(){
+        btn_sending_mail.button('loading');
+        self.sendForgot(self.mail);
+    };
+    
     self.close = function(){
         self.reset();
         dialog.modal( "hide" );
@@ -76,6 +91,16 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
                 function(response){
                     console.log(response.data);
                     open_message(response.data);
+                    return response.data;
+                },function(errResponse){
+                    console.error('Error while updating paper ' +errResponse);
+                    return $q.reject(errResponse);
+                }
+            );
+	},sendForgot: function(mail){
+            return $http.post('forgot', {'mail':mail}).then(
+                function(response){
+                    console.log(response.data);
                     return response.data;
                 },function(errResponse){
                     console.error('Error while updating paper ' +errResponse);
