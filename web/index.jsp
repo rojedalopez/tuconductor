@@ -25,6 +25,7 @@ if(session.getAttribute("user") != null){
     <title>:::TuConductor:::</title>
     <!-- Core CSS - Include with every page -->
     <link href="js/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="js/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet" />
@@ -44,7 +45,7 @@ if(session.getAttribute("user") != null){
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
 
     <!-- Angular Material Library -->
-    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
+    <script src="js/angular-material.min.js"></script>
     <script src="js/dist/angular-datatables.min.js"></script>   
     
     
