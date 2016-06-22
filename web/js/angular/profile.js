@@ -308,7 +308,6 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     return {
         SaveDatosPersonales: function(usuario_dp){
             return $http.post('../usuario_dp', usuario_dp).then(function(response){
-                console.log(response.data);
                 return response.data;
             },function(errResponse){
                 console.error('Error guardando datos personales ' +errResponse);
@@ -317,7 +316,6 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
 	},
         SaveFormacion: function(formacion){
             return $http.post('../formacion_usuario', formacion).then(function(response){
-                console.log(response.data);
                 return response.data;
             },function(errResponse){
                 console.error('Error guardando datos personales ' +errResponse);
@@ -326,7 +324,6 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
 	},
         SaveExpUsuario: function(exp_laboral){
             return $http.post('../experiencia_usuario', exp_laboral).then(function(response){
-                console.log(response.data);
                 return response.data;
             }, 
             function(errResponse){
@@ -462,7 +459,6 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
 	},
         ModificarEmpresas: function(empresa) {
             return $http.post('../empresa_byadmin', empresa).then(function(response){
-                console.log(response.data);
 		return response.data;
             },function(errResponse){
                 console.error('Error while fetching expenses');
@@ -761,7 +757,6 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     
     self.getUsuario = function(){
         var cod = self.getVarUrl("cod");
-        console.log(cod);
         EditConductorbyAdminService.getUsuario(cod).then(function(d) {
             self.usuario_dp = d;
             self.usuario_dp.fecha_nac =  new Date(self.usuario_dp.fecha_nac);
@@ -1032,7 +1027,6 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
             });
 	},SaveDatosPersonales: function(usuario_dp){
             return $http.post('../usuario_dp_byadmin', usuario_dp).then(function(response){
-                console.log(response.data);
                 return response.data;
             },function(errResponse){
                 console.error('Error guardando datos personales ' +errResponse);
@@ -1041,7 +1035,6 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
 	},
         SaveExpUsuario: function(exp_laboral){
             return $http.post('../experiencia_byadmin', exp_laboral).then(function(response){
-                console.log(response.data);
                 return response.data;
             }, 
             function(errResponse){
@@ -1059,7 +1052,6 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         },
         SaveFormUsuario: function(exp_laboral){
             return $http.post('../formacion_byadmin', exp_laboral).then(function(response){
-                console.log(response.data);
                 return response.data;
             }, 
             function(errResponse){
@@ -1077,7 +1069,6 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         },
         SaveMultaUsuario: function(exp_laboral){
             return $http.post('../multa_byadmin', exp_laboral).then(function(response){
-                console.log(response.data);
                 return response.data;
             }, 
             function(errResponse){
@@ -1095,7 +1086,6 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         },
         SaveAccidenteUsuario: function(accidente){
             return $http.post('../accidente_byadmin', accidente).then(function(response){
-                console.log(response.data);
                 return response.data;
             }, 
             function(errResponse){
@@ -1113,7 +1103,6 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         },
         SaveJudicialUsuario: function(judicial){
             return $http.post('../procjudicial_byadmin', judicial).then(function(response){
-                console.log(response.data);
                 return response.data;
             }, 
             function(errResponse){

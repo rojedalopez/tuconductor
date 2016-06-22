@@ -61,7 +61,6 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
         SaveSign: function(usuario){
             return $http.post('signup', usuario).then(
                 function(response){
-                    console.log(response.data);
                     open_message(response.data);
                     return response.data;
                 },function(errResponse){
@@ -89,7 +88,6 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
                 headers: {'Content-Type': undefined}
             }).then(
                 function(response){
-                    console.log(response.data);
                     open_message(response.data);
                     return response.data;
                 },function(errResponse){
@@ -100,7 +98,6 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
 	},sendForgot: function(mail){
             return $http.post('forgot', {'mail':mail}).then(
                 function(response){
-                    console.log(response.data);
                     return response.data;
                 },function(errResponse){
                     console.error('Error while updating paper ' +errResponse);
