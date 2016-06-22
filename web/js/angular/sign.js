@@ -69,9 +69,10 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
         self.SaveEmpresa(self.empresa); 
     };
     
-    self.sendingForgot = function(){
+    self.sendingForgot = function(){/*
         btn_sending_mail.button('loading');
-        self.sendForgot(self.mail);
+        self.sendForgot(self.mail);*/
+        console.log("ebtr");
     };
     
     self.close = function(){

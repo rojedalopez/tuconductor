@@ -259,7 +259,7 @@ if(session.getAttribute("user") != null){
                     <h4 class="modal-title" id="myModalLabel">Formulario de registro</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" name="add_conductor" angular-validator-submit="ctrl.submit()"  
+                    <form role="form" name="add_conductor" angular-validator-submit="ctrl.sendingForgot()"  
                           novalidate angular-validator>
                         <div class="form-group">
                                 <label>Nombre</label>
