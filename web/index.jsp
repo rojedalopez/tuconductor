@@ -8,11 +8,11 @@ response.setHeader("Cache", "no-cache");
 if(session.getAttribute("user") != null){
    usuario u = (usuario)session.getAttribute("user");
    if(u.getRol()==1){
-        response.sendRedirect("../admin/");
+        response.sendRedirect("/admin/");
    }else if(u.getRol()==2){
-        response.sendRedirect("../empresa/");
+        response.sendRedirect("/empresa/");
    }else if(u.getRol()==3){
-        response.sendRedirect("../conductor/");
+        response.sendRedirect("/conductor/");
    }
 }
 %>
@@ -24,20 +24,22 @@ if(session.getAttribute("user") != null){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>:::TuConductor:::</title>
     <!-- Core CSS - Include with every page -->
-    <link href="js/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="js/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css"/>
+    <link href="assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet" />
     <link href="assets/css/main-style.css" rel="stylesheet" />
-    
+    <!-- Page-Level CSS -->
+    <link href="assets/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <link href="css/dataTables.bootstrap.min.css" rel="stylesheet" />
     <link href="css/generales.css" rel="stylesheet" />
-    
+
     <script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
     <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript" src="js/dataTables.responsive.min.js"></script>
-    <script src="js/bootstrap/js/bootstrap.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <!-- Angular Material requires Angular.js Libraries -->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
@@ -46,15 +48,66 @@ if(session.getAttribute("user") != null){
 
     <!-- Angular Material Library -->
     <script src="js/angular-material.min.js"></script>
-    <script src="js/dist/angular-datatables.min.js"></script>   
+    <script src="js/dist/angular-datatables.min.js"></script>    
+    
+    <script type="text/javascript">
+        var dialog ;        
+        var dialog2 ;
+        var btn_sending_mail;
+        $(document).ready(function() {
+            btn_sending_mail = $("#btn_sending_mail");
+            dialog = $("#Modal_Conductor");
+            dialog2 = $("#Modal_Empresa");
+        } );
+        
+        function open_modal(modal){
+            //$("#Modal_choise_options").modal("hide");
+            $("#"+modal).modal("show");
+        }
+        function open_message_forgot(valor){
+            if(valor===true){
+                $( "#Modal_forgotpass_error" ).hide();
+                $( "#Modal_forgotpass_success" ).show("slow");                
+            }else{
+                $( "#Modal_forgotpass_success" ).hide();
+                $( "#Modal_forgotpass_error" ).show("slow");
+            }
+            
+        }
+        function open_message(valor){
+            if(valor=="true"){
+                $("#message_exito").show();
+                setTimeout(function(){
+                    $( "#message_exito" ).hide();
+                    $( "#message_error" ).hide();
+		}, 3000);
+            }else{
+                $("#message_error").show();
+                setTimeout(function(){
+                    $( "#message_exito" ).hide();
+                    $( "#message_error" ).hide();
+		}, 3000);
+            }
+        }
+        
+    </script>
     
     
+    <script type="text/javascript" src="js/date.js"></script>
     <script type="text/javascript" src="js/app.js"></script>      
     <script type="text/javascript" src="js/angular/profile.js"></script>
     <script type="text/javascript" src="js/angular/sign.js"></script>
     <script type="text/javascript" src="js/angular/wall.js"></script>
     <script type="text/javascript" src="js/angular/oferta.js"></script>
     <script type="text/javascript" src="js/angular/inbox.js"></script>
+    
+    <script src="assets/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="assets/plugins/pace/pace.js"></script>
+    <script src="assets/scripts/siminta.js"></script>
+    <!-- Page-Level Plugin Scripts-->
+    <script src="assets/plugins/morris/raphael-2.1.0.min.js"></script>
+    <script src="assets/plugins/morris/morris.js"></script>
+    <script src="assets/scripts/dashboard-demo.js"></script>
     
 </head>
 
@@ -296,63 +349,16 @@ if(session.getAttribute("user") != null){
         </div>
     </div>
                                 
-    <div id="message_exito" class="alert alert-success alert-dismissable" style="width: 300px; position: absolute; right: 5px; bottom: 5px;" >
+    <div id="message_exito" class="alert alert-success alert-dismissable hidden" style="width: 300px; position: absolute; right: 5px; bottom: 5px;" >
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         Registro exitoso...
     </div>
     
-    <div id="message_error" class="alert alert-danger alert-dismissable" style="width: 300px; position: absolute; right: 5px; bottom: 5px;" >
+    <div id="message_error" class="alert alert-danger alert-dismissable hidden" style="width: 300px; position: absolute; right: 5px; bottom: 5px;" >
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         Registro no exitoso...
     </div>
-     <!-- Core Scripts - Include with every page -->
-    <script src="assets/plugins/jquery-1.10.2.js"></script>
-    <script src="assets/plugins/bootstrap/bootstrap.min.js"></script>
-    <script src="assets/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script type="text/javascript">
-        var dialog ;        
-        var dialog2 ;
-        var btn_sending_mail;
-            $(document).ready(function() {
-                btn_sending_mail = $("#btn_sending_mail");
-                dialog = $("#Modal_Conductor");
-                dialog2 = $("#Modal_Empresa");
-            } );
-        $( "#message_exito" ).hide();
-        $( "#message_error" ).hide();
-        $( "#Modal_forgotpass_success" ).hide();
-        $( "#Modal_forgotpass_error" ).hide();
-        function open_modal(modal){
-            //$("#Modal_choise_options").modal("hide");
-            $("#"+modal).modal("show");
-        }
-        function open_message_forgot(valor){
-            if(valor===true){
-                $( "#Modal_forgotpass_error" ).hide();
-                $( "#Modal_forgotpass_success" ).show("slow");                
-            }else{
-                $( "#Modal_forgotpass_success" ).hide();
-                $( "#Modal_forgotpass_error" ).show("slow");
-            }
-            
-        }
-        function open_message(valor){
-            if(valor=="true"){
-                $("#message_exito").show();
-                setTimeout(function(){
-                    $( "#message_exito" ).hide();
-                    $( "#message_error" ).hide();
-		}, 3000);
-            }else{
-                $("#message_error").show();
-                setTimeout(function(){
-                    $( "#message_exito" ).hide();
-                    $( "#message_error" ).hide();
-		}, 3000);
-            }
-        }
-        
-    </script>
+
     </div>
 </body>
 

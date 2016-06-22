@@ -6,14 +6,6 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
     self.empresa={nit:"",r_social:"", dir:"", tel:"", cam_com:null, rut:"", nombre_replegal:"", doc_replegal:"", email_replegal:"", tel_replegal:"", mail:"", password:""}
     self.mail="";
     
-    self.form = {
-      onSubmit: function (isValid) {
-        if (isValid) {
-          alert('do post...');
-        }
-      }
-    };
-    
     self.SaveUser = function(usuario){
         SignUpService.SaveSign(usuario).then(self.reset, function(errResponse){
             console.error('Error while creating Paper.');
