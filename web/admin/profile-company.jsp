@@ -47,7 +47,7 @@ if(session.getAttribute("user") == null){
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
 
     <!-- Angular Material Library -->
-    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
+    <script src="../js/angular-material.min.js"></script>
     <script src="../js/dist/angular-datatables.min.js"></script>   
     
     <script type="text/javascript">
@@ -57,7 +57,12 @@ if(session.getAttribute("user") == null){
             modal_editempresa=$("#Modal_editempresa");
             modal_editadicional=$("#Modal_info");
             btn_add_empresa = $("#btn_add_empresa");
+            
         });
+        
+        function Open_dialog_compra(){
+            $("#Modal_compra").modal("show");
+        }
         function Open_dialog_filter(){
             $( "#Modal_filter" ).modal("show");
         }
@@ -542,14 +547,20 @@ if(session.getAttribute("user") == null){
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <div class="alert alert-info text-center">
                                 <i class="fa fa-tags fa-3x"></i>&nbsp;<b>{{ctrl.empresa.ofertas_disp}} </b>Ofertas disponibles  
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <div class="alert alert-info text-center">
                                 <i class="fa fa-eye fa-3x"></i>&nbsp;<b>{{ctrl.empresa.tkn_disp}} </b>Vistas disponibles
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4" style="cursor: pointer;" onclick="Open_dialog_compra()">
+                            <div class="alert alert-info text-center">
+                                <i class="fa fa-money fa-3x"></i>&nbsp;<b></b>Asignar tokens manualmente
 
                             </div>
                         </div>
@@ -590,6 +601,40 @@ if(session.getAttribute("user") == null){
         </div>
     </div>
     
+    <div class="modal fade" id="Modal_compra" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Asignación manual de tokens</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <p>
+                            <label class="etiqueta_e">Comprobante de pago:</label>
+                            <input type="text" class="form-control texto_e" />
+                        </p>
+                        <p>
+                            <label class="etiqueta_e">Fecha de transaccion:</label>
+                            <input type="date" class="form-control texto_e" />
+                        </p>
+                        <p>
+                            <label class="etiqueta_e">Nro. de ofertas requeridas:</label>
+                            <input type="number" class="form-control texto_e" />
+                        </p>
+                        <p>
+                            <label class="etiqueta_e">Nro. de vistas requeridas:</label>
+                            <input type="number" class="form-control texto_e" />
+                        </p>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" ng-disabled="add_empresa.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_empresa" class="btn btn-primary" >Editar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
     <!-- end wrapper -->
     
