@@ -7,7 +7,8 @@ angular.module('myApp',[
     'MyApp.Oferta',
     'MyApp.Inbox',
     'datatables',
-    'ngMaterial'
+    'ngMaterial',
+    'angularValidator'
 ]);
 
 

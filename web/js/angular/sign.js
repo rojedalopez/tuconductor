@@ -7,34 +7,66 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
     self.mail="";
     
     self.SaveUser = function(usuario){
-        SignUpService.SaveSign(usuario).then(self.reset, function(errResponse){
+        SignUpService.SaveSign(usuario).then(function(d){
+            if(d){
+                btn_add_conductor.button('reset');
+                self.close();
+            }
+        }, function(errResponse){
             console.error('Error while creating Paper.');
         });
     };
         
     self.SaveEmpresa = function(empresa){
-        SignUpService.SaveEmpresa(empresa).then(self.reset,function(errResponse){
+        SignUpService.SaveEmpresa(empresa).then(function(d){
+            if(d){
+                btn_add_empresa.button('reset');
+                self.close();
+            }
+        },function(errResponse){
             console.error('Error while creating Paper.');
         });
     };
      
     self.sendForgot = function(mail){
         SignUpService.sendForgot(mail).then(function(d){
-            open_message_forgot(d.forgot);
+            if(d.forgot===true){
+                Modal_forgotpass_success.removeClass('hide');                
+            }else{
+                Modal_forgotpass_error.removeClass('hide');                
+            }
             btn_sending_mail.button('reset');
         }), function(errResponse){
             console.error('Error while creating Paper.');
         };
     };
     
+    self.passwordValidator = function(password) {
+            if(!password){return;}
+
+            if (password.length < 6) {
+                    return "Password must be at least " + 6 + " characters long";
+            }
+
+            if (!password.match(/[A-Z]/)) {
+                     return "Password must have at least one capital letter";
+            }
+
+            if (!password.match(/[0-9]/)) {
+                     return "Password must have at least one number";
+            }
+
+            return true;
+    };
+        
     self.submit = function() {
+      btn_add_conductor.button('loading');
       self.SaveUser(self.usuario); 
-      self.close();
     };
           
     self.submit_Empresa = function() {
+        btn_add_empresa.button('loading');
         self.SaveEmpresa(self.empresa); 
-        self.close();
     };
     
     self.sendingForgot = function(){
@@ -61,7 +93,6 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
         SaveSign: function(usuario){
             return $http.post('signup', usuario).then(
                 function(response){
-                    open_message(response.data);
                     return response.data;
                 },function(errResponse){
                     console.error('Error while updating paper ' +errResponse);
