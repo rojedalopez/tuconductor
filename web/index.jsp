@@ -24,7 +24,7 @@ if(session.getAttribute("user") != null){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>:::TuConductor:::</title>
     <!-- Core CSS - Include with every page -->
-    <link href="assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="js/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet" />
@@ -36,7 +36,7 @@ if(session.getAttribute("user") != null){
     <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript" src="js/dataTables.responsive.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="js/bootstrap/js/bootstrap.min.js"></script>
     <!-- Angular Material requires Angular.js Libraries -->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
@@ -161,7 +161,7 @@ if(session.getAttribute("user") != null){
                     <h4 class="modal-title" id="myModalLabel">¿Olvidaste tu contraseña?</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" name="form_forgot" ng-submit="ctrl.sendingForgot()">
+                    <form role="form" name="form_forgot" ng-submit="ctrl.sendingForgot()" novalidate>
                         <div class="form-group">
                             <label>E-mail</label>
                             <div class="form-group input-group">
