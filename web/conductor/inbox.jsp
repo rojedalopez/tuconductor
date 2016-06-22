@@ -12,8 +12,8 @@ if(session.getAttribute("user") == null){
     usuario u = (usuario)session.getAttribute("user");
    if(u.getRol()==1){
         response.sendRedirect("../admin/");
-   }else if(u.getRol()==3){
-        response.sendRedirect("../conductor/");
+   }else if(u.getRol()==2){
+        response.sendRedirect("../empresa/");
    }
 }
 %>
@@ -25,7 +25,6 @@ if(session.getAttribute("user") == null){
     <title>:::TuConductor:::</title>
     <!-- Core CSS - Include with every page -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">
     <link href="../assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
     <link href="../assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="../assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />
@@ -60,9 +59,8 @@ if(session.getAttribute("user") == null){
             form_oferta = $("#form_oferta");
             dialog_oferta = $("#Modal_publicar");
             btn_add_exp = $("#btn_add_exp");
-            btn_add_formacion = $("#btn_add_formacion");
+            btn_add_formacion = $("#btn_add_formacion");       
         });
-        
         
     </script>
     
@@ -360,36 +358,17 @@ if(session.getAttribute("user") == null){
                                     <!-- Notifications-->
                                     <div class="panel panel-primary">
                                         <div class="panel-heading">
-                                            <i class="fa fa-users fa-fw"></i> Mis contactos
+                                            <i class="fa fa-users fa-fw"></i> Mis contactos 
+                                            <i class="fa fa-plus-square fa-fw close2" ></i>
                                         </div>
                                         <div class="panel-footer">
-                                                <md-content layout-padding layout="column">
-                                                <form ng-submit="$event.preventDefault()">
-                                                  <md-autocomplete
-                                                      ng-disabled="ctrl.isDisabled"
-                                                      md-selected-item="ctrl.selectedItem"
-                                                      md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
-                                                      md-search-text="ctrl.searchText"
-                                                      md-selected-item-change="ctrl.selectedItemChange(item)"
-                                                      md-items="item in ctrl.querySearch(ctrl.searchText)"
-                                                      md-item-text="item.n_destino"
-                                                      md-min-length="0"
-                                                      placeholder="Seleccione usuario, para iniciar Chat"
-                                                      md-menu-class="autocomplete-custom-template">
-                                                    <md-item-template>
-                                                      <span class="item-title">
-                                                        <span> {{item.n_destino}} </span>
-                                                      </span>
-                                                    </md-item-template>
-                                                  </md-autocomplete>
-                                                </form>
-                                                </md-content>
+                                                <input id="btn-input" type="text" class="form-control" placeholder="Buscar contacto.."  data-provide="typeahead" />
                                         </div>
                                         <div class="panel-body" style="height: 400px; overflow-y: scroll;">
                                             <div class="list-group" ng-repeat="ch in ctrl.chats"> 
                                                 
                                                 <a style="cursor: pointer;" class="list-group-item" ng-click="ctrl.selectChat(ch.id)" >
-                                                    <span ng-bind="ch.n_destino"></span>
+                                                    <img src="https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/1014251_10202212948658325_299875096_n.jpg?oh=26715f788a0bc8715ad33013759ca25e&oe=57CE6B55" width="24" height="24" class="img-circle"  /> <span ng-bind="ch.n_destino"></span>
                                                     <span class="pull-right text-muted small"><em style="color: {{(!ch)?'green':'red'}};">{{(!ch)?'Visto':'No Leido'}}</em>
                                                     </span>
                                                 </a>
@@ -413,7 +392,7 @@ if(session.getAttribute("user") == null){
                                             <ul class="chat" scroll="studentDetail">
                                                 <li  ng-class="{'left clearfix': m.rol, 'right clearfix': !m.rol }"  ng-repeat="m in ctrl.mensajes">
                                                     <span ng-class="{'chat-img pull-left': m.rol, 'chat-img pull-right': !m.rol }">
-                                                        <!--<img src="{{(m.rol)?'http://placehold.it/50/FA6F57/fff':'http://placehold.it/50/55C1E7/fff'}}http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />-->
+                                                        <img src="{{(m.rol)?'http://placehold.it/50/FA6F57/fff':'http://placehold.it/50/55C1E7/fff'}}http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />
                                                     </span>
                                                     <div class="chat-body clearfix">
                                                         <div class="header">
@@ -458,6 +437,27 @@ if(session.getAttribute("user") == null){
 
 
         </div>
+            
+    <div class="modal fade" id="form_addchat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Iniciar chat</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" ng-submit="ctrl.submitExp()" name="exp_laboral" class="form-horizontal" novalidate>
+                        <label class="etiqueta_e">Iniciar chat con:</label>
+                        <input type="text" name="userchat"  class="form-control texto_e"/>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" ng-disabled="form_formacion.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_formacion" class="btn btn-primary" >{{(ctrl.formacion.id===-1)?'Añadir':'Editar'}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <!-- end wrapper -->    
     </div>

@@ -47,7 +47,7 @@ if(session.getAttribute("user") == null){
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
 
     <!-- Angular Material Library -->
-    <script src="../js/angular-material.min.js"></script>
+    <script src="js/angular-material.min.js"></script>
     <script src="../js/dist/angular-datatables.min.js"></script>   
     
     
