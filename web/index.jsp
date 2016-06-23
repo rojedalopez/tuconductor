@@ -115,10 +115,6 @@ if(session.getAttribute("user") != null){
     <script src="assets/plugins/morris/morris.js"></script>
     <script src="assets/scripts/dashboard-demo.js"></script>
     
-    <style>
-        .text-valid{font-size:11px;font-style: italic;}
-    </style>
-    
 </head>
 
 <body class="body-Login-back" ng-app="myApp" >
@@ -221,16 +217,17 @@ if(session.getAttribute("user") != null){
                 </div>
                 <div class="modal-body">
                     <form role="form" name="form_forgot" angular-validator-submit="ctrl.sendingForgot()"  
-                          novalidate angular-validator>
+                          novalidate angular-validator class="form-horizontal">
+                        <label class="etiqueta_e">E-mail</label>
                         <div class="form-group">
-                            <label>E-mail</label>
                                 <input type="email" 
                                 name = "mail"
-                                class = "form-control"
+                                class = "form-control texto_e"
                                 ng-model = "ctrl.mail"
                                 validate-on="dirty"
                                 invalid-message="'Esta ingresando un correo incorrecto'"
                                 required-message="'El campo no puede estar vacio'"
+                                clase="text_valid_e"
                                 required>
                         </div>
                         <div class="alert alert-info hide" id="Modal_forgotpass_success">
@@ -259,73 +256,86 @@ if(session.getAttribute("user") != null){
                 </div>
                 <div class="modal-body">
                     <form role="form" name="add_conductor" angular-validator-submit="ctrl.submit()"  
-                          novalidate angular-validator>
+                          novalidate angular-validator class="form-horizontal">
+                        <label class="etiqueta_e">Nombre<i class="required">*</i>:</label>
                         <div class="form-group">
-                                <label>Nombre</label>
                                 <input 
                                 type="text" 
                                 name="name_"
                                 validate-on="dirty" 
-                                class="form-control"  
+                                class="form-control texto_e"  
                                 ng-model="ctrl.usuario.name" 
+                                clase="text_valid_e"
+                                validator = "ctrl.lengthValidator(ctrl.usuario.name, 4) === true"
+                                invalid-message = "ctrl.lengthValidator(ctrl.usuario.name, 4)"
                                 required-message="'El campo no puede estar vacio'" 
                                 required/>
                         </div>
+                        <label class="etiqueta_e">Apellidos<i class="required">*</i>:</label>
                         <div class="form-group">
-                                <label>Apellidos</label>
                                 <input 
                                 type="text" 
                                 name="lastname" 
-                                class="form-control" 
+                                class="form-control texto_e" 
                                 ng-model="ctrl.usuario.lastname" 
                                 validate-on="dirty" 
+                                clase="text_valid_e"
+                                validator = "ctrl.lengthValidator(ctrl.usuario.lastname, 4) === true"
+                                invalid-message = "ctrl.lengthValidator(ctrl.usuario.lastname, 4)"
                                 required-message="'El campo no puede estar vacio'" 
                                 required/>
                         </div>
+                        <label class="etiqueta_e">E-mail<i class="required">*</i>:</label>
                         <div class="form-group">
-                                <label>E-mail</label>
                                 <input 
                                 type="email"
                                 name="mail"
-                                class="form-control" 
+                                class="form-control texto_e" 
                                 ng-model="ctrl.usuario.mail" 
                                 validate-on="dirty" 
+                                clase="text_valid_e"
                                 invalid-message="'Esta ingresando un correo incorrecto'"
                                 required-message="'El campo no puede estar vacio'" 
                                 required/>
                         </div>
+                        <label class="etiqueta_e">Contraseña<i class="required">*</i>:</label>
                         <div class="form-group">
-                                <label>Contraseña</label>
                                 <input 
                                 type="password" 
                                 name="password"
-                                class="form-control"
+                                class="form-control texto_e"
                                 ng-model="ctrl.usuario.password" 
+                                clase="text_valid_e"
                                 validator = "ctrl.passwordValidator(ctrl.usuario.password) === true"
                                 invalid-message = "ctrl.passwordValidator(ctrl.usuario.password)"
                                 required-message="'El campo no puede estar vacio'"
                                 required/>
                         </div>
+                        <label class="etiqueta_e_up">Confirmar contraseña<i class="required">*</i>:</label>
                         <div class="form-group">
-                                <label>Confirmar contraseña</label>
                                 <input 
                                 type="password" 
                                 name = "confirmPassword"
-                                class = "form-control"
+                                class = "form-control texto_e"
                                 ng-model = "ctrl.usuario.confirmPassword"
+                                clase="text_valid_e"
                                 validator = "ctrl.usuario.password === ctrl.usuario.confirmPassword"
                                 validate-on="dirty"
                                 invalid-message = "'Las contraseñas no coinciden!'"
+                                required-message="'El campo no puede estar vacio'"
                                 required/>
                         </div>
+                        <label class="etiqueta_e">Celular<i class="required">*</i>:</label>
                         <div class="form-group">
-                                <label>Telefono</label>
                                 <input 
                                 type="tel"
                                 name="phone"
-                                class="form-control"
+                                class="form-control texto_e"
                                 ng-model="ctrl.usuario.phone"  
                                 validate-on="dirty"
+                                clase="text_valid_e"
+                                validator = "ctrl.lengthValidator(ctrl.usuario.phone, 10) === true"
+                                invalid-message = "ctrl.lengthValidator(ctrl.usuario.phone, 10)"
                                 required-message="'El campo no puede estar vacio'"
                                 required/>
                         </div>
@@ -340,37 +350,7 @@ if(session.getAttribute("user") != null){
         </div>
     </div>
                                 
-    <div class="modal fade" id="Modal_Conductor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">¿Olvidaste tu contraseña?</h4>
-                </div>
-                <div class="modal-body">
-                    <form role="form" name="add_empresa" angular-validator-submit="ctrl.sendingForgot()"  
-                          novalidate angular-validator>
-                        <div class="form-group">
-                            <label>E-mail</label>
-                                <input type="email" 
-                                name = "mail"
-                                class = "form-control"
-                                ng-model = "ctrl.usuario.mail"
-                                validate-on="dirty"
-                                invalid-message="'Esta ingresando un correo incorrecto'"
-                                required-message="'El campo no puede estar vacio'"
-                                required>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Enviando correo..." id="btn_add_conductor">Registrar</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-                                
+ 
     <div class="modal fade" id="Modal_Empresa" tabindex="3" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -379,55 +359,154 @@ if(session.getAttribute("user") != null){
                     <h4 class="modal-title" id="myModalLabel">Registro Empresa</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" name="add_empresa" class="form-horizontal" angular-validator-submit="ctrl.submit_Empresa()" angular-validator novalidate>
-                        <p ng-class="{ 'has-error': add_empresa.nit.$error.required || add_empresa.nit.$error.minlength }">
-                            <label class="etiqueta_e">NIT<i class="required">*</i>:</label>
-                            <input type="text" class="form-control texto_e" name="nit" ng-model="ctrl.empresa.nit" placeholder="Nit de la empresa" minlength="6" required />
-                        </p>
-                        <p ng-class="{ 'has-error': add_empresa.r_social.$error.required || add_empresa.r_social.$error.minlength }">
-                            <label class="etiqueta_e">Razon social<i class="required">*</i>:</label>
-                            <input type="text" class="form-control texto_e" name="r_social" ng-model="ctrl.empresa.r_social" placeholder="Razon social de la empresa" minlength="6" required />
-                        </p>
-                        <p ng-class="{ 'has-error': add_empresa.dir.$error.required || add_empresa.dir.$error.minlength }">
-                            <label class="etiqueta_e">Dirección<i class="required">*</i>:</label>
-                            <input type="text" class="form-control texto_e" name="dir" ng-model="ctrl.empresa.dir" placeholder="Direccion de la empresa" minlength="6" required />
-                        </p>
-                        <p  ng-class="{ 'has-error': add_empresa.tel.$error.required || add_empresa.tel.$error.minlength }">
-                            <label class="etiqueta_e">Telefono<i class="required">*</i>:</label>
-                            <input type="text" class="form-control texto_e" name="tel" ng-model="ctrl.empresa.tel" placeholder="Telefono de la empresa" minlength="7" required />
-                        </p>
-                        <p>
-                            <label class="etiqueta_e">Camara de comercio:</label>
-                            <input type="file" class="form-control texto_e" uploader-model="ctrl.empresa.cam_com" accept=".pdf, .docx" name="cam_com"  required  />
-                        </p>
-                        <p  ng-class="{ 'has-error': add_empresa.nombre_replegal.$error.required || add_empresa.nombre_replegal.$error.minlength }">
-                            <label class="etiqueta_e">Nombre Rep. legal<i class="required">*</i>:</label>
-                            <input type="text" class="form-control texto_e" name="nombre_replegal" ng-model="ctrl.empresa.nombre_replegal" placeholder="Nombre del rep. legal de la empresa" minlength="6" required/>
-                        </p>
-                        <p  ng-class="{ 'has-error': add_empresa.doc_replegal.$error.required || add_empresa.doc_replegal.$error.minlength }">
-                            <label class="etiqueta_e">Documento Rep. legal<i class="required">*</i>:</label>
-                            <input type="text" class="form-control texto_e" name="doc_replegal" ng-model="ctrl.empresa.doc_replegal" placeholder="Documento del rep. legal de la empresa" minlength="6" required/>
-                        </p>
-                        <p>
-                            <label class="etiqueta_e">Email Rep. legal:</label>
-                            <input type="text" class="form-control texto_e" name="email_replegal" ng-model="ctrl.empresa.email_replegal" placeholder="Email del rep. legal de la empresa" />
-                        </p>
-                        <p>
-                            <label class="etiqueta_e">Telefono Rep. legal:</label>
-                            <input type="text" class="form-control texto_e" name="tel_replegal" ng-model="ctrl.empresa.tel_replegal" placeholder="Telefono del rep. legal de la empresa" />
-                        </p>                        
-                        <p ng-class="{ 'has-error': add_empresa.mail.$error.required || add_empresa.mail.$error.minlength }">
-                            <label class="etiqueta_e">Usuario<i class="required">*</i>:</label>
-                            <input type="text" class="form-control texto_e" name="mail" ng-model="ctrl.empresa.mail" placeholder="Usuario (E-mail) de la empresa" minlength="6" required />
-                        </p>
-                        <p ng-class="{ 'has-error': add_empresa.password.$error.required || add_empresa.password.$error.minlength }">
-                            <label class="etiqueta_e">Contraseña<i class="required">*</i>:</label>
-                            <input type="password" class="form-control texto_e" name="password" ng-model="ctrl.empresa.password" placeholder="Contraseña de la empresa" minlength="6" required />
-                        </p>
-                        <p ng-class="{ 'has-error': add_empresa.passwordRepeat.$error.required || add_empresa.passwordRepeat.$error.minlength }">
-                            <label class="etiqueta_e">Confirmar contraseña<i class="required">*</i>:</label>
-                            <input type="password" class="form-control texto_e" name="passwordRepeat" ng-model="ctrl.empresa.passwordRepeat" placeholder="Confirmar la contraseña" minlength="6" required />
-                        </p>
+                    <form role="form" name="add_empresa" class="form-horizontal" 
+                          angular-validator-submit="ctrl.submit_Empresa()" angular-validator novalidate>
+                        <label class="etiqueta_e">NIT<i class="required">*</i>:</label>
+                        <div class="form-group">
+                            <input type="text" 
+                            name="nit"
+                            validate-on="dirty" 
+                            class="form-control texto_e"  
+                            ng-model="ctrl.empresa.nit" 
+                            clase="text_valid_e"
+                            validator = "ctrl.lengthValidator(ctrl.empresa.nit, 8) === true"
+                            invalid-message = "ctrl.lengthValidator(ctrl.empresa.nit, 8)"
+                            required-message="'El campo no puede estar vacio'" 
+                            required/>
+                        </div>
+                        <label class="etiqueta_e">Razon social<i class="required">*</i>:</label>
+                        <div class="form-group">    
+                            <input type="text" 
+                            name="r_social"
+                            validate-on="dirty"
+                            class="form-control texto_e"  
+                            ng-model="ctrl.empresa.r_social" 
+                            clase="text_valid_e"
+                            validator = "ctrl.lengthValidator(ctrl.empresa.r_social, 6) === true"
+                            invalid-message = "ctrl.lengthValidator(ctrl.empresa.r_social, 6)"
+                            required-message="'El campo no puede estar vacio'"
+                            required />
+                        </div>
+                        <label class="etiqueta_e">Dirección<i class="required">*</i>:</label>
+                        <div class="form-group">    
+                            <input type="text"
+                            name="dir"
+                            validate-on="dirty"
+                            class="form-control texto_e"  
+                            ng-model="ctrl.empresa.dir" 
+                            clase="text_valid_e"
+                            validator = "ctrl.lengthValidator(ctrl.empresa.dir, 6) === true"
+                            invalid-message = "ctrl.lengthValidator(ctrl.empresa.dir, 6)"
+                            required-message="'El campo no puede estar vacio'"
+                            required />
+                        </div>
+                        <label class="etiqueta_e">Telefono<i class="required">*</i>:</label>
+                        <div class="form-group">    
+                            <input type="text"
+                            name="tel"
+                            validate-on="dirty"
+                            class="form-control texto_e"  
+                            ng-model="ctrl.empresa.tel"
+                            clase="text_valid_e"
+                            validator = "ctrl.lengthValidator(ctrl.empresa.tel, 7) === true"
+                            invalid-message = "ctrl.lengthValidator(ctrl.empresa.tel, 7)"
+                            required-message="'El campo no puede estar vacio'"
+                            required />
+                        </div>
+                        <label class="etiqueta_e_up">Camara de comercio:</label>
+                        <div class="form-group">    
+                            <input type="file"
+                            name="cam_com"
+                            class="form-control texto_e"  
+                            clase="text_valid_e"
+                            uploader-model="ctrl.empresa.cam_com"
+                            accept=".pdf, .docx"/>
+                        </div>
+                        <label class="etiqueta_e_up">Nombre Rep. legal<i class="required">*</i>:</label>
+                        <div class="form-group">    
+                            <input type="text" 
+                            name="nombre_replegal"
+                            validate-on="dirty"
+                            class="form-control texto_e"  
+                            ng-model="ctrl.empresa.nombre_replegal" 
+                            clase="text_valid_e"
+                            validator = "ctrl.lengthValidator(ctrl.empresa.nombre_replegal, 10) === true"
+                            invalid-message = "ctrl.lengthValidator(ctrl.empresa.nombre_replegal, 10)"
+                            required-message="'El campo no puede estar vacio'"
+                            required/>
+                        </div>
+                        <label class="etiqueta_e_up">Documento Rep. legal<i class="required">*</i>:</label>
+                        <div class="form-group">  
+                            <input type="text" 
+                            name="doc_replegal"
+                            validate-on="dirty"
+                            class="form-control texto_e"  
+                            ng-model="ctrl.empresa.doc_replegal" 
+                            clase="text_valid_e"
+                            validator = "ctrl.lengthValidator(ctrl.empresa.doc_replegal, 10) === true"
+                            invalid-message = "ctrl.lengthValidator(ctrl.empresa.doc_replegal, 10)"
+                            required-message="'El campo no puede estar vacio'"
+                            required/>
+                        </div>
+                        <label class="etiqueta_e">Mail Rep. legal<i class="required">*</i>:</label>
+                        <div class="form-group">
+                            <input type="email" 
+                            name="email_replegal"
+                            validate-on="dirty"
+                            class="form-control texto_e"  
+                            ng-model="ctrl.empresa.email_replegal" 
+                            clase="text_valid_e"
+                            invalid-message="'Esta ingresando un correo incorrecto'"
+                            required-message="'El campo no puede estar vacio'" 
+                            required/>
+                        </div>
+                        <label class="etiqueta_e_up">Telefono Rep. legal:</label>
+                        <div class="form-group">  
+                            <input type="text" 
+                            name="tel_replegal"
+                            validate-on="dirty" 
+                            class="form-control texto_e"  
+                            ng-model="ctrl.empresa.tel_replegal"/>
+                        </div>                      
+                        <label class="etiqueta_e">Usuario<i class="required">*</i>:</label>
+                        <div class="form-group">  
+                            <input type="email" 
+                            name="mail"
+                            validate-on="dirty"
+                            class="form-control texto_e"  
+                            ng-model="ctrl.empresa.mail"
+                            clase="text_valid_e"
+                            invalid-message="'Esta ingresando un correo incorrecto'"
+                            required-message="'El campo no puede estar vacio'"
+                            required />
+                        </div>
+                        <label class="etiqueta_e">Contraseña<i class="required">*</i>:</label>
+                        <div class="form-group">  
+                            <input type="password" 
+                            name="password"
+                            validate-on="dirty"
+                            class="form-control texto_e"  
+                            ng-model="ctrl.empresa.password" 
+                            clase="text_valid_e"
+                            validator = "ctrl.passwordValidator(ctrl.empresa.password) === true"
+                            invalid-message = "ctrl.passwordValidator(ctrl.empresa.password)"
+                            required-message="'El campo no puede estar vacio'"
+                            required />
+                        </div>
+                        <label class="etiqueta_e_up">Confirmar contraseña<i class="required">*</i>:</label>
+                        <div class="form-group">
+                            <input 
+                            type="password" 
+                            name = "confirmPassword"
+                            class = "form-control texto_e"
+                            ng-model = "ctrl.empresa.confirmPassword"
+                            clase="text_valid_e"
+                            validator = "ctrl.empresa.password === ctrl.empresa.confirmPassword"
+                            validate-on="dirty"
+                            invalid-message = "'Las contraseñas no coinciden!'"
+                            required-message="'El campo no puede estar vacio'"
+                            required/>
+                        </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                             <button type="submit" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Enviando..." id="btn_add_empresa" class="btn btn-primary" >Registrar</button>

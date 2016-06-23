@@ -74,7 +74,7 @@ angular.module('angularValidator').directive('angularValidator',
 
 
                 // Setup $watch on a single formfield
-                function setupWatch(elementToWatch) {
+                function setupWatch(elementToWatch, parent) {
                     // If element is set to validate on blur then update the element on blur
                     if ("validate-on" in elementToWatch.attributes && elementToWatch.attributes["validate-on"].value === "blur") {
                         angular.element(elementToWatch).on('blur', function() {
@@ -149,10 +149,10 @@ angular.module('angularValidator').directive('angularValidator',
                 function updateValidationMessage(element) {
 
                     var defaultRequiredMessage = function() {
-                        return "<i class='fa fa-times'></i> Required";
+                        return "Requerido";
                     };
                     var defaultInvalidMessage = function() {
-                        return "<i class='fa fa-times'></i> Invalid";
+                        return "Invalido";
                     };
 
                     // Make sure the element is a form field and not a button for example
@@ -176,7 +176,7 @@ angular.module('angularValidator').directive('angularValidator',
                         if (scopeElementModel.$error.required) {
                             // If there is a custom required message display it
                             if ("required-message" in element.attributes) {
-                                angular.element(element).after(generateErrorMessage(element.attributes['required-message'].value));
+                                angular.element(element).after(generateErrorMessage(element.attributes['required-message'].value, element.attributes['clase'].value));
                             }
                             // Display the default required message
                             else {
@@ -185,19 +185,19 @@ angular.module('angularValidator').directive('angularValidator',
                         } else if (!scopeElementModel.$valid) {
                             // If there is a custom validation message add it
                             if ("invalid-message" in element.attributes) {
-                                angular.element(element).after(generateErrorMessage(element.attributes['invalid-message'].value));
+                                angular.element(element).after(generateErrorMessage(element.attributes['invalid-message'].value, element.attributes['clase'].value));
                             }
                             // Display the default error message
                             else {
-                                angular.element(element).after(generateErrorMessage(defaultInvalidMessage));
+                                angular.element(element).after(generateErrorMessage(defaultInvalidMessage, element.attributes['clase'].value));
                             }
                         }
                     }
                 }
 
 
-                function generateErrorMessage(messageText) {
-                    return "<label class='control-label has-error text-valid validationMessage'> <i class='fa fa-warning'></i> " + scope.$eval(messageText) + "</label>";
+                function generateErrorMessage(messageText, clase) {
+                    return "<label class='control-label has-error "+clase+" validationMessage'> <i class='fa fa-warning'></i> " + scope.$eval(messageText) + "</label>";
                 }
 
 
@@ -216,6 +216,7 @@ angular.module('angularValidator').directive('angularValidator',
                 // Adds and removes .has-error class to both the form element and the form element's parent
                 // depending on the validity of the element and the submitted state of the form
                 function updateValidationClass(element) {
+
                     // Make sure the element is a form field and not a button for example
                     // Only form fields should have names. 
                     if (!(element.name in scopeForm)) {

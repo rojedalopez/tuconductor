@@ -17,7 +17,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
           
     self.experiencias=[];
     self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", depto:"", depart:"" ,
-        ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0, eliminar:false};
+        ciudad:"", direccion:"", mes_inicio:"", anio_inicio:"", mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0, eliminar:false};
 
     self.formaciones=[];
     self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, eliminar:false};
@@ -32,6 +32,40 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.dptoExp={id:0, departamento:"", ciudades:[]};
     self.ciudades=[];
     self.ciudadesExp=[];
+    
+    self.passwordValidator = function(password) {
+        
+        if(!password){return;}
+
+        if (password.length < 6) {
+                return "La contraseña debe tener como minimo " + 6 + " caracteres de largo";
+        }
+
+        if (!password.match(/[0-9]/)) {
+                 return "La contraseña debe tener por lo menos un número";
+        }
+
+        return true;
+    };
+    
+    self.lengthValidator = function(texto, length) {
+        if(!texto){return;}
+
+        if (texto.length < length) {
+                return "El campo debe tener como minimo " + length + " caracteres de largo";
+        }
+    
+        return true;
+    };
+    
+    self.dateValidator = function(mes, anio) {
+        var date = new Date();
+        if (mes > date.getMonth() && anio >= date.getFullYear()) {
+                return "No puede ingresar fecha mayor a la actual";
+        }
+    
+        return true;
+    };
     
     self.SaveDatosPersonales = function(usuario_dp){
         ProfileService.SaveDatosPersonales(usuario_dp).then(function(d){
@@ -122,6 +156,14 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         });
     };
 
+    self.limpiar = function(){
+        if(self.exp_laboral.labora){
+            self.exp_laboral.mes_fin = "";
+            self.exp_laboral.anio_fin = "";
+            self.exp_laboral.retiro = "";
+        }
+    };
+    
     self.selectDpto = function(id){
         for(var i = 0; i < self.dptos.length; i++){
             if(self.dptos[i].id === id) {
@@ -230,6 +272,9 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         for(var i = 0; i < self.experiencias.length; i++){
             if(self.experiencias[i].id === id) {
                self.exp_laboral = angular.copy(self.experiencias[i]);
+               if(self.exp_laboral.depto<=0){
+                   self.selectDptoExp(self.exp_laboral.depto);
+               }
                form_experiencia.modal( "show" );
                break;
             }
@@ -251,7 +296,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         
     self.resetExp = function(){
         self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", dpto:"", 
-         ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0, eliminar:false};
+         ciudad:"", direccion:"", mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"", labora:false, retiro:"", exp_meses:0, eliminar:false};
         $scope.exp_laboral.$setPristine();
     };
           
@@ -298,10 +343,10 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     ];
 
     self.NvlFormacion = [
-        {'ID': 1, 'Value': 'Educación Basica Primaria'},
-        {'ID': 2, 'Value': 'Educación Basica Secundaria'},
-        {'ID': 3, 'Value': 'Bachillerato / educacion Media'},
-        {'ID': 4, 'Value': 'Universidad / Carrera Tecnica'}  
+        {ID: 1, Value: 'Educación Basica Primaria'},
+        {ID: 2, Value: 'Educación Basica Secundaria'},
+        {ID: 3, Value: 'Bachillerato / educacion Media'},
+        {ID: 4, Value: 'Universidad / Carrera Tecnica'}  
     ];
         
 }]).factory('ProfileService', ['$http', '$q', function($http, $q){
@@ -535,7 +580,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
           
     self.experiencias=[];
     self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", depto:"", depart:"",
-        ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0, cod:"", eliminar:false};
+        ciudad:"", direccion:"", mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"", labora:false, retiro:"", exp_meses:0, cod:"", eliminar:false};
 
     self.formaciones=[];
     self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, cod:"", eliminar:false};
@@ -557,6 +602,26 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.dptoExp={id:0, departamento:"", ciudades:[]};
     self.ciudades=[];
     self.ciudadesExp=[];
+    
+    self.lengthValidator = function(texto, length) {
+        if(!texto){return;}
+
+        if (texto.length < length) {
+                return "El campo debe tener como minimo " + length + " caracteres de largo";
+        }
+    
+        return true;
+    };
+    
+    self.dateValidator = function(mes, anio) {
+        var date = new Date();
+        if (parseInt(mes) > date.getMonth() && parseInt(anio) >= date.getFullYear()) {
+                return "No puede ingresar fecha mayor a la actual";
+        }
+    
+        return true;
+    };
+    
     
     self.SaveMultaUsuario = function(multa){
         EditConductorbyAdminService.SaveMultaUsuario(multa).then(function(d){
@@ -834,6 +899,10 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         for(var i = 0; i < self.experiencias.length; i++){
             if(self.experiencias[i].id === id) {
                self.exp_laboral = angular.copy(self.experiencias[i]);
+               if(self.exp_laboral.depto<=0){
+                   self.selectDptoExp(self.exp_laboral.depto);
+               }
+               console.log(self.exp_laboral.mes_inicio);
                form_experiencia.modal( "show" );
                break;
             }
@@ -943,7 +1012,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.resetExp = function(){
         var cod = self.getVarUrl("cod");
         self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", depto:"", 
-         ciudad:"", direccion:"", mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0, eliminar:false};
+         ciudad:"", direccion:"", mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"", labora:false, retiro:"", exp_meses:0, eliminar:false};
         self.exp_laboral.cod = cod; 
         $scope.exp_laboral.$setPristine();
     };
@@ -1011,10 +1080,10 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     ];
 
     self.NvlFormacion = [
-        {'ID': 1, 'Value': 'Educación Basica Primaria'},
-        {'ID': 2, 'Value': 'Educación Basica Secundaria'},
-        {'ID': 3, 'Value': 'Bachillerato / educacion Media'},
-        {'ID': 4, 'Value': 'Universidad / Carrera Tecnica'}  
+        {ID: 1, Value: 'Educación Basica Primaria'},
+        {ID: 2, Value: 'Educación Basica Secundaria'},
+        {ID: 3, Value: 'Bachillerato / educacion Media'},
+        {ID: 4, Value: 'Universidad / Carrera Tecnica'}  
     ];
 }]).factory('EditConductorbyAdminService', ['$http', '$q', function($http, $q){
     return {

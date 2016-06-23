@@ -3,7 +3,7 @@
 angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'SignUpService', function($scope, SignUpService) {
     var self = this;
     self.usuario={mail:"", password:"",name:"", lastname:"", phone:"", confirmPassword:""};
-    self.empresa={nit:"",r_social:"", dir:"", tel:"", cam_com:null, rut:"", nombre_replegal:"", doc_replegal:"", email_replegal:"", tel_replegal:"", mail:"", password:""}
+    self.empresa={nit:"",r_social:"", dir:"", tel:"", cam_com:null, rut:"", nombre_replegal:"", doc_replegal:"", email_replegal:"", tel_replegal:"", mail:"", password:"", confirmPassword:""}
     self.mail="";
     
     self.SaveUser = function(usuario){
@@ -42,19 +42,30 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
     };
     
     self.passwordValidator = function(password) {
-            if(!password){return;}
-
-            if (password.length < 6) {
-                    return "La contraseña debe tener como minimo " + 6 + " caracteres de largo";
-            }
-
-            if (!password.match(/[0-9]/)) {
-                     return "La contraseña debe tener por lo menos un número";
-            }
-
-            return true;
-    };
         
+        if(!password){return;}
+
+        if (password.length < 6) {
+                return "La contraseña debe tener como minimo " + 6 + " caracteres de largo";
+        }
+
+        if (!password.match(/[0-9]/)) {
+                 return "La contraseña debe tener por lo menos un número";
+        }
+
+        return true;
+    };
+    
+    self.lengthValidator = function(texto, length) {
+        if(!texto){return;}
+
+        if (texto.length < length) {
+                return "El campo debe tener como minimo " + length + " caracteres de largo";
+        }
+    
+        return true;
+    };
+    
     self.submit = function() {
       btn_add_conductor.button('loading');
       self.SaveUser(self.usuario); 

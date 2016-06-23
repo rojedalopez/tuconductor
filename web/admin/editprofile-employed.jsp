@@ -89,6 +89,7 @@ if(session.getAttribute("user") == null){
     <script type="text/javascript" src="../js/angular/wall.js"></script>
     <script type="text/javascript" src="../js/angular/oferta.js"></script>
     <script type="text/javascript" src="../js/angular/inbox.js"></script>
+    <script type="text/javascript" src="../js/angular/angular-validator.js"></script>
     
     <script src="../assets/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="../assets/plugins/pace/pace.js"></script>
@@ -432,7 +433,8 @@ if(session.getAttribute("user") == null){
 
             <div class="row">
                 
-                <form ng-submit="ctrl.submitDP()" name="datos_personales" novalidate>
+                <form angular-validator-submit="ctrl.submitDP()" name="datos_personales" 
+                      angular-validator class="form-horizontal" novalidate>
                     <div class="col-lg-12 opcion1">
                         <div class="panel panel-info">
                             <div class="panel-heading">
@@ -440,87 +442,177 @@ if(session.getAttribute("user") == null){
                             </div>
                             
                             <div class="panel-body ">
-                                <p ng-class="{ 'has-error': datos_personales.tip_doc.$error.required }">
-                                    <label class="etiqueta" for="tip_doc">Tipo de doc<i class="required">*</i>:</label>                                        
-                                    <select class="form-control selector"  name="tip_doc" ng-model="ctrl.usuario_dp.tip_doc" ng-options="tipoIdent.ID as tipoIdent.Tipo for tipoIdent in ctrl.tipoIdents" class="selector" required>
+                                <label class="etiqueta" for="tip_doc">Tipo de doc<i class="required">*</i>:</label>                                        
+                                <div class="form-group">
+                                    <select class="form-control selector"  
+                                        name="tip_doc" 
+                                        ng-model="ctrl.usuario_dp.tip_doc" 
+                                        ng-options="tipoIdent.ID as tipoIdent.Tipo for tipoIdent in ctrl.tipoIdents" 
+                                        class="selector" 
+                                        clase="text_valid"
+                                        required-message="'Debe seleccionar una opción'"
+                                        required>
                                         <option value="" selected>--Seleccione Opcion--</option>
                                     </select>
-                                    <!-- <span ng-show="datos_personales.tip_doc.$error.required && datos_personales.tip_doc.$dirty" class="required">Error</span> -->
-                                </p>
-                                <p ng-class="{ 'has-error': datos_personales.num_doc.$error.required || datos_personales.num_doc.$error.minlength}">
-                                    <label class="etiqueta" for="num_doc">No. documento<i class="required">*</i>:</label>                                            
-                                    <input type="text" class="form-control texto"  name="num_doc" ng-model="ctrl.usuario_dp.num_doc" required minlength="6"/>
-                                    <!--<span ng-show="datos_personales.num_doc.$error.required && datos_personales.num_doc.$dirty" class="required">Error requerido</span>
-                                    <span ng-show="datos_personales.num_doc.$error.minlength && datos_personales.num_doc.$dirty" class="required">Error tamaño</span>-->
-                                </p>
-                                <p ng-class="{ 'has-error': datos_personales.nombre.$error.required || datos_personales.nombre.$error.minlength}">
-                                    <label class="etiqueta" for="nombre">Nombre<i class="required">*</i>:</label>
-                                    <input type="text" class="form-control texto"  name="nombre" ng-model="ctrl.usuario_dp.nombre" required minlength="5"/>
-                                    <!--<span ng-show="datos_personales.nombre.$error.required && datos_personales.nombre.$dirty" class="required">Error requerido</span>
-                                    <span ng-show="datos_personales.nombre.$error.minlength && datos_personales.nombre.$dirty" class="required">Error tamaño</span>-->
-                                </p>
-                                <p ng-class="{ 'has-error': datos_personales.apellido.$error.required || datos_personales.apellido.$error.minlength}">
-                                    <label class="etiqueta" for="apellido">Apellido<i class="required">*</i>:</label>                                        
-                                    <input type="text" class="form-control texto"  name="apellido" ng-model="ctrl.usuario_dp.apellido" required minlength="5"/>
-                                    <!--<span ng-show="datos_personales.apellido.$error.required && datos_personales.apellido.$dirty" class="required">Error requerido</span>
-                                    <span ng-show="datos_personales.apellido.$error.minlength && datos_personales.apellido.$dirty" class="required">Error tamaño</span>-->
-                                </p>
-                                <p>
-                                    <label class="etiqueta" for="fecha_nac">Nacimiento:</label>                                        
+                                </div>
+                                <label class="etiqueta" for="num_doc">No. documento<i class="required">*</i>:</label>                                            
+                                <div class="form-group">
+                                    <input type="text" 
+                                        class="form-control texto"  
+                                        name="num_doc" 
+                                        ng-model="ctrl.usuario_dp.num_doc" 
+                                        clase="text_valid"
+                                        validate-on="dirty"
+                                        validator = "ctrl.lengthValidator(ctrl.usuario_dp.num_doc, 4) === true"
+                                        invalid-message = "ctrl.lengthValidator(ctrl.usuario_dp.num_doc, 4)"
+                                        required-message="'El campo no puede estar vacio'" 
+                                        required/>
+                                </div>
+                                <label class="etiqueta" for="nombre">Nombre<i class="required">*</i>:</label>
+                                <div class="form-group">
+                                        <input type="text" 
+                                        name="nombre" 
+                                        ng-model="ctrl.usuario_dp.nombre" 
+                                        class="form-control texto"  
+                                        clase="text_valid"
+                                        validate-on="dirty"
+                                        validator = "ctrl.lengthValidator(ctrl.usuario_dp.nombre, 6) === true"
+                                        invalid-message = "ctrl.lengthValidator(ctrl.usuario_dp.nombre, 6)"
+                                        required-message="'El campo no puede estar vacio'" 
+                                        required/>
+                                    
+                                </div>
+                                <label class="etiqueta" for="apellido">Apellido<i class="required">*</i>:</label>                                        
+                                <div class="form-group">
+                                    <input type="text" 
+                                        name="apellido" 
+                                        ng-model="ctrl.usuario_dp.apellido"
+                                        class="form-control texto"
+                                        validate-on="dirty"
+                                        clase="text_valid" 
+                                        validator = "ctrl.lengthValidator(ctrl.usuario_dp.apellido, 6) === true"
+                                        invalid-message = "ctrl.lengthValidator(ctrl.usuario_dp.apellido, 6)"
+                                        required-message="'El campo no puede estar vacio'" 
+                                        required/>
+                                </div>
+                                <label class="etiqueta" for="fecha_nac">Nacimiento:</label>                                        
+                                <div class="form-group">
                                     <input type="date" class="form-control texto"  name="fecha_nac" ng-model="ctrl.usuario_dp.fecha_nac" />
-                                </p>
-                                <p>
-                                    <label class="etiqueta" for="genero">Genero:</label>                                        
-                                    <select name="genero"  class="form-control selector" ng-model="ctrl.usuario_dp.genero" ng-options="Sexo.ID as Sexo.Tipo for Sexo in ctrl.Sexos" required>
+                                </div>
+                                <label class="etiqueta" for="genero">Genero:</label>                                        
+                                <div class="form-group">
+                                    <select name="genero"
+                                            ng-model="ctrl.usuario_dp.genero" 
+                                            ng-options="Sexo.ID as Sexo.Tipo for Sexo in ctrl.Sexos" 
+                                            class="form-control selector" 
+                                            clase="text_valid" 
+                                            required-message="'Debe seleccionar una opción'"
+                                            required>
                                         <option value="" selected>--Seleccione Opcion--</option>
                                     </select>
-                                </p>
-                                <p>
-                                    <label class="etiqueta" for="est_civil">Estado civil:</label>                                        
+                                </div>
+                                <label class="etiqueta" for="est_civil">Estado civil:</label>                                        
+                                <div class="form-group">
                                     <select class="form-control selector"  name="est_civil" ng-model="ctrl.usuario_dp.est_civil" ng-options="estCivil.ID as estCivil.Value for estCivil in ctrl.estCiviles" class="selector">
                                         <option value="" selected>--Seleccione Opcion--</option>
                                     </select>
-                                </p>
-                                <p ng-class="{ 'has-error': datos_personales.movil.$error.required || datos_personales.movil.$error.minlength}">
-                                    <label class="etiqueta" for="movil">Celular<i class="required">*</i>:</label>                                        
-                                    <input type="text" class="form-control texto" name="movil" ng-model="ctrl.usuario_dp.movil" required minlength="7"/>
-                                    <!--<span ng-show="datos_personales.movil.$error.required && datos_personales.movil.$dirty" class="required">Error requerido</span>
-                                    <span ng-show="datos_personales.movil.$error.minlength && datos_personales.novil.$dirty" class="required">Error tamaño</span>-->
-                                </p>
-                                <p>
-                                    <label class="etiqueta" for="telefono">Telefono:</label>                                        
-                                    <input type="text" class="form-control texto"  name="tel" ng-model="ctrl.usuario_dp.tel" >
-                                </p>
-                                <p>
-                                    <label class="etiqueta" for="pais">Pais</label>                                        
-                                    <select class="form-control selector"  name="pais" ng-model="ctrl.usuario_dp.pais" ng-options="Pais.ID as Pais.Nombre for Pais in ctrl.Paises" ng-change="ctrl.selectPais(ctrl.usuario_dp.pais)">
-                                            <option value="" selected>--Seleccione Pais--</option>
+                                </div>
+                                <label class="etiqueta" for="movil">Celular<i class="required">*</i>:</label>                                        
+                                <div class="form-group">
+                                    <input type="tel" 
+                                        name="movil" 
+                                        ng-model="ctrl.usuario_dp.movil" 
+                                        class="form-control texto" 
+                                        clase="text_valid" 
+                                        validate-on="dirty"
+                                        validator = "ctrl.lengthValidator(ctrl.usuario_dp.movil, 10) === true"
+                                        invalid-message = "ctrl.lengthValidator(ctrl.usuario_dp.movil, 10)"
+                                        required-message="'El campo no puede estar vacio'"
+                                        required />
+                                </div>
+                                <label class="etiqueta" for="telefono">Telefono:</label>                                        
+                                <div class="form-group">
+                                    <input type="tel" class="form-control texto"  name="tel" ng-model="ctrl.usuario_dp.tel" >
+                                </div>
+                                <label class="etiqueta" for="dir">Direccion:</label>                                        
+                                <div class="form-group">
+                                    <input type="text" 
+                                        name="dir" 
+                                        ng-model="ctrl.usuario_dp.dir"
+                                        class="form-control texto"  
+                                        clase="text_valid" 
+                                        validate-on="dirty"
+                                        validator = "ctrl.lengthValidator(ctrl.usuario_dp.dir, 10) === true"
+                                        invalid-message = "ctrl.lengthValidator(ctrl.usuario_dp.dir, 10)"
+                                        required-message="'El campo no puede estar vacio'"
+                                        required>
+                                </div>
+                                <label class="etiqueta">Pais:</label>
+                                <div class="form-group">
+                                    <select class="form-control selector" 
+                                        name="pais" ng-model="ctrl.usuario_dp.pais" 
+                                        ng-options="Pais.ID as Pais.Nombre for Pais in ctrl.Paises" 
+                                        ng-change="ctrl.selectPais(ctrl.usuario_dp.pais)"
+                                        clase="text_valid"
+                                        required-message="'El campo no puede estar vacio'"
+                                        required>
+                                        <option>--- Seleccione Pais ---</option>
                                     </select>
-                                </p>
-                                <p>
-                                    <label class="etiqueta" for="depto">Departamento:</label>                                        
-                                    <select class="form-control selector" ng-show="ctrl.colombia" name="depto" ng-model="ctrl.usuario_dp.depto" ng-options="dpto.id as dpto.departamento for dpto in ctrl.dptos" ng-change="ctrl.selectDpto(ctrl.usuario_dp.depto)">
-                                        <option value="" selected>--Seleccione Departamento--</option>
+                                </div>
+                                <label class="etiqueta">Dpto:</label>
+                                <div class="form-group">
+                                    <select class="form-control selector" 
+                                        ng-show="ctrl.colombia" 
+                                        required="{{ctrl.colombia}}" 
+                                        name="depto" 
+                                        ng-model="ctrl.usuario_dp.depto" 
+                                        ng-options="dpto.id as dpto.departamento for dpto in ctrl.dptos" 
+                                        ng-change="ctrl.selectDpto(ctrl.usuario_dp.depto)"
+                                        clase="text_valid"
+                                        required-message="'El campo no puede estar vacio'">
+                                        <option value="">--- Seleccione Departamento ---</option>
+                                    </select
+                                    <input type="text" ng-show="!ctrl.colombia" 
+                                        class="form-control texto"  
+                                        name="depart" 
+                                        ng-model="ctrl.usuario_dp.depart" 
+                                        required="{{!ctrl.colombia}}" 
+                                        validate-on="dirty"
+                                        clase="text_valid"
+                                        validator = "ctrl.lengthValidator(ctrl.usuario_dp.depart, 4) === true"
+                                        invalid-message = "ctrl.lengthValidator(ctrl.usuario_dp.depart, 4)"
+                                        required-message="'El campo no puede estar vacio'"/>
+                                </div>
+                                <label class="etiqueta">Ciudad:</label>
+                                <div class="form-group">
+                                    <select class="form-control selector" 
+                                        ng-show="ctrl.colombia" 
+                                        required="{{ctrl.colombia}}" 
+                                        name="ciudad" 
+                                        ng-model="ctrl.usuario_dp.ciudad" 
+                                        ng-options="ciudad for ciudad in ctrl.ciudades"
+                                        clase="text_valid"
+                                        required-message="'El campo no puede estar vacio'">
+                                        <option value="">--- Seleccione Ciudad ---</option>
                                     </select>
-                                    <input type="text" ng-show="!ctrl.colombia" class="form-control texto"  name="depart" ng-model="ctrl.usuario_dp.depart" >
-                                </p>
-                                <p>
-                                    <label class="etiqueta" for="ciudad">Ciudad:</label>                                        
-                                    <select class="form-control selector" ng-show="ctrl.colombia" name="ciudad" ng-model="ctrl.usuario_dp.ciudad" ng-options="ciudad for ciudad in ctrl.ciudades">
-                                        <option value="" selected>--Seleccione Ciudad--</option>
-                                    </select>
-                                    <input type="text" ng-show="!ctrl.colombia" class="form-control texto"  name="ciudad" ng-model="ctrl.usuario_dp.ciudad" >
-                                </p>
-                                <p>
-                                    <label class="etiqueta" for="dir">Direccion:</label>                                        
-                                    <input type="text" class="form-control texto"  name="dir" ng-model="ctrl.usuario_dp.dir">
-                                </p>
-                                <p>
-                                    <label class="etiqueta" for="nac">Nacionalidad:</label>                                        
+                                    <input type="text" 
+                                        ng-show="!ctrl.colombia" 
+                                        class="form-control texto"  
+                                        name="ciudad" 
+                                        ng-model="ctrl.usuario_dp.ciudad" 
+                                        required="{{!ctrl.colombia}}"
+                                        validate-on="dirty"
+                                        clase="text_valid"
+                                        validator = "ctrl.lengthValidator(ctrl.usuario_dp.ciudad, 4) === true"
+                                        invalid-message = "ctrl.lengthValidator(ctrl.usuario_dp.ciudad, 4)"
+                                        required-message="'El campo no puede estar vacio'"/>
+                                </div>
+                                <label class="etiqueta" for="nac">Nacionalidad:</label>                                        
+                                <div class="form-group">
                                     <select class="form-control selector" name="naci" ng-model="ctrl.usuario_dp.naci" ng-options="Pais.ID as Pais.Nombre for Pais in ctrl.Paises">
                                         <option value="" selected>--Seleccione Nacionalidad--</option>
                                     </select>
-                                </p>
+                                </div>
                                 <p>
                                     <label class="etiqueta">Licencia de conducción:</label>                                       
                                     <label class="checkbox-inline" >
@@ -560,20 +652,37 @@ if(session.getAttribute("user") == null){
                                 PERFIL PROFESIONAL
                             </div>
                             <div class="panel-body">
-                                <p ng-class="{ 'has-error': datos_personales.cargo.$error.required || datos_personales.cargo.$error.minlength}">
+                                <p>
                                     <label class="etiqueta_a">Cargo o titulo breve de su hoja de vida<i class="required">*</i>:</label>                                                                                  
-                                    <input type="text" name="cargo" ng-model="ctrl.usuario_dp.cargo" class="form-control area" placeholder="Ej: C" required minlength="15"/>
-                                    <!-- <span ng-show="datos_personales.cargo.$error.required && datos_personales.cargo.$dirty" class="required">Error requerido</span>
-                                    <span ng-show="datos_personales.cargo.$error.minlength && datos_personales.cargo.$dirty" class="required">Error tamaño</span>-->
+                                    <input type="text" 
+                                        name="cargo" 
+                                        clase="text_valid_a" 
+                                        ng-model="ctrl.usuario_dp.cargo" 
+                                        class="form-control area" 
+                                        validate-on="dirty"
+                                        validator = "ctrl.lengthValidator(ctrl.usuario_dp.cargo, 10) === true"
+                                        invalid-message = "ctrl.lengthValidator(ctrl.usuario_dp.cargo, 10)"
+                                        required-message="'El campo no puede estar vacio'"
+                                        required/>
                                 </p>
-                                <p ng-class="{ 'has-error': datos_personales.perfil.$error.required || datos_personales.perfil.$error.minlength}">
+                                <p>
                                     <label class="etiqueta_a">Decripcion breve de su perfil profesional:</label>                                                                                 
-                                    <textarea class="form-control area" name="perfil" ng-model="ctrl.usuario_dp.perfil" placeholder="Ej: C" rows="4" required minlength="50"></textarea>
+                                    <textarea 
+                                        class="form-control area" 
+                                        clase="text_valid_a" 
+                                        name="perfil" 
+                                        ng-model="ctrl.usuario_dp.perfil" 
+                                        rows="4"
+                                        validate-on="dirty"
+                                        validator = "ctrl.lengthValidator(ctrl.usuario_dp.perfil, 20) === true"
+                                        invalid-message = "ctrl.lengthValidator(ctrl.usuario_dp.perfil, 20)"
+                                        required-message="'El campo no puede estar vacio'"
+                                        required></textarea>
                                 </p>
 
                                 <div class="form-group">
-                                    <div class="form-group" style="text-align: right;">
-                                        <button type="submit" ng-disabled="datos_personales.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_guardar_cambios" class="btn btn-primary" >Guardar cambios</button>
+                                    <div class="form-group" style="text-align: right;margin-right: 15px;">
+                                        <button type="submit" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_guardar_cambios" class="btn btn-primary" >Guardar cambios</button>
                                         <input type="reset" class="btn btn-default" value="Cancelar">
                                     </div>
                                 </div>
@@ -784,92 +893,202 @@ if(session.getAttribute("user") == null){
                     <h4 class="modal-title" id="myModalLabel">Formulario de experiencia laboral</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" ng-submit="ctrl.submitExp()" name="exp_laboral" class="form-horizontal" novalidate>
-                        <p ng-class="{ 'has-error': exp_laboral.empresa.$error.required || exp_laboral.empresa.$error.minlength }">
-                            <label class="etiqueta_e">Empresa<i class="required">*</i>:</label>
+                    <form role="form" angular-validator-submit="ctrl.submitExp()" name="exp_laboral" 
+                          class="form-horizontal" angular-validator novalidate>
+                        <label class="etiqueta_e">Empresa<i class="required">*</i>:</label>
+                        <div class="form-group">
                             <input type="hidden" name="id" ng-model="ctrl.exp_laboral.id"/>
                             <input type="hidden" name="cod" ng-model="ctrl.exp_laboral.cod"/>
-                            <input type="text" class="form-control texto_e" name="empresa" ng-model="ctrl.exp_laboral.empresa"  placeholder="Nombre de la empresa" minlength="5" required/>
-                        </p>
-                        <p ng-class="{ 'has-error': exp_laboral.cargo.$error.required || exp_laboral.cargo.$error.minlength }">
-                            <label class="etiqueta_e">Cargo<i class="required">*</i>:</label>
-                            <input type="text" class="form-control texto_e" name="cargo" ng-model="ctrl.exp_laboral.cargo" placeholder="Cargo realizado" minlength="5" required/>
-                        </p>
-                        <p>
-                            <label class="etiqueta_e">Salario:</label>
-                            <input type="number" class="form-control texto_e_min" name="salario" ng-model="ctrl.exp_laboral.salario" placeholder="$" />
-                        </p>
-                        <p>
-                            <label class="etiqueta_e">Bonos:</label>
-                            <input type="number" class="form-control texto_e_min" name="bonos" ng-model="ctrl.exp_laboral.bonos" placeholder="$" />
-                        </p>
-                        <p ng-class="{ 'has-error': exp_laboral.supervisor.$error.required || exp_laboral.supervisor.$error.minlength }">
-                            <label class="etiqueta_e">Supervisor<i class="required">*</i>:</label>
-                            <input type="text" class="form-control texto_e" name="supervisor" ng-model="ctrl.exp_laboral.supervisor" placeholder="Nombre / Apellido" minlength="6" required/>
-                        </p>
-                        <p ng-class="{ 'has-error': exp_laboral.telefono.$error.required || exp_laboral.telefono.$error.minlength }">
-                            <label class="etiqueta_e">Telefono<i class="required">*</i>:</label>
-                            <input type="text" class="form-control texto_e" name="telefono" ng-model="ctrl.exp_laboral.telefono" placeholder=""  minlength="6" required />
-                        </p>
-                        <p>
-                            <label class="etiqueta_e">Pais:</label>
-                            <select class="form-control selector_e" name="pais" ng-model="ctrl.exp_laboral.pais" ng-options="Pais.ID as Pais.Nombre for Pais in ctrl.PaisesExp" ng-change="ctrl.selectPaisExp(ctrl.exp_laboral.pais)">
+                            <input type="text" 
+                                class="form-control texto_e" 
+                                name="empresa" 
+                                ng-model="ctrl.exp_laboral.empresa"  
+                                validate-on="dirty"
+                                clase="text_valid_e"
+                                validator = "ctrl.lengthValidator(ctrl.exp_laboral.empresa, 6) === true"
+                                invalid-message = "ctrl.lengthValidator(ctrl.exp_laboral.empresa, 6)"
+                                required-message="'El campo no puede estar vacio'"
+                                required/>
+                        </div>
+                        <label class="etiqueta_e">Cargo<i class="required">*</i>:</label>
+                        <div class="form-group">
+                            <input type="text" 
+                                class="form-control texto_e" 
+                                name="cargo" 
+                                ng-model="ctrl.exp_laboral.cargo" 
+                                validate-on="dirty"
+                                clase="text_valid_e"
+                                validator = "ctrl.lengthValidator(ctrl.exp_laboral.cargo, 6) === true"
+                                invalid-message = "ctrl.lengthValidator(ctrl.exp_laboral.cargo, 6)"
+                                required-message="'El campo no puede estar vacio'"
+                                required/>
+                        </div>
+                        <label class="etiqueta_e">Salario:</label>
+                        <div class="form-group">
+                            <input type="number" class="form-control texto_e_min" min="0" name="salario" ng-model="ctrl.exp_laboral.salario" placeholder="$" />
+                        </div>
+                        <label class="etiqueta_e">Bonos:</label>
+                        <div class="form-group">
+                            <input type="number" class="form-control texto_e_min" min="0" name="bonos" ng-model="ctrl.exp_laboral.bonos" placeholder="$" />
+                        </div>
+                        <label class="etiqueta_e">Supervisor<i class="required">*</i>:</label>
+                        <div class="form-group">
+                            <input type="text" 
+                            class="form-control texto_e" 
+                            name="supervisor" 
+                            ng-model="ctrl.exp_laboral.supervisor" 
+                            placeholder="Nombre / Apellido"
+                            clase="text_valid_e"
+                            validate-on="dirty"
+                            validator = "ctrl.lengthValidator(ctrl.exp_laboral.supervisor, 6) === true"
+                            invalid-message = "ctrl.lengthValidator(ctrl.exp_laboral.supervisor, 6)"
+                            required-message="'El campo no puede estar vacio'"
+                            required/>
+                        </div>
+                        <label class="etiqueta_e">Telefono<i class="required">*</i>:</label>
+                        <div class="form-group">
+                            <input type="tel" 
+                            class="form-control texto_e" 
+                            name="telefono" 
+                            ng-model="ctrl.exp_laboral.telefono" 
+                            clase="text_valid_e"
+                            validate-on="dirty"
+                            validator = "ctrl.lengthValidator(ctrl.exp_laboral.telefono, 7) === true"
+                            invalid-message = "ctrl.lengthValidator(ctrl.exp_laboral.telefono, 7)"
+                            required-message="'El campo no puede estar vacio'"
+                            required />
+                        </div>
+                        <label class="etiqueta_e">Direccion<i class="required">*</i>:</label>
+                        <div class="form-group">
+                            <input type="text" 
+                            class="form-control texto_e" 
+                            name="direccion" 
+                            ng-model="ctrl.exp_laboral.direccion" 
+                            clase="text_valid_e"
+                            validate-on="dirty"
+                            validator = "ctrl.lengthValidator(ctrl.exp_laboral.direccion, 10) === true"
+                            invalid-message = "ctrl.lengthValidator(ctrl.exp_laboral.direccion, 10)"
+                            required-message="'El campo no puede estar vacio'"
+                            required />
+                        </div>
+                        <label class="etiqueta_e">Pais:</label>
+                        <div class="form-group">
+                            <select class="form-control selector_e" 
+                                name="pais" ng-model="ctrl.exp_laboral.pais" 
+                                ng-options="Pais.ID as Pais.Nombre for Pais in ctrl.PaisesExp" 
+                                ng-change="ctrl.selectPaisExp(ctrl.exp_laboral.pais)"
+                                clase="text_valid_e"
+                                required-message="'El campo no puede estar vacio'"
+                                required>
                                 <option>--- Seleccione Pais ---</option>
                             </select>
-                        </p>
-                        <p>
-                            <label class="etiqueta_e">Dpto:</label>
-                            <select class="form-control selector_e" ng-show="ctrl.colombiaExp" name="depto" ng-model="ctrl.exp_laboral.depto" ng-options="dpto.id as dpto.departamento for dpto in ctrl.dptosExp" ng-change="ctrl.selectDptoExp(ctrl.exp_laboral.depto)">
+                        </div>
+                        <label class="etiqueta_e">Dpto:</label>
+                        <div class="form-group">
+                            <select class="form-control selector_e" 
+                                ng-show="ctrl.colombiaExp" 
+                                required="{{ctrl.colombiaExp}}" 
+                                name="depto" 
+                                ng-model="ctrl.exp_laboral.depto" 
+                                ng-options="dpto.id as dpto.departamento for dpto in ctrl.dptosExp" 
+                                ng-change="ctrl.selectDptoExp(ctrl.exp_laboral.depto)"
+                                clase="text_valid_e"
+                                required-message="'El campo no puede estar vacio'">
                                 <option value="">--- Seleccione Departamento ---</option>
                             </select>
-                            <input type="text" ng-show="!ctrl.colombiaExp" class="form-control texto"  name="depart" ng-model="ctrl.exp_laboral.depart" >
-                        </p>
-                        <p>
-                            <label class="etiqueta_e">Ciudad:</label>
-                            <select class="form-control selector_e" ng-show="ctrl.colombiaExp" name="ciudad" ng-model="ctrl.exp_laboral.ciudad" ng-options="ciudad for ciudad in ctrl.ciudadesExp">
+                            <input type="text" ng-show="!ctrl.colombiaExp" 
+                                class="form-control texto"  
+                                name="depart" 
+                                ng-model="ctrl.exp_laboral.depart" 
+                                required="{{!ctrl.colombiaExp}}" 
+                                validate-on="dirty"
+                                clase="text_valid_e"
+                                validator = "ctrl.lengthValidator(ctrl.exp_laboral.depart, 4) === true"
+                                invalid-message = "ctrl.lengthValidator(ctrl.exp_laboral.depart, 4)"
+                                required-message="'El campo no puede estar vacio'"/>
+                        </div>
+                        <label class="etiqueta_e">Ciudad:</label>
+                        <div class="form-group">
+                            <select class="form-control selector_e" 
+                                ng-show="ctrl.colombiaExp" 
+                                required="{{ctrl.colombiaExp}}" 
+                                name="ciudad" 
+                                ng-model="ctrl.exp_laboral.ciudad" 
+                                ng-options="ciudad for ciudad in ctrl.ciudadesExp"
+                                clase="text_valid_e"
+                                required-message="'El campo no puede estar vacio'">
                                 <option value="">--- Seleccione Ciudad ---</option>
                             </select>
-                            <input type="text" ng-show="!ctrl.colombiaExp" class="form-control texto"  name="ciudad" ng-model="ctrl.exp_laboral.ciudad" >
-                        </p>
-                        <p ng-class="{ 'has-error': exp_laboral.empresa.$error.required || exp_laboral.empresa.$error.minlength }">
-                            <label class="etiqueta_e">Direccion<i class="required">*</i>:</label>
-                            <input type="text" class="form-control texto_e" name="direccion" ng-model="ctrl.exp_laboral.direccion" placeholder="Direccion"  minlength="6" required />
-                        </p>
-                        <p  ng-class="{ 'has-error': exp_laboral.mes_inicio.$error.required || exp_laboral.anio_inicio.$error.required}">
-                            <label class="etiqueta_e">Inicio<i class="required">*</i>:</label>
-                            <div class="form-group form-inline">
-                                <select class="form-control selector_e_min" name="mes_inicio" ng-model="ctrl.exp_laboral.mes_inicio" ng-options="Mes.ID as Mes.Mes for Mes in ctrl.Meses" required>
+                            <input type="text" 
+                                ng-show="!ctrl.colombiaExp" 
+                                class="form-control texto"  
+                                name="ciudad" 
+                                ng-model="ctrl.exp_laboral.ciudad" 
+                                required="{{!ctrl.colombiaExp}}"
+                                validate-on="dirty"
+                                clase="text_valid_e"
+                                validator = "ctrl.lengthValidator(ctrl.exp_laboral.ciudad, 4) === true"
+                                invalid-message = "ctrl.lengthValidator(ctrl.exp_laboral.ciudad, 4)"
+                                required-message="'El campo no puede estar vacio'"/>
+                        </div>
+                        <label class="etiqueta_e">Inicio<i class="required">*</i>:</label>
+                        <div class="form-group">
+                            <div class="form-inline">
+                                    <select class="form-control selector_e_min" 
+                                            name="mes_inicio" 
+                                            ng-model="ctrl.exp_laboral.mes_inicio" 
+                                            ng-options="Mes.ID as Mes.Mes for Mes in ctrl.Meses" 
+                                            clase="text_valid_e"
+                                            parent="anio_inicio">
+                                        <option value="">--- Seleccione Mes ---</option>
+                                    </select>
+                                    <select class="form-control selector_e_min" 
+                                            name="anio_inicio" 
+                                            ng-model="ctrl.exp_laboral.anio_inicio" 
+                                            ng-options="Anio.ID as Anio.Year for Anio in ctrl.Anios" 
+                                            clase="text_valid_e"
+                                            validator = "ctrl.dateValidator(ctrl.exp_laboral.mes_inicio, ctrl.exp_laboral.anio_inicio) === true"
+                                            invalid-message = "ctrl.dateValidator(ctrl.exp_laboral.mes_inicio, ctrl.exp_laboral.anio_inicio)"
+                                            required-message="'Debe seleccionar una opción'"
+                                            required>
+                                        <option value="">--- Seleccione Año ---</option>
+                                    </select>
+                            </div>
+                        </div>
+                        <label class="etiqueta_e">Fin</label>
+                        <div class="form-group">
+                            <div class="form-inline">
+                                <select class="form-control selector_e_min" 
+                                        ng-disabled="ctrl.exp_laboral.labora"
+                                        name="mes_fin" ng-model="ctrl.exp_laboral.mes_fin" 
+                                        ng-options="Mes.ID as Mes.Mes for Mes in ctrl.Meses">
                                     <option value="">--- Seleccione Mes ---</option>
                                 </select>
-                                <select class="form-control selector_e_min" name="anio_inicio" ng-model="ctrl.exp_laboral.anio_inicio" ng-options="Anio.ID as Anio.Year for Anio in ctrl.Anios" required>
+                                <select class="form-control selector_e_min" 
+                                        ng-disabled="ctrl.exp_laboral.labora" 
+                                        name="anio_fin" 
+                                        ng-model="ctrl.exp_laboral.anio_fin" 
+                                        ng-options="Anio.ID as Anio.Year for Anio in ctrl.Anios"
+                                        clase="text_valid_e"
+                                        validator = "ctrl.dateValidator(ctrl.exp_laboral.mes_fin, ctrl.exp_laboral.anio_fin) === true"
+                                        invalid-message = "ctrl.dateValidator(ctrl.exp_laboral.mes_fin, ctrl.exp_laboral.anio_fin)">
                                     <option value="">--- Seleccione Año ---</option>
                                 </select>
                             </div>
-                        </p>
-                        <p>
-                            <label class="etiqueta_e">Fin</label>
-                            <div class="form-group form-inline">
-                                <select class="form-control selector_e_min" ng-disabled="ctrl.exp_laboral.labora" name="mes_fin" ng-model="ctrl.exp_laboral.mes_fin" ng-options="Mes.ID as Mes.Mes for Mes in ctrl.Meses">
-                                    <option value="">--- Seleccione Mes ---</option>
-                                </select>
-                                <select class="form-control selector_e_min" ng-disabled="ctrl.exp_laboral.labora" name="anio_fin" ng-model="ctrl.exp_laboral.anio_fin" ng-options="Anio.ID as Anio.Year for Anio in ctrl.Anios">
-                                    <option value="">--- Seleccione Año ---</option>
-                                </select>
-                            </div>
-                        </p>
+                        </div>
                         
-                        <p>
-                            <label class="etiqueta_e">Actualmente labora?</label>
-                            <input type="checkbox" name="labora" ng-model="ctrl.exp_laboral.labora"/>
-                        </p>
-                        <p>
-                            <label class="etiqueta_e">Retiro:</label>
+                        <label class="etiqueta_e_up">Actualmente labora?</label>
+                        <div class="form-group">
+                            <input type="checkbox" name="labora" ng-change="ctrl.limpiar()" ng-model="ctrl.exp_laboral.labora"/>
+                        </div>
+                        <label class="etiqueta_e">Retiro:</label>
+                        <div class="form-group">
                             <textarea class="form-control area_e" name="retiro" ng-disabled="ctrl.exp_laboral.labora" ng-model="ctrl.exp_laboral.retiro" rows="3" placeholder="Razones de su retiro..." ></textarea>
-                        </p>
+                        </div>
                         
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" ng-disabled="exp_laboral.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_exp" class="btn btn-primary" >{{(ctrl.exp_laboral.id===-1)?'Añadir':'Editar'}}</button>
+                            <button type="submit" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_exp" class="btn btn-primary" >{{(ctrl.exp_laboral.id===-1)?'Añadir':'Editar'}}</button>
                         </div>
                     </form>
                 </div>
