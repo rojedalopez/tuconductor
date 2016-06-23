@@ -2,7 +2,7 @@
 
 angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'SignUpService', function($scope, SignUpService) {
     var self = this;
-    self.usuario={mail:"", password:"",name:"", lastname:"", phone:""};
+    self.usuario={mail:"", password:"",name:"", lastname:"", phone:"", confirmPassword:""};
     self.empresa={nit:"",r_social:"", dir:"", tel:"", cam_com:null, rut:"", nombre_replegal:"", doc_replegal:"", email_replegal:"", tel_replegal:"", mail:"", password:""}
     self.mail="";
     
@@ -45,15 +45,11 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
             if(!password){return;}
 
             if (password.length < 6) {
-                    return "Password must be at least " + 6 + " characters long";
-            }
-
-            if (!password.match(/[A-Z]/)) {
-                     return "Password must have at least one capital letter";
+                    return "La contraseña debe tener como minimo " + 6 + " caracteres de largo";
             }
 
             if (!password.match(/[0-9]/)) {
-                     return "Password must have at least one number";
+                     return "La contraseña debe tener por lo menos un número";
             }
 
             return true;
@@ -69,10 +65,13 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
         self.SaveEmpresa(self.empresa); 
     };
     
-    self.sendingForgot = function(){/*
+    self.sendingForgot = function(){
         btn_sending_mail.button('loading');
-        self.sendForgot(self.mail);*/
-        console.log("ebtr");
+        self.sendForgot(self.mail);
+    };
+    
+    self.openForgotPassword = function(){
+        modalforgot.modal("show");
     };
     
     self.close = function(){
@@ -86,8 +85,8 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
     };
 
     self.reset = function(){
-        self.usuario={mail:"", password:"",name:"", lastname:"", phone:""};
-        $scope.myForm.$setPristine(); //reset Form
+        self.usuario={mail:"", password:"",name:"", lastname:"", phone:"", confirmPassword:""};
+        $scope.add_conductor.$setPristine(); //reset Form
     };
 }]).factory('SignUpService', ['$http', '$q', function($http, $q){
     return {

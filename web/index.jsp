@@ -161,7 +161,7 @@ if(session.getAttribute("user") != null){
                     </div>                                
                 </div>
                 <div class="alert alert-danger" style="text-align: center;">
-                    <a href="#" class="alert-link"data-toggle="modal" data-target="#Modal_forgotpass"><i class="fa fa-exclamation-triangle"></i> ¿Olvidaste tu contraseña?</a>                
+                    <a href="#" class="alert-link" data-toggle="modal" data-target="#Modal_forgotpass"><i class="fa fa-exclamation-triangle"></i> ¿Olvidaste tu contraseña?</a>                
                 </div>
                 
                 
@@ -217,7 +217,7 @@ if(session.getAttribute("user") != null){
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">¿Olvidaste tu contraseña?</h4>
+                    <h4 class="modal-title">¿Olvidaste tu contraseña?</h4>
                 </div>
                 <div class="modal-body">
                     <form role="form" name="form_forgot" angular-validator-submit="ctrl.sendingForgot()"  
@@ -243,33 +243,31 @@ if(session.getAttribute("user") != null){
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                             <button type="submit" class="btn btn-primary" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Enviando correo..." id="btn_sending_mail">Enviar correo</button>
                         </div>
-                    </form>
+                    </form>                           
                 </div>
             </div>
         </div>
     </div>
-                                
-                                
-    <div class="modal fade" id="Modal_Conductor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" 
+
+        <div class="modal fade" id="Modal_Conductor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" 
          aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Formulario de registro</h4>
+                    <h4 class="modal-title">Formulario de registro</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" name="add_conductor" angular-validator-submit="ctrl.sendingForgot()"  
+                    <form role="form" name="add_conductor" angular-validator-submit="ctrl.submit()"  
                           novalidate angular-validator>
                         <div class="form-group">
                                 <label>Nombre</label>
                                 <input 
                                 type="text" 
-                                name="name"
+                                name="name_"
+                                validate-on="dirty" 
                                 class="form-control"  
                                 ng-model="ctrl.usuario.name" 
-                                validate-on="dirty" 
-                                invalid-message="'Esta ingresando un correo incorrecto'"
                                 required-message="'El campo no puede estar vacio'" 
                                 required/>
                         </div>
@@ -303,8 +301,8 @@ if(session.getAttribute("user") != null){
                                 name="password"
                                 class="form-control"
                                 ng-model="ctrl.usuario.password" 
-                                validator = "ctrl.passwordValidator(form.password) === true"
-                                invalid-message = "ctrl.passwordValidator(form.password)"
+                                validator = "ctrl.passwordValidator(ctrl.usuario.password) === true"
+                                invalid-message = "ctrl.passwordValidator(ctrl.usuario.password)"
                                 required-message="'El campo no puede estar vacio'"
                                 required/>
                         </div>
@@ -317,7 +315,7 @@ if(session.getAttribute("user") != null){
                                 ng-model = "ctrl.usuario.confirmPassword"
                                 validator = "ctrl.usuario.password === ctrl.usuario.confirmPassword"
                                 validate-on="dirty"
-                                invalid-message = "'Passwords do not match!'"
+                                invalid-message = "'Las contraseñas no coinciden!'"
                                 required/>
                         </div>
                         <div class="form-group">
@@ -325,10 +323,9 @@ if(session.getAttribute("user") != null){
                                 <input 
                                 type="tel"
                                 name="phone"
-                                class="form-control texto_e"
+                                class="form-control"
                                 ng-model="ctrl.usuario.phone"  
                                 validate-on="dirty"
-                                invalid-message = "'Passwords do not match!'"
                                 required-message="'El campo no puede estar vacio'"
                                 required/>
                         </div>
@@ -341,8 +338,39 @@ if(session.getAttribute("user") != null){
                 
             </div>
         </div>
-    </div>                            
-    
+    </div>
+                                
+    <div class="modal fade" id="Modal_Conductor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">¿Olvidaste tu contraseña?</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="add_empresa" angular-validator-submit="ctrl.sendingForgot()"  
+                          novalidate angular-validator>
+                        <div class="form-group">
+                            <label>E-mail</label>
+                                <input type="email" 
+                                name = "mail"
+                                class = "form-control"
+                                ng-model = "ctrl.usuario.mail"
+                                validate-on="dirty"
+                                invalid-message="'Esta ingresando un correo incorrecto'"
+                                required-message="'El campo no puede estar vacio'"
+                                required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Enviando correo..." id="btn_add_conductor">Registrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+                                
     <div class="modal fade" id="Modal_Empresa" tabindex="3" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
