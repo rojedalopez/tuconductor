@@ -234,6 +234,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     };
     
     self.deleteForm = function(id){
+        console.log(id);
         for(var i = 0; i < self.formaciones.length; i++){
             if(self.formaciones[i].id === id) {
                self.formacion = angular.copy(self.formaciones[i]);
@@ -346,7 +347,8 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         {ID: 1, Value: 'Educación Basica Primaria'},
         {ID: 2, Value: 'Educación Basica Secundaria'},
         {ID: 3, Value: 'Bachillerato / educacion Media'},
-        {ID: 4, Value: 'Universidad / Carrera Tecnica'}  
+        {ID: 4, Value: 'Universidad / Carrera Tecnica'},
+        {ID: 5, Value: 'Posgrado'},
     ];
         
 }]).factory('ProfileService', ['$http', '$q', function($http, $q){
@@ -415,7 +417,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
                 console.error('Error while fetching expenses');
                 return $q.reject(errResponse);
             });
-	}	
+	}
     };
 
 }]).controller('ProfileAdminController', ['$scope', 'ProfileAdminService', function($scope, ProfileAdminService) {
@@ -573,14 +575,15 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
           la2:false, lb1:false, lb2:false, lb3:false, 
           lc1:false, lc2:false, lc3:false, cargo:"", perfil:"", verificado:false};
       
+
     self.colombia = true;
     self.colombiaExp = true;
 
     self.Anios=[]; 
           
     self.experiencias=[];
-    self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", depto:"", depart:"",
-        ciudad:"", direccion:"", mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"", labora:false, retiro:"", exp_meses:0, cod:"", eliminar:false};
+    self.exp_laboral={id:-1, cod:"", empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", depto:"", depart:"",
+         ciudad:"", direccion:"", mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"", labora:false, retiro:"", exp_meses:0, eliminar:false};
 
     self.formaciones=[];
     self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, cod:"", eliminar:false};
@@ -613,15 +616,29 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         return true;
     };
     
-    self.dateValidator = function(mes, anio) {
+    self.dateValidator = function(mes, anio, estado, validaEstado) {
         var date = new Date();
-        if (parseInt(mes) > date.getMonth() && parseInt(anio) >= date.getFullYear()) {
+        
+        if(validaEstado){
+            if ((!mes || !anio) && estado !== 1) {
+                    return "Debe colocar una fecha fin";
+            }
+        }
+        
+        if (mes > date.getMonth() && anio >= date.getFullYear()) {
                 return "No puede ingresar fecha mayor a la actual";
         }
     
         return true;
     };
     
+    self.limpiar = function(){
+        if(self.exp_laboral.labora){
+            self.exp_laboral.mes_fin = "";
+            self.exp_laboral.anio_fin = "";
+            self.exp_laboral.retiro = "";
+        }
+    };
     
     self.SaveMultaUsuario = function(multa){
         EditConductorbyAdminService.SaveMultaUsuario(multa).then(function(d){
@@ -958,6 +975,8 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     };
     
     self.submitExp = function(){
+        var cod = self.getVarUrl("cod");
+        self.exp_laboral.cod = cod;
         self.SaveExpUsuario(self.exp_laboral);
     };
     
@@ -988,6 +1007,14 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         form_formacion.modal( "show" );
     }; 
     
+    self.resetExp = function(){
+       var cod = self.getVarUrl("cod");
+        self.exp_laboral={id:-1, cod:"", empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", dpto:"", 
+        ciudad:"", direccion:"", mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"", labora:false, retiro:"", exp_meses:0, eliminar:false};
+        self.exp_laboral.cod = cod; 
+        $scope.expe_laboral.$setPristine();
+    };
+    
     self.resetMulta = function(){
         var cod = self.getVarUrl("cod");
         self.multa={id:-1, lgr_multa:"", fch_multa: "", cgo_multa:"", pgo_multa:false, eliminar:false};
@@ -1008,21 +1035,12 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         self.judicial.cod = cod; 
         $scope.form_judicial.$setPristine();
     };
-    
-    self.resetExp = function(){
-        var cod = self.getVarUrl("cod");
-        self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", depto:"", 
-         ciudad:"", direccion:"", mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"", labora:false, retiro:"", exp_meses:0, eliminar:false};
-        self.exp_laboral.cod = cod; 
-        $scope.exp_laboral.$setPristine();
-    };
-    
 
     self.resetForm = function(){
         var cod = self.getVarUrl("cod");
         self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0,eliminar:false};
         self.formacion.cod = cod; 
-        $scope.form_formacion.$setPristine();
+        $scope.forma_formacion.$setPristine();
     };
     
     self.llenarAnios = function(){

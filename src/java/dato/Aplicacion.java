@@ -6,6 +6,11 @@
 package dato;
 
 import bean.usuario;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -13,12 +18,19 @@ import java.security.InvalidKeyException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 
 /**
  *
  * @author SISTEMAS
  */
 public class Aplicacion {
+    
+    private URL url;
+    String data;
+
     public static Connection conexion() throws ClassNotFoundException{
         Connection conn = null;
         try{
@@ -37,7 +49,7 @@ public class Aplicacion {
         return conn;
     }
     
-    
+
     public static usuario obtenerUsuario(String correo, String pass) throws SQLException{
         usuario u = null;
         Connection conn=null;

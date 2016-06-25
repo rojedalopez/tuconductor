@@ -941,7 +941,8 @@ if(session.getAttribute("user") == null){
                 <div class="modal-body">
                     <form role="form" name="form_formacion" ng-submit="ctrl.submitForm()" class="form-horizontal" novalidate>
                         <p ng-class="{ 'has-error': form_formacion.c_educativo.$error.required || form_formacion.c_educativo.$error.minlength }">
-                            <label class="etiqueta_e">Centro educativo<i class="required">*</i>:</label>                            
+                            <label class="etiqueta_e">Centro educativo<i class="required">*</i>:</label> 
+                            <input type="hidden" name="id" ng-model="ctrl.formacion.id"/>
                             <input type="text" class="form-control texto_e" name="c_educativo" ng-model="ctrl.formacion.c_educativo" placeholder="Nombre del centro educativo" minlength="6" required />
                         </p>
                         <p ng-class="{ 'has-error': form_formacion.nivel_estudio.$error.required}">

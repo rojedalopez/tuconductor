@@ -38,10 +38,8 @@ public class formacion_usuario extends HttpServlet {
  
         JSONParser parser = new JSONParser();
         JSONObject joFormacion = null;
-        System.out.println(sb.toString());
         joFormacion = (JSONObject) parser.parse(sb.toString());
         int id = Integer.parseInt(joFormacion.get("id").toString());
-        System.out.println(id);
         String c_educativo = (String) joFormacion.get("c_educativo");
         int nivel = Integer.parseInt(joFormacion.get("nivel_estudio").toString());
         String area = (String) joFormacion.get("area_estudio");
@@ -50,13 +48,17 @@ public class formacion_usuario extends HttpServlet {
         int anio_inicio = Integer.parseInt(joFormacion.get("anio_inicio").toString());
         int mes_fin = 0;
         int anio_fin = 0;
+        boolean eliminar  = false;
         if(joFormacion.get("mes_fin")!=null){
             mes_fin = Integer.parseInt(joFormacion.get("mes_fin").toString());
         }
         if(joFormacion.get("anio_fin")!=null){
             anio_fin = Integer.parseInt(joFormacion.get("anio_fin").toString());
         }
-        boolean eliminar = (Boolean) joFormacion.get("eliminar");
+        if(joFormacion.get("eliminar")!=null){
+            eliminar = (Boolean) joFormacion.get("eliminar");
+        }
+        System.out.println(eliminar);
                         
         HttpSession session =  null;
  

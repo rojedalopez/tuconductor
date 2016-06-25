@@ -36,7 +36,6 @@ if(session.getAttribute("user") == null){
     <link href="../css/generales.css" rel="stylesheet" />
 
     <script type="text/javascript" src="../js/jquery-2.2.0.min.js"></script>
-    <script type="text/javascript" src="../js/date.js"></script>
     <script type="text/javascript" src="../js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="../js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript" src="../js/dataTables.responsive.min.js"></script>
@@ -49,7 +48,7 @@ if(session.getAttribute("user") == null){
 
     <!-- Angular Material Library -->
     <script src="../js/angular-material.min.js"></script>
-    <script src="../js/dist/angular-datatables.min.js"></script>   
+    <script src="../js/dist/angular-datatables.min.js"></script>    
     
     <script type="text/javascript">
         var btn_guardar_cambios, form_experiencia, form_formacion, form_multa, form_accidente,form_judicial, btn_add_exp, btn_add_formacion, 
@@ -83,6 +82,8 @@ if(session.getAttribute("user") == null){
             $("#form_admision").modal("show");
         }
     </script>
+    
+    <script type="text/javascript" src="../js/date.js"></script>      
     <script type="text/javascript" src="../js/app.js"></script>      
     <script type="text/javascript" src="../js/angular/profile.js"></script>
     <script type="text/javascript" src="../js/angular/sign.js"></script>
@@ -91,7 +92,7 @@ if(session.getAttribute("user") == null){
     <script type="text/javascript" src="../js/angular/inbox.js"></script>
     <script type="text/javascript" src="../js/angular/angular-validator.js"></script>
     
-    <script src="../assets/plugins/metisMenu/jquery.metisMenu.js"></script>
+     <script src="../assets/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="../assets/plugins/pace/pace.js"></script>
     <script src="../assets/scripts/siminta.js"></script>
     <!-- Page-Level Plugin Scripts-->
@@ -885,7 +886,8 @@ if(session.getAttribute("user") == null){
         <!-- end page-wrapper -->
         
         
-        <div class="modal fade" id="form_experiencia" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="form_experiencia" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" 
+             aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -893,8 +895,8 @@ if(session.getAttribute("user") == null){
                     <h4 class="modal-title" id="myModalLabel">Formulario de experiencia laboral</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" angular-validator-submit="ctrl.submitExp()" name="exp_laboral" 
-                          class="form-horizontal" angular-validator novalidate>
+                    <form role="form" angular-validator-submit="ctrl.submitExp()" name="expe_laboral"
+                      angular-validator class="form-horizontal" novalidate>
                         <label class="etiqueta_e">Empresa<i class="required">*</i>:</label>
                         <div class="form-group">
                             <input type="hidden" name="id" ng-model="ctrl.exp_laboral.id"/>
@@ -1047,8 +1049,8 @@ if(session.getAttribute("user") == null){
                                             ng-model="ctrl.exp_laboral.anio_inicio" 
                                             ng-options="Anio.ID as Anio.Year for Anio in ctrl.Anios" 
                                             clase="text_valid_e"
-                                            validator = "ctrl.dateValidator(ctrl.exp_laboral.mes_inicio, ctrl.exp_laboral.anio_inicio) === true"
-                                            invalid-message = "ctrl.dateValidator(ctrl.exp_laboral.mes_inicio, ctrl.exp_laboral.anio_inicio)"
+                                            validator = "ctrl.dateValidator(ctrl.exp_laboral.mes_inicio, ctrl.exp_laboral.anio_inicio, 1, false) === true"
+                                            invalid-message = "ctrl.dateValidator(ctrl.exp_laboral.mes_inicio, ctrl.exp_laboral.anio_inicio, 1, false)"
                                             required-message="'Debe seleccionar una opción'"
                                             required>
                                         <option value="">--- Seleccione Año ---</option>
@@ -1070,8 +1072,8 @@ if(session.getAttribute("user") == null){
                                         ng-model="ctrl.exp_laboral.anio_fin" 
                                         ng-options="Anio.ID as Anio.Year for Anio in ctrl.Anios"
                                         clase="text_valid_e"
-                                        validator = "ctrl.dateValidator(ctrl.exp_laboral.mes_fin, ctrl.exp_laboral.anio_fin) === true"
-                                        invalid-message = "ctrl.dateValidator(ctrl.exp_laboral.mes_fin, ctrl.exp_laboral.anio_fin)">
+                                        validator = "ctrl.dateValidator(ctrl.exp_laboral.mes_fin, ctrl.exp_laboral.anio_fin, ctrl.exp_laboral.labora, true) === true"
+                                        invalid-message = "ctrl.dateValidator(ctrl.exp_laboral.mes_fin, ctrl.exp_laboral.anio_fin, ctrl.exp_laboral.labora, true)">
                                     <option value="">--- Seleccione Año ---</option>
                                 </select>
                             </div>
@@ -1105,23 +1107,44 @@ if(session.getAttribute("user") == null){
                     <h4 class="modal-title" id="myModalLabel">Formulario de formación</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" name="form_formacion" ng-submit="ctrl.submitForm()" class="form-horizontal" novalidate>
-                        <p ng-class="{ 'has-error': form_formacion.c_educativo.$error.required || form_formacion.c_educativo.$error.minlength }">
-                            <label class="etiqueta_e">Centro educativo<i class="required">*</i>:</label>                            
-                            <input type="text" class="form-control texto_e" name="c_educativo" ng-model="ctrl.formacion.c_educativo" placeholder="Nombre del centro educativo" minlength="6" required />
-                        </p>
-                        <p>
-                            <label class="etiqueta_e">Nivel de estudios:</label>                           
+                    <form role="form" angular-validator-submit="ctrl.submitForm()" name="forma_formacion"
+                        angular-validator class="form-horizontal" novalidate>
+                        <label class="etiqueta_e">Centro educativo<i class="required">*</i>:</label>                            
+                        <input type="hidden" name="id" ng-model="ctrl.formacion.id"/>
+                        <input type="hidden" name="cod" ng-model="ctrl.formacion.cod"/>
+                        <div class="form-group">
+                            <input type="text" 
+                                class="form-control texto_e" 
+                                name="c_educativo" 
+                                ng-model="ctrl.formacion.c_educativo"  
+                                validate-on="dirty"
+                                clase="text_valid_e"
+                                validator = "ctrl.lengthValidator(ctrl.formacion.c_educativo, 6) === true"
+                                invalid-message = "ctrl.lengthValidator(ctrl.formacion.c_educativo, 6)"
+                                required-message="'El campo no puede estar vacio'"
+                                required/>
+                        </div>
+                        <label class="etiqueta_e">Nivel de estudios:</label>                           
+                        <div class="form-group">
                             <select class="form-control selector_e" name="nivel_estudio" ng-model="ctrl.formacion.nivel_estudio" ng-options="Nivel.ID as Nivel.Value for Nivel in ctrl.NvlFormacion">
                                 <option value="">--- Seleccione opción ---</option>
                             </select>
-                        </p>
-                        <p ng-class="{ 'has-error': form_formacion.area_estudio.$error.required || form_formacion.area_estudio.$error.minlength }">
-                            <label class="etiqueta_e">Area de estudio<i class="required">*</i>:</label>
-                            <input type="text" class="form-control texto_e" name="area_estudio" ng-model="ctrl.formacion.area_estudio" placeholder="Area de estudio" minlength="5" required />
-                        </p>
-                        <p>
-                            <label class="etiqueta_e">Estado:</label>
+                        </div>
+                        <label class="etiqueta_e">Area de estudio<i class="required">*</i>:</label>
+                        <div class="form-group">
+                            <input type="text" 
+                                class="form-control texto_e" 
+                                name="area_estudio" 
+                                ng-model="ctrl.formacion.area_estudio" 
+                                validate-on="dirty"
+                                clase="text_valid_e"
+                                validator = "ctrl.lengthValidator(ctrl.formacion.area_estudio, 6) === true"
+                                invalid-message = "ctrl.lengthValidator(ctrl.formacion.area_estudio, 6)"
+                                required-message="'El campo no puede estar vacio'"
+                                required />
+                        </div>
+                        <label class="etiqueta_e">Estado:</label>
+                        <div class="form-group">
                             <div class="form-inline">
                                 <label class="checkbox-inline">
                                     <input type="radio" value="1" name="estado" ng-model="ctrl.formacion.estado"> Cursando
@@ -1133,29 +1156,51 @@ if(session.getAttribute("user") == null){
                                     <input type="radio" value="3" name="estado" ng-model="ctrl.formacion.estado"> Aplazado/Abandonado
                                 </label>
                             </div>                                
-                        </p>
-                        <p  ng-class="{ 'has-error': form_formacion.mes_inicio.$error.required || form_formacion.anio_inicio.$error.required}">
-                            <label class="etiqueta_e">Inicio<i class="required">*</i>:</label>
-                            <div class="form-group form-inline">
-                                <select class="form-control selector_e_min" name="mes_inicio" ng-model="ctrl.formacion.mes_inicio" ng-options="Mes.ID as Mes.Mes for Mes in ctrl.Meses" required>
+                        </div>
+                        <label class="etiqueta_e">Inicio<i class="required">*</i>:</label>
+                        <div class="form-group">
+                            <div class="form-inline">
+                                    <select class="form-control selector_e_min" 
+                                            name="mes_inicio" 
+                                            ng-model="ctrl.formacion.mes_inicio" 
+                                            ng-options="Mes.ID as Mes.Mes for Mes in ctrl.Meses" 
+                                            clase="text_valid_e"
+                                            parent="anio_inicio">
+                                        <option value="">--- Seleccione Mes ---</option>
+                                    </select>
+                                    <select class="form-control selector_e_min" 
+                                            name="anio_inicio" 
+                                            ng-model="ctrl.formacion.anio_inicio" 
+                                            ng-options="Anio.ID as Anio.Year for Anio in ctrl.Anios" 
+                                            clase="text_valid_e"
+                                            validator = "ctrl.dateValidator(ctrl.formacion.mes_inicio, ctrl.formacion.anio_inicio, 1, false) === true"
+                                            invalid-message = "ctrl.dateValidator(ctrl.formacion.mes_inicio, ctrl.formacion.anio_inicio, 1, false)"
+                                            required-message="'Debe seleccionar una opción'"
+                                            required>
+                                        <option value="">--- Seleccione Año ---</option>
+                                    </select>
+                            </div>
+                        </div>
+                        <label class="etiqueta_e">Fin</label>
+                        <div class="form-group">
+                            <div class="form-inline">
+                                <select class="form-control selector_e_min" 
+                                        name="mes_fin" ng-model="ctrl.formacion.mes_fin" 
+                                        ng-options="Mes.ID as Mes.Mes for Mes in ctrl.Meses"
+                                        parent="anio_fin">
                                     <option value="">--- Seleccione Mes ---</option>
                                 </select>
-                                <select class="form-control selector_e_min" name="anio_inicio" ng-model="ctrl.formacion.anio_inicio" ng-options="Anio.ID as Anio.Year for Anio in ctrl.Anios" required>
+                                <select class="form-control selector_e_min" 
+                                        name="anio_fin" 
+                                        ng-model="ctrl.formacion.anio_fin" 
+                                        ng-options="Anio.ID as Anio.Year for Anio in ctrl.Anios"
+                                        clase="text_valid_e"
+                                        validator = "ctrl.dateValidator(ctrl.formacion.mes_fin, ctrl.formacion.anio_fin, ctrl.formacion.estado, true) === true"
+                                        invalid-message = "ctrl.dateValidator(ctrl.formacion.mes_fin, ctrl.formacion.anio_fin, ctrl.formacion.estado, true)">
                                     <option value="">--- Seleccione Año ---</option>
                                 </select>
                             </div>
-                        </p>
-                        <p>
-                            <label class="etiqueta_e">Fin</label>
-                            <div class="form-group form-inline">
-                                <select class="form-control selector_e_min" name="mes_fin" ng-model="ctrl.formacion.mes_fin" ng-options="Mes.ID as Mes.Mes for Mes in ctrl.Meses">
-                                    <option value="">--- Seleccione Mes ---</option>
-                                </select>
-                                <select class="form-control selector_e_min" name="anio_fin" ng-model="ctrl.formacion.anio_fin" ng-options="Anio.ID as Anio.Year for Anio in ctrl.Anios">
-                                    <option value="">--- Seleccione Año ---</option>
-                                </select>
-                            </div>
-                        </p>
+                        </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                             <button type="submit" ng-disabled="form_formacion.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_formacion" class="btn btn-primary" >{{(ctrl.formacion.id===-1)?'Añadir':'Editar'}}</button>

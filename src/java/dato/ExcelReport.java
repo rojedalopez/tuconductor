@@ -29,6 +29,7 @@ public class ExcelReport {
  static XSSFCellStyle csNoBold = null;
  static XSSFCellStyle csNoBoldNum = null;
  
+
  public static void createExcel(String cod, String ruta) {
 
   try{
@@ -111,7 +112,7 @@ public class ExcelReport {
    
    sheetExperienciaLaboral(exp_laboral, cod);
 
-   sheetFormacionEducativa(exp_laboral, cod);
+   sheetFormacionEducativa(formacion, cod);
    
    sheetMultas(multas, cod);
    
@@ -524,17 +525,17 @@ public class ExcelReport {
 
         try{
             conn=conexion();
-            String instruccion="SELECT ins_formacion, dsc_nvlformacion, area_formacion, dsc_estformacion, area_formacion, " +
+            String instruccion="SELECT ins_formacion, dsc_nvlformacion, area_formacion, dsc_estformacion, " +
                                 "CONCAT(TextoExperiencia(mes_ini_formacin, anio_ini_formacion),' - ',TextoExperiencia(mes_fin_formacion, anio_fin_formacion)) " +
                                 "FROM tblFormacion AS f INNER JOIN tblNvlFormacion AS n ON f.id_nvlformacion = n.id_nvlformacion " +
-                                "INNER JOIN tblEstFormacion e ON e.id_estformacion = e.id_estformacion " +
+                                "INNER JOIN tblEstFormacion e ON f.id_estformacion = e.id_estformacion " +
                                 "WHERE cod_empleado = ?;";
 
             insertar=conn.prepareStatement(instruccion);
             insertar.setString(1, cod);
             datos=insertar.executeQuery();
             while (datos.next()) {
-                System.out.println(datos.getString(1));
+                System.out.println(datos.getString(1)+"--");
                 rowIndex++;
                 row = sheet.createRow(rowIndex);
                 c = row.createCell(1);
@@ -550,7 +551,7 @@ public class ExcelReport {
                 c.setCellValue("Nivel Educativo:");
                 c.setCellStyle(csBold);
                 c = row.createCell(2);
-                c.setCellValue(datos.getString(7));
+                c.setCellValue(datos.getString(2));
                 c.setCellStyle(csNoBold);
 
                 rowIndex++;
@@ -559,7 +560,7 @@ public class ExcelReport {
                 c.setCellValue("Area de formación:");
                 c.setCellStyle(csBold);
                 c = row.createCell(2);
-                c.setCellValue(datos.getString(8));
+                c.setCellValue(datos.getString(3));
                 c.setCellStyle(csNoBold);
                 
                 rowIndex++;
@@ -568,7 +569,7 @@ public class ExcelReport {
                 c.setCellValue("Estado de formación:");
                 c.setCellStyle(csBold);
                 c = row.createCell(2);
-                c.setCellValue(datos.getString(2));
+                c.setCellValue(datos.getString(4));
                 c.setCellStyle(csNoBold);
 
                 rowIndex++;
@@ -577,7 +578,7 @@ public class ExcelReport {
                 c.setCellValue("Lapso:");
                 c.setCellStyle(csBold);
                 c = row.createCell(2);
-                c.setCellValue(datos.getFloat(3));
+                c.setCellValue(datos.getString(5));
                 c.setCellStyle(csNoBoldNum);
 
                 rowIndex++;
@@ -641,7 +642,7 @@ public class ExcelReport {
                 c.setCellValue("Fecha:");
                 c.setCellStyle(csBold);
                 c = row.createCell(2);
-                c.setCellValue(datos.getString(7));
+                c.setCellValue(datos.getString(2));
                 c.setCellStyle(csNoBold);
 
                 rowIndex++;
@@ -650,7 +651,7 @@ public class ExcelReport {
                 c.setCellValue("Cargo:");
                 c.setCellStyle(csBold);
                 c = row.createCell(2);
-                c.setCellValue(datos.getString(8));
+                c.setCellValue(datos.getString(3));
                 c.setCellStyle(csNoBold);
                 
                 rowIndex++;
@@ -659,7 +660,7 @@ public class ExcelReport {
                 c.setCellValue("Cancelada:");
                 c.setCellStyle(csBold);
                 c = row.createCell(2);
-                c.setCellValue(datos.getString(2));
+                c.setCellValue(datos.getString(4));
                 c.setCellStyle(csNoBold);
 
                 
@@ -726,7 +727,7 @@ public class ExcelReport {
                 c.setCellValue("Tipo:");
                 c.setCellStyle(csBold);
                 c = row.createCell(2);
-                c.setCellValue(datos.getString(7));
+                c.setCellValue(datos.getString(2));
                 c.setCellStyle(csNoBold);
 
                 rowIndex++;
@@ -735,7 +736,7 @@ public class ExcelReport {
                 c.setCellValue("Fecha:");
                 c.setCellStyle(csBold);
                 c = row.createCell(2);
-                c.setCellValue(datos.getString(8));
+                c.setCellValue(datos.getString(3));
                 c.setCellStyle(csNoBold);
                 
                 rowIndex++;
@@ -744,7 +745,7 @@ public class ExcelReport {
                 c.setCellValue("Muertos?:");
                 c.setCellStyle(csBold);
                 c = row.createCell(2);
-                c.setCellValue(datos.getString(2));
+                c.setCellValue(datos.getString(4));
                 c.setCellStyle(csNoBold);
 
                 rowIndex++;
@@ -753,7 +754,7 @@ public class ExcelReport {
                 c.setCellValue("Heridos?:");
                 c.setCellStyle(csBold);
                 c = row.createCell(2);
-                c.setCellValue(datos.getFloat(3));
+                c.setCellValue(datos.getString(5));
                 c.setCellStyle(csNoBoldNum);
 
                 rowIndex++;
@@ -817,7 +818,7 @@ public class ExcelReport {
                 c.setCellValue("Fecha:");
                 c.setCellStyle(csBold);
                 c = row.createCell(2);
-                c.setCellValue(datos.getString(7));
+                c.setCellValue(datos.getString(2));
                 c.setCellStyle(csNoBold);
 
                 rowIndex++;
@@ -826,7 +827,7 @@ public class ExcelReport {
                 c.setCellValue("Activo:");
                 c.setCellStyle(csBold);
                 c = row.createCell(2);
-                c.setCellValue(datos.getString(8));
+                c.setCellValue(datos.getString(3));
                 c.setCellStyle(csNoBold);
                 
                 rowIndex++;
