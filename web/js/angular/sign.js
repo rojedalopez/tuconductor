@@ -10,7 +10,9 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
         SignUpService.SaveSign(usuario).then(function(d){
             if(d){
                 btn_add_conductor.button('reset');
-                self.close();
+                self.close_conductor();
+                Modal_choise_options.modal('hide');
+                Modal_Confirmacion.modal('show');
             }
         }, function(errResponse){
             console.error('Error while creating Paper.');
@@ -21,8 +23,17 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
         SignUpService.SaveEmpresa(empresa).then(function(d){
             if(d){
                 btn_add_empresa.button('reset');
-                self.close();
+                self.close_empresa();
+                Modal_choise_options.modal('hide');
+                Modal_Confirmacion.modal('show');
             }
+
+            if(d){
+                Modal_forgotpass_success.removeClass('hide');                
+            }else{
+                Modal_forgotpass_error.removeClass('hide');                
+            }
+            Modal_Confirmacion.modal('show');
         },function(errResponse){
             console.error('Error while creating Paper.');
         });
@@ -85,19 +96,34 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
         modalforgot.modal("show");
     };
     
-    self.close = function(){
+    self.close_conductor = function(){
         self.reset();
-        dialog.modal( "hide" );
+        dialog_conductor.modal( "hide" );
+    };
+    
+    self.close_empresa = function(){
+        self.reset_empresa();
+        dialog_empresa.modal( "hide" );
     };
            
-    self.opener = function(){
+    self.open_conductor = function(){
         self.reset();
         dialog.modal( "show" );
+    };
+    
+    self.open_empresa = function(){
+        self.reset_empresa();
+        dialog_empresa.modal( "show" );
     };
 
     self.reset = function(){
         self.usuario={mail:"", password:"",name:"", lastname:"", phone:"", confirmPassword:""};
         $scope.add_conductor.$setPristine(); //reset Form
+    };
+    
+    self.reset_empresa = function(){
+        self.empresa={nit:"",r_social:"", dir:"", tel:"", cam_com:null, rut:"", nombre_replegal:"", doc_replegal:"", email_replegal:"", tel_replegal:"", mail:"", password:"", confirmPassword:""}
+        $scope.add_empresa.$setPristine(); //reset Form
     };
 }]).factory('SignUpService', ['$http', '$q', function($http, $q){
     return {

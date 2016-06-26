@@ -55,13 +55,15 @@ if(session.getAttribute("user") != null){
         var dialog ;        
         var dialog2 ;
         var btn_sending_mail, btn_add_conductor, btn_add_empresa;
-        var Modal_forgotpass_success, Modal_forgotpass_error;
+        var Modal_forgotpass_success, Modal_forgotpass_error, Modal_choise_options, Modal_Confirmacion;
         $(document).ready(function() {
+            Modal_Confirmacion = $("#Modal_Confirmacion");
+            Modal_choise_options = $("#Modal_choise_options");
             btn_sending_mail = $("#btn_sending_mail");
             btn_add_conductor = $("#btn_add_conductor");
             btn_add_empresa = $("#btn_add_empresa");
-            dialog = $("#Modal_Conductor");
-            dialog2 = $("#Modal_Empresa");
+            dialog_conductor = $("#Modal_Conductor");
+            dialog_empresa = $("#Modal_Empresa");
             Modal_forgotpass_success = $("#Modal_forgotpass_success");
             Modal_forgotpass_error = $("#Modal_forgotpass_error");
         } );
@@ -165,7 +167,25 @@ if(session.getAttribute("user") != null){
         </div>
     </div>
 
-    
+    <div class="modal fade" id="Modal_Confirmacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Confirmacion de registro</h4>
+                </div>    
+                
+                <div class="modal-body">
+                    <div class="alert alert-info hide" id="Modal_forgotpass_success">
+                        <b>Se ha realizado el registro completo de su usuario.</b><br/>Active su cuenta siguiendo las instrucciones que se le enviaron a su correo.
+                    </div>
+                    <div class="alert alert-danger hide" id="Modal_forgotpass_error " >
+                        <b>Se ha presentado un error.</b><br/>Puede que el correo ingresado ya se haya registrado en nuestro sistema.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
                                 
     <div class="modal fade" id="Modal_choise_options" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -177,7 +197,7 @@ if(session.getAttribute("user") != null){
                 
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-lg-6" style="cursor: pointer;" onclick="open_modal('Modal_Conductor')">
+                        <div class="col-lg-6" style="cursor: pointer;" ng-click="ctrl.open_conductor()">
                             <div class="panel panel-primary text-center no-boder">
                                 <div class="panel-body green">
                                     <img src="assets/img/conductor_icon.png" />
@@ -189,7 +209,7 @@ if(session.getAttribute("user") != null){
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6" style="cursor: pointer;" onclick="open_modal('Modal_Empresa')">
+                        <div class="col-lg-6" style="cursor: pointer;" ng-click="ctrl.open_empresa()">
                             <div class="panel panel-primary text-center no-boder">
                                 <div class="panel-body green">
                                     <img src="assets/img/empresa_icon.png" />
