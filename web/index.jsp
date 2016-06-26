@@ -463,8 +463,8 @@ if(session.getAttribute("user") != null){
                             class="form-control texto_e"  
                             ng-model="ctrl.empresa.doc_replegal" 
                             clase="text_valid_e"
-                            validator = "ctrl.lengthValidator(ctrl.empresa.doc_replegal, 10) === true"
-                            invalid-message = "ctrl.lengthValidator(ctrl.empresa.doc_replegal, 10)"
+                            validator = "ctrl.lengthValidator(ctrl.empresa.doc_replegal, 6) === true"
+                            invalid-message = "ctrl.lengthValidator(ctrl.empresa.doc_replegal, 6)"
                             required-message="'El campo no puede estar vacio'"
                             required/>
                         </div>
