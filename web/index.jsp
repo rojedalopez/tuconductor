@@ -244,7 +244,7 @@ if(session.getAttribute("user") != null){
                                 name = "mail"
                                 class = "form-control texto_e"
                                 ng-model = "ctrl.mail"
-                                validate-on="dirty"
+                                
                                 invalid-message="'Esta ingresando un correo incorrecto'"
                                 required-message="'El campo no puede estar vacio'"
                                 clase="text_valid_e"
@@ -282,7 +282,6 @@ if(session.getAttribute("user") != null){
                                 <input 
                                 type="text" 
                                 name="name_"
-                                validate-on="dirty" 
                                 class="form-control texto_e"  
                                 ng-model="ctrl.usuario.name" 
                                 clase="text_valid_e"
@@ -298,7 +297,6 @@ if(session.getAttribute("user") != null){
                                 name="lastname" 
                                 class="form-control texto_e" 
                                 ng-model="ctrl.usuario.lastname" 
-                                validate-on="dirty" 
                                 clase="text_valid_e"
                                 validator = "ctrl.lengthValidator(ctrl.usuario.lastname, 4) === true"
                                 invalid-message = "ctrl.lengthValidator(ctrl.usuario.lastname, 4)"
@@ -312,7 +310,6 @@ if(session.getAttribute("user") != null){
                                 name="mail"
                                 class="form-control texto_e" 
                                 ng-model="ctrl.usuario.mail" 
-                                validate-on="dirty" 
                                 clase="text_valid_e"
                                 invalid-message="'Esta ingresando un correo incorrecto'"
                                 required-message="'El campo no puede estar vacio'" 
@@ -340,7 +337,6 @@ if(session.getAttribute("user") != null){
                                 ng-model = "ctrl.usuario.confirmPassword"
                                 clase="text_valid_e"
                                 validator = "ctrl.usuario.password === ctrl.usuario.confirmPassword"
-                                validate-on="dirty"
                                 invalid-message = "'Las contraseñas no coinciden!'"
                                 required-message="'El campo no puede estar vacio'"
                                 required/>
@@ -352,7 +348,6 @@ if(session.getAttribute("user") != null){
                                 name="phone"
                                 class="form-control texto_e"
                                 ng-model="ctrl.usuario.phone"  
-                                validate-on="dirty"
                                 clase="text_valid_e"
                                 validator = "ctrl.lengthValidator(ctrl.usuario.phone, 10) === true"
                                 invalid-message = "ctrl.lengthValidator(ctrl.usuario.phone, 10)"
@@ -385,7 +380,6 @@ if(session.getAttribute("user") != null){
                         <div class="form-group">
                             <input type="text" 
                             name="nit"
-                            validate-on="dirty" 
                             class="form-control texto_e"  
                             ng-model="ctrl.empresa.nit" 
                             clase="text_valid_e"
@@ -398,7 +392,6 @@ if(session.getAttribute("user") != null){
                         <div class="form-group">    
                             <input type="text" 
                             name="r_social"
-                            validate-on="dirty"
                             class="form-control texto_e"  
                             ng-model="ctrl.empresa.r_social" 
                             clase="text_valid_e"
@@ -411,7 +404,6 @@ if(session.getAttribute("user") != null){
                         <div class="form-group">    
                             <input type="text"
                             name="dir"
-                            validate-on="dirty"
                             class="form-control texto_e"  
                             ng-model="ctrl.empresa.dir" 
                             clase="text_valid_e"
@@ -420,11 +412,69 @@ if(session.getAttribute("user") != null){
                             required-message="'El campo no puede estar vacio'"
                             required />
                         </div>
+                        <label class="etiqueta_e">Pais<i class="required">*</i>:</label>
+                        <div class="form-group">
+                            <select class="form-control selector_e" 
+                                name="pais" ng-model="ctrl.empresa.pais" 
+                                ng-options="Pais.ID as Pais.Nombre for Pais in ctrl.Paises" 
+                                ng-change="ctrl.selectPais(ctrl.empresa.pais)"
+                                clase="text_valid_e"
+                                required-message="'El campo no puede estar vacio'"
+                                required>
+                                <option>--- Seleccione Pais ---</option>
+                            </select>
+                        </div>
+                        <label class="etiqueta_e">Dpto<i class="required">*</i>:</label>
+                        <div class="form-group">
+                            <select class="form-control selector_e" 
+                                ng-show="ctrl.colombia" 
+                                required="{{ctrl.colombia}}" 
+                                name="depto" 
+                                ng-model="ctrl.empresa.depto" 
+                                ng-options="dpto.id as dpto.departamento for dpto in ctrl.dptos" 
+                                ng-change="ctrl.selectDpto(ctrl.empresa.depto)"
+                                clase="text_valid_e"
+                                required-message="'El campo no puede estar vacio'">
+                                <option value="">--- Seleccione Departamento ---</option>
+                            </select
+                            <input type="text" ng-show="!ctrl.colombia" 
+                                class="form-control texto_e"  
+                                name="depart" 
+                                ng-model="ctrl.empresa.depart" 
+                                required="{{!ctrl.colombia}}" 
+                                clase="text_valid_e"
+                                validator = "ctrl.lengthValidator(ctrl.empresa.depart, 4) === true"
+                                invalid-message = "ctrl.lengthValidator(ctrl.empresa.depart, 4)"
+                                required-message="'El campo no puede estar vacio'"/>
+                        </div>
+                        <label class="etiqueta_e">Ciudad<i class="required">*</i>:</label>
+                        <div class="form-group">
+                            <select class="form-control selector_e" 
+                                ng-show="ctrl.colombia" 
+                                required="{{ctrl.colombia}}" 
+                                name="ciudad" 
+                                ng-model="ctrl.empresa.ciudad" 
+                                ng-options="ciudad for ciudad in ctrl.ciudades"
+                                clase="text_valid_e"
+                                required-message="'El campo no puede estar vacio'">
+                                <option value="">--- Seleccione Ciudad ---</option>
+                            </select>
+                            <input type="text" 
+                                ng-show="!ctrl.colombia" 
+                                class="form-control texto_e"  
+                                name="ciudad" 
+                                ng-model="ctrl.empresa.ciudad" 
+                                required="{{!ctrl.colombia}}"
+                                clase="text_valid_e"
+                                validator = "ctrl.lengthValidator(ctrl.empresa.ciudad, 4) === true"
+                                invalid-message = "ctrl.lengthValidator(ctrl.empresa.ciudad, 4)"
+                                required-message="'El campo no puede estar vacio'"/>
+                        </div>
                         <label class="etiqueta_e">Telefono<i class="required">*</i>:</label>
                         <div class="form-group">    
                             <input type="text"
                             name="tel"
-                            validate-on="dirty"
+                            
                             class="form-control texto_e"  
                             ng-model="ctrl.empresa.tel"
                             clase="text_valid_e"
@@ -433,8 +483,8 @@ if(session.getAttribute("user") != null){
                             required-message="'El campo no puede estar vacio'"
                             required />
                         </div>
-                        <label class="etiqueta_e_up">Camara de comercio:</label>
-                        <div class="form-group">    
+                        <label class="etiqueta_e">Camara de comercio<i class="required">*</i>:</label>
+                        <div class="form-group">   
                             <input type="file"
                             name="cam_com"
                             class="form-control texto_e"  
@@ -446,7 +496,7 @@ if(session.getAttribute("user") != null){
                         <div class="form-group">    
                             <input type="text" 
                             name="nombre_replegal"
-                            validate-on="dirty"
+                            
                             class="form-control texto_e"  
                             ng-model="ctrl.empresa.nombre_replegal" 
                             clase="text_valid_e"
@@ -459,7 +509,7 @@ if(session.getAttribute("user") != null){
                         <div class="form-group">  
                             <input type="text" 
                             name="doc_replegal"
-                            validate-on="dirty"
+                            
                             class="form-control texto_e"  
                             ng-model="ctrl.empresa.doc_replegal" 
                             clase="text_valid_e"
@@ -472,7 +522,7 @@ if(session.getAttribute("user") != null){
                         <div class="form-group">
                             <input type="email" 
                             name="email_replegal"
-                            validate-on="dirty"
+                            
                             class="form-control texto_e"  
                             ng-model="ctrl.empresa.email_replegal" 
                             clase="text_valid_e"
@@ -484,7 +534,7 @@ if(session.getAttribute("user") != null){
                         <div class="form-group">  
                             <input type="text" 
                             name="tel_replegal"
-                            validate-on="dirty" 
+                             
                             class="form-control texto_e"  
                             ng-model="ctrl.empresa.tel_replegal"/>
                         </div>                      
@@ -492,7 +542,7 @@ if(session.getAttribute("user") != null){
                         <div class="form-group">  
                             <input type="email" 
                             name="mail"
-                            validate-on="dirty"
+                            
                             class="form-control texto_e"  
                             ng-model="ctrl.empresa.mail"
                             clase="text_valid_e"
@@ -504,7 +554,7 @@ if(session.getAttribute("user") != null){
                         <div class="form-group">  
                             <input type="password" 
                             name="password"
-                            validate-on="dirty"
+                            
                             class="form-control texto_e"  
                             ng-model="ctrl.empresa.password" 
                             clase="text_valid_e"
@@ -522,7 +572,7 @@ if(session.getAttribute("user") != null){
                             ng-model = "ctrl.empresa.confirmPassword"
                             clase="text_valid_e"
                             validator = "ctrl.empresa.password === ctrl.empresa.confirmPassword"
-                            validate-on="dirty"
+                            
                             invalid-message = "'Las contraseñas no coinciden!'"
                             required-message="'El campo no puede estar vacio'"
                             required/>

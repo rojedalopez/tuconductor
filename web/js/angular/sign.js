@@ -3,8 +3,13 @@
 angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'SignUpService', function($scope, SignUpService) {
     var self = this;
     self.usuario={mail:"", password:"",name:"", lastname:"", phone:"", confirmPassword:""};
-    self.empresa={nit:"",r_social:"", dir:"", tel:"", cam_com:null, rut:"", nombre_replegal:"", doc_replegal:"", email_replegal:"", tel_replegal:"", mail:"", password:"", confirmPassword:""}
+    self.empresa={nit:"",r_social:"", dir:"", tel:"", cam_com:null, rut:"", nombre_replegal:"", doc_replegal:"", email_replegal:"", tel_replegal:"", mail:"", password:"", confirmPassword:"", pais:"CO", depto:"", depart:"", ciudad:""}
     self.mail="";
+    self.colombia = true;
+    self.Paises=[];
+    self.dptos=[];
+    self.dpto={id:0, departamento:"", ciudades:[]};
+    self.ciudades=[];
     
     self.SaveUser = function(usuario){
         SignUpService.SaveSign(usuario).then(function(d){
@@ -77,6 +82,47 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
         return true;
     };
     
+     self.selectPais = function(pais){
+        if(pais==="CO"){
+            self.colombia = true;  
+        }else{
+            self.colombia = false; 
+            self.empresa.depart = "";
+            self.empresa.ciudad = "";
+            self.empresa.depto="";
+        }
+    };
+    
+    self.listaDptosCiudad = function(){
+        SignUpService.listaDptosCiudad().then(function(d){
+            self.dptos = d;
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+        });
+    };
+    
+    self.listaPaises = function() {
+        SignUpService.listaPaises().then(function(d){
+            self.Paises = d;
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+        });
+    };
+    
+    self.selectDpto = function(id){
+        for(var i = 0; i < self.dptos.length; i++){
+            if(self.dptos[i].id === id) {
+               self.dpto = angular.copy(self.dptos[i]);
+               self.ciudades=self.dpto.ciudades;
+               self.empresa.depart = self.dpto.departamento;
+               break;
+            }
+        }
+    };
+    
+    self.listaPaises();
+    self.listaDptosCiudad();
+    
     self.submit = function() {
       btn_add_conductor.button('loading');
       self.SaveUser(self.usuario); 
@@ -108,7 +154,7 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
            
     self.open_conductor = function(){
         self.reset();
-        dialog.modal( "show" );
+        dialog_conductor.modal( "show" );
     };
     
     self.open_empresa = function(){
@@ -122,7 +168,7 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
     };
     
     self.reset_empresa = function(){
-        self.empresa={nit:"",r_social:"", dir:"", tel:"", cam_com:null, rut:"", nombre_replegal:"", doc_replegal:"", email_replegal:"", tel_replegal:"", mail:"", password:"", confirmPassword:""}
+        self.empresa={nit:"",r_social:"", dir:"", tel:"", cam_com:null, rut:"", nombre_replegal:"", doc_replegal:"", email_replegal:"", tel_replegal:"", mail:"", password:"", confirmPassword:"", pais:"CO", depto:"", depart:"", ciudad:""}
         $scope.add_empresa.$setPristine(); //reset Form
     };
 }]).factory('SignUpService', ['$http', '$q', function($http, $q){
@@ -172,6 +218,22 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
                     return $q.reject(errResponse);
                 }
             );
+	},
+        listaDptosCiudad: function() {
+            return $http.post('assets/colombia.json').then(function(response){
+                return response.data;
+            },function(errResponse){
+                console.error('Error while fetching expenses');
+                return $q.reject(errResponse);
+            });
+	},
+	listaPaises: function() {
+            return $http.post('assets/paises.json').then(function(response){
+                return response.data;
+            },function(errResponse){
+                console.error('Error while fetching expenses');
+                return $q.reject(errResponse);
+            });
 	}
 		
     };
