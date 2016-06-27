@@ -82,6 +82,7 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
         return true;
     };
     
+
      self.selectPais = function(pais){
         if(pais==="CO"){
             self.colombia = true;  

@@ -483,7 +483,7 @@ if(session.getAttribute("user") != null){
                             required-message="'El campo no puede estar vacio'"
                             required />
                         </div>
-                        <label class="etiqueta_e">Camara de comercio<i class="required">*</i>:</label>
+                        <label class="etiqueta_e_up">Camara de comercio<i class="required">*</i>:</label>
                         <div class="form-group">   
                             <input type="file"
                             name="cam_com"
@@ -491,6 +491,7 @@ if(session.getAttribute("user") != null){
                             clase="text_valid_e"
                             uploader-model="ctrl.empresa.cam_com"
                             accept=".pdf, .docx"/>
+                            <label class="control-label text_help"> <i class='fa fa-question-circle'></i> Debe escanear el CCG expedido por la Camara de comercio y adjuntarlo</label>
                         </div>
                         <label class="etiqueta_e_up">Nombre Rep. legal<i class="required">*</i>:</label>
                         <div class="form-group">    

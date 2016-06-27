@@ -20,7 +20,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         ciudad:"", direccion:"", mes_inicio:"", anio_inicio:"", mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0, eliminar:false};
 
     self.formaciones=[];
-    self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, eliminar:false};
+    self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"", eliminar:false};
     
     
     
@@ -302,7 +302,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     };
           
     self.resetForm = function(){
-        self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, eliminar:false};
+        self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"", eliminar:false};
         $scope.form_formacion.$setPristine();
     };
     
@@ -348,7 +348,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         {ID: 2, Value: 'Educación Basica Secundaria'},
         {ID: 3, Value: 'Bachillerato / educacion Media'},
         {ID: 4, Value: 'Universidad / Carrera Tecnica'},
-        {ID: 5, Value: 'Posgrado'},
+        {ID: 5, Value: 'Posgrado'}
     ];
         
 }]).factory('ProfileService', ['$http', '$q', function($http, $q){
@@ -586,7 +586,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
          ciudad:"", direccion:"", mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"", labora:false, retiro:"", exp_meses:0, eliminar:false};
 
     self.formaciones=[];
-    self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0, cod:"", eliminar:false};
+    self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"", cod:"", eliminar:false};
     
     self.multas=[];
     self.multa={id:-1, date:"", lgr_multa:"", fch_multa: "", cgo_multa:"", pgo_multa:false, cod:"", eliminar:false};
@@ -616,15 +616,9 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         return true;
     };
     
-    self.dateValidator = function(mes, anio, estado, validaEstado) {
+    self.dateValidator = function(mes, anio) {
         var date = new Date();
-        
-        if(validaEstado){
-            if ((!mes || !anio) && estado !== 1) {
-                    return "Debe colocar una fecha fin";
-            }
-        }
-        
+               
         if (mes > date.getMonth() && anio >= date.getFullYear()) {
                 return "No puede ingresar fecha mayor a la actual";
         }
@@ -942,6 +936,8 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     };
     
     self.submitMulta = function(){
+        var cod = self.getVarUrl("cod");
+        self.exp_laboral.cod = cod;
         btn_guardar_multa.button('loading');
         self.multa.date = new Date(self.multa.fch_multa).toString("yyyy-MM-dd");
         self.SaveMultaUsuario(self.multa);
@@ -953,6 +949,8 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     };
     
     self.submitAccidente = function(){
+        var cod = self.getVarUrl("cod");
+        self.exp_laboral.cod = cod;
         btn_guardar_accidente.button('loading');
         self.accidente.date = new Date(self.accidente.fch_accidente).toString("yyyy-MM-dd");
         self.SaveAccidenteUsuario(self.accidente);
@@ -964,6 +962,8 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     };
     
     self.submitJudicial = function(){
+        var cod = self.getVarUrl("cod");
+        self.exp_laboral.cod = cod;
         btn_guardar_judicial.button('loading');
         self.judicial.date = new Date(self.judicial.fch_procjudicial).toString("yyyy-MM-dd");
         self.SaveJudicialUsuario(self.judicial);
@@ -991,15 +991,70 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         }
     };
     
+    self.deleteForm = function(id){
+        console.log(id);
+        for(var i = 0; i < self.formaciones.length; i++){
+            if(self.formaciones[i].id === id) {
+               self.formacion = angular.copy(self.formaciones[i]);
+               self.formacion.eliminar = true;
+               self.SaveFormUsuario(self.formacion);
+               break;
+            }
+        }
+    };
+    
+    self.deleteMulta = function(id){
+        console.log(id);
+        for(var i = 0; i < self.multas.length; i++){
+            if(self.multas[i].id === id) {
+               self.multa = angular.copy(self.multas[i]);
+               self.multa.eliminar = true;
+               self.SaveMultaUsuario(self.multa);
+               break;
+            }
+        }
+    };
+    
+    self.deleteAccidente = function(id){
+        console.log(id);
+        for(var i = 0; i < self.accidentes.length; i++){
+            if(self.accidentes[i].id === id) {
+               self.accidente = angular.copy(self.accidentes[i]);
+               self.accidente.eliminar = true;
+               self.SaveAccidenteUsuario(self.accidente);
+               break;
+            }
+        }
+    };
+    
+    self.deleteJudicial = function(id){
+        console.log(id);
+        for(var i = 0; i < self.judiciales.length; i++){
+            if(self.judiciales[i].id === id) {
+               self.judicial = angular.copy(self.judiciales[i]);
+               self.judicial.eliminar = true;
+               self.SaveJudicialUsuario(self.judicial);
+               break;
+            }
+        }
+    };
+    
     self.submitForm = function(){
         self.SaveFormUsuario(self.formacion);
     };
     
     self.submitAdminision = function(){
-        btn_admitir.button('loading');
-        self.usuario_dp.verificado = true;
-        self.usuario_dp.date = self.usuario_dp.fecha_nac.toString("yyyy-MM-dd");
-        self.SaveDatosPersonales(self.usuario_dp);
+        if(self.usuario_dp.verificado===true){
+            btn_admitir.button('loading');
+            self.usuario_dp.verificado = false;
+            self.usuario_dp.date = self.usuario_dp.fecha_nac.toString("yyyy-MM-dd");
+            self.SaveDatosPersonales(self.usuario_dp);
+        }else{
+            btn_admitir.button('loading');
+            self.usuario_dp.verificado = true;
+            self.usuario_dp.date = self.usuario_dp.fecha_nac.toString("yyyy-MM-dd");
+            self.SaveDatosPersonales(self.usuario_dp);
+        }
     };
     
     self.openForm = function(){
@@ -1019,26 +1074,26 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         var cod = self.getVarUrl("cod");
         self.multa={id:-1, lgr_multa:"", fch_multa: "", cgo_multa:"", pgo_multa:false, eliminar:false};
         self.multa.cod = cod; 
-        $scope.form_multa.$setPristine();
+        $scope.forma_multa.$setPristine();
     };
     
     self.resetAccidente = function(){
         var cod = self.getVarUrl("cod");
         self.accidente={id:-1, date:"", fch_accidente:"", muertos:false, heridos: false, tipo:"", eliminar:false};
         self.accidente.cod = cod; 
-        $scope.form_accidente.$setPristine();
+        $scope.forma_accidente.$setPristine();
     };
     
     self.resetJudicial = function(){
         var cod = self.getVarUrl("cod");
         self.judicial={id:-1, date:"", del_procjudicial:"", fch_procjudicial:"", act_procjudicial:false, eliminar:false};
         self.judicial.cod = cod; 
-        $scope.form_judicial.$setPristine();
+        $scope.forma_judicial.$setPristine();
     };
 
     self.resetForm = function(){
         var cod = self.getVarUrl("cod");
-        self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:0, anio_inicio:0, mes_fin:0, anio_fin:0,eliminar:false};
+        self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"",eliminar:false};
         self.formacion.cod = cod; 
         $scope.forma_formacion.$setPristine();
     };
@@ -1101,8 +1156,10 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         {ID: 1, Value: 'Educación Basica Primaria'},
         {ID: 2, Value: 'Educación Basica Secundaria'},
         {ID: 3, Value: 'Bachillerato / educacion Media'},
-        {ID: 4, Value: 'Universidad / Carrera Tecnica'}  
+        {ID: 4, Value: 'Universidad / Carrera Tecnica'},
+        {ID: 5, Value: 'Posgrado'}
     ];
+    
 }]).factory('EditConductorbyAdminService', ['$http', '$q', function($http, $q){
     return {
         getUsuario: function(cod) {

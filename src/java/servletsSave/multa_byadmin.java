@@ -57,6 +57,7 @@ public class multa_byadmin extends HttpServlet {
         boolean pgo_multa =(Boolean) joMulta.get("pgo_multa");
         System.out.println("prueba= "+pgo_multa);
         HttpSession session =  null;
+        boolean eliminar = (Boolean) joMulta.get("eliminar");
  
         session = request.getSession(false);
         
@@ -64,7 +65,7 @@ public class multa_byadmin extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
-                boolean b = Guardar.SaveMulta(codigoConductor, id, lgr_multa, fch_multa, cgo_multa, pgo_multa);
+                boolean b = Guardar.SaveMulta(codigoConductor, id, lgr_multa, fch_multa, cgo_multa, pgo_multa, eliminar);
                 if(b){
                     out.print("true");
                 }else{

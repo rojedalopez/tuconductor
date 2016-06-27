@@ -41,21 +41,22 @@ public class procjudicial_byadmin extends HttpServlet {
         } catch (Exception e) { e.printStackTrace(); }
  
         JSONParser parser = new JSONParser();
-        JSONObject joMulta = null;
+        JSONObject joJudicial = null;
         System.out.println(sb.toString());
-        joMulta = (JSONObject) parser.parse(sb.toString());
-        int id = Integer.parseInt(joMulta.get("id").toString());
+        joJudicial = (JSONObject) parser.parse(sb.toString());
+        int id = Integer.parseInt(joJudicial.get("id").toString());
         System.out.println(id);
         
-        String fecha = (String) joMulta.get("date");
+        String fecha = (String) joJudicial.get("date");
         System.out.println(fecha);
         
-        String codigoConductor = (String) joMulta.get("cod");
+        String codigoConductor = (String) joJudicial.get("cod");
         System.out.println(codigoConductor);
-        boolean activo =(Boolean) joMulta.get("act_procjudicial");
+        boolean activo =(Boolean) joJudicial.get("act_procjudicial");
         System.out.println(activo);
-        String delito = (String) joMulta.get("del_procjudicial");
+        String delito = (String) joJudicial.get("del_procjudicial");
         System.out.println(delito);
+        boolean eliminar = (Boolean) joJudicial.get("eliminar");
 
         HttpSession session =  null;
  
@@ -65,7 +66,7 @@ public class procjudicial_byadmin extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
-                boolean b = Guardar.SaveProcJudicial(codigoConductor, id, delito, activo, fecha);
+                boolean b = Guardar.SaveProcJudicial(codigoConductor, id, delito, activo, fecha, eliminar);
                 if(b){
                     out.print("true");
                 }else{

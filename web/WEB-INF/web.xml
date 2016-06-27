@@ -13,14 +13,6 @@
         <servlet-class>servletsSession.validate</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>profile</servlet-name>
-        <servlet-class>servletsJSON.profile</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>listcomments</servlet-name>
-        <servlet-class>servletsJSON.listcomments</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>usuario_dp</servlet-name>
         <servlet-class>servletsSave.usuario_dp</servlet-class>
     </servlet>
@@ -195,14 +187,6 @@
     <servlet-mapping>
         <servlet-name>validate</servlet-name>
         <url-pattern>/validate</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>profile</servlet-name>
-        <url-pattern>/profile</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>listcomments</servlet-name>
-        <url-pattern>/listcomments</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>usuario_dp</servlet-name>

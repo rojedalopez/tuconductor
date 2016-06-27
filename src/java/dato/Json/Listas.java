@@ -23,107 +23,7 @@ public class Listas {
     static SimpleDateFormat Fechaformateador = new SimpleDateFormat("yyyy-MM-dd 00:00");
     static SimpleDateFormat Fecha = new SimpleDateFormat("yyyy-MM-dd");
     static SimpleDateFormat Hora = new SimpleDateFormat("hh:mm");
-    public static String ObtenerPublicacionesProfile(String id) throws SQLException{
-        JSONObject obj = null;
-        JSONArray lista = new JSONArray();
-        Connection conn=null;
-        PreparedStatement insertar=null;
-        Statement stm=null;
-        ResultSet datos=null;
-             
-        try{
-                    conn=conexion();
-                    String instruccion="";
-                     
-                    instruccion =   "SELECT p.id_publicacion, fch_publicacion, cmn_publicacion, ach_publicacion, " +
-                                    "CONCAT(e1.nbr_empleado, \" \", e1.apl_empleado) AS Origen, e1.cod_empleado AS cod_origen, mg_publicacion, p.cod_empleado, num_cmn_publicacion " +
-                                    "FROM tblPublicacion as p INNER JOIN tblEmpleado as e1 ON p.cod_empleado = e1.cod_empleado " +
-                                    "WHERE mro_cod_empleado = ? ORDER BY fch_publicacion DESC;";
-                     
-                    insertar=conn.prepareStatement(instruccion);
-                    insertar.setString(1, id);
-                    datos=insertar.executeQuery();
-                    while (datos.next()) {
-                        obj = new JSONObject();
-                        obj.put("id", datos.getInt(1));
-                        obj.put("fecha", Fechaformateador.format(datos.getDate(2)));
-                        obj.put("comentario", datos.getString(3));
-                        obj.put("archivo", datos.getString(4));
-                        obj.put("origen", datos.getString(5));
-                        obj.put("cod_origen", datos.getString(6));
-                        obj.put("megusta", datos.getInt(7));
-                        obj.put("destino", datos.getString(8));
-                        obj.put("num_comentario", datos.getInt(9));
-                        obj.put("desde", Metodos.calcular(datos.getString(2)));
-                        lista.add(obj);
-                    }
-                    datos.close();
-                    conn.close();
-                    return lista.toJSONString();
-             
-        }catch (SQLException e) {
-            System.out.println("error SQLException en ObtenerCliente");
-                    System.out.println(e.getMessage());
-        }catch (Exception e){
-                    System.out.println("error Exception en ObtenerCliente");
-                    System.out.println(e.getMessage());
-        }finally{
-                    if(!conn.isClosed()){
-                        conn.close();
-                    }
-                }
-        return "";
-    }
-    
-    public static String ObtenerCommentsByPublish(int id) throws SQLException{
-        JSONObject obj = null;
-        JSONArray lista = new JSONArray();
-        Connection conn=null;
-        PreparedStatement insertar=null;
-        Statement stm=null;
-        ResultSet datos=null;
-             
-        try{
-                    conn=conexion();
-                    String instruccion="";
-                     
-                    instruccion =   "SELECT c.id_comentario, CONCAT(e.nbr_empleado, \" \", e.apl_empleado) AS Origen, " +
-                                    "c.fch_comentario, c.cmn_comentario, e.cod_empleado, c.id_publicacion " +
-                                    "FROM tblComentario  AS c INNER JOIN tblEmpleado AS e ON c.cod_empleado = e.cod_empleado " +
-                                    "WHERE id_publicacion = ?;";
-                     
-                    insertar=conn.prepareStatement(instruccion);
-                    insertar.setInt(1, id);
-                    datos=insertar.executeQuery();
-                    while (datos.next()) {
-                        obj = new JSONObject();
-                        obj.put("id", datos.getInt(1));
-                        obj.put("origen", datos.getString(2));
-                        obj.put("fecha", Fechaformateador.format(datos.getDate(3)));
-                        obj.put("comentario", datos.getString(4));
-                        obj.put("cod_origen", datos.getString(5));
-                        obj.put("id_publicacion", datos.getInt(6));
-                        obj.put("desde", Metodos.calcular(datos.getString(3)));
-                        lista.add(obj);
-                    }
-                    datos.close();
-                    conn.close();
-                    return lista.toJSONString();
-             
-        }catch (SQLException e) {
-            System.out.println("error SQLException en ObtenerCliente");
-                    System.out.println(e.getMessage());
-        }catch (Exception e){
-                    System.out.println("error Exception en ObtenerCliente");
-                    System.out.println(e.getMessage());
-        }finally{
-                    if(!conn.isClosed()){
-                        conn.close();
-                    }
-                }
-        return lista.toJSONString();
-    }
-    
+  
     public static String ObtenerDestinos(String cod, int rol) throws SQLException{
         JSONObject obj = null;
         JSONArray lista = new JSONArray();
@@ -678,7 +578,7 @@ public class Listas {
                         obj.put("mes_fin", datos.getInt(8));
                         obj.put("anio_fin", datos.getInt(9));
                         obj.put("cod", datos.getString(10));
-                        
+                        obj.put("eliminar", false);
                         lista.add(obj);
                     }
                     datos.close();
@@ -726,6 +626,7 @@ public class Listas {
                         obj.put("cgo_multa", datos.getString(4));
                         obj.put("pgo_multa", datos.getBoolean(5));
                         obj.put("cod", datos.getString(6));
+                        obj.put("eliminar", false);                        
                         lista.add(obj);
                     }
                     datos.close();
@@ -773,6 +674,7 @@ public class Listas {
                         obj.put("tipo", datos.getString(4));
                         obj.put("muertos", datos.getInt(5));
                         obj.put("heridos", datos.getInt(6));
+                        obj.put("eliminar", false);
                         lista.add(obj);
                     }
                     datos.close();
@@ -820,6 +722,7 @@ public class Listas {
                         obj.put("delito", datos.getString(3));
                         obj.put("fecha", Fechaformateador.format(datos.getDate(4)));
                         obj.put("activo", datos.getBoolean(5));
+                        obj.put("eliminar", false);
                         lista.add(obj);
                     }
                     datos.close();
@@ -867,6 +770,7 @@ public class Listas {
                         obj.put("del_procjudicial", datos.getString(3));
                         obj.put("fch_procjudicial", Fechaformateador.format(datos.getDate(4)));
                         obj.put("act_procjudicial", datos.getBoolean(5));
+                        obj.put("eliminar", false);
                         lista.add(obj);
                     }
                     datos.close();

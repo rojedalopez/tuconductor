@@ -284,23 +284,25 @@ public class Guardar {
     }
     
     //PROC_SaveFormacion
-    public static boolean SaveMulta(String cod_, int id, String lgr_multa, String fch_multa, String cgo_multa, boolean pgo_multa) throws ClassNotFoundException, SQLException{
+    public static boolean SaveMulta(String cod_, int id, String lgr_multa, String fch_multa, String cgo_multa, 
+            boolean pgo_multa, boolean eliminar) throws ClassNotFoundException, SQLException{
         boolean b=false;
         Connection conn=null;
         PreparedStatement insertar=null;
         
         conn=conexion();
-            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveMulta(?, ?, ?, ?, ?, ?, ?)};")) {
+            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveMulta(?, ?, ?, ?, ?, ?, ?, ?)};")) {
                 cs.setString(1, cod_);
                 cs.setInt(2, id);
                 cs.setString(3, lgr_multa);
                 cs.setString(4, fch_multa);
                 cs.setString(5, cgo_multa);
                 cs.setInt(6, (pgo_multa)?1:0);
-                cs.registerOutParameter(7, Types.INTEGER);
+                cs.setInt(7, (eliminar)?1:0);
+                cs.registerOutParameter(8, Types.INTEGER);
                 cs.executeQuery();
 
-                int retorno = cs.getInt(7);
+                int retorno = cs.getInt(8);
                 
                 if(retorno==1){
                     return true;
@@ -323,23 +325,24 @@ public class Guardar {
 
     }
     
-    public static boolean SaveAccidente(String cod_, int id, String tipo, int muertes, int heridos, String fecha) throws ClassNotFoundException, SQLException{
+    public static boolean SaveAccidente(String cod_, int id, String tipo, int muertes, int heridos, String fecha, boolean eliminar) throws ClassNotFoundException, SQLException{
         boolean b=false;
         Connection conn=null;
         PreparedStatement insertar=null;
         
         conn=conexion();
-            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveAccidente(?, ?, ?, ?, ?, ?, ?)};")) {
+            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveAccidente(?, ?, ?, ?, ?, ?, ?, ?)};")) {
                 cs.setString(1, cod_);
                 cs.setInt(2, id);
                 cs.setString(3, tipo);
                 cs.setInt(4, muertes);
                 cs.setInt(5, heridos);
                 cs.setString(6, fecha);
-                cs.registerOutParameter(7, Types.INTEGER);
+                cs.setInt(7, (eliminar)?1:0);
+                cs.registerOutParameter(8, Types.INTEGER);
                 cs.executeQuery();
 
-                int retorno = cs.getInt(7);
+                int retorno = cs.getInt(8);
                 
                 if(retorno==1){
                     return true;
@@ -362,22 +365,23 @@ public class Guardar {
 
     }
     
-    public static boolean SaveProcDiciplinal(String cod_, int id, String delito, boolean activo, String fecha) throws ClassNotFoundException, SQLException{
+    public static boolean SaveProcDiciplinal(String cod_, int id, String delito, boolean activo, String fecha, boolean eliminar) throws ClassNotFoundException, SQLException{
         boolean b=false;
         Connection conn=null;
         PreparedStatement insertar=null;
         
         conn=conexion();
-            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveProcDiciplinal(?, ?, ?, ?, ?, ?)};")) {
+            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveProcDiciplinal(?, ?, ?, ?, ?, ?, ?)};")) {
                 cs.setString(1, cod_);
                 cs.setInt(2, id);
                 cs.setString(3, delito);
                 cs.setInt(4, (activo)?1:0);
                 cs.setString(5, fecha);
-                cs.registerOutParameter(6, Types.INTEGER);
+                cs.setInt(6, (eliminar)?1:0);
+                cs.registerOutParameter(7, Types.INTEGER);
                 cs.executeQuery();
 
-                int retorno = cs.getInt(6);
+                int retorno = cs.getInt(7);
                 
                 if(retorno==1){
                     return true;
@@ -400,22 +404,23 @@ public class Guardar {
 
     }
     
-    public static boolean SaveProcJudicial(String cod_, int id, String delito, boolean activo, String fecha) throws ClassNotFoundException, SQLException{
+    public static boolean SaveProcJudicial(String cod_, int id, String delito, boolean activo, String fecha, boolean eliminar) throws ClassNotFoundException, SQLException{
         boolean b=false;
         Connection conn=null;
         PreparedStatement insertar=null;
         
         conn=conexion();
-            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveProcJudicial(?, ?, ?, ?, ?, ?)};")) {
+            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveProcJudicial(?, ?, ?, ?, ?, ?, ?)};")) {
                 cs.setString(1, cod_);
                 cs.setInt(2, id);
                 cs.setString(3, delito);
                 cs.setInt(4, (activo)?1:0);
                 cs.setString(5, fecha);
-                cs.registerOutParameter(6, Types.INTEGER);
+                cs.setInt(6, (eliminar)?1:0);
+                cs.registerOutParameter(7, Types.INTEGER);
                 cs.executeQuery();
 
-                int retorno = cs.getInt(6);
+                int retorno = cs.getInt(7);
                 
                 if(retorno==1){
                     return true;

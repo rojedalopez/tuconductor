@@ -463,7 +463,7 @@ if(session.getAttribute("user") == null){
                                         name="num_doc" 
                                         ng-model="ctrl.usuario_dp.num_doc" 
                                         clase="text_valid"
-                                        validate-on="dirty"
+                                        
                                         validator = "ctrl.lengthValidator(ctrl.usuario_dp.num_doc, 4) === true"
                                         invalid-message = "ctrl.lengthValidator(ctrl.usuario_dp.num_doc, 4)"
                                         required-message="'El campo no puede estar vacio'" 
@@ -476,7 +476,7 @@ if(session.getAttribute("user") == null){
                                         ng-model="ctrl.usuario_dp.nombre" 
                                         class="form-control texto"  
                                         clase="text_valid"
-                                        validate-on="dirty"
+                                        
                                         validator = "ctrl.lengthValidator(ctrl.usuario_dp.nombre, 6) === true"
                                         invalid-message = "ctrl.lengthValidator(ctrl.usuario_dp.nombre, 6)"
                                         required-message="'El campo no puede estar vacio'" 
@@ -489,7 +489,7 @@ if(session.getAttribute("user") == null){
                                         name="apellido" 
                                         ng-model="ctrl.usuario_dp.apellido"
                                         class="form-control texto"
-                                        validate-on="dirty"
+                                        
                                         clase="text_valid" 
                                         validator = "ctrl.lengthValidator(ctrl.usuario_dp.apellido, 6) === true"
                                         invalid-message = "ctrl.lengthValidator(ctrl.usuario_dp.apellido, 6)"
@@ -525,7 +525,7 @@ if(session.getAttribute("user") == null){
                                         ng-model="ctrl.usuario_dp.movil" 
                                         class="form-control texto" 
                                         clase="text_valid" 
-                                        validate-on="dirty"
+                                        
                                         validator = "ctrl.lengthValidator(ctrl.usuario_dp.movil, 10) === true"
                                         invalid-message = "ctrl.lengthValidator(ctrl.usuario_dp.movil, 10)"
                                         required-message="'El campo no puede estar vacio'"
@@ -542,7 +542,7 @@ if(session.getAttribute("user") == null){
                                         ng-model="ctrl.usuario_dp.dir"
                                         class="form-control texto"  
                                         clase="text_valid" 
-                                        validate-on="dirty"
+                                        
                                         validator = "ctrl.lengthValidator(ctrl.usuario_dp.dir, 10) === true"
                                         invalid-message = "ctrl.lengthValidator(ctrl.usuario_dp.dir, 10)"
                                         required-message="'El campo no puede estar vacio'"
@@ -578,7 +578,7 @@ if(session.getAttribute("user") == null){
                                         name="depart" 
                                         ng-model="ctrl.usuario_dp.depart" 
                                         required="{{!ctrl.colombia}}" 
-                                        validate-on="dirty"
+                                        
                                         clase="text_valid"
                                         validator = "ctrl.lengthValidator(ctrl.usuario_dp.depart, 4) === true"
                                         invalid-message = "ctrl.lengthValidator(ctrl.usuario_dp.depart, 4)"
@@ -602,7 +602,7 @@ if(session.getAttribute("user") == null){
                                         name="ciudad" 
                                         ng-model="ctrl.usuario_dp.ciudad" 
                                         required="{{!ctrl.colombia}}"
-                                        validate-on="dirty"
+                                        
                                         clase="text_valid"
                                         validator = "ctrl.lengthValidator(ctrl.usuario_dp.ciudad, 4) === true"
                                         invalid-message = "ctrl.lengthValidator(ctrl.usuario_dp.ciudad, 4)"
@@ -660,7 +660,7 @@ if(session.getAttribute("user") == null){
                                         clase="text_valid_a" 
                                         ng-model="ctrl.usuario_dp.cargo" 
                                         class="form-control area" 
-                                        validate-on="dirty"
+                                        
                                         validator = "ctrl.lengthValidator(ctrl.usuario_dp.cargo, 10) === true"
                                         invalid-message = "ctrl.lengthValidator(ctrl.usuario_dp.cargo, 10)"
                                         required-message="'El campo no puede estar vacio'"
@@ -674,7 +674,7 @@ if(session.getAttribute("user") == null){
                                         name="perfil" 
                                         ng-model="ctrl.usuario_dp.perfil" 
                                         rows="4"
-                                        validate-on="dirty"
+                                        
                                         validator = "ctrl.lengthValidator(ctrl.usuario_dp.perfil, 20) === true"
                                         invalid-message = "ctrl.lengthValidator(ctrl.usuario_dp.perfil, 20)"
                                         required-message="'El campo no puede estar vacio'"
@@ -704,8 +704,8 @@ if(session.getAttribute("user") == null){
                                     <div class="panel panel-info">
                                         <div class="panel-heading">                                                
                                             <span ng-bind="ex.cargo" ></span>
-                                            <button type="button" class="close"><img src="../assets/img/delete_icon.png" width="18" height="18"></button>
-                                            <button type="button" ng-click="ctrl.editExp(ex.id)" class="close"><img src="../assets/img/edit_icon.png"  width="18" height="18"></button>                                                
+                                            <button type="button" class="close" ng-click="ctrl.deleteExp(ex.id)"><img src="../assets/img/delete_icon.png" width="18" height="18"></button>
+                                            <button type="button" class="close" ng-click="ctrl.editExp(ex.id)"><img src="../assets/img/edit_icon.png"  width="18" height="18"></button>                                                
                                         </div>
                                         <div class="panel-body">
                                             <span ng-bind="ex.empresa" ></span>
@@ -736,7 +736,7 @@ if(session.getAttribute("user") == null){
                                     <div class="panel panel-info">
                                         <div class="panel-heading">                                                
                                             {{ctrl.NvlFormacion[fm.nivel_estudio-1].Value}}
-                                            <button type="button" class="close"><img src="../assets/img/delete_icon.png" width="18" height="18"></button>
+                                            <button type="button" class="close" ng-click="ctrl.deleteForm(fm.id)"><img src="../assets/img/delete_icon.png" width="18" height="18"></button>
                                             <button type="button" class="close" ng-click="ctrl.editForm(fm.id)"><img src="../assets/img/edit_icon.png"  width="18" height="18"></button>                                                
                                         </div>
                                         <div class="panel-body">
@@ -766,7 +766,7 @@ if(session.getAttribute("user") == null){
                                     <div class="panel panel-info">
                                         <div class="panel-heading">                                                
                                             {{m.lgr_multa}}
-                                            <button type="button" class="close"><img src="../assets/img/delete_icon.png" width="18" height="18"></button>
+                                            <button type="button" class="close" ng-click="ctrl.deleteMulta(m.id)"><img src="../assets/img/delete_icon.png" width="18" height="18"></button>
                                             <button type="button" class="close"  ng-click="ctrl.editMulta(m.id)"><img src="../assets/img/edit_icon.png"  width="18" height="18"></button>                                                
                                         </div>
                                         <div class="panel-body">
@@ -796,7 +796,7 @@ if(session.getAttribute("user") == null){
                                     <div class="panel panel-info">
                                         <div class="panel-heading">                                                
                                             {{ctrl.textAccidente(a.tipo)}}
-                                            <button type="button" class="close"><img src="../assets/img/delete_icon.png" width="18" height="18"></button>
+                                            <button type="button" class="close" ng-click="ctrl.deleteAccidente(a.id)"><img src="../assets/img/delete_icon.png" width="18" height="18"></button>
                                             <button type="button" class="close" ng-click="ctrl.editAccidente(a.id)"><img src="../assets/img/edit_icon.png"  width="18" height="18"></button>                                                
                                         </div>
                                         <div class="panel-body">
@@ -827,7 +827,7 @@ if(session.getAttribute("user") == null){
                                     <div class="panel panel-info">
                                         <div class="panel-heading">                                                
                                             <span ng-bind="pj.del_procjudicial"></span>
-                                            <button type="button" class="close"><img src="../assets/img/delete_icon.png" width="18" height="18"></button>
+                                            <button type="button" class="close" ng-click="ctrl.deleteJudicial(pj.id)"><img src="../assets/img/delete_icon.png" width="18" height="18"></button>
                                             <button type="button" class="close" ng-click="ctrl.editJudicial(pj.id)"><img src="../assets/img/edit_icon.png"  width="18" height="18"></button>                                                
                                         </div>
                                         <div class="panel-body">
@@ -905,7 +905,6 @@ if(session.getAttribute("user") == null){
                                 class="form-control texto_e" 
                                 name="empresa" 
                                 ng-model="ctrl.exp_laboral.empresa"  
-                                validate-on="dirty"
                                 clase="text_valid_e"
                                 validator = "ctrl.lengthValidator(ctrl.exp_laboral.empresa, 6) === true"
                                 invalid-message = "ctrl.lengthValidator(ctrl.exp_laboral.empresa, 6)"
@@ -918,7 +917,6 @@ if(session.getAttribute("user") == null){
                                 class="form-control texto_e" 
                                 name="cargo" 
                                 ng-model="ctrl.exp_laboral.cargo" 
-                                validate-on="dirty"
                                 clase="text_valid_e"
                                 validator = "ctrl.lengthValidator(ctrl.exp_laboral.cargo, 6) === true"
                                 invalid-message = "ctrl.lengthValidator(ctrl.exp_laboral.cargo, 6)"
@@ -941,7 +939,6 @@ if(session.getAttribute("user") == null){
                             ng-model="ctrl.exp_laboral.supervisor" 
                             placeholder="Nombre / Apellido"
                             clase="text_valid_e"
-                            validate-on="dirty"
                             validator = "ctrl.lengthValidator(ctrl.exp_laboral.supervisor, 6) === true"
                             invalid-message = "ctrl.lengthValidator(ctrl.exp_laboral.supervisor, 6)"
                             required-message="'El campo no puede estar vacio'"
@@ -954,7 +951,6 @@ if(session.getAttribute("user") == null){
                             name="telefono" 
                             ng-model="ctrl.exp_laboral.telefono" 
                             clase="text_valid_e"
-                            validate-on="dirty"
                             validator = "ctrl.lengthValidator(ctrl.exp_laboral.telefono, 7) === true"
                             invalid-message = "ctrl.lengthValidator(ctrl.exp_laboral.telefono, 7)"
                             required-message="'El campo no puede estar vacio'"
@@ -967,7 +963,6 @@ if(session.getAttribute("user") == null){
                             name="direccion" 
                             ng-model="ctrl.exp_laboral.direccion" 
                             clase="text_valid_e"
-                            validate-on="dirty"
                             validator = "ctrl.lengthValidator(ctrl.exp_laboral.direccion, 10) === true"
                             invalid-message = "ctrl.lengthValidator(ctrl.exp_laboral.direccion, 10)"
                             required-message="'El campo no puede estar vacio'"
@@ -1003,7 +998,6 @@ if(session.getAttribute("user") == null){
                                 name="depart" 
                                 ng-model="ctrl.exp_laboral.depart" 
                                 required="{{!ctrl.colombiaExp}}" 
-                                validate-on="dirty"
                                 clase="text_valid_e"
                                 validator = "ctrl.lengthValidator(ctrl.exp_laboral.depart, 4) === true"
                                 invalid-message = "ctrl.lengthValidator(ctrl.exp_laboral.depart, 4)"
@@ -1027,7 +1021,7 @@ if(session.getAttribute("user") == null){
                                 name="ciudad" 
                                 ng-model="ctrl.exp_laboral.ciudad" 
                                 required="{{!ctrl.colombiaExp}}"
-                                validate-on="dirty"
+                                
                                 clase="text_valid_e"
                                 validator = "ctrl.lengthValidator(ctrl.exp_laboral.ciudad, 4) === true"
                                 invalid-message = "ctrl.lengthValidator(ctrl.exp_laboral.ciudad, 4)"
@@ -1049,8 +1043,8 @@ if(session.getAttribute("user") == null){
                                             ng-model="ctrl.exp_laboral.anio_inicio" 
                                             ng-options="Anio.ID as Anio.Year for Anio in ctrl.Anios" 
                                             clase="text_valid_e"
-                                            validator = "ctrl.dateValidator(ctrl.exp_laboral.mes_inicio, ctrl.exp_laboral.anio_inicio, 1, false) === true"
-                                            invalid-message = "ctrl.dateValidator(ctrl.exp_laboral.mes_inicio, ctrl.exp_laboral.anio_inicio, 1, false)"
+                                            validator = "ctrl.dateValidator(ctrl.exp_laboral.mes_inicio, ctrl.exp_laboral.anio_inicio) === true"
+                                            invalid-message = "ctrl.dateValidator(ctrl.exp_laboral.mes_inicio, ctrl.exp_laboral.anio_inicio)"
                                             required-message="'Debe seleccionar una opción'"
                                             required>
                                         <option value="">--- Seleccione Año ---</option>
@@ -1072,8 +1066,8 @@ if(session.getAttribute("user") == null){
                                         ng-model="ctrl.exp_laboral.anio_fin" 
                                         ng-options="Anio.ID as Anio.Year for Anio in ctrl.Anios"
                                         clase="text_valid_e"
-                                        validator = "ctrl.dateValidator(ctrl.exp_laboral.mes_fin, ctrl.exp_laboral.anio_fin, ctrl.exp_laboral.labora, true) === true"
-                                        invalid-message = "ctrl.dateValidator(ctrl.exp_laboral.mes_fin, ctrl.exp_laboral.anio_fin, ctrl.exp_laboral.labora, true)">
+                                        validator = "ctrl.dateValidator(ctrl.exp_laboral.mes_fin, ctrl.exp_laboral.anio_fin) === true"
+                                        invalid-message = "ctrl.dateValidator(ctrl.exp_laboral.mes_fin, ctrl.exp_laboral.anio_fin)">
                                     <option value="">--- Seleccione Año ---</option>
                                 </select>
                             </div>
@@ -1109,7 +1103,7 @@ if(session.getAttribute("user") == null){
                 <div class="modal-body">
                     <form role="form" angular-validator-submit="ctrl.submitForm()" name="forma_formacion"
                         angular-validator class="form-horizontal" novalidate>
-                        <label class="etiqueta_e">Centro educativo<i class="required">*</i>:</label>                            
+                        <label class="etiqueta_e_up">Centro educativo<i class="required">*</i>:</label>                            
                         <input type="hidden" name="id" ng-model="ctrl.formacion.id"/>
                         <input type="hidden" name="cod" ng-model="ctrl.formacion.cod"/>
                         <div class="form-group">
@@ -1117,31 +1111,30 @@ if(session.getAttribute("user") == null){
                                 class="form-control texto_e" 
                                 name="c_educativo" 
                                 ng-model="ctrl.formacion.c_educativo"  
-                                validate-on="dirty"
                                 clase="text_valid_e"
                                 validator = "ctrl.lengthValidator(ctrl.formacion.c_educativo, 6) === true"
                                 invalid-message = "ctrl.lengthValidator(ctrl.formacion.c_educativo, 6)"
                                 required-message="'El campo no puede estar vacio'"
                                 required/>
                         </div>
-                        <label class="etiqueta_e">Nivel de estudios:</label>                           
+                        <label class="etiqueta_e">Nivel de estudios<i class="required">*</i>:</label>                           
                         <div class="form-group">
-                            <select class="form-control selector_e" name="nivel_estudio" ng-model="ctrl.formacion.nivel_estudio" ng-options="Nivel.ID as Nivel.Value for Nivel in ctrl.NvlFormacion">
+                            <select class="form-control selector_e" 
+                                    name="nivel_estudio" 
+                                    ng-model="ctrl.formacion.nivel_estudio" 
+                                    ng-options="Nivel.ID as Nivel.Value for Nivel in ctrl.NvlFormacion"
+                                    clase="text_valid_e"
+                                    required-message="'El campo no puede estar vacio'"
+                                    required>
                                 <option value="">--- Seleccione opción ---</option>
                             </select>
                         </div>
-                        <label class="etiqueta_e">Area de estudio<i class="required">*</i>:</label>
+                        <label class="etiqueta_e">Area de estudio:</label>
                         <div class="form-group">
                             <input type="text" 
                                 class="form-control texto_e" 
                                 name="area_estudio" 
-                                ng-model="ctrl.formacion.area_estudio" 
-                                validate-on="dirty"
-                                clase="text_valid_e"
-                                validator = "ctrl.lengthValidator(ctrl.formacion.area_estudio, 6) === true"
-                                invalid-message = "ctrl.lengthValidator(ctrl.formacion.area_estudio, 6)"
-                                required-message="'El campo no puede estar vacio'"
-                                required />
+                                ng-model="ctrl.formacion.area_estudio" />
                         </div>
                         <label class="etiqueta_e">Estado:</label>
                         <div class="form-group">
@@ -1173,8 +1166,8 @@ if(session.getAttribute("user") == null){
                                             ng-model="ctrl.formacion.anio_inicio" 
                                             ng-options="Anio.ID as Anio.Year for Anio in ctrl.Anios" 
                                             clase="text_valid_e"
-                                            validator = "ctrl.dateValidator(ctrl.formacion.mes_inicio, ctrl.formacion.anio_inicio, 1, false) === true"
-                                            invalid-message = "ctrl.dateValidator(ctrl.formacion.mes_inicio, ctrl.formacion.anio_inicio, 1, false)"
+                                            validator = "ctrl.dateValidator(ctrl.formacion.mes_inicio, ctrl.formacion.anio_inicio) === true"
+                                            invalid-message = "ctrl.dateValidator(ctrl.formacion.mes_inicio, ctrl.formacion.anio_inicio)"
                                             required-message="'Debe seleccionar una opción'"
                                             required>
                                         <option value="">--- Seleccione Año ---</option>
@@ -1195,15 +1188,15 @@ if(session.getAttribute("user") == null){
                                         ng-model="ctrl.formacion.anio_fin" 
                                         ng-options="Anio.ID as Anio.Year for Anio in ctrl.Anios"
                                         clase="text_valid_e"
-                                        validator = "ctrl.dateValidator(ctrl.formacion.mes_fin, ctrl.formacion.anio_fin, ctrl.formacion.estado, true) === true"
-                                        invalid-message = "ctrl.dateValidator(ctrl.formacion.mes_fin, ctrl.formacion.anio_fin, ctrl.formacion.estado, true)">
+                                        validator = "ctrl.dateValidator(ctrl.formacion.mes_fin, ctrl.formacion.anio_fin) === true"
+                                        invalid-message = "ctrl.dateValidator(ctrl.formacion.mes_fin, ctrl.formacion.anio_fin)">
                                     <option value="">--- Seleccione Año ---</option>
                                 </select>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" ng-disabled="form_formacion.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_formacion" class="btn btn-primary" >{{(ctrl.formacion.id===-1)?'Añadir':'Editar'}}</button>
+                            <button type="submit" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_formacion" class="btn btn-primary" >{{(ctrl.formacion.id===-1)?'Añadir':'Editar'}}</button>
                         </div>
                     </form>
                 </div>
@@ -1219,19 +1212,44 @@ if(session.getAttribute("user") == null){
                     <h4 class="modal-title" id="myModalLabel">Formulario de multas</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" name="form_multa" ng-submit="ctrl.submitMulta()" class="form-horizontal" novalidate>
-                        <p ng-class="{ 'has-error': form_multa.lgr_multa.$error.required || form_multa.lgr_multa.$error.minlength }">
-                            <label class="etiqueta_e">Lugar:<i class="required">*</i>:</label>                            
-                            <input type="text" class="form-control texto_e" name="lgr_multa" ng-model="ctrl.multa.lgr_multa" placeholder="Lugar de la multa" minlength="3" required />
-                        </p>
-                        <p ng-class="{ 'has-error': form_multa.fch_multa.$error.required }">
-                            <label class="etiqueta_e">Fecha:<i class="required">*</i>:</label>                            
-                            <input type="date" class="form-control texto_e" name="fch_multa" ng-model="ctrl.multa.fch_multa" placeholder="Fecha de la multa" required />
-                        </p>
-                        <p ng-class="{ 'has-error': form_multa.cgo_multa.$error.required  || form_multa.cgo_multa.$error.minlength }">
-                            <label class="etiqueta_e">Cargo:</label>
-                            <textarea class="form-control texto_e" name="cgo_multa" ng-model="ctrl.multa.cgo_multa" placeholder="Cargo de la multa" minlength="6" required ></textarea>
-                        </p>                        
+                    <form role="form" name="forma_multa" angular-validator-submit="ctrl.submitMulta()"  
+                          angular-validator class="form-horizontal" novalidate>
+                        <input type="hidden" name="id" ng-model="ctrl.multa.id"/>
+                        <input type="hidden" name="cod" ng-model="ctrl.multa.cod"/>
+                        <label class="etiqueta_e">Lugar:<i class="required">*</i>:</label>                            
+                        <div class="form-group">
+                            <input type="text" 
+                                class="form-control texto_e" 
+                                name="lgr_multa" 
+                                ng-model="ctrl.multa.lgr_multa" 
+                                clase="text_valid_e"
+                                validator = "ctrl.lengthValidator(ctrl.multa.lgr_multa, 4) === true"
+                                invalid-message = "ctrl.lengthValidator(ctrl.multa.lgr_multa, 4)"
+                                required-message="'El campo no puede estar vacio'"
+                                required />
+                        </div>
+                        <label class="etiqueta_e">Fecha<i class="required">*</i>:</label>                            
+                        <div class="form-group">
+                            <input type="date" 
+                                class="form-control texto_e" 
+                                name="fch_multa" 
+                                ng-model="ctrl.multa.fch_multa" 
+                                clase="text_valid_e"
+                                invalid-message = "'Debe ingresar una fecha valida'"
+                                required-message="'El campo no puede estar vacio'"
+                                required />
+                        </div>
+                        <label class="etiqueta_e">Cargo<i class="required">*</i>:</label>
+                        <div class="form-group"> 
+                            <textarea class="form-control texto_e" 
+                                name="cgo_multa" 
+                                ng-model="ctrl.multa.cgo_multa" 
+                                clase="text_valid_e"
+                                validator = "ctrl.lengthValidator(ctrl.multa.cgo_multa, 6) === true"
+                                invalid-message = "ctrl.lengthValidator(ctrl.multa.cgo_multa, 6)"
+                                required-message="'El campo no puede estar vacio'"
+                                required ></textarea>
+                        </div>                        
                         <p>
                             <label class="etiqueta_e">Estado:</label>
                             <div class="form-inline">
@@ -1242,7 +1260,7 @@ if(session.getAttribute("user") == null){
                         </p>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" ng-disabled="form_multa.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_guardar_multa" class="btn btn-primary" >{{(ctrl.multa.id===-1)?'Añadir':'Editar'}}</button>
+                            <button type="submit" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_guardar_multa" class="btn btn-primary" >{{(ctrl.multa.id===-1)?'Añadir':'Editar'}}</button>
                         </div>
                     </form>
                 </div>
@@ -1258,18 +1276,28 @@ if(session.getAttribute("user") == null){
                     <h4 class="modal-title" id="myModalLabel">Formulario de accidentes</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" name="form_accidente" ng-submit="ctrl.submitAccidente()" class="form-horizontal" novalidate>
-                        <!--<p ng-class="{ 'has-error': form_accidente.lugar.$error.required || form_accidente.lugar.$error.minlength }">
-                            <label class="etiqueta_e">Lugar:<i class="required">*</i>:</label>                            
-                            <input type="text" class="form-control texto_e" name="lugar" ng-model="ctrl.accidente.lugar" placeholder="Lugar de la multa" minlength="3" required />
-                        </p>-->
-                        <p ng-class="{ 'has-error': form_accidente.fch_accidente.$error.required }">
-                            <label class="etiqueta_e">Fecha:<i class="required">*</i>:</label>                            
-                            <input type="date" class="form-control texto_e" name="fch_accidente" ng-model="ctrl.accidente.fch_accidente" placeholder="Fecha de la multa" required />
-                        </p>
+                    <form role="form" name="forma_accidente" angular-validator-submit="ctrl.submitAccidente()" 
+                          class="form-horizontal" angular-validator novalidate>
+                        <label class="etiqueta_e">Fecha<i class="required">*</i>:</label>                            
+                        <div class="form-group">
+                            <input type="date" 
+                                class="form-control texto_e" 
+                                name="fch_accidente" 
+                                ng-model="ctrl.accidente.fch_accidente" 
+                                clase="text_valid_e"
+                                invalid-message = "'Debe ingresar una fecha valida'"
+                                required-message="'El campo no puede estar vacio'"
+                                required />
+                        </div>
                         <p>
-                            <label class="etiqueta_e">Tipo accidente:</label>                           
-                            <select class="form-control selector_e" name="tipo" ng-model="ctrl.accidente.tipo" ng-options="Tipo.ID as Tipo.Tipo for Tipo in ctrl.tipoAccidentes">
+                            <label class="etiqueta_e">Tipo accidente<i class="required">*</i>:</label>                           
+                            <select 
+                                class="form-control selector_e" 
+                                name="tipo" ng-model="ctrl.accidente.tipo" 
+                                ng-options="Tipo.ID as Tipo.Tipo for Tipo in ctrl.tipoAccidentes"
+                                clase="text_valid_e"
+                                required-message="'El campo no puede estar vacio'"
+                                required>
                                 <option value="">--- Seleccione opción ---</option>
                             </select>
                         </p>
@@ -1302,19 +1330,30 @@ if(session.getAttribute("user") == null){
                     <h4 class="modal-title" id="myModalLabel">Formulario de procesos judiciales</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" name="form_judicial" ng-submit="ctrl.submitJudicial()" class="form-horizontal" novalidate>
-                        <!--<p ng-class="{ 'has-error': form_accidente.lugar.$error.required || form_accidente.lugar.$error.minlength }">
-                            <label class="etiqueta_e">Lugar:<i class="required">*</i>:</label>                            
-                            <input type="text" class="form-control texto_e" name="lugar" ng-model="ctrl.accidente.lugar" placeholder="Lugar de la multa" minlength="3" required />
-                        </p>-->
-                        <p ng-class="{ 'has-error': form_judicial.fch_procjudicial.$error.required }">
-                            <label class="etiqueta_e">Fecha:<i class="required">*</i>:</label>                            
-                            <input type="date" class="form-control texto_e" name="fch_procjudicial" ng-model="ctrl.judicial.fch_procjudicial" placeholder="Fecha del delito" required />
-                        </p>
-                        <p ng-class="{ 'has-error': form_judicial.del_procjudicial.$error.required  || form_judicial.del_procjudicial.$error.minlength }">
-                            <label class="etiqueta_e">Delito:</label>                           
-                            <textarea class="form-control texto_e" name="del_procjudicial" ng-model="ctrl.judicial.del_procjudicial" placeholder="Descripcion del delito" minlength="4" required ></textarea>
-                        </p>
+                    <form role="form" name="forma_judicial" angular-validator-submit="ctrl.submitJudicial()" 
+                          class="form-horizontal" angular-validator novalidate>
+                        <label class="etiqueta_e">Fecha:<i class="required">*</i>:</label> 
+                        <div class="form-group">
+                            <input type="date" 
+                                class="form-control texto_e" 
+                                name="fch_procjudicial" 
+                                clase="text_valid_e"
+                                ng-model="ctrl.judicial.fch_procjudicial" 
+                                invalid-message = "'Debe ingresar una fecha valida'"
+                                required-message="'El campo no puede estar vacio'"
+                                required />
+                        </div>
+                        <label class="etiqueta_e">Delito<i class="required">*</i>:</label>                           
+                        <div class="form-group">
+                            <textarea class="form-control texto_e" 
+                            name="del_procjudicial" 
+                            ng-model="ctrl.judicial.del_procjudicial" 
+                            clase="text_valid_e"
+                            validator = "ctrl.lengthValidator(ctrl.judicial.del_procjudicial, 6) === true"
+                            invalid-message = "ctrl.lengthValidator(ctrl.judicial.del_procjudicial, 6)"
+                            required-message="'El campo no puede estar vacio'"
+                            required ></textarea>
+                        </div>
                         <p>
                             <label class="etiqueta_e">Eventos:</label>
                             <div class="form-inline">

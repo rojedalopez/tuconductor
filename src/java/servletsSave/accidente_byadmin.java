@@ -35,22 +35,23 @@ public class accidente_byadmin extends HttpServlet {
         } catch (Exception e) { e.printStackTrace(); }
  
         JSONParser parser = new JSONParser();
-        JSONObject joMulta = null;
+        JSONObject joAccidente = null;
         System.out.println(sb.toString());
-        joMulta = (JSONObject) parser.parse(sb.toString());
-        int id = Integer.parseInt(joMulta.get("id").toString());
+        joAccidente = (JSONObject) parser.parse(sb.toString());
+        int id = Integer.parseInt(joAccidente.get("id").toString());
         System.out.println(id);
-        boolean bmuertes=Boolean.parseBoolean(joMulta.get("muertos").toString());
+        boolean bmuertes=Boolean.parseBoolean(joAccidente.get("muertos").toString());
         int muertes = (bmuertes) ? 1 : 0;
         System.out.println(muertes);
-        boolean bheridos=Boolean.parseBoolean(joMulta.get("heridos").toString());
+        boolean bheridos=Boolean.parseBoolean(joAccidente.get("heridos").toString());
         int heridos = (bheridos) ? 1 : 0;
         System.out.println(heridos);
-        String tipo = joMulta.get("tipo").toString();
+        String tipo = joAccidente.get("tipo").toString();
         System.out.println(tipo);
-        String fecha = (String) joMulta.get("date");
+        String fecha = (String) joAccidente.get("date");
         System.out.println(fecha);
-        String codigoConductor = (String) joMulta.get("cod");
+        String codigoConductor = (String) joAccidente.get("cod");
+        boolean eliminar = (Boolean) joAccidente.get("eliminar");
         System.out.println(id+" - "+muertes+" - "+heridos+" - "+tipo+" - "+fecha+" - "+codigoConductor);
         HttpSession session =  null;
  
@@ -60,7 +61,7 @@ public class accidente_byadmin extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
-                boolean b = Guardar.SaveAccidente(codigoConductor, id, tipo, muertes, heridos, fecha);
+                boolean b = Guardar.SaveAccidente(codigoConductor, id, tipo, muertes, heridos, fecha, eliminar);
                 if(b){
                     out.print("true");
                 }else{

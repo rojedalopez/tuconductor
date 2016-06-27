@@ -37,15 +37,16 @@ public class procdiciplinal_byadmin extends HttpServlet {
         } catch (Exception e) { e.printStackTrace(); }
  
         JSONParser parser = new JSONParser();
-        JSONObject joMulta = null;
+        JSONObject joDicilplina = null;
         System.out.println(sb.toString());
-        joMulta = (JSONObject) parser.parse(sb.toString());
-        int id = Integer.parseInt(joMulta.get("id").toString());
+        joDicilplina = (JSONObject) parser.parse(sb.toString());
+        int id = Integer.parseInt(joDicilplina.get("id").toString());
         System.out.println(id);
-        String delito = (String) joMulta.get("delito");
-        String fecha = (String) joMulta.get("date");
-        String codigoConductor = (String) joMulta.get("cod");
-        boolean activo =(Boolean) joMulta.get("activo");
+        String delito = (String) joDicilplina.get("delito");
+        String fecha = (String) joDicilplina.get("date");
+        String codigoConductor = (String) joDicilplina.get("cod");
+        boolean activo =(Boolean) joDicilplina.get("activo");
+        boolean eliminar = (Boolean) joDicilplina.get("eliminar");
 
         HttpSession session =  null;
  
@@ -55,7 +56,7 @@ public class procdiciplinal_byadmin extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
-                boolean b = Guardar.SaveProcDiciplinal(codigoConductor, id, delito, activo, fecha);
+                boolean b = Guardar.SaveProcDiciplinal(codigoConductor, id, delito, activo, fecha, eliminar);
                 if(b){
                     out.print("true");
                 }else{

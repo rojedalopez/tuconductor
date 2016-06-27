@@ -51,6 +51,15 @@
        margin-left: 160px;
    }
    
+   .text_help{
+        text-align: left; 
+        font-size: 11px;
+        font-style: italic;
+        margin-top: -5px;
+        color: #445668;
+        margin-left: 160px;
+    }
+   
    .text_valid_a{
        font-size:11px;
        font-style: italic;
@@ -131,11 +140,12 @@
         width: 90%;
     }
     
-    .text_valid, .text_valid_e{
+    .text_valid, .text_valid_e, .text_help{
         text-align: left; 
         font-size: 10px;
         margin-left: 18px;
     }
+    
     
     .text_valid_a{
         text-align: left; 
