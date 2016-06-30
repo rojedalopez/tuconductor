@@ -48,7 +48,6 @@ public class experiencia_byadmin extends HttpServlet {
         System.out.println(sb.toString());
         joExperiencia_usr = (JSONObject) parser.parse(sb.toString());
         int id = Integer.parseInt(joExperiencia_usr.get("id").toString());
-        System.out.println("prueba = "+id);
         String empresa = (String) joExperiencia_usr.get("empresa");
         String cargo = (String) joExperiencia_usr.get("cargo");
         float salario = Float.parseFloat(joExperiencia_usr.get("salario").toString());
@@ -68,10 +67,18 @@ public class experiencia_byadmin extends HttpServlet {
         int anio_fin = 0;
         
         if(joExperiencia_usr.get("mes_fin")!=null){
-            mes_fin = Integer.parseInt(joExperiencia_usr.get("mes_fin").toString());
+            if(joExperiencia_usr.get("mes_fin").toString().equals("")){
+                mes_fin = 0;
+            }else{
+                mes_fin = Integer.parseInt(joExperiencia_usr.get("mes_fin").toString());
+            }
         }
         if(joExperiencia_usr.get("anio_fin")!=null){
-            anio_fin = Integer.parseInt(joExperiencia_usr.get("anio_fin").toString());
+            if(joExperiencia_usr.get("anio_fin").toString().equals("")){
+                anio_fin = 0;
+            }else{
+                anio_fin = Integer.parseInt(joExperiencia_usr.get("anio_fin").toString());
+            }
         }
         boolean labora = (Boolean) joExperiencia_usr.get("labora");
         boolean eliminar = (Boolean) joExperiencia_usr.get("eliminar");

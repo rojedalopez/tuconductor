@@ -52,9 +52,10 @@ public class signup extends HttpServlet {
         String lastname = (String) joCliente.get("lastname");
         String phone = (String) joCliente.get("phone");
         String path = getServletContext().getRealPath("");
+        String nacimiento = (String) joCliente.get("date");
         
         
-        boolean b=Guardar.InsertUsuario(mail, password, name, lastname, phone, path);
+        boolean b=Guardar.InsertUsuario(mail, password, name, lastname, phone, path, nacimiento);
          
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */

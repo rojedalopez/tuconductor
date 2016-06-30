@@ -285,7 +285,7 @@ public class Listas {
         return lista;
     }
      
-    public static JSONArray listaExpLaborales(String cod) throws SQLException{
+    public static JSONObject listaExpLaborales(String cod, boolean cal) throws SQLException{
         JSONObject obj = null;
         JSONArray lista = new JSONArray();
         Connection conn=null;
@@ -333,7 +333,13 @@ public class Listas {
                     }
                     datos.close();
                     conn.close();
-                    return lista;
+                    
+                    JSONObject re = new JSONObject();
+                    re.put("lista", lista);
+                    if(cal){
+                        re.put("check", Objetos.ObtenerPuntaje(cod));        
+                    }
+                    return re;
              
         }catch (SQLException e) {
             System.out.println("error SQLException en ObtenerCliente");
@@ -346,7 +352,7 @@ public class Listas {
                         conn.close();
                     }
                 }
-        return lista;
+        return null;
     }
     
     public static JSONArray listaOfertas(String cod) throws SQLException{
@@ -547,7 +553,7 @@ public class Listas {
     }
     
     
-    public static JSONArray listaFormaciones(String cod) throws SQLException{
+    public static JSONObject listaFormaciones(String cod, boolean cal) throws SQLException{
         JSONObject obj = null;
         JSONArray lista = new JSONArray();
         Connection conn=null;
@@ -559,7 +565,7 @@ public class Listas {
                     conn=conexion();
                     String instruccion="";
                      
-                    instruccion =   "SELECT id_formacion, ins_formacion, id_nvlformacion, area_formacion, id_estformacion, mes_ini_formacin, " +
+                    instruccion =   "SELECT id_formacion, ins_formacion, id_nvlformacion, area_formacion, id_estformacion, mes_ini_formacion, " +
                                     "anio_ini_formacion, mes_fin_formacion, anio_fin_formacion, cod_empleado FROM tblFormacion " +
                                     "WHERE cod_empleado = ? ORDER BY id_nvlformacion DESC;";
                      
@@ -583,7 +589,12 @@ public class Listas {
                     }
                     datos.close();
                     conn.close();
-                    return lista;
+                    JSONObject re = new JSONObject();
+                    re.put("lista", lista);
+                    if(cal){
+                        re.put("check", Objetos.ObtenerPuntaje(cod));        
+                    }      
+                    return re;
              
         }catch (SQLException e) {
             System.out.println("error SQLException en ObtenerCliente");
@@ -596,10 +607,10 @@ public class Listas {
                         conn.close();
                     }
                 }
-        return lista;
+        return null;
     }
     
-    public static JSONArray listaMultas(String cod) throws SQLException{
+    public static JSONObject listaMultas(String cod, boolean cal) throws SQLException{
         JSONObject obj = null;
         JSONArray lista = new JSONArray();
         Connection conn=null;
@@ -631,7 +642,12 @@ public class Listas {
                     }
                     datos.close();
                     conn.close();
-                    return lista;
+                    JSONObject re = new JSONObject();
+                    re.put("lista", lista);
+                    if(cal){
+                        re.put("check", Objetos.ObtenerPuntaje(cod));        
+                    }       
+                    return re;
              
         }catch (SQLException e) {
             System.out.println("error SQLException en ObtenerCliente");
@@ -644,11 +660,11 @@ public class Listas {
                         conn.close();
                     }
                 }
-        return lista;
+        return null;
     }
     
     
-    public static JSONArray listaAccidentes(String cod) throws SQLException{
+    public static JSONObject listaAccidentes(String cod, boolean cal) throws SQLException{
         JSONObject obj = null;
         JSONArray lista = new JSONArray();
         Connection conn=null;
@@ -679,8 +695,12 @@ public class Listas {
                     }
                     datos.close();
                     conn.close();
-                    System.out.println(lista);
-                    return lista;
+                    JSONObject re = new JSONObject();
+                    re.put("lista", lista);
+                    if(cal){
+                        re.put("check", Objetos.ObtenerPuntaje(cod));        
+                    }
+                    return re;
              
         }catch (SQLException e) {
             System.out.println("error SQLException en ObtenerCliente");
@@ -693,7 +713,7 @@ public class Listas {
                         conn.close();
                     }
                 }
-        return lista;
+        return null;
     }
     
     
@@ -745,7 +765,7 @@ public class Listas {
     
     
     
-    public static JSONArray listaProcJudicial(String cod) throws SQLException{
+    public static JSONObject listaProcJudicial(String cod, boolean cal) throws SQLException{
         JSONObject obj = null;
         JSONArray lista = new JSONArray();
         Connection conn=null;
@@ -775,7 +795,12 @@ public class Listas {
                     }
                     datos.close();
                     conn.close();
-                    return lista;
+                    JSONObject re = new JSONObject();
+                    re.put("lista", lista);
+                    if(cal){
+                        re.put("check", Objetos.ObtenerPuntaje(cod));        
+                    }
+                    return re;
              
         }catch (SQLException e) {
             System.out.println("error SQLException en ObtenerCliente");
@@ -788,7 +813,7 @@ public class Listas {
                         conn.close();
                     }
                 }
-        return lista;
+        return null;
     }
    
     public static JSONArray listaEmpleados(String codigo) throws SQLException{
@@ -853,8 +878,8 @@ public class Listas {
                     conn=conexion();
                     String instruccion="";
                      
-                    instruccion =   "SELECT cod_empleado, eml_usuario, nbr_empleado, apl_empleado, pje_empleado, hv_empleado, ROUND(exp_empleado) " ;
-                    instruccion += "FROM tblEmpleado ORDER BY pje_empleado DESC";
+                    instruccion =   "SELECT e.cod_empleado, eml_usuario, nbr_empleado, apl_empleado, c.pun_tot_calificacion, hv_empleado, ROUND(exp_empleado)  " ;
+                    instruccion += "FROM tblEmpleado AS e INNER JOIN tblCalificacion AS c ON e.cod_empleado = c.cod_empleado ORDER BY pje_empleado DESC";
                      
                     insertar=conn.prepareStatement(instruccion);
                     datos=insertar.executeQuery();

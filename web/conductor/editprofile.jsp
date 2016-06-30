@@ -507,7 +507,7 @@ if(session.getAttribute("user") == null){
                                     <select class="form-control selector" 
                                         name="pais" ng-model="ctrl.usuario_dp.pais" 
                                         ng-options="Pais.ID as Pais.Nombre for Pais in ctrl.Paises" 
-                                        ng-change="ctrl.selectPais(ctrl.usuario_dp.pais)"
+                                        ng-change="ctrl.selectPaisDP(ctrl.usuario_dp.pais)"
                                         clase="text_valid"
                                         required-message="'El campo no puede estar vacio'"
                                         required>
@@ -522,17 +522,17 @@ if(session.getAttribute("user") == null){
                                         name="depto" 
                                         ng-model="ctrl.usuario_dp.depto" 
                                         ng-options="dpto.id as dpto.departamento for dpto in ctrl.dptos" 
-                                        ng-change="ctrl.selectDpto(ctrl.usuario_dp.depto)"
+                                        ng-selected="ctrl.selectDpto(ctrl.usuario_dp.depto)"
                                         clase="text_valid"
                                         required-message="'El campo no puede estar vacio'">
                                         <option value="">--- Seleccione Departamento ---</option>
-                                    </select
-                                    <input type="text" ng-show="!ctrl.colombia" 
-                                        class="form-control texto"  
+                                    </select>
+                                    <input type="text" 
+                                        class="form-control texto_e"  
                                         name="depart" 
+                                        ng-show="!ctrl.colombia" 
                                         ng-model="ctrl.usuario_dp.depart" 
                                         required="{{!ctrl.colombia}}" 
-                                        
                                         clase="text_valid"
                                         validator = "ctrl.lengthValidator(ctrl.usuario_dp.depart, 4) === true"
                                         invalid-message = "ctrl.lengthValidator(ctrl.usuario_dp.depart, 4)"
@@ -551,12 +551,11 @@ if(session.getAttribute("user") == null){
                                         <option value="">--- Seleccione Ciudad ---</option>
                                     </select>
                                     <input type="text" 
+                                        class="form-control texto_e"  
+                                        name="ciudad"
                                         ng-show="!ctrl.colombia" 
-                                        class="form-control texto"  
-                                        name="ciudad" 
                                         ng-model="ctrl.usuario_dp.ciudad" 
                                         required="{{!ctrl.colombia}}"
-                                        
                                         clase="text_valid"
                                         validator = "ctrl.lengthValidator(ctrl.usuario_dp.ciudad, 4) === true"
                                         invalid-message = "ctrl.lengthValidator(ctrl.usuario_dp.ciudad, 4)"
@@ -831,7 +830,7 @@ if(session.getAttribute("user") == null){
                                 <option value="">--- Seleccione Departamento ---</option>
                             </select>
                             <input type="text" ng-show="!ctrl.colombiaExp" 
-                                class="form-control texto"  
+                                class="form-control texto_e"  
                                 name="depart" 
                                 ng-model="ctrl.exp_laboral.depart" 
                                 required="{{!ctrl.colombiaExp}}" 
@@ -855,7 +854,7 @@ if(session.getAttribute("user") == null){
                             </select>
                             <input type="text" 
                                 ng-show="!ctrl.colombiaExp" 
-                                class="form-control texto"  
+                                class="form-control texto_e"  
                                 name="ciudad" 
                                 ng-model="ctrl.exp_laboral.ciudad" 
                                 required="{{!ctrl.colombiaExp}}"

@@ -60,10 +60,18 @@ public class formacion_byadmin extends HttpServlet {
         boolean eliminar = false;
         String codigoConductor = (String) joFormacion.get("cod");
         if(joFormacion.get("mes_fin")!=null){
-            mes_fin = Integer.parseInt(joFormacion.get("mes_fin").toString());
+            if(joFormacion.get("mes_fin").toString().equals("")){
+                mes_fin = 0;
+            }else{
+                mes_fin = Integer.parseInt(joFormacion.get("mes_fin").toString());
+            }
         }
         if(joFormacion.get("anio_fin")!=null){
-            anio_fin = Integer.parseInt(joFormacion.get("anio_fin").toString());
+            if(joFormacion.get("anio_fin").toString().equals("")){
+                anio_fin = 0;
+            }else{
+                anio_fin = Integer.parseInt(joFormacion.get("anio_fin").toString());
+            }
         }
         if(joFormacion.get("eliminar")!=null){
             eliminar = (Boolean) joFormacion.get("eliminar");

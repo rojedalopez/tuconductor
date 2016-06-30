@@ -47,6 +47,8 @@ public class accidente_byadmin extends HttpServlet {
         int heridos = (bheridos) ? 1 : 0;
         System.out.println(heridos);
         String tipo = joAccidente.get("tipo").toString();
+        
+        String lugar = joAccidente.get("lugar").toString();
         System.out.println(tipo);
         String fecha = (String) joAccidente.get("date");
         System.out.println(fecha);
@@ -61,7 +63,7 @@ public class accidente_byadmin extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
-                boolean b = Guardar.SaveAccidente(codigoConductor, id, tipo, muertes, heridos, fecha, eliminar);
+                boolean b = Guardar.SaveAccidente(codigoConductor, id, tipo, muertes, heridos, fecha, eliminar, lugar);
                 if(b){
                     out.print("true");
                 }else{

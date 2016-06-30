@@ -63,6 +63,11 @@ public class signup_empresa extends HttpServlet {
         String nit = (String) request.getParameter("nit");
         String r_social = (String) request.getParameter("r_social");
         String dir = (String) request.getParameter("dir");
+        String pais = (String) request.getParameter("pais");
+        int dpto = Integer.parseInt(request.getParameter("depto"));
+        System.out.print(dpto+"-------");
+        String depart = (String) request.getParameter("depart");
+        String ciudad = (String) request.getParameter("ciudad");
         String tel = (String) request.getParameter("tel");
         String nombre_replegal = (String) request.getParameter("nombre_replegal");
         String doc_replegal = (String) request.getParameter("doc_replegal");
@@ -73,8 +78,9 @@ public class signup_empresa extends HttpServlet {
         
         String path = getServletContext().getRealPath("");
         
-        
-        boolean b=Guardar.saveEmpresa(nit, r_social, dir, tel, nuevo_nombre, nombre_replegal, doc_replegal, email_replegal, tel_replegal, correo, password);
+        System.out.println("Se va " );
+        boolean b=Guardar.saveEmpresa(nit, r_social, dir, tel, nuevo_nombre, nombre_replegal, doc_replegal, 
+                email_replegal, tel_replegal, correo, password, pais, dpto, depart, ciudad);
          
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */

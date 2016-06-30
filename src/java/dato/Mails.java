@@ -5,6 +5,7 @@
  */
 package dato;
  
+import java.util.List;
 import java.util.Properties;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -365,7 +366,7 @@ public class Mails {
     }
     
     
-    public static void SendMailAgregoHV(String as, String mensaje, String cod){
+    public static void SendMailAgregoHV(String as, String mensaje, String cod, List<String> correos){
         String servidorSMTP = "smtp.gmail.com";
         String puerto = "587";
         String usuario = "tuconductor.noreplay@gmail.com";
@@ -429,8 +430,11 @@ public class Mails {
          alternative.addBodyPart(html);
  
          //se recorre la lista de correos del contrato
- 
- 
+         for(String x: correos){
+             if(!x.isEmpty()){
+                message.addRecipient(Message.RecipientType.TO, new InternetAddress(x));
+             }
+         }
          message.addRecipient(Message.RecipientType.TO, new InternetAddress("jmcastilla91@gmail.com"));
          message.addRecipient(Message.RecipientType.TO, new InternetAddress("rojedalopez@gmail.com"));
          message.setSubject(asunto);

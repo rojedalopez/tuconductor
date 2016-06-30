@@ -59,7 +59,7 @@ public class list_experiencia_byadmin extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
-                String x = Listas.listaExpLaborales(cod).toJSONString();
+                String x = Listas.listaExpLaborales(cod, true).toJSONString();
                 out.print(x);
             }else{
                 out.print("session");

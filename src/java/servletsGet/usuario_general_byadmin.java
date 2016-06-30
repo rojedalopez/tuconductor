@@ -44,11 +44,9 @@ public class usuario_general_byadmin extends HttpServlet {
  
         JSONParser parser = new JSONParser();
         JSONObject joComment = null;
-         System.out.println(sb.toString());
         joComment = (JSONObject) parser.parse(sb.toString());
         
         String cod = (String)joComment.get("cod");
-        System.out.println(cod);
         HttpSession session =  null;
  
         session = request.getSession(false);
@@ -56,7 +54,6 @@ public class usuario_general_byadmin extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             if(session.getAttribute("user")!=null){
                 String x = Objetos.ObtenerDatosdeUsuario(cod);
-                System.out.println(x);
                 out.print(x);
             }else{
                 out.print("session");

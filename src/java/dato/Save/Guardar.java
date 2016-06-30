@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dato.Save;
 
 import static dato.Aplicacion.conexion;
@@ -17,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 /**
  *
@@ -25,7 +21,7 @@ import java.text.SimpleDateFormat;
 public class Guardar {
     static SimpleDateFormat Fechaformateador = new SimpleDateFormat("yyyy-MM-dd 00:00");
     
-    public static boolean InsertUsuario(String correo, String contrasena, String nomb, String apellido, String telefono, String path) throws ClassNotFoundException, SQLException, InvalidKeyException{
+    public static boolean InsertUsuario(String correo, String contrasena, String nomb, String apellido, String telefono, String path, String nacimiento) throws ClassNotFoundException, SQLException, InvalidKeyException{
         boolean b=false;
         Connection conn=null;
         PreparedStatement insertar=null;
@@ -35,7 +31,7 @@ public class Guardar {
         String token = Metodos.RandomString(10, false);
         
         conn=conexion();
-            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_RegistroUsuario(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}")) {
+            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_RegistroUsuario(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}")) {
                 cs.setString(1, correo);
                 cs.setString(2, hash);
                 cs.setString(3, pass);
@@ -45,10 +41,11 @@ public class Guardar {
                 cs.setString(7, apellido);
                 cs.setString(8, telefono);
                 cs.setString(9, token);
-                cs.registerOutParameter(10, Types.INTEGER);
+                cs.setString(10, nacimiento);
+                cs.registerOutParameter(11, Types.INTEGER);
                 cs.executeQuery();
 
-                int retorno = cs.getInt(10);
+                int retorno = cs.getInt(11);
                 
                 if(retorno==1){
                     Mails.SendMail(correo, token, "CONFIRMACIÓN DE CUENTA", "ACTIVAR");
@@ -325,13 +322,14 @@ public class Guardar {
 
     }
     
-    public static boolean SaveAccidente(String cod_, int id, String tipo, int muertes, int heridos, String fecha, boolean eliminar) throws ClassNotFoundException, SQLException{
+    public static boolean SaveAccidente(String cod_, int id, String tipo, int muertes, int heridos, 
+            String fecha, boolean eliminar, String lugar) throws ClassNotFoundException, SQLException{
         boolean b=false;
         Connection conn=null;
         PreparedStatement insertar=null;
         
         conn=conexion();
-            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveAccidente(?, ?, ?, ?, ?, ?, ?, ?)};")) {
+            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveAccidente(?, ?, ?, ?, ?, ?, ?, ?, ?)};")) {
                 cs.setString(1, cod_);
                 cs.setInt(2, id);
                 cs.setString(3, tipo);
@@ -339,10 +337,11 @@ public class Guardar {
                 cs.setInt(5, heridos);
                 cs.setString(6, fecha);
                 cs.setInt(7, (eliminar)?1:0);
-                cs.registerOutParameter(8, Types.INTEGER);
+                cs.setString(8, lugar);
+                cs.registerOutParameter(9, Types.INTEGER);
                 cs.executeQuery();
 
-                int retorno = cs.getInt(8);
+                int retorno = cs.getInt(9);
                 
                 if(retorno==1){
                     return true;
@@ -462,7 +461,8 @@ public class Guardar {
         insertar.setString(4, codigo);
                  
         if(insertar.executeUpdate()==1){
-            Mails.SendMailAgregoHV("INGRESO DE HOJA DE VIDA", "<b>"+nombre_persona+"</b> HA INGRESADO SU HOJA DE VIDA HACE UN INSTANTE",codigo);
+            List<String> lista = Objetos.listCorreos();
+            Mails.SendMailAgregoHV("INGRESO DE HOJA DE VIDA", "<b>"+nombre_persona+"</b> HA INGRESADO SU HOJA DE VIDA HACE UN INSTANTE",codigo, lista);
             return true;
         }
          
@@ -483,7 +483,9 @@ public class Guardar {
         return false;
     }
     
-    public static boolean saveEmpresa(String nit, String r_social, String dir, String tel, String cam_com, String nbr_rep, String doc_rep, String mail_rep, String tel_rep, String correo, String contrasena) throws ClassNotFoundException, SQLException, InvalidKeyException{
+    public static boolean saveEmpresa(String nit, String r_social, String dir, String tel, String cam_com, 
+            String nbr_rep, String doc_rep, String mail_rep, String tel_rep, String correo, String contrasena, String pais,
+            int depto, String depart, String ciudad) throws ClassNotFoundException, SQLException, InvalidKeyException{
          
         boolean b=false;
         Connection conn=null;
@@ -493,7 +495,7 @@ public class Guardar {
         String cod = Metodos.RandomString(20, false);
         String token = Metodos.RandomString(10, false);
         conn=conexion();        
-        try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_RegistroEmpresa(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}")) {
+        try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_RegistroEmpresa(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?)}")) {
                 cs.setString(1, nit);
                 cs.setString(2, r_social);
                 cs.setString(3, dir);
@@ -508,12 +510,18 @@ public class Guardar {
                 cs.setString(12, pass);
                 cs.setInt(13, 2);
                 cs.setString(14, token);
-                cs.registerOutParameter(15, Types.INTEGER);
+                cs.setString(15, pais);
+                cs.setInt(16, depto);
+                cs.setString(17, depart);
+                cs.setString(18, ciudad);
+                cs.registerOutParameter(19, Types.INTEGER);
                 cs.executeQuery();
 
-                int retorno = cs.getInt(15);
+                int retorno = cs.getInt(19);
                 
+                System.out.println("llego aqui");
                 if(retorno==1){
+                    System.out.println("mandara correo a " + correo);
                     Mails.SendMail(correo, token, "CONFIRMACIÓN DE CUENTA", "ACTIVAR");
                     return true;
                 }else{
@@ -522,10 +530,10 @@ public class Guardar {
 
             }catch (SQLException e) {
                 System.out.println("error SQLException en INSERTAR EMPRESA");
-                System.out.println(e.getMessage());
+                System.out.println(e.toString());
             }catch (Exception e){
                 System.out.println("error Exception en INSERTAR EMPRESA");
-                System.out.println(e.getMessage());
+                System.out.println(e.toString());
             }finally{
                 if(!conn.isClosed()){
                     conn.close();
@@ -700,7 +708,65 @@ public class Guardar {
             return false;
     }
     
-    
+    public static boolean SaveCalificacion(String cod_, boolean chk_exp, boolean chk_acc, boolean chk_uexp, boolean chk_cur, boolean chk_myo, boolean chk_esc, 
+            boolean chk_jud, boolean chk_com, boolean chk_equ, boolean chk_lab, String not_exp, String not_acc, String not_uexp, String not_cur, String not_myo, 
+            String not_esc, String not_jud, String not_com, String not_equ, String not_lab, int pun_tot, String user_val, String not_) throws ClassNotFoundException, SQLException{
+        boolean b=false;
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        
+        conn=conexion();
+            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveCalificacion(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)};")) {
+                cs.setString(1, cod_);
+                cs.setInt(2, (chk_exp)?1:0);
+                cs.setInt(3, (chk_acc)?1:0);
+                cs.setInt(4, (chk_uexp)?1:0);
+                cs.setInt(5, (chk_cur)?1:0);
+                cs.setInt(6, (chk_myo)?1:0);
+                cs.setInt(7, (chk_esc)?1:0);
+                cs.setInt(8, (chk_jud)?1:0);
+                cs.setInt(9, (chk_com)?1:0);
+                cs.setInt(10, (chk_equ)?1:0);
+                cs.setInt(11, (chk_lab)?1:0);
+                cs.setString(12, not_exp);
+                cs.setString(13, not_acc);
+                cs.setString(14, not_uexp);
+                cs.setString(15, not_cur);
+                cs.setString(16, not_myo);
+                cs.setString(17, not_esc);
+                cs.setString(18, not_jud);
+                cs.setString(19, not_com);
+                cs.setString(20, not_equ);
+                cs.setString(21, not_lab);
+                cs.setInt(22, pun_tot);
+                cs.setString(23, user_val);
+                cs.setString(24, not_);
+                
+                cs.registerOutParameter(25, Types.INTEGER);
+                cs.executeQuery();
+
+                int retorno = cs.getInt(25);
+                System.out.println(retorno);
+                if(retorno==1){
+                    return true;
+                }else{
+                    return false;
+                }
+
+            }catch (SQLException e) {
+                System.out.println("error SQLException en INSERTAR USUARIO");
+                System.out.println(e.getMessage());
+            }catch (Exception e){
+                System.out.println("error Exception en INSERTAR USUARIO");
+                System.out.println(e.getMessage());
+            }finally{
+                if(!conn.isClosed()){
+                    conn.close();
+                }
+            }
+            return false;
+
+    }
     
      
 }

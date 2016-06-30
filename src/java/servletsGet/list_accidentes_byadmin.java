@@ -49,8 +49,7 @@ public class list_accidentes_byadmin extends HttpServlet {
          
         try (PrintWriter out = response.getWriter()) {
             if(session.getAttribute("user")!=null){
-                usuario u = (usuario)session.getAttribute("user");
-                String x = Listas.listaAccidentes(cod).toJSONString();
+                String x = Listas.listaAccidentes(cod, true).toJSONString();
                 out.print(x);
             }else{
                 out.print("session");

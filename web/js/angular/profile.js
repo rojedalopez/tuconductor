@@ -102,7 +102,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
           
     self.listaExperiencias = function(){
         ProfileService.listaExperiencias().then(function(d){
-            self.experiencias = d;
+            self.experiencias = d.lista;
         },function(errResponse){
             console.error('Error while creating Paper.');
 	});
@@ -110,13 +110,14 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
           
     self.listaFormaciones = function(){
         ProfileService.listaFormaciones().then(function(d){
-            self.formaciones = d;
+            self.formaciones = d.lista;
         },function(errResponse){
             console.error('Error while creating Paper.');
         });
     };
     
-    self.selectPais = function(pais){
+    self.selectPaisDP = function(pais){
+        console.log("entro" + pais);
         if(pais==="CO"){
             self.colombia = true;  
         }else{
@@ -190,8 +191,8 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         ProfileService.GetUsuarioGeneral().then(function(d) {
             self.usuario_dp = d;
             self.usuario_dp.fecha_nac =  new Date(self.usuario_dp.fecha_nac);
-            self.experiencias = d.exp_laborales;
-            self.formaciones = d.formacion;
+            self.experiencias = d.exp_laborales.lista;
+            self.formaciones = d.formacion.lista;
             self.selectDpto(self.usuario_dp.depto);
         },function(errResponse){
             console.error('Error while fetching Currencies');
@@ -296,14 +297,15 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     
         
     self.resetExp = function(){
+        $scope.exp_laboral.reset();
         self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", dpto:"", 
-         ciudad:"", direccion:"", mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"", labora:false, retiro:"", exp_meses:0, eliminar:false};
-        $scope.exp_laboral.$setPristine();
+        ciudad:"", direccion:"", mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"", labora:false, retiro:"", exp_meses:0, eliminar:false};
+        self.colombiaExp = true;
     };
           
     self.resetForm = function(){
+        $scope.form_formacion.reset();
         self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"", eliminar:false};
-        $scope.form_formacion.$setPristine();
     };
     
     
@@ -344,11 +346,15 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     ];
 
     self.NvlFormacion = [
-        {ID: 1, Value: 'Educación Basica Primaria'},
-        {ID: 2, Value: 'Educación Basica Secundaria'},
-        {ID: 3, Value: 'Bachillerato / educacion Media'},
-        {ID: 4, Value: 'Universidad / Carrera Tecnica'},
-        {ID: 5, Value: 'Posgrado'}
+        {ID: 1, Value: 'Educación Básica Primaria'},
+        {ID: 2, Value: 'Educación Básica Secundaria'},
+        {ID: 3, Value: 'Bachillerato / Educación Media'},
+        {ID: 4, Value: 'Universidad / Carrera Técnica'},
+        {ID: 5, Value: 'Universidad / Carrera Tecnológica'},
+        {ID: 6, Value: 'Universidad / Carrera Profesional'},
+        {ID: 7, Value: 'Postgrado / Especialización'},
+        {ID: 8, Value: 'Postgrado / Maestría'},
+        {ID: 9, Value: 'Postgrado / Doctorado'}
     ];
         
 }]).factory('ProfileService', ['$http', '$q', function($http, $q){
@@ -585,6 +591,9 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.exp_laboral={id:-1, cod:"", empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", depto:"", depart:"",
          ciudad:"", direccion:"", mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"", labora:false, retiro:"", exp_meses:0, eliminar:false};
 
+    self.check={cod:"", chk_lab:false, chk_esc:false, chk_cur:false, chk_exp: false, chk_uexp:false, chk_equ:false, chk_myo:false, chk_com:false, chk_acc:false, chk_jud:false,
+    not_lab:"", not_esc:"", not_cur:"", not_exp:"", not_uexp:"", not_equ:"", not_myo:"", not_com:"", not_acc:"", not_jud:"", tot_cal:0, not_:""};
+    
     self.formaciones=[];
     self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"", cod:"", eliminar:false};
     
@@ -592,7 +601,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.multa={id:-1, date:"", lgr_multa:"", fch_multa: "", cgo_multa:"", pgo_multa:false, cod:"", eliminar:false};
     
     self.accidentes=[];
-    self.accidente={id:-1, date:"", fch_accidente:"", muertos:false, heridos: false, tipo:"", cod:"", eliminar:false};
+    self.accidente={id:-1, date:"", fch_accidente:"", muertos:false, heridos: false, tipo:"", cod:"", lugar:"", eliminar:false};
     
     self.judiciales=[];
     self.judicial={id:-1, date:"", del_procjudicial:"", fch_procjudicial:"", act_procjudicial:false, cod:"", eliminar:false};
@@ -634,6 +643,14 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         }
     };
     
+    self.cambioChk = function(valor){
+        if(valor){
+            self.check.tot_cal++;
+        }else{
+            self.check.tot_cal--;
+        }
+    };
+    
     self.SaveMultaUsuario = function(multa){
         EditConductorbyAdminService.SaveMultaUsuario(multa).then(function(d){
             if(d==="true"){
@@ -656,7 +673,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         });
     };
 
-
+        
     self.submitDP = function(){
         btn_guardar_cambios.button('loading');
         self.usuario_dp.date = self.usuario_dp.fecha_nac.toString("yyyy-MM-dd");
@@ -666,8 +683,8 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.listaMultas = function(){
         var cod = self.getVarUrl("cod");
         EditConductorbyAdminService.listaMultas(cod).then(function(d){
-            
-            self.multas = d;
+            self.multas = d.lista;
+            self.check = d.check;
         },function(errResponse){
             console.error('Error while creating Paper.');
 	});
@@ -689,8 +706,8 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.listaAccidentes = function(){
         var cod = self.getVarUrl("cod");
         EditConductorbyAdminService.listaAccidentes(cod).then(function(d){
-            
-            self.accidentes = d;
+            self.accidentes = d.lista;
+            self.check = d.check;
         },function(errResponse){
             console.error('Error while creating Paper.');
 	});
@@ -712,8 +729,8 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.listaJudiciales = function(){
         var cod = self.getVarUrl("cod");
         EditConductorbyAdminService.listaJudiciales(cod).then(function(d){
-            
-            self.judiciales = d;
+            self.judiciales = d.lista;
+            self.check = d.check;
         },function(errResponse){
             console.error('Error while creating Paper.');
 	});
@@ -722,6 +739,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.SaveFormUsuario = function(formacion){
         EditConductorbyAdminService.SaveFormUsuario(formacion).then(function(d){
             if(d==="true"){
+                btn_add_formacion.button('reset');
                 form_formacion.modal( "hide" );
                 self.resetForm();
                 self.listaFormaciones();
@@ -733,14 +751,34 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.listaExperiencias = function(){
         var cod = self.getVarUrl("cod");
         EditConductorbyAdminService.listaExperiencias(cod).then(function(d){
-            self.experiencias = d;
+            self.experiencias = d.lista;
+            self.check = d.check;
         },function(errResponse){
             console.error('Error while creating Paper.');
 	});
     };
+    
+    self.SaveCalificacion = function(check){
+        EditConductorbyAdminService.SaveCalificacion(check).then(function(d){
+            if(d==="true"){
+                btn_send_checked.button('reset');
+            }
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+	});
+    };
+    
+    self.submitCalificacion = function(){
+        btn_send_checked.button('loading');
+        var cod = self.getVarUrl("cod");
+        self.check.cod = cod;
+        self.SaveCalificacion(self.check);
+    };
+    
     self.SaveExpUsuario = function(exp_laboral){
         EditConductorbyAdminService.SaveExpUsuario(exp_laboral).then(function(d){
             if(d==="true"){
+                btn_add_exp.button('reset');
                 form_experiencia.modal( "hide" );
                 self.resetExp();
                 self.listaExperiencias();
@@ -749,10 +787,12 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
             console.error('Error while creating Paper.');
 	});
     };
+    
     self.listaFormaciones = function(){
         var cod = self.getVarUrl("cod");
         EditConductorbyAdminService.listaFormaciones(cod).then(function(d){
-            self.formaciones = d;
+            self.formaciones = d.lista;
+            self.check = d.check;
         },function(errResponse){
             console.error('Error while creating Paper.');
 	});
@@ -836,11 +876,12 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         EditConductorbyAdminService.getUsuario(cod).then(function(d) {
             self.usuario_dp = d;
             self.usuario_dp.fecha_nac =  new Date(self.usuario_dp.fecha_nac);
-            self.experiencias = d.exp_laborales;
-            self.formaciones = d.formacion;
-            self.multas = d.multas;
-            self.accidentes = d.accidentes;
-            self.judiciales = d.judiciales;
+            self.experiencias = d.exp_laborales.lista;
+            self.formaciones = d.formacion.lista;
+            self.multas = d.multas.lista;
+            self.accidentes = d.accidentes.lista;
+            self.judiciales = d.judiciales.lista;
+            self.check = d.check;
             self.selectDpto(self.usuario_dp.depto);
         },function(errResponse){
             console.error('Error while fetching Currencies');
@@ -910,7 +951,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         for(var i = 0; i < self.experiencias.length; i++){
             if(self.experiencias[i].id === id) {
                self.exp_laboral = angular.copy(self.experiencias[i]);
-               if(self.exp_laboral.depto<=0){
+               if(self.exp_laboral.depto<=-1){
                    self.selectDptoExp(self.exp_laboral.depto);
                }
                console.log(self.exp_laboral.mes_inicio);
@@ -975,6 +1016,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     };
     
     self.submitExp = function(){
+        btn_add_exp.button('loading');
         var cod = self.getVarUrl("cod");
         self.exp_laboral.cod = cod;
         self.SaveExpUsuario(self.exp_laboral);
@@ -985,6 +1027,8 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
             if(self.experiencias[i].id === id) {
                self.exp_laboral = angular.copy(self.experiencias[i]);
                self.exp_laboral.eliminar = true;
+               var cod = self.getVarUrl("cod");
+                self.exp_laboral.cod = cod;
                self.SaveExpUsuario(self.exp_laboral);
                break;
             }
@@ -992,7 +1036,6 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     };
     
     self.deleteForm = function(id){
-        console.log(id);
         for(var i = 0; i < self.formaciones.length; i++){
             if(self.formaciones[i].id === id) {
                self.formacion = angular.copy(self.formaciones[i]);
@@ -1004,7 +1047,6 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     };
     
     self.deleteMulta = function(id){
-        console.log(id);
         for(var i = 0; i < self.multas.length; i++){
             if(self.multas[i].id === id) {
                self.multa = angular.copy(self.multas[i]);
@@ -1016,7 +1058,6 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     };
     
     self.deleteAccidente = function(id){
-        console.log(id);
         for(var i = 0; i < self.accidentes.length; i++){
             if(self.accidentes[i].id === id) {
                self.accidente = angular.copy(self.accidentes[i]);
@@ -1028,7 +1069,6 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     };
     
     self.deleteJudicial = function(id){
-        console.log(id);
         for(var i = 0; i < self.judiciales.length; i++){
             if(self.judiciales[i].id === id) {
                self.judicial = angular.copy(self.judiciales[i]);
@@ -1040,6 +1080,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     };
     
     self.submitForm = function(){
+        btn_add_formacion.button('loading');
         self.SaveFormUsuario(self.formacion);
     };
     
@@ -1063,39 +1104,40 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     }; 
     
     self.resetExp = function(){
+        $scope.expe_laboral.reset();
        var cod = self.getVarUrl("cod");
         self.exp_laboral={id:-1, cod:"", empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", dpto:"", 
         ciudad:"", direccion:"", mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"", labora:false, retiro:"", exp_meses:0, eliminar:false};
         self.exp_laboral.cod = cod; 
-        $scope.expe_laboral.$setPristine();
+        self.colombiaExp = true;
     };
     
     self.resetMulta = function(){
+        $scope.forma_multa.reset();
         var cod = self.getVarUrl("cod");
         self.multa={id:-1, lgr_multa:"", fch_multa: "", cgo_multa:"", pgo_multa:false, eliminar:false};
         self.multa.cod = cod; 
-        $scope.forma_multa.$setPristine();
     };
     
     self.resetAccidente = function(){
+        $scope.forma_accidente.reset();
         var cod = self.getVarUrl("cod");
-        self.accidente={id:-1, date:"", fch_accidente:"", muertos:false, heridos: false, tipo:"", eliminar:false};
+        self.accidente={id:-1, date:"", fch_accidente:"", muertos:false, lugar:"", heridos: false, tipo:"", eliminar:false};
         self.accidente.cod = cod; 
-        $scope.forma_accidente.$setPristine();
     };
     
     self.resetJudicial = function(){
+        $scope.forma_judicial.reset();
         var cod = self.getVarUrl("cod");
         self.judicial={id:-1, date:"", del_procjudicial:"", fch_procjudicial:"", act_procjudicial:false, eliminar:false};
         self.judicial.cod = cod; 
-        $scope.forma_judicial.$setPristine();
     };
 
     self.resetForm = function(){
+        $scope.forma_formacion.reset();
         var cod = self.getVarUrl("cod");
         self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"",eliminar:false};
         self.formacion.cod = cod; 
-        $scope.forma_formacion.$setPristine();
     };
     
     self.llenarAnios = function(){
@@ -1153,11 +1195,15 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     ];
 
     self.NvlFormacion = [
-        {ID: 1, Value: 'Educación Basica Primaria'},
-        {ID: 2, Value: 'Educación Basica Secundaria'},
-        {ID: 3, Value: 'Bachillerato / educacion Media'},
-        {ID: 4, Value: 'Universidad / Carrera Tecnica'},
-        {ID: 5, Value: 'Posgrado'}
+        {ID: 1, Value: 'Educación Básica Primaria'},
+        {ID: 2, Value: 'Educación Básica Secundaria'},
+        {ID: 3, Value: 'Bachillerato / Educación Media'},
+        {ID: 4, Value: 'Universidad / Carrera Técnica'},
+        {ID: 5, Value: 'Universidad / Carrera Tecnológica'},
+        {ID: 6, Value: 'Universidad / Carrera Profesional'},
+        {ID: 7, Value: 'Postgrado / Especialización'},
+        {ID: 8, Value: 'Postgrado / Maestría'},
+        {ID: 9, Value: 'Postgrado / Doctorado'}
     ];
     
 }]).factory('EditConductorbyAdminService', ['$http', '$q', function($http, $q){
@@ -1171,6 +1217,13 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
             });
 	},SaveDatosPersonales: function(usuario_dp){
             return $http.post('../usuario_dp_byadmin', usuario_dp).then(function(response){
+                return response.data;
+            },function(errResponse){
+                console.error('Error guardando datos personales ' +errResponse);
+                return $q.reject(errResponse);
+            });
+	},SaveCalificacion: function(check){
+            return $http.post('../calificacion_byadmin', check).then(function(response){
                 return response.data;
             },function(errResponse){
                 console.error('Error guardando datos personales ' +errResponse);

@@ -55,7 +55,8 @@ if(session.getAttribute("user") != null){
         var dialog ;        
         var dialog2 ;
         var btn_sending_mail, btn_add_conductor, btn_add_empresa;
-        var Modal_forgotpass_success, Modal_forgotpass_error, Modal_choise_options, Modal_Confirmacion;
+        var Modal_forgotpass_success, Modal_forgotpass_error, Modal_confirm_success, Modal_confirm_error;
+        var Modal_choise_options, Modal_Confirmacion;
         $(document).ready(function() {
             Modal_Confirmacion = $("#Modal_Confirmacion");
             Modal_choise_options = $("#Modal_choise_options");
@@ -66,6 +67,8 @@ if(session.getAttribute("user") != null){
             dialog_empresa = $("#Modal_Empresa");
             Modal_forgotpass_success = $("#Modal_forgotpass_success");
             Modal_forgotpass_error = $("#Modal_forgotpass_error");
+            Modal_confirm_success = $("#Modal_confirm_success");
+            Modal_confirm_error = $("#Modal_confirm_error");
         } );
         
         function open_modal(modal){
@@ -176,10 +179,10 @@ if(session.getAttribute("user") != null){
                 </div>    
                 
                 <div class="modal-body">
-                    <div class="alert alert-info hide" id="Modal_forgotpass_success">
+                    <div class="alert alert-info hide" id="Modal_confirm_success">
                         <b>Se ha realizado el registro completo de su usuario.</b><br/>Active su cuenta siguiendo las instrucciones que se le enviaron a su correo.
                     </div>
-                    <div class="alert alert-danger hide" id="Modal_forgotpass_error " >
+                    <div class="alert alert-danger hide" id="Modal_confirm_error" >
                         <b>Se ha presentado un error.</b><br/>Puede que el correo ingresado ya se haya registrado en nuestro sistema.
                     </div>
                 </div>
@@ -253,7 +256,7 @@ if(session.getAttribute("user") != null){
                         <div class="alert alert-info hide" id="Modal_forgotpass_success">
                             <b>Se ha enviado el mensaje de restablecimiento de contraseña.</b><br/>Sigue las instrucciones que se proporcionan en el mensaje de correo electronico para restablecer la contraseña.
                         </div>
-                        <div class="alert alert-danger hide" id="Modal_forgotpass_error " >
+                        <div class="alert alert-danger hide" id="Modal_forgotpass_error" >
                             <b>Se ha presentado un error.</b><br/>El correo ingresado no se encuentra registrado en la plataforma TuConductor.
                         </div>
                         <div class="modal-footer">
@@ -300,6 +303,18 @@ if(session.getAttribute("user") != null){
                                 clase="text_valid_e"
                                 validator = "ctrl.lengthValidator(ctrl.usuario.lastname, 4) === true"
                                 invalid-message = "ctrl.lengthValidator(ctrl.usuario.lastname, 4)"
+                                required-message="'El campo no puede estar vacio'" 
+                                required/>
+                        </div>
+                        <label class="etiqueta_e_up">Fecha Nacimiento<i class="required">*</i>:</label>
+                        <div class="form-group">
+                                <input 
+                                type="date" 
+                                name="nacimiento" 
+                                class="form-control texto_e" 
+                                ng-model="ctrl.usuario.nacimiento" 
+                                clase="text_valid_e"
+                                invalid-message ="'La fecha ingresada no es valida'"
                                 required-message="'El campo no puede estar vacio'" 
                                 required/>
                         </div>
@@ -436,7 +451,7 @@ if(session.getAttribute("user") != null){
                                 clase="text_valid_e"
                                 required-message="'El campo no puede estar vacio'">
                                 <option value="">--- Seleccione Departamento ---</option>
-                            </select
+                            </select>
                             <input type="text" ng-show="!ctrl.colombia" 
                                 class="form-control texto_e"  
                                 name="depart" 

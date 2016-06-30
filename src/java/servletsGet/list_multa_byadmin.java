@@ -28,15 +28,6 @@ import org.json.simple.parser.ParseException;
  */
 public class list_multa_byadmin extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
@@ -54,20 +45,16 @@ public class list_multa_byadmin extends HttpServlet {
  
         JSONParser parser = new JSONParser();
         JSONObject joComment = null;
-         System.out.println(sb.toString());
         joComment = (JSONObject) parser.parse(sb.toString());
         
         String cod = (String)joComment.get("cod");
-        System.out.println(cod);
         HttpSession session =  null;
  
         session = request.getSession(false);
         
         try (PrintWriter out = response.getWriter()) {
             if(session.getAttribute("user")!=null){
-                usuario u = (usuario)session.getAttribute("user");
-                String x = Listas.listaMultas(cod).toJSONString();
-                System.out.println(x);
+                String x = Listas.listaMultas(cod, true).toJSONString();
                 out.print(x);
             }else{
                 out.print("session");

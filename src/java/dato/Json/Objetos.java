@@ -72,16 +72,15 @@ public class Objetos {
                         obj.put("perfil", datos.getString(24));
                         obj.put("cargo", datos.getString(25));
                         obj.put("verificado", datos.getBoolean(26));
-                        obj.put("exp_laborales", Listas.listaExpLaborales(id));
-                        obj.put("formacion", Listas.listaFormaciones(id));
-                        obj.put("multas", Listas.listaMultas(id));
-                        obj.put("accidentes", Listas.listaAccidentes(id));
-                        obj.put("judiciales", Listas.listaProcJudicial(id));
-                        
+                        obj.put("exp_laborales", Listas.listaExpLaborales(id,false));
+                        obj.put("formacion", Listas.listaFormaciones(id, false));
+                        obj.put("multas", Listas.listaMultas(id, false));
+                        obj.put("accidentes", Listas.listaAccidentes(id, false));
+                        obj.put("judiciales", Listas.listaProcJudicial(id, false));
+                        obj.put("check", ObtenerPuntaje(id));
                     }
                     datos.close();
                     conn.close();
-                    System.out.println(obj.toJSONString());
                     return obj.toJSONString();
              
         }catch (SQLException e) {
@@ -198,4 +197,70 @@ public class Objetos {
                 }
         return "";
     }
+    
+    
+    public static JSONObject ObtenerPuntaje(String id) throws SQLException{
+        JSONObject obj = new JSONObject();
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        Statement stm=null;
+        ResultSet datos=null;
+             
+        try{
+                    conn=conexion();
+                    String instruccion="";
+                     
+                    instruccion =   "SELECT chk_exp_calificacion, not_exp_calificacion, chk_acc_calificacion, not_acc_calificacion, " +
+                                    "chk_uexp_calificacion, not_uexp_calificacion, chk_cur_calificacion, not_cur_calificacion, " +
+                                    "chk_myo_calificacion, not_myo_calificacion, chk_esc_calificacion, not_esc_calificacion, " +
+                                    "chk_jud_calificacion, not_jud_calificacion, chk_com_calificacion, not_com_calificacion, " +
+                                    "chk_equ_calificacion, not_equ_calificacion, chk_lab_calificacion, not_lab_calificacion, " +
+                                    "pun_tot_calificacion, not_calificacion FROM tblCalificacion WHERE cod_empleado = ?;";
+                     
+                    insertar=conn.prepareStatement(instruccion);
+                    insertar.setString(1, id);
+                    datos=insertar.executeQuery();
+                    if (datos.next()) {
+                        obj.put("chk_exp", datos.getBoolean(1));
+                        obj.put("not_exp", datos.getString(2));
+                        obj.put("chk_acc", datos.getBoolean(3));
+                        obj.put("not_acc", datos.getString(4));
+                        obj.put("chk_uexp", datos.getBoolean(5));
+                        obj.put("not_uexp", datos.getString(6));
+                        obj.put("chk_cur", datos.getBoolean(7));
+                        obj.put("not_cur", datos.getString(8));
+                        obj.put("chk_myo", datos.getBoolean(9));
+                        obj.put("not_myo", datos.getString(10));
+                        obj.put("chk_esc", datos.getBoolean(11));
+                        obj.put("not_esc", datos.getString(12));
+                        obj.put("chk_jud", datos.getBoolean(13));
+                        obj.put("not_jud", datos.getString(14));
+                        obj.put("chk_com", datos.getBoolean(15));
+                        obj.put("not_com", datos.getString(16));
+                        obj.put("chk_equ", datos.getBoolean(17));
+                        obj.put("not_equ", datos.getString(18));
+                        obj.put("chk_lab", datos.getBoolean(19));
+                        obj.put("not_lab", datos.getString(20));
+                        obj.put("tot_cal", datos.getInt(21));
+                        obj.put("not_", datos.getString(22));
+                    }
+                    datos.close();
+                    conn.close();
+                    return obj;
+             
+        }catch (SQLException e) {
+            System.out.println("error SQLException en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }catch (Exception e){
+                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }finally{
+                    if(!conn.isClosed()){
+                        conn.close();
+                    }
+                }
+        return null;
+    }
+    
+    
 }

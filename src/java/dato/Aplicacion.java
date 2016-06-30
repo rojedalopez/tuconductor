@@ -6,11 +6,6 @@
 package dato;
 
 import bean.usuario;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -19,8 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
+
 
 /**
  *

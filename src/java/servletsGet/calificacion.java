@@ -1,8 +1,8 @@
-
 package servletsGet;
 
 import bean.usuario;
 import dato.Json.Listas;
+import dato.Json.Objetos;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,11 +18,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public class list_procjudicial_byadmin extends HttpServlet {
-
+public class calificacion extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException, ParseException {
+            throws ServletException, IOException, ParseException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         StringBuffer sb = new StringBuffer();
         
@@ -44,10 +43,9 @@ public class list_procjudicial_byadmin extends HttpServlet {
         HttpSession session =  null;
  
         session = request.getSession(false);
-         
         try (PrintWriter out = response.getWriter()) {
             if(session.getAttribute("user")!=null){
-                String x = Listas.listaProcJudicial(cod, true).toJSONString();
+                String x = Objetos.ObtenerPuntaje(cod).toJSONString();
                 out.print(x);
             }else{
                 out.print("session");
@@ -55,19 +53,17 @@ public class list_procjudicial_byadmin extends HttpServlet {
         }
     }
 
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             processRequest(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(list_procjudicial_byadmin.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {
-            Logger.getLogger(list_procjudicial_byadmin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(calificacion.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(calificacion.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 
     @Override
     public String getServletInfo() {

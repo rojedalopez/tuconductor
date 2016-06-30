@@ -2,8 +2,10 @@
 
 angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'SignUpService', function($scope, SignUpService) {
     var self = this;
-    self.usuario={mail:"", password:"",name:"", lastname:"", phone:"", confirmPassword:""};
-    self.empresa={nit:"",r_social:"", dir:"", tel:"", cam_com:null, rut:"", nombre_replegal:"", doc_replegal:"", email_replegal:"", tel_replegal:"", mail:"", password:"", confirmPassword:"", pais:"CO", depto:"", depart:"", ciudad:""}
+    self.usuario={mail:"", password:"",name:"", lastname:"", phone:"", confirmPassword:"", nacimiento:"", date:""};
+    self.empresa={nit:"",r_social:"", dir:"", tel:"", cam_com:null, rut:"", nombre_replegal:"", 
+        doc_replegal:"", email_replegal:"", tel_replegal:"", mail:"", password:"", confirmPassword:"", 
+        pais:"CO", depto:"", depart:"", ciudad:""};
     self.mail="";
     self.colombia = true;
     self.Paises=[];
@@ -18,6 +20,12 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
                 self.close_conductor();
                 Modal_choise_options.modal('hide');
                 Modal_Confirmacion.modal('show');
+            }
+            
+            if(d){
+                Modal_confirm_success.removeClass('hide');                
+            }else{
+                Modal_confirm_error.removeClass('hide');                
             }
         }, function(errResponse){
             console.error('Error while creating Paper.');
@@ -34,9 +42,9 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
             }
 
             if(d){
-                Modal_forgotpass_success.removeClass('hide');                
+                Modal_confirm_success.removeClass('hide');                
             }else{
-                Modal_forgotpass_error.removeClass('hide');                
+                Modal_confirm_error.removeClass('hide');                
             }
             Modal_Confirmacion.modal('show');
         },function(errResponse){
@@ -46,9 +54,12 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
      
     self.sendForgot = function(mail){
         SignUpService.sendForgot(mail).then(function(d){
+            console.log(d.forgot);
             if(d.forgot===true){
+                console.log("entro aqui");
                 Modal_forgotpass_success.removeClass('hide');                
             }else{
+                console.log("entro aca");
                 Modal_forgotpass_error.removeClass('hide');                
             }
             btn_sending_mail.button('reset');
@@ -126,6 +137,7 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
     
     self.submit = function() {
       btn_add_conductor.button('loading');
+      self.usuario.date = new Date(self.usuario.nacimiento).toString('yyyy-MM-dd');
       self.SaveUser(self.usuario); 
     };
           
@@ -144,7 +156,7 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
     };
     
     self.close_conductor = function(){
-        self.reset();
+        self.reset_conductor();
         dialog_conductor.modal( "hide" );
     };
     
@@ -154,7 +166,7 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
     };
            
     self.open_conductor = function(){
-        self.reset();
+        self.reset_conductor();
         dialog_conductor.modal( "show" );
     };
     
@@ -163,14 +175,16 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
         dialog_empresa.modal( "show" );
     };
 
-    self.reset = function(){
-        self.usuario={mail:"", password:"",name:"", lastname:"", phone:"", confirmPassword:""};
-        $scope.add_conductor.$setPristine(); //reset Form
+    self.reset_conductor = function(){
+        $scope.add_conductor.reset(); //reset Form
+        self.usuario={mail:"", password:"",name:"", lastname:"", phone:"", confirmPassword:"", nacimiento:"", date:""};
     };
     
     self.reset_empresa = function(){
-        self.empresa={nit:"",r_social:"", dir:"", tel:"", cam_com:null, rut:"", nombre_replegal:"", doc_replegal:"", email_replegal:"", tel_replegal:"", mail:"", password:"", confirmPassword:"", pais:"CO", depto:"", depart:"", ciudad:""}
         $scope.add_empresa.$setPristine(); //reset Form
+        self.empresa={nit:"",r_social:"", dir:"", tel:"", cam_com:null, rut:"", nombre_replegal:"", doc_replegal:"", 
+            email_replegal:"", tel_replegal:"", mail:"", password:"", confirmPassword:"", pais:"CO", depto:"", 
+            depart:"", ciudad:""}
     };
 }]).factory('SignUpService', ['$http', '$q', function($http, $q){
     return {
@@ -197,6 +211,10 @@ angular.module('MyApp.Sign', []).controller('SignUpController', ['$scope', 'Sign
             fd.append("tel_replegal", empresa.tel_replegal);
             fd.append("mail", empresa.mail);
             fd.append("password", empresa.password);
+            fd.append("pais", empresa.pais);
+            fd.append("depto", empresa.depto);
+            fd.append("depart", empresa.depart);
+            fd.append("ciudad", empresa.ciudad);
             
             return $http.post('signup_empresa', fd, {
                 transformRequest: angular.identity,

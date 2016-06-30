@@ -52,10 +52,11 @@ if(session.getAttribute("user") == null){
     
     <script type="text/javascript">
         var btn_guardar_cambios, form_experiencia, form_formacion, form_multa, form_accidente,form_judicial, btn_add_exp, btn_add_formacion, 
-                btn_guardar_multa, btn_guardar_accidente, btn_guardar_judicial, btn_admitir;
+                btn_guardar_multa, btn_guardar_accidente, btn_guardar_judicial, btn_admitir, btn_send_checked;
         
         $(document).ready(function(){
             verOpcion(1);
+            btn_send_checked = $("#btn_send_checked");
             btn_guardar_multa = $("#btn_guardar_multa");
             btn_guardar_accidente = $("#btn_guardar_accidente");
             btn_guardar_judicial = $("#btn_guardar_judicial");
@@ -398,14 +399,11 @@ if(session.getAttribute("user") == null){
                             <li>
                                 <a href="#" onclick="verOpcion(6)">Procesos judiciales</a>
                             </li>
-                            <li>
-                                <a href="#" onclick="verOpcion(7)">Procesos disciplinarios</a>
-                            </li>
                         </ul>
                         <!-- second-level-items -->
                     </li>                    
                     <li>
-                        <a href="#" onclick="abrir_admision()"><i class="fa fa-check-square fa-fw"></i> Admision</a>
+                        <a href="#" onclick="verOpcion(7)"><i class="fa fa-check-square fa-fw"></i> Admision</a>
                     </li>
                 </ul>
                 <!-- end side-menu -->
@@ -489,7 +487,6 @@ if(session.getAttribute("user") == null){
                                         name="apellido" 
                                         ng-model="ctrl.usuario_dp.apellido"
                                         class="form-control texto"
-                                        
                                         clase="text_valid" 
                                         validator = "ctrl.lengthValidator(ctrl.usuario_dp.apellido, 6) === true"
                                         invalid-message = "ctrl.lengthValidator(ctrl.usuario_dp.apellido, 6)"
@@ -498,7 +495,10 @@ if(session.getAttribute("user") == null){
                                 </div>
                                 <label class="etiqueta" for="fecha_nac">Nacimiento:</label>                                        
                                 <div class="form-group">
-                                    <input type="date" class="form-control texto"  name="fecha_nac" ng-model="ctrl.usuario_dp.fecha_nac" />
+                                    <input type="date" 
+                                           class="form-control texto"  
+                                           name="fecha_nac" 
+                                           ng-model="ctrl.usuario_dp.fecha_nac" />
                                 </div>
                                 <label class="etiqueta" for="genero">Genero:</label>                                        
                                 <div class="form-group">
@@ -572,13 +572,12 @@ if(session.getAttribute("user") == null){
                                         clase="text_valid"
                                         required-message="'El campo no puede estar vacio'">
                                         <option value="">--- Seleccione Departamento ---</option>
-                                    </select
+                                    </select>
                                     <input type="text" ng-show="!ctrl.colombia" 
                                         class="form-control texto"  
                                         name="depart" 
                                         ng-model="ctrl.usuario_dp.depart" 
                                         required="{{!ctrl.colombia}}" 
-                                        
                                         clase="text_valid"
                                         validator = "ctrl.lengthValidator(ctrl.usuario_dp.depart, 4) === true"
                                         invalid-message = "ctrl.lengthValidator(ctrl.usuario_dp.depart, 4)"
@@ -846,38 +845,103 @@ if(session.getAttribute("user") == null){
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12 opcion7" >
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            PROCESOS DICIPLINARIOS
-                        </div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-lg-12" ng-repeat="fm in ctrl.formaciones">
-                                    <div class="panel panel-info">
-                                        <div class="panel-heading">                                                
-                                            {{ctrl.NvlFormacion[fm.nivel_estudio-1].Value}}
-                                            <button type="button" class="close"><img src="../assets/img/delete_icon.png" width="18" height="18"></button>
-                                            <button type="button" class="close" ng-click="ctrl.editForm(fm.id)"><img src="../assets/img/edit_icon.png"  width="18" height="18"></button>                                                
-                                        </div>
-                                        <div class="panel-body">
-                                            <p><span ng-bind="fm.c_educativo"></span></p>
-                                        </div>
-                                        <div class="panel-footer">
-                                            {{ctrl.Meses[fm.mes_inicio-1].Mes + " " + fm.anio_inicio}} - {{(fm.estado!==2)?(fm.estado===1)?'Cursando':'Aplazado/Abandonado':ctrl.Meses[fm.mes_fin-1].Mes + " " + fm.anio_fin}}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                            <div class="col-lg-12"><br/></div>
-                            </div>
-                            <button type="button" class="btn btn-primary btn-lg center-block" ng-click="ctrl.openForm()">Añadir proceso diciplinario</button>
-                        </div>
-                    </div>
-                </div>
             </div>
             
+            <div class="col-lg-14 opcion7" >
+                <form  name="calificacion_user" angular-validator-submit="ctrl.submitCalificacion()"
+                       angular-validator class="form-horizontal"  novalidate>
+                    <div class="col-lg-14">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                VERIFICACION Y PUNTUACION <b>({{(ctrl.check.tot_cal === 1 || ctrl.check.tot_cal === 0)?ctrl.check.tot_cal+' Punto':ctrl.check.tot_cal+' Puntos'}})</b>
+                            </div>
+                            
+                            <div class="panel-body">
+                                <div class="col-lg-14 col-lg-offset-1">  
+                                    <p>
+                                        <label class="etiqueta_up">Datos y Experiencia laboral</label>
+                                        <input type="checkbox" value="1" name="chk_lab" ng-model="ctrl.check.chk_lab" ng-change="ctrl.cambioChk(ctrl.check.chk_lab)"/> 
+                                        <label class="etiqueta_up">Nota</label>
+                                        <textarea class="form-control area_e" name="not_lab" ng-model="ctrl.check.not_lab" ></textarea>
+                                    </p>
+                                    <hr>
+                                    <p>
+                                        <label class="etiqueta_up">Escolaridad MINIMA DE bachillerato</label>
+                                        <input type="checkbox" value="1" name="chk_esc" ng-model="ctrl.check.chk_esc" ng-change="ctrl.cambioChk(ctrl.check.chk_esc)"/> 
+                                        <label class="etiqueta_up">Nota</label>
+                                        <textarea class="form-control area_e" name="not_exp" ng-model="ctrl.check.not_esc"></textarea>
+                                    </p>
+                                    <hr>
+                                    <p>
+                                        <label class="etiqueta_up">Cursos adicionales realizados</label>
+                                        <input type="checkbox" value="1" name="chk_cur" ng-model="ctrl.check.chk_cur" ng-change="ctrl.cambioChk(ctrl.check.chk_cur)"/> 
+                                        <label class="etiqueta_up">Nota</label>
+                                        <textarea class="form-control area_e" name="not_exp" ng-model="ctrl.check.not_cur"></textarea>
+                                    </p>
+                                    <hr>
+                                    <p>
+                                        <label class="etiqueta_up">TIENE MINIMO 35 Años</label>
+                                        <input type="checkbox" value="1" name="chk_myo" ng-model="ctrl.check.chk_myo" ng-change="ctrl.cambioChk(ctrl.check.chk_myo)"/> 
+                                        <label class="etiqueta_up">Nota</label>
+                                        <textarea class="form-control area_e" name="not_myo" ng-model="ctrl.check.not_myo"></textarea>
+                                    </p>
+                                    <hr>
+                                    <p>
+                                        <label class="etiqueta_up">Ult. Experiencia MINIMA DE 3 años</label>
+                                        <input type="checkbox" value="1" name="chk_uexp" ng-model="ctrl.check.chk_uexp" ng-change="ctrl.cambioChk(ctrl.check.chk_uexp)"/> 
+                                        <label class="etiqueta_up">Nota</label>
+                                        <textarea class="form-control area_e" name="not_uexp" ng-model="ctrl.check.not_uexp"></textarea>
+                                    </p>
+                                    <hr>
+                                    <p>
+                                        <label class="etiqueta_up">Experiencia MINIMA de dos equipos</label>
+                                        <input type="checkbox" value="1" name="chk_equ" ng-model="ctrl.check.chk_equ" ng-change="ctrl.cambioChk(ctrl.check.chk_equ)"/> 
+                                        <label class="etiqueta_up">Nota</label>
+                                        <textarea class="form-control area_e" name="not_equ" ng-model="ctrl.check.not_equ"></textarea>
+                                    </p>
+                                    <hr>
+                                    <p>
+                                        <label class="etiqueta_up">Experiencia total MINIMA DE 10 Años</label>
+                                        <input type="checkbox" value="1" name="chk_exp" ng-model="ctrl.check.chk_exp" ng-change="ctrl.cambioChk(ctrl.check.chk_exp)"/> 
+                                        <label class="etiqueta_up">Nota</label>
+                                        <textarea class="form-control area_e" name="not_exp" ng-model="ctrl.check.not_exp"></textarea>
+                                    </p>
+                                    <hr>
+                                    <p>
+                                        <label class="etiqueta_up">0 Comparendos en los Ult. 5 Años</label>
+                                        <input type="checkbox" value="1" name="chk_com" ng-model="ctrl.check.chk_com" ng-change="ctrl.cambioChk(ctrl.check.chk_com)"/> 
+                                        <label class="etiqueta_up">Nota</label>
+                                        <textarea class="form-control area_e" name="not_exp" ng-model="ctrl.check.not_com"></textarea>
+                                    </p>
+                                    <hr>
+                                    <p>
+                                        <label class="etiqueta_up">0 Accidentes en los Ult. 5 Años</label>
+                                        <input type="checkbox" value="1" name="chk_acc" ng-model="ctrl.check.chk_acc" ng-change="ctrl.cambioChk(ctrl.check.chk_acc)"/> 
+                                        <label class="etiqueta_up">Nota</label>
+                                        <textarea class="form-control area_e" name="not_exp" ng-model="ctrl.check.not_acc"></textarea>
+                                    </p>
+                                    <hr>
+                                    <p>
+                                        <label class="etiqueta_up">0 Proc. Judiales activos</label>
+                                        <input type="checkbox" value="1" name="chk_jud" ng-model="ctrl.check.chk_jud" ng-change="ctrl.cambioChk(ctrl.check.chk_jud)"/> 
+                                        <label class="etiqueta_up">Nota</label>
+                                        <textarea class="form-control area_e" name="not_exp" ng-model="ctrl.check.not_jud"></textarea>
+                                    </p>
+                                    <hr>
+                                    <p>
+                                        <div class="form-group">
+                                            <div class="form-group" style="text-align: right;margin-right: 15px;">
+                                                <button type="button" onclick="abrir_admision()" class="btn btn-default" >{{ctrl.usuario_dp.verificado?'Retirar Admisión':'Admintir'}}</button>
+                                                <button type="submit" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_send_checked" class="btn btn-primary" >Guardar cambios</button>
+                                            </div>
+                                        </div>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>    
+            </div>
 
          
 
@@ -1278,6 +1342,17 @@ if(session.getAttribute("user") == null){
                 <div class="modal-body">
                     <form role="form" name="forma_accidente" angular-validator-submit="ctrl.submitAccidente()" 
                           class="form-horizontal" angular-validator novalidate>
+                        <label class="etiqueta_e">Lugar<i class="required">*</i>:</label>                            
+                        <div class="form-group">
+                            <input type="text" 
+                                class="form-control texto_e" 
+                                name="lgr_accidente" 
+                                ng-model="ctrl.accidente.lugar" 
+                                clase="text_valid_e"
+                                invalid-message = "'Debe ingresar una fecha valida'"
+                                required-message="'El campo no puede estar vacio'"
+                                required />
+                        </div>
                         <label class="etiqueta_e">Fecha<i class="required">*</i>:</label>                            
                         <div class="form-group">
                             <input type="date" 
@@ -1314,7 +1389,7 @@ if(session.getAttribute("user") == null){
                         </p>  
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" ng-disabled="form_accidente.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_guardar_accidente" class="btn btn-primary" >{{(ctrl.accidente.id===-1)?'Añadir':'Editar'}}</button>
+                            <button type="submit" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_guardar_accidente" class="btn btn-primary" >{{(ctrl.accidente.id===-1)?'Añadir':'Editar'}}</button>
                         </div>
                     </form>
                 </div>
@@ -1364,7 +1439,7 @@ if(session.getAttribute("user") == null){
                         </p>  
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" ng-disabled="form_judicial.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_guardar_judicial" class="btn btn-primary" >{{(ctrl.judicial.id===-1)?'Añadir':'Editar'}}</button>
+                            <button type="submit" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_guardar_judicial" class="btn btn-primary" >{{(ctrl.judicial.id===-1)?'Añadir':'Editar'}}</button>
                         </div>
                     </form>
                 </div>
@@ -1382,7 +1457,7 @@ if(session.getAttribute("user") == null){
                 <div class="modal-body">
                     <form role="form" ng-submit="ctrl.submitAdminision()" name="exp_laboral" class="form-horizontal" novalidate>
                         <p><b>Conductor: </b>{{ctrl.usuario_dp.nombre + ' ' + ctrl.usuario_dp.apellido}}</p>
-                        <p>{{(ctrl.usuario_dp.verificado)?"Este conductor ya esta adminitido en la plataforma, ¿desea revocarle la adminsión?":"Verificando todos los datos de este conductor, ¿desea usted darle la admision al sistema?"}}</p>
+                        <p>{{(ctrl.usuario_dp.verificado)?"Este conductor ya esta admitido en la plataforma, ¿desea revocarle la adminsión?":"Verificando todos los datos de este conductor, ¿desea usted darle la admision al sistema?"}}</p>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                             <button type="submit" ng-show="!ctrl.usuario_dp.verificado" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Admitiendo..." id="btn_admitir" class="btn btn-primary" >Admitir</button>                        

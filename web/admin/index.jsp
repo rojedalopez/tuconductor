@@ -85,9 +85,9 @@ if(session.getAttribute("user") == null){
     
     
    </head>
-<body ng-app="myApp" class="ng-cloak">
+<body >
     <!--  wrapper -->
-    <div id="wrapper"  ng-controller="WallController as ctrl">
+    <div id="wrapper"  >
         <!-- navbar top -->
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="navbar">
             <!-- navbar-header -->

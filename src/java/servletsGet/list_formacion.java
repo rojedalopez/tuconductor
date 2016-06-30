@@ -30,7 +30,7 @@ public class list_formacion extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
-                String x = Listas.listaFormaciones(u.getCodigo()).toJSONString();
+                String x = Listas.listaFormaciones(u.getCodigo(), false).toJSONString();
                 out.print(x);
             }else{
                 out.print("session");

@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
@@ -88,4 +90,42 @@ public class Objetos {
                 }
         return "";
     }
+    
+    public static List<String> listCorreos() throws SQLException{
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        Statement stm=null;
+        ResultSet datos=null;
+        List<String> lista  = new LinkedList<String>();
+             
+        try{
+                    conn=conexion();
+                    String instruccion="";
+                     
+                    instruccion =   "SELECT eml_usuario FROM tblUsuario WHERE id_rol = 1;";
+                     
+                    insertar=conn.prepareStatement(instruccion);
+                    datos=insertar.executeQuery();
+                    while (datos.next()) {
+                         lista.add(datos.getString(1));
+                    }
+                    
+                    datos.close();
+                    conn.close();
+                    return lista;
+                    
+        }catch (SQLException e) {
+            System.out.println("error SQLException en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }catch (Exception e){
+                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }finally{
+                    if(!conn.isClosed()){
+                        conn.close();
+                    }
+                }
+        return null;
+    }
+    
 }

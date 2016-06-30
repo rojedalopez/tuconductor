@@ -15,10 +15,10 @@
         <h1>Hello World!</h1>
         <form action="https://testpayvalidaapp.payvalida.com/AppPaymentPay" method="post">
             <input type="text" name="merchant_id" value="logiseg"/>
-            <input type="text" name="po_id" value="LOG0000000001"/>
+            <input type="text" name="po_id" value="LOG0000000002"/>
             <input type="text" name="iso_currency" value="COP"/>
-            <input type="number" name="amount"/>
-            <input type="text" name="pv-checksum" value="5ab60b638c0800fa0bcdd390e2bd4c674864c2d0221cf757877c0b8a8cf1e3ee"/>
+            <input type="number" name="amount" value="10000"/>
+            <input type="text" name="pv_checksum" value="636347b3924d8ececa7f0e4ea35f987e23f300473748daa6b9daff57be0acfcf"/>
             <input type="number" name="lifetime" value="0"/>
             <input type="submit" value="enviar"/>   
         </form>
