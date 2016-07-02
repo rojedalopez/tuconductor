@@ -446,10 +446,10 @@ if(session.getAttribute("user") == null){
                             <div class="form-group">
                                 <div class="form-inline">
                                     <label class="checkbox-inline">
-                                        <input type="radio" value="1" name="estado" ng-model="ctrl.busqueda.estado"> Admitido
+                                        <input type="radio" value="1" name="estado" ng-model="ctrl.busqueda.admitido"> Admitido
                                     </label>
                                     <label class="checkbox-inline">
-                                        <input type="radio" value="0" name="estado" ng-model="ctrl.busqueda.estado"> No Admitido
+                                        <input type="radio" value="0" name="estado" ng-model="ctrl.busqueda.admitido"> No Admitido
                                     </label>
                                 </div>                                
                             </div>

@@ -923,7 +923,7 @@ public class Listas {
                     datos.close();
                     conn.close();
                                     
-                    obj_.put("total_count", totalFiltrados(q, expmi, expmx, punmi, punmx, edadmi, edadmx, depto));
+                    obj_.put("total_count", totalFiltrados(1, q, expmi, expmx, punmi, punmx, edadmi, edadmx, depto));
                     obj_.put("data", lista);
                     
                     return obj_;
@@ -946,7 +946,7 @@ public class Listas {
     }
     
     
-    public static JSONObject listaEmpleados(int porpage, int pageno, String q, int expmi, int expmx, int punmi, int punmx,
+    public static JSONObject listaEmpleados(int porpage, int pageno, int admitido, String q, int expmi, int expmx, int punmi, int punmx,
             int edadmi, int edadmx, int depto) throws SQLException{
         JSONObject obj = null;
         JSONObject obj_ = new JSONObject();
@@ -962,98 +962,36 @@ public class Listas {
                     String instruccion="";
                     int desde = ((pageno-1)*porpage);
                     instruccion =   "SELECT e.cod_empleado, eml_usuario, nbr_empleado, apl_empleado, c.pun_tot_calificacion, hv_empleado, ROUND(exp_empleado), ROUND(datediff(now(),nto_empleado)/365), nbr_dpt_empleado  " ;
-                    instruccion += "FROM tblEmpleado AS e INNER JOIN tblCalificacion AS c ON e.cod_empleado = c.cod_empleado ";
-                    boolean where = false;
+                    instruccion += "FROM tblEmpleado AS e INNER JOIN tblCalificacion AS c ON e.cod_empleado = c.cod_empleado WHERE ver_empleado = "+ admitido;
                     if(!q.isEmpty()){
-                        instruccion += " WHERE nbr_empleado like '%"+q+"%' OR apl_empleado like '%"+q+"%' ";
-                        where = true;
+                        instruccion += " AND nbr_empleado like '%"+q+"%' OR apl_empleado like '%"+q+"%' ";
                     }
                     
                     if(expmi!=0&&expmx!=0&&expmi<expmx){
-                        if(!where){
-                            instruccion += " WHERE ";
-                        }else{
-                            instruccion += " AND ";
-                        }
                         instruccion += " exp_empleado BETWEEN " + expmi + " AND " + expmx;
-                        where = true;
                     }else if(expmi!=0&&expmx==0){
-                        if(!where){
-                            instruccion += " WHERE ";
-                        }else{
-                            instruccion += " AND ";
-                        }
                         instruccion += " exp_empleado >= " + expmi;
-                        where = true;
                     }else if(expmi==0&&expmx!=0){
-                        if(!where){
-                            instruccion += " WHERE ";
-                        }else{
-                            instruccion += " AND ";
-                        }
                         instruccion += " exp_empleado <= " + expmx;
-                        where = true;
                     }
                     
                     if(punmi!=0&&punmx!=0&&punmi<punmx){
-                        if(!where){
-                            instruccion += " WHERE ";
-                        }else{
-                            instruccion += " AND ";
-                        }
                         instruccion += " pun_tot_calificacion BETWEEN " + punmi + " AND " + punmx;
-                        where = true;
                     }else if(punmi!=0&&punmx==0){
-                        if(!where){
-                            instruccion += " WHERE ";
-                        }else{
-                            instruccion += " AND ";
-                        }
                         instruccion += " pun_tot_calificacion >= " + punmi;
-                        where = true;
                     }else if(punmi==0&&punmx!=0){
-                        if(!where){
-                            instruccion += " WHERE ";
-                        }else{
-                            instruccion += " AND ";
-                        }
                         instruccion += " pun_tot_calificacion <= " + punmx;
-                        where = true;
                     }
                     
                     if(edadmi!=0&&edadmx!=0&&edadmi<edadmx){
-                        if(!where){
-                            instruccion += " WHERE ";
-                        }else{
-                            instruccion += " AND ";
-                        }
                         instruccion += " ROUND(datediff(now(),nto_empleado)/365) BETWEEN " + edadmi + " AND " + edadmx;
-                        where = true;
                     }else if(edadmi!=0&&edadmx==0){
-                        if(!where){
-                            instruccion += " WHERE ";
-                        }else{
-                            instruccion += " AND ";
-                        }
                         instruccion += " ROUND(datediff(now(),nto_empleado)/365) >= " + edadmi;
-                        where = true;
                     }else if(edadmi==0&&edadmx!=0){
-                        if(!where){
-                            instruccion += " WHERE ";
-                        }else{
-                            instruccion += " AND ";
-                        }
                         instruccion += " ROUND(datediff(now(),nto_empleado)/365) <= " + edadmx;
-                        where = true;
                     }
                     if(depto!=-1){
-                        if(!where){
-                            instruccion += " WHERE ";
-                        }else{
-                            instruccion += " AND ";
-                        }
                         instruccion += " dpt_empleado = " + depto;
-                        where = true;
                     }
                     
                     instruccion += " ORDER BY c.pun_tot_calificacion DESC ";
@@ -1078,7 +1016,7 @@ public class Listas {
                     datos.close();
                     conn.close();
                     
-                    obj_.put("total_count", totalFiltrados(q, expmi, expmx, punmi, punmx, edadmi, edadmx, depto));
+                    obj_.put("total_count", totalFiltrados(1, q, expmi, expmx, punmi, punmx, edadmi, edadmx, depto));
                     obj_.put("data", lista);
                     
                     return obj_;
@@ -1160,7 +1098,7 @@ public class Listas {
         return lista;
     }
     
-    public static int totalFiltrados(String q, int expmi, int expmx, int punmi, int punmx,
+    public static int totalFiltrados(int admitido, String q, int expmi, int expmx, int punmi, int punmx,
             int edadmi, int edadmx, int depto) throws SQLException{
         PreparedStatement insertar=null;
         Statement stm=null;
@@ -1172,98 +1110,36 @@ public class Listas {
                     String instruccion="";
                      
                     instruccion =   "SELECT count(1)  " ;
-                    instruccion += "FROM tblEmpleado ";
-                    boolean where = false;
+                    instruccion += "FROM tblEmpleado WHERE ver_empleado = "+ admitido;
                     if(!q.isEmpty()){
-                        instruccion += " WHERE nbr_empleado like '%"+q+"%' OR apl_empleado like '%"+q+"%' ";
-                        where = true;
+                        instruccion += " AND nbr_empleado like '%"+q+"%' OR apl_empleado like '%"+q+"%' ";
                     }
                     
                     if(expmi!=0&&expmx!=0&&expmi<expmx){
-                        if(!where){
-                            instruccion += " WHERE ";
-                        }else{
-                            instruccion += " AND ";
-                        }
                         instruccion += " exp_empleado BETWEEN " + expmi + " AND " + expmx;
-                        where = true;
                     }else if(expmi!=0&&expmx==0){
-                        if(!where){
-                            instruccion += " WHERE ";
-                        }else{
-                            instruccion += " AND ";
-                        }
                         instruccion += " exp_empleado >= " + expmi;
-                        where = true;
                     }else if(expmi==0&&expmx!=0){
-                        if(!where){
-                            instruccion += " WHERE ";
-                        }else{
-                            instruccion += " AND ";
-                        }
                         instruccion += " exp_empleado <= " + expmx;
-                        where = true;
                     }
                     
                     if(punmi!=0&&punmx!=0&&punmi<punmx){
-                        if(!where){
-                            instruccion += " WHERE ";
-                        }else{
-                            instruccion += " AND ";
-                        }
                         instruccion += " pun_tot_calificacion BETWEEN " + punmi + " AND " + punmx;
-                        where = true;
                     }else if(punmi!=0&&punmx==0){
-                        if(!where){
-                            instruccion += " WHERE ";
-                        }else{
-                            instruccion += " AND ";
-                        }
                         instruccion += " pun_tot_calificacion >= " + punmi;
-                        where = true;
                     }else if(punmi==0&&punmx!=0){
-                        if(!where){
-                            instruccion += " WHERE ";
-                        }else{
-                            instruccion += " AND ";
-                        }
                         instruccion += " pun_tot_calificacion <= " + punmx;
-                        where = true;
                     }
                     
                     if(edadmi!=0&&edadmx!=0&&edadmi<edadmx){
-                        if(!where){
-                            instruccion += " WHERE ";
-                        }else{
-                            instruccion += " AND ";
-                        }
                         instruccion += " ROUND(datediff(now(),nto_empleado)/365) BETWEEN " + edadmi + " AND " + edadmx;
-                        where = true;
                     }else if(edadmi!=0&&edadmx==0){
-                        if(!where){
-                            instruccion += " WHERE ";
-                        }else{
-                            instruccion += " AND ";
-                        }
                         instruccion += " ROUND(datediff(now(),nto_empleado)/365) >= " + edadmi;
-                        where = true;
                     }else if(edadmi==0&&edadmx!=0){
-                        if(!where){
-                            instruccion += " WHERE ";
-                        }else{
-                            instruccion += " AND ";
-                        }
                         instruccion += " ROUND(datediff(now(),nto_empleado)/365) <= " + edadmx;
-                        where = true;
                     }
                     if(depto!=-1){
-                        if(!where){
-                            instruccion += " WHERE ";
-                        }else{
-                            instruccion += " AND ";
-                        }
                         instruccion += " dpt_empleado = " + depto;
-                        where = true;
                     }
                      
                     insertar=conn.prepareStatement(instruccion);

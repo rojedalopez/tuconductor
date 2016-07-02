@@ -46,6 +46,7 @@ public class list_employes_byadmin extends HttpServlet {
         
         int porpage = Integer.parseInt(joEmploye.get("porpage").toString());
         int pageno = Integer.parseInt(joEmploye.get("pageno").toString());
+        int admitido = Integer.parseInt(joEmploye.get("admitido").toString());
         String q = (String) joEmploye.get("q");
         
         int expmi = 0;
@@ -112,7 +113,7 @@ public class list_employes_byadmin extends HttpServlet {
          
         try (PrintWriter out = response.getWriter()) {
             if(session.getAttribute("user")!=null){
-                out.print(Listas.listaEmpleados(porpage, pageno, q, expmi, expmx, punmi, punmx, edadmi, edadmx, depto).toJSONString());
+                out.print(Listas.listaEmpleados(porpage, pageno, admitido, q, expmi, expmx, punmi, punmx, edadmi, edadmx, depto).toJSONString());
             }else{
                 out.print("session");
             }

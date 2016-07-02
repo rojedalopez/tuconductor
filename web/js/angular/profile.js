@@ -522,7 +522,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     };
 }]).controller('ProfileAdminConductorController', ['$scope', 'ProfileAdminConductorService', '$http', function($scope, ProfileAdminConductorService, $http) {
     var self = this;
-    self.busqueda={porpage:10, pageno:1, q:"", edadmi:"", edadmx:"", expmi:"", expmx:"", punmi:"", punmx:"", depto:"", estado:1};
+    self.busqueda={porpage:10, pageno:1, q:"", edadmi:"", edadmx:"", expmi:"", expmx:"", punmi:"", punmx:"", depto:"", admitido:1};
     self.empleado={email:"", cod:"",nombre:"", apellido:"", puntaje:0, hoja_vida:"",experiencia:0, edad:0, depto:""};
     self.deptos=[];
     self.depto={id:"", departamento:"", ciudades:[]};
