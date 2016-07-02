@@ -8,7 +8,8 @@ angular.module('myApp',[
     'MyApp.Inbox',
     'datatables',
     'ngMaterial',
-    'angularValidator'
+    'angularValidator',
+    'angularUtils.directives.dirPagination'
 ]);
 
 

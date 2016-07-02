@@ -41,7 +41,7 @@ if(session.getAttribute("user") == null){
     <script type="text/javascript" src="../js/dataTables.responsive.min.js"></script>
     <script src="../js/bootstrap/js/bootstrap.min.js"></script>
         <!-- Angular Material requires Angular.js Libraries -->
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    <script src="../js/angular.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
@@ -68,15 +68,15 @@ if(session.getAttribute("user") == null){
             $("#Modal_hv").modal("show");
         }
     </script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-    <script type="text/javascript" src="../js/date.js"></script>
+    <script type="text/javascript" src="../js/date.js"></script>      
+    <script type="text/javascript" src="../js/angular/dirPagination.js"></script>
     <script type="text/javascript" src="../js/app.js"></script>      
+    <script type="text/javascript" src="../js/angular/angular-validator.js"></script>
     <script type="text/javascript" src="../js/angular/profile.js"></script>
     <script type="text/javascript" src="../js/angular/sign.js"></script>
     <script type="text/javascript" src="../js/angular/wall.js"></script>
     <script type="text/javascript" src="../js/angular/oferta.js"></script>
     <script type="text/javascript" src="../js/angular/inbox.js"></script>
-    <script type="text/javascript" src="../js/angular/angular-validator.js"></script>
     
     <script src="../assets/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="../assets/plugins/pace/pace.js"></script>
@@ -329,13 +329,16 @@ if(session.getAttribute("user") == null){
                         <!--<i class="fa fa-comment"></i>&nbsp;<a href="#" onclick="visualizar_addcomment()">Comparte una actualización</a>-->
                         <span class="form-inline">
                             <label ><i class="fa fa-edit"></i> Palabra clave:</label>
-                            <input type="text" class="form-control texto_e" ng-model="ctrl.palabra_clave" name="p_clave" placeholder="Palabra clave" id="palabra_clave"/>  
+                            <input type="text" class="form-control texto_e" ng-model="ctrl.busqueda.q" name="p_clave" placeholder="Palabra clave" id="palabra_clave"/>  
                             <label ><i class="fa fa-map-marker"></i> Lugar:</label>
-                            <select class="form-control selector_e_min" ng-model="ctrl.lugar" name="departamento" id="departamento" ng-options="dpto.id as dpto.departamento for dpto in ctrl.dptos">
+                            <select class="form-control selector_e_min" ng-model="ctrl.busqueda.depto" name="departamento" id="departamento" ng-options="dpto.id as dpto.departamento for dpto in ctrl.dptos">
                                 <option value="">--Seleccione Departamento--</option>
                             </select>                            
-                            <button class="btn btn-warning" id="btn-filtrar" ng-click="ctrl.setPage(1)">
+                            <button class="btn btn-warning" id="btn-filtrar" ng-click="ctrl.getData(1)">
                                     Buscar ofertas
+                            </button>
+                            <button class="btn btn-default" id="btn-limpiar" ng-click="ctrl.limpiar()">
+                                    Limpiar
                             </button>
                         </span>
                     </div>
@@ -351,13 +354,13 @@ if(session.getAttribute("user") == null){
                     
                     <div class="panel-body" >
                         
-                        <div class="col-lg-12" ng-repeat="of in ctrl.ofertas">
+                        <div class="col-lg-12" dir-paginate="of in ctrl.ofertas|itemsPerPage:ctrl.itemsPerPage" total-items="ctrl.total_count">
                             <div ng-class="{ 'panel panel-info': !of.visto, ' panel panel-danger': of.visto }" ng-click="ctrl.editOferta(of.id)" style="cursor: pointer;">
                                 <div class="panel-heading">    
                                     <i class="fa fa-map-marker"> <b>{{of.ciudad + ', '+ of.depart + ', ' + of.pais}}</b></i>                                
                                 </div>
                                 <div class="panel-body">
-                                    <p style="font-size: 16px; color: #0088cc;"> Empresa reconocida solicita <b><span ng-bind="of.titulo"></span></b></p>
+                                    <p style="font-size: 16px; color: #0088cc;"> Empresa reconocida solicita <b>{{of.titulo}}</b></p>
                                     <p>No. de vacantes: <b><span ng-bind="of.vacante"></span></b></p>
                                     <p>Fecha de contratación: <b>{{ctrl.formatDate(of.fecha_contratacion) | date:"dd MMM 'de' yyyy"}}</b></p>
                                 </div>
@@ -366,25 +369,12 @@ if(session.getAttribute("user") == null){
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-12">
-                            <ul ng-if="ctrl.pager.pages.length" class="pagination">
-                                <li ng-class="{disabled:ctrl.pager.currentPage === 1}">
-                                    <a class="pager" ng-click="ctrl.setPage(1)">First</a>
-                                </li>
-                                <li ng-class="{disabled:ctrl.pager.currentPage === 1}">
-                                    <a class="pager" ng-click="ctrl.setPage(ctrl.pager.currentPage - 1)">Previous</a>
-                                </li>
-                                <li ng-repeat="page in ctrl.pager.pages" ng-class="{active:ctrl.pager.currentPage === page}">
-                                    <a class="pager" ng-click="ctrl.setPage(page)">{{page}}</a>
-                                </li>                
-                                <li ng-class="{disabled:ctrl.pager.currentPage === ctrl.pager.totalPages}">
-                                    <a class="pager" ng-click="ctrl.setPage(ctrl.pager.currentPage + 1)">Next</a>
-                                </li>
-                                <li ng-class="{disabled:ctrl.pager.currentPage === ctrl.pager.totalPages}">
-                                    <a class="pager" ng-click="ctrl.setPage(ctrl.pager.totalPages)">Last</a>
-                                </li>
-                            </ul>
-                        </div>
+                        <dir-pagination-controls
+                            max-size="8"
+                            direction-links="true"
+                            boundary-links="true" 
+                            on-page-change="ctrl.getData(newPageNumber)">
+                        </dir-pagination-controls>
                     </div>
 
 

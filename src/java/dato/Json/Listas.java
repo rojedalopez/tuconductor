@@ -241,6 +241,53 @@ public class Listas {
     }
     
     
+    public static String PlanesTokens() throws SQLException{
+        JSONObject obj = null;
+        JSONArray lista = new JSONArray();
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        Statement stm=null;
+        ResultSet datos=null;
+             
+        try{
+                    conn=conexion();
+                    String instruccion="";
+                     
+                    instruccion = "SELECT id_plan, dsc_plan, tkn_plan, ofr_mes_plan, dur_plan, vlr_plan " ;
+                    instruccion += "FROM tuconductor.tblPlan WHERE id_plan <> 0 ORDER BY id_plan ASC;";
+                     
+                    insertar=conn.prepareStatement(instruccion);
+                    
+                    datos=insertar.executeQuery();
+                    while (datos.next()) {
+                        obj = new JSONObject();
+                        obj.put("id", datos.getInt(1));
+                        obj.put("nombre", datos.getString(2));
+                        obj.put("visual", datos.getInt(3));
+                        obj.put("oferta", datos.getInt(4));
+                        obj.put("duracion", datos.getInt(5));
+                        obj.put("valor", datos.getFloat(6));
+                        lista.add(obj);
+                    }
+                    datos.close();
+                    conn.close();
+                    return lista.toJSONString();
+             
+        }catch (SQLException e) {
+            System.out.println("error SQLException en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }catch (Exception e){
+                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }finally{
+                    if(!conn.isClosed()){
+                        conn.close();
+                    }
+                }
+        return lista.toJSONString();
+    }
+    
+    
      public static JSONArray ObtenerTrazaTknByEmpresa(String id) throws SQLException{
         JSONObject obj = null;
         JSONArray lista = new JSONArray();
@@ -298,7 +345,7 @@ public class Listas {
                     String instruccion="";
                      
                     instruccion =   "SELECT id_explaboral, epr_explaboral, crg_explaboral, slr_explaboral, bon_explaboral, spv_explaboral, " +
-                                    "tel_spv_explaboral, dir_explaboral, cui_explaboral, dpt_explaboral, nbr_dpt_explaboral, pais_explaboral, aun_explaboral, " +
+                                    "tel_spv_explaboral, dir_explaboral, cui_explaboral, dpt_explaboral, nbr_dpt_explaboral, IFNULL(pais_explaboral,'CO'), aun_explaboral, " +
                                     "rzn_fin_explaboral, mes_ini_explaboral, anio_ini_explaboral, mes_fin_explaboral, " +
                                     "anio_fin_explaboral, mes_explaboral, anio_explaboral, cod_empleado " +
                                     "FROM tuconductor.tblExpLaboral WHERE cod_empleado = ? ORDER BY aun_explaboral DESC, anio_ini_explaboral DESC, mes_ini_explaboral DESC;";
@@ -368,7 +415,7 @@ public class Listas {
                     String instruccion="";
                      
                     instruccion =   "SELECT id_oferta, fch_oferta, vac_oferta, tit_oferta, dsc_oferta, tip_ctr_oferta, " +
-                                    "fch_ctr_oferta, sal_oferta, act_oferta, pais_oferta, dpt_oferta, nbr_dpt_oferta, ciu_oferta FROM tuconductor.tblOferta ";
+                                    "fch_ctr_oferta, sal_oferta, act_oferta, IFNULL(pais_oferta,'CO'), dpt_oferta, nbr_dpt_oferta, ciu_oferta FROM tuconductor.tblOferta ";
                     if(!cod.equals("")){
                         instruccion  += " WHERE nit_empresa = ? ";
                     }else{
@@ -417,47 +464,40 @@ public class Listas {
     }
     
     
-    public static JSONObject listaOfertasEmpleado(String cod, String txt, int dpto_select, int pagina) throws SQLException{
+    public static JSONObject listaOfertasEmpleado(String cod, String q, int depto, int pageno, int porpage) throws SQLException{
         JSONObject obj = null;
-        JSONObject todo = new JSONObject();;
+        JSONObject obj_ = new JSONObject();
+        obj_.put("error", 0);
         JSONArray lista = new JSONArray();
         Connection conn=null;
         PreparedStatement insertar=null;
         Statement stm=null;
         ResultSet datos=null;
-        int limite = (pagina-1) * 20;
              
         try{
                     conn=conexion();
                     String instruccion="";
-                     
-                    instruccion =   "SELECT x.id_oferta, fch_oferta, vac_oferta, tit_oferta, dsc_oferta, tip_ctr_oferta, " +
-                                    "fch_ctr_oferta, sal_oferta, act_oferta, " +
-                                    "ifnull((SELECT CASE WHEN id_oferta IS NULL THEN 0 ELSE 1 END FROM tblVistaOferta " +
-                                    "WHERE cod_empleado = ? and id_oferta = x.id_oferta),0) as ya_vio, pais_oferta, dpt_oferta, nbr_dpt_oferta, ciu_oferta " +
-                                    "FROM tblOferta as x ";
+                    int desde = ((pageno-1)*porpage); 
+                    instruccion =   "SELECT x.id_oferta, fch_oferta, vac_oferta, tit_oferta, dsc_oferta, tip_ctr_oferta, " ;
+                    instruccion += "fch_ctr_oferta, sal_oferta, act_oferta, " ;
+                    instruccion += "ifnull((SELECT CASE WHEN id_oferta IS NULL THEN 0 ELSE 1 END FROM tblVistaOferta " ;
+                    instruccion += "WHERE cod_empleado = ? and id_oferta = x.id_oferta),0) as ya_vio, IFNULL(pais_oferta,'CO'), dpt_oferta, nbr_dpt_oferta, ciu_oferta " ;
+                    instruccion += "FROM tblOferta as x WHERE act_oferta = 1 ";
                     
-                    if(!txt.equals("") || dpto_select!=-1){
-                        instruccion += " WHERE ";
+                    if(!q.isEmpty()){
+                        instruccion += " AND (tit_oferta like '%"+q+"%' OR dsc_oferta like '%"+q+"%') ";
+                    }
+
+                    if(depto!=-1){
+                        instruccion += " AND dpt_oferta = " + depto;
                     }
                     
-                    boolean s = false;
-                    if(!txt.equals("")){
-                        instruccion+= " (tit_oferta like '%"+txt+"%' OR dsc_oferta like '%"+txt+"%') ";
-                        s = true;
-                    }
-                    
-                    if(dpto_select!=-1){
-                        instruccion += (s)?" and ":"";
-                        instruccion += " dpt_oferta="+dpto_select;
-                    }
-                    
-                    instruccion+=" ORDER BY fch_oferta DESC limit ?,20;";
+                    instruccion += " ORDER BY fch_oferta DESC ";
+                    instruccion += " LIMIT "+desde+","+porpage+";";
                     
                     System.out.println(instruccion);
                     insertar=conn.prepareStatement(instruccion);
                     insertar.setString(1, cod);
-                    insertar.setInt(2, limite);
                     
                     datos=insertar.executeQuery();
                     while (datos.next()) {
@@ -481,9 +521,11 @@ public class Listas {
                     }
                     datos.close();
                     conn.close();
-                    todo.put("lista",lista);
-                    todo.put("tamano",listaOfertasTamanio(cod, txt, dpto_select));
-                    return todo;
+                    
+                    obj_.put("total_count", totalFiltradosOfertas(q, depto));
+                    obj_.put("data", lista);
+                    
+                    return obj_;
              
         }catch (SQLException e) {
             System.out.println("error SQLException en ObtenerCliente");
@@ -496,10 +538,12 @@ public class Listas {
                         conn.close();
                     }
                 }
-        return todo;
+        obj_.put("total_count", 0);
+        obj_.put("data", lista);
+        return obj_;
     }
     
-    public static int listaOfertasTamanio(String cod, String txt, int dpto_select) throws SQLException{
+    public static int totalFiltradosOfertas(String q, int depto) throws SQLException{
         int retorno=0;
         Connection conn=null;
         PreparedStatement insertar=null;
@@ -510,25 +554,16 @@ public class Listas {
                     conn=conexion();
                     String instruccion="";
                      
-                    instruccion =   "SELECT count(1) FROM tblOferta as x ";
+                    instruccion =   "SELECT count(1) FROM tblOferta as x WHERE act_oferta ";
                     
-                    if(!txt.equals("") || dpto_select!=-1){
-                        instruccion += " WHERE ";
+                    if(!q.isEmpty()){
+                        instruccion += " AND (tit_oferta like '%"+q+"%' OR dsc_oferta like '%"+q+"%') ";
+                    }
+
+                    if(depto!=-1){
+                        instruccion += " AND dpt_oferta = " + depto;
                     }
                     
-                    boolean s = false;
-                    if(!txt.equals("")){
-                        instruccion+= " (tit_oferta like '%"+txt+"%' OR dsc_oferta like '%"+txt+"%') ";
-                        s = true;
-                    }
-                    
-                    if(dpto_select!=-1){
-                        instruccion += (s)?" and ":"";
-                        instruccion += " dpt_oferta="+dpto_select;
-                    }
-                    
-                    
-                    System.out.println(instruccion);
                     insertar=conn.prepareStatement(instruccion);
 
                     datos=insertar.executeQuery();
@@ -816,8 +851,11 @@ public class Listas {
         return null;
     }
    
-    public static JSONArray listaEmpleados(String codigo) throws SQLException{
+    public static JSONObject listaEmpleados(String codigo, int porpage, int pageno, String q, int expmi, int expmx, int punmi, int punmx,
+            int edadmi, int edadmx, int depto) throws SQLException{
         JSONObject obj = null;
+        JSONObject obj_ = new JSONObject();
+        obj_.put("error", 0);
         JSONArray lista = new JSONArray();
         Connection conn=null;
         PreparedStatement insertar=null;
@@ -827,11 +865,44 @@ public class Listas {
         try{
                     conn=conexion();
                     String instruccion="";
-                     
-                    instruccion =   "SELECT cod_empleado, eml_usuario, nbr_empleado, apl_empleado, pje_empleado, hv_empleado, ROUND(exp_empleado), " +
-                                    "(SELECT COUNT(1) FROM tblVistaEmpleado WHERE tblEmpleado.cod_empleado = tblVistaEmpleado.cod_empleado AND nit_empresa = ?) AS cod " +
-                                    "FROM tblEmpleado WHERE ver_empleado = 1 ORDER BY pje_empleado DESC";
-                     
+                    int desde = ((pageno-1)*porpage);
+                    instruccion =   "SELECT e.cod_empleado, eml_usuario, nbr_empleado, apl_empleado, c.pun_tot_calificacion, hv_empleado, ROUND(exp_empleado), ROUND(datediff(now(),nto_empleado)/365), nbr_dpt_empleado, " +
+                                    "(SELECT COUNT(1) FROM tblVistaEmpleado AS v WHERE e.cod_empleado = v.cod_empleado AND nit_empresa = ?) AS cod " +
+                                    "FROM tblEmpleado AS e INNER JOIN tblCalificacion AS c ON e.cod_empleado = c.cod_empleado WHERE ver_empleado = 1 ";
+                    if(!q.isEmpty()){
+                        instruccion += " AND nbr_empleado like '%"+q+"%' OR apl_empleado like '%"+q+"%' ";
+                    }
+                    
+                    if(expmi!=0&&expmx!=0&&expmi<expmx){
+                        instruccion += " AND exp_empleado BETWEEN " + expmi + " AND " + expmx;
+                    }else if(expmi!=0&&expmx==0){
+                        instruccion += " AND exp_empleado >= " + expmi;
+                    }else if(expmi==0&&expmx!=0){
+                        instruccion += " AND exp_empleado <= " + expmx;
+                    }
+                    
+                    if(punmi!=0&&punmx!=0&&punmi<punmx){
+                        instruccion += " AND pun_tot_calificacion BETWEEN " + punmi + " AND " + punmx;
+                    }else if(punmi!=0&&punmx==0){
+                        instruccion += " AND pun_tot_calificacion >= " + punmi;
+                    }else if(punmi==0&&punmx!=0){
+                        instruccion += " AND pun_tot_calificacion <= " + punmx;
+                    }
+                    
+                    if(edadmi!=0&&edadmx!=0&&edadmi<edadmx){
+                        instruccion += " AND ROUND(datediff(now(),nto_empleado)/365) BETWEEN " + edadmi + " AND " + edadmx;
+                    }else if(edadmi!=0&&edadmx==0){
+                        instruccion += " AND ROUND(datediff(now(),nto_empleado)/365) >= " + edadmi;
+                    }else if(edadmi==0&&edadmx!=0){
+                        instruccion += " AND ROUND(datediff(now(),nto_empleado)/365) <= " + edadmx;
+                    }
+                    if(depto!=-1){
+                        instruccion += " AND dpt_empleado = " + depto;
+                    }
+                    
+                    instruccion += " ORDER BY c.pun_tot_calificacion DESC ";
+                    instruccion += " LIMIT "+desde+","+porpage+";";
+                    
                     insertar=conn.prepareStatement(instruccion);
                     insertar.setString(1, codigo);
                     datos=insertar.executeQuery();
@@ -845,11 +916,17 @@ public class Listas {
                         obj.put("hoja_vida", datos.getString(6));
                         obj.put("experiencia", datos.getInt(7));
                         obj.put("adquirir", datos.getBoolean(8));
+                        obj.put("edad", datos.getString(8));
+                        obj.put("depto", datos.getString(9));
                         lista.add(obj);
                     }
                     datos.close();
                     conn.close();
-                    return lista;
+                                    
+                    obj_.put("total_count", totalFiltrados(q, expmi, expmx, punmi, punmx, edadmi, edadmx, depto));
+                    obj_.put("data", lista);
+                    
+                    return obj_;
              
         }catch (SQLException e) {
             System.out.println("error SQLException en ObtenerCliente");
@@ -862,12 +939,18 @@ public class Listas {
                         conn.close();
                     }
                 }
-        return lista;
+        
+        obj_.put("total_count", 0);
+        obj_.put("data", lista);
+        return obj_;
     }
     
     
-    public static JSONArray listaEmpleados() throws SQLException{
+    public static JSONObject listaEmpleados(int porpage, int pageno, String q, int expmi, int expmx, int punmi, int punmx,
+            int edadmi, int edadmx, int depto) throws SQLException{
         JSONObject obj = null;
+        JSONObject obj_ = new JSONObject();
+        obj_.put("error", 0);
         JSONArray lista = new JSONArray();
         Connection conn=null;
         PreparedStatement insertar=null;
@@ -877,11 +960,107 @@ public class Listas {
         try{
                     conn=conexion();
                     String instruccion="";
-                     
-                    instruccion =   "SELECT e.cod_empleado, eml_usuario, nbr_empleado, apl_empleado, c.pun_tot_calificacion, hv_empleado, ROUND(exp_empleado)  " ;
-                    instruccion += "FROM tblEmpleado AS e INNER JOIN tblCalificacion AS c ON e.cod_empleado = c.cod_empleado ORDER BY pje_empleado DESC";
-                     
+                    int desde = ((pageno-1)*porpage);
+                    instruccion =   "SELECT e.cod_empleado, eml_usuario, nbr_empleado, apl_empleado, c.pun_tot_calificacion, hv_empleado, ROUND(exp_empleado), ROUND(datediff(now(),nto_empleado)/365), nbr_dpt_empleado  " ;
+                    instruccion += "FROM tblEmpleado AS e INNER JOIN tblCalificacion AS c ON e.cod_empleado = c.cod_empleado ";
+                    boolean where = false;
+                    if(!q.isEmpty()){
+                        instruccion += " WHERE nbr_empleado like '%"+q+"%' OR apl_empleado like '%"+q+"%' ";
+                        where = true;
+                    }
+                    
+                    if(expmi!=0&&expmx!=0&&expmi<expmx){
+                        if(!where){
+                            instruccion += " WHERE ";
+                        }else{
+                            instruccion += " AND ";
+                        }
+                        instruccion += " exp_empleado BETWEEN " + expmi + " AND " + expmx;
+                        where = true;
+                    }else if(expmi!=0&&expmx==0){
+                        if(!where){
+                            instruccion += " WHERE ";
+                        }else{
+                            instruccion += " AND ";
+                        }
+                        instruccion += " exp_empleado >= " + expmi;
+                        where = true;
+                    }else if(expmi==0&&expmx!=0){
+                        if(!where){
+                            instruccion += " WHERE ";
+                        }else{
+                            instruccion += " AND ";
+                        }
+                        instruccion += " exp_empleado <= " + expmx;
+                        where = true;
+                    }
+                    
+                    if(punmi!=0&&punmx!=0&&punmi<punmx){
+                        if(!where){
+                            instruccion += " WHERE ";
+                        }else{
+                            instruccion += " AND ";
+                        }
+                        instruccion += " pun_tot_calificacion BETWEEN " + punmi + " AND " + punmx;
+                        where = true;
+                    }else if(punmi!=0&&punmx==0){
+                        if(!where){
+                            instruccion += " WHERE ";
+                        }else{
+                            instruccion += " AND ";
+                        }
+                        instruccion += " pun_tot_calificacion >= " + punmi;
+                        where = true;
+                    }else if(punmi==0&&punmx!=0){
+                        if(!where){
+                            instruccion += " WHERE ";
+                        }else{
+                            instruccion += " AND ";
+                        }
+                        instruccion += " pun_tot_calificacion <= " + punmx;
+                        where = true;
+                    }
+                    
+                    if(edadmi!=0&&edadmx!=0&&edadmi<edadmx){
+                        if(!where){
+                            instruccion += " WHERE ";
+                        }else{
+                            instruccion += " AND ";
+                        }
+                        instruccion += " ROUND(datediff(now(),nto_empleado)/365) BETWEEN " + edadmi + " AND " + edadmx;
+                        where = true;
+                    }else if(edadmi!=0&&edadmx==0){
+                        if(!where){
+                            instruccion += " WHERE ";
+                        }else{
+                            instruccion += " AND ";
+                        }
+                        instruccion += " ROUND(datediff(now(),nto_empleado)/365) >= " + edadmi;
+                        where = true;
+                    }else if(edadmi==0&&edadmx!=0){
+                        if(!where){
+                            instruccion += " WHERE ";
+                        }else{
+                            instruccion += " AND ";
+                        }
+                        instruccion += " ROUND(datediff(now(),nto_empleado)/365) <= " + edadmx;
+                        where = true;
+                    }
+                    if(depto!=-1){
+                        if(!where){
+                            instruccion += " WHERE ";
+                        }else{
+                            instruccion += " AND ";
+                        }
+                        instruccion += " dpt_empleado = " + depto;
+                        where = true;
+                    }
+                    
+                    instruccion += " ORDER BY c.pun_tot_calificacion DESC ";
+                    instruccion += " LIMIT "+desde+","+porpage+";";
+                    System.out.println(instruccion) ;
                     insertar=conn.prepareStatement(instruccion);
+                    
                     datos=insertar.executeQuery();
                     while (datos.next()) {
                         obj = new JSONObject();
@@ -892,11 +1071,17 @@ public class Listas {
                         obj.put("puntaje", datos.getInt(5));
                         obj.put("hoja_vida", datos.getString(6));
                         obj.put("experiencia", datos.getInt(7));
+                        obj.put("edad", datos.getString(8));
+                        obj.put("depto", datos.getString(9));
                         lista.add(obj);
                     }
                     datos.close();
                     conn.close();
-                    return lista;
+                    
+                    obj_.put("total_count", totalFiltrados(q, expmi, expmx, punmi, punmx, edadmi, edadmx, depto));
+                    obj_.put("data", lista);
+                    
+                    return obj_;
              
         }catch (SQLException e) {
             System.out.println("error SQLException en ObtenerCliente");
@@ -909,7 +1094,10 @@ public class Listas {
                         conn.close();
                     }
                 }
-        return lista;
+        
+        obj_.put("total_count", 0);
+        obj_.put("data", lista);
+        return obj_;
     }
     
     public static JSONArray listaEmpresas() throws SQLException{
@@ -971,4 +1159,132 @@ public class Listas {
                 }
         return lista;
     }
+    
+    public static int totalFiltrados(String q, int expmi, int expmx, int punmi, int punmx,
+            int edadmi, int edadmx, int depto) throws SQLException{
+        PreparedStatement insertar=null;
+        Statement stm=null;
+        ResultSet datos=null;
+        Connection conn=null;
+        
+        try{
+                    conn=conexion();
+                    String instruccion="";
+                     
+                    instruccion =   "SELECT count(1)  " ;
+                    instruccion += "FROM tblEmpleado ";
+                    boolean where = false;
+                    if(!q.isEmpty()){
+                        instruccion += " WHERE nbr_empleado like '%"+q+"%' OR apl_empleado like '%"+q+"%' ";
+                        where = true;
+                    }
+                    
+                    if(expmi!=0&&expmx!=0&&expmi<expmx){
+                        if(!where){
+                            instruccion += " WHERE ";
+                        }else{
+                            instruccion += " AND ";
+                        }
+                        instruccion += " exp_empleado BETWEEN " + expmi + " AND " + expmx;
+                        where = true;
+                    }else if(expmi!=0&&expmx==0){
+                        if(!where){
+                            instruccion += " WHERE ";
+                        }else{
+                            instruccion += " AND ";
+                        }
+                        instruccion += " exp_empleado >= " + expmi;
+                        where = true;
+                    }else if(expmi==0&&expmx!=0){
+                        if(!where){
+                            instruccion += " WHERE ";
+                        }else{
+                            instruccion += " AND ";
+                        }
+                        instruccion += " exp_empleado <= " + expmx;
+                        where = true;
+                    }
+                    
+                    if(punmi!=0&&punmx!=0&&punmi<punmx){
+                        if(!where){
+                            instruccion += " WHERE ";
+                        }else{
+                            instruccion += " AND ";
+                        }
+                        instruccion += " pun_tot_calificacion BETWEEN " + punmi + " AND " + punmx;
+                        where = true;
+                    }else if(punmi!=0&&punmx==0){
+                        if(!where){
+                            instruccion += " WHERE ";
+                        }else{
+                            instruccion += " AND ";
+                        }
+                        instruccion += " pun_tot_calificacion >= " + punmi;
+                        where = true;
+                    }else if(punmi==0&&punmx!=0){
+                        if(!where){
+                            instruccion += " WHERE ";
+                        }else{
+                            instruccion += " AND ";
+                        }
+                        instruccion += " pun_tot_calificacion <= " + punmx;
+                        where = true;
+                    }
+                    
+                    if(edadmi!=0&&edadmx!=0&&edadmi<edadmx){
+                        if(!where){
+                            instruccion += " WHERE ";
+                        }else{
+                            instruccion += " AND ";
+                        }
+                        instruccion += " ROUND(datediff(now(),nto_empleado)/365) BETWEEN " + edadmi + " AND " + edadmx;
+                        where = true;
+                    }else if(edadmi!=0&&edadmx==0){
+                        if(!where){
+                            instruccion += " WHERE ";
+                        }else{
+                            instruccion += " AND ";
+                        }
+                        instruccion += " ROUND(datediff(now(),nto_empleado)/365) >= " + edadmi;
+                        where = true;
+                    }else if(edadmi==0&&edadmx!=0){
+                        if(!where){
+                            instruccion += " WHERE ";
+                        }else{
+                            instruccion += " AND ";
+                        }
+                        instruccion += " ROUND(datediff(now(),nto_empleado)/365) <= " + edadmx;
+                        where = true;
+                    }
+                    if(depto!=-1){
+                        if(!where){
+                            instruccion += " WHERE ";
+                        }else{
+                            instruccion += " AND ";
+                        }
+                        instruccion += " dpt_empleado = " + depto;
+                        where = true;
+                    }
+                     
+                    insertar=conn.prepareStatement(instruccion);
+                    
+                    datos=insertar.executeQuery();
+                    if (datos.next()) {
+                        return datos.getInt(1);
+                    }
+                    datos.close();
+                    conn.close();
+                    return 0;
+             
+        }catch (SQLException e) {
+            System.out.println("error SQLException en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }catch (Exception e){
+                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println(e.getMessage());
+        }
+        return 0;
+    }
+    
+   
 }

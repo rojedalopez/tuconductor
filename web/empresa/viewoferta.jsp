@@ -41,7 +41,7 @@ if(session.getAttribute("user") == null){
     <script type="text/javascript" src="../js/dataTables.responsive.min.js"></script>
     <script src="../js/bootstrap/js/bootstrap.min.js"></script>
     <!-- Angular Material requires Angular.js Libraries -->
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    <script src="../js/angular.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
@@ -64,14 +64,14 @@ if(session.getAttribute("user") == null){
         
     </script>
     
-    <script type="text/javascript" src="../js/date.js"></script>
+    <script type="text/javascript" src="../js/angular/dirPagination.js"></script>
     <script type="text/javascript" src="../js/app.js"></script>      
+    <script type="text/javascript" src="../js/angular/angular-validator.js"></script>
     <script type="text/javascript" src="../js/angular/profile.js"></script>
     <script type="text/javascript" src="../js/angular/sign.js"></script>
     <script type="text/javascript" src="../js/angular/wall.js"></script>
     <script type="text/javascript" src="../js/angular/oferta.js"></script>
     <script type="text/javascript" src="../js/angular/inbox.js"></script>
-    <script type="text/javascript" src="../js/angular/angular-validator.js"></script>
     
     <script src="../assets/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="../assets/plugins/pace/pace.js"></script>
@@ -475,68 +475,144 @@ if(session.getAttribute("user") == null){
                     <h4 class="modal-title" id="myModalLabel">Publicar oferta</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" name="form_oferta" ng-submit="ctrl.submitOferta()" class="form-horizontal" novalidate>
-                        <p ng-class="{ 'has-error': form_oferta.titulo.$error.required || form_oferta.titulo.$error.minlength }">
-                            <label class="etiqueta_e">Titulo<i class="required">*</i>:</label>                            
-                            <input type="text" class="form-control texto_e" name="titulo" ng-model="ctrl.oferta.titulo" placeholder="Titulo de la oferta" minlength="6" required />
-                        </p>
-                        <p ng-class="{ 'has-error': form_oferta.descripcion.$error.required || form_oferta.descripcion.$error.minlength }">
-                            <label class="etiqueta_e">Descripción<i class="required">*</i>:</label>
-                            <textarea class="form-control texto_e" rows="4" name="descripcion" ng-model="ctrl.oferta.descripcion" placeholder="Descripcion de la oferta" minlength="20" required ></textarea>
-                        </p>
-                        <p ng-class="{ 'has-error': form_oferta.vacantes.$error.required || form_oferta.vacantes.$error.minlength }">
-                            <label class="etiqueta_e"># Vacantes<i class="required">*</i>:</label>
-                            <input type="text" class="form-control texto_e" name="vacantes" ng-model="ctrl.oferta.vacante" placeholder="Cantidad de vacantes" minlength="1" required />
-                        </p>
-                        <p>
-                            <label class="etiqueta_e">Salario<i class="required">*</i>:</label>
-                            <input type="text" class="form-control texto_e" name="salario" ng-model="ctrl.oferta.salario" placeholder="Salario de la vacante" minlength="5" required />
-                        </p>
-                        <p>
-                            <label class="etiqueta_e">Tipo contrato<i class="required">*</i>:</label>
-                            <select class="form-control selector_e" name="tipo" ng-model="ctrl.oferta.tipo" ng-options="Tipo.ID as Tipo.Value for Tipo in ctrl.TipoContrato" >
+                    <form role="form" name="form_oferta" angular-validator-submit="ctrl.submitOferta()" class="form-horizontal" angular-validator novalidate>
+                        <label class="etiqueta_e">Titulo<i class="required">*</i>:</label>                            
+                        <div class="form-group">
+                            <input type="text" 
+                                class="form-control texto_e" 
+                                name="titulo" 
+                                ng-model="ctrl.oferta.titulo" 
+                                clase="text_valid_e"
+                                validator = "ctrl.lengthValidator(ctrl.oferta.titulo, 6) === true"
+                                invalid-message = "ctrl.lengthValidator(ctrl.oferta.titulo, 6)"
+                                required-message="'El campo no puede estar vacio'"                                   
+                                required />
+                        </div>
+                        <label class="etiqueta_e">Descripción<i class="required">*</i>:</label>
+                        <div class="form-group">
+                            <textarea 
+                                class="form-control texto_e" 
+                                rows="4" name="descripcion" 
+                                ng-model="ctrl.oferta.descripcion" 
+                                placeholder="Descripcion de la oferta" 
+                                clase="text_valid_e"
+                                validator = "ctrl.lengthValidator(ctrl.oferta.descripcion, 10) === true"
+                                invalid-message = "ctrl.lengthValidator(ctrl.oferta.descripcion, 10)"
+                                required-message="'El campo no puede estar vacio'"                                   
+                                required></textarea>
+                        </div>
+                        <label class="etiqueta_e"># Vacantes<i class="required">*</i>:</label>
+                        <div class="form-group">
+                            <input type="number" 
+                                class="form-control texto_e" 
+                                min="1" name="vacantes" 
+                                ng-model="ctrl.oferta.vacante" 
+                                clase="text_valid_e"
+                                invalid-message ="'El campo debe ser valido'"
+                                required-message="'El campo no puede estar vacio'"
+                                required />
+                        </div>
+                        <label class="etiqueta_e">Salario<i class="required">*</i>:</label>
+                        <div class="form-group">
+                            <input type="number" 
+                                class="form-control texto_e" 
+                                name="salario" 
+                                min="1"
+                                ng-model="ctrl.oferta.salario" 
+                                clase="text_valid_e"
+                                invalid-message ="'El campo debe ser valido'"
+                                required-message="'El campo no puede estar vacio'"
+                                required />
+                        </div>
+                        <label class="etiqueta_e">Tipo contrato<i class="required">*</i>:</label>
+                        <div class="form-group">
+                            <select class="form-control selector_e" 
+                            name="tipo" ng-model="ctrl.oferta.tipo" 
+                            ng-options="Tipo.ID as Tipo.Value for Tipo in ctrl.TipoContrato" 
+                            clase="text_valid_e"
+                            required-message="'El campo no puede estar vacio'"
+                            required>
                                 <option value="">--- Seleccione Tipo ---</option>
                             </select>
-                        </p>
-                        <p>
-                            <label class="etiqueta_e" for="pais">Pais</label>                                        
-                            <select class="form-control selector_e"  name="pais" ng-model="ctrl.oferta.pais" ng-options="Pais.ID as Pais.Nombre for Pais in ctrl.Paises" ng-selected="ctrl.selectPais(ctrl.oferta.pais)">
-                                    <option value="">--Seleccione Pais--</option>
+                        </div>
+                        <label class="etiqueta_e_up">Fecha contratación<i class="required">*</i>:</label>
+                        <div class="form-group">
+                            <input type="date" 
+                                class="form-control texto_e" 
+                                name="fecha_contratacion" 
+                                ng-model="ctrl.oferta.fecha_contratacion" 
+                                clase="text_valid_e"
+                                invalid-message ="'La fecha debe ser valido'"
+                                required-message="'El campo no puede estar vacio'"
+                                required />
+                        </div>
+                        <label class="etiqueta_e">Pais<i class="required">*</i>:</label>
+                        <div class="form-group">
+                            <select class="form-control selector_e" 
+                                name="pais" ng-model="ctrl.oferta.pais" 
+                                ng-options="Pais.ID as Pais.Nombre for Pais in ctrl.Paises" 
+                                ng-change="ctrl.selectPais(ctrl.oferta.pais)"
+                                clase="text_valid_e"
+                                required-message="'El campo no puede estar vacio'"
+                                required>
+                                <option>--- Seleccione Pais ---</option>
                             </select>
-                        </p>
-                        <p>
-                            <label class="etiqueta_e" for="depto">Departamento:</label>                                        
-                            <select class="form-control selector_e" ng-show="ctrl.colombia" name="depto" ng-model="ctrl.oferta.depto" ng-options="dpto.id as dpto.departamento for dpto in ctrl.dptos" ng-selected="ctrl.selectDpto(ctrl.oferta.depto)">
-                                <option value="-1">--Seleccione Departamento--</option>
+                        </div>
+                        <label class="etiqueta_e">Dpto<i class="required">*</i>:</label>
+                        <div class="form-group">
+                            <select class="form-control selector_e" 
+                                ng-show="ctrl.colombia" 
+                                required="{{ctrl.colombia}}" 
+                                name="depto" 
+                                ng-model="ctrl.oferta.depto" 
+                                ng-options="dpto.id as dpto.departamento for dpto in ctrl.dptos" 
+                                ng-change="ctrl.selectDpto(ctrl.oferta.depto)"
+                                clase="text_valid_e"
+                                required-message="'El campo no puede estar vacio'">
+                                <option value="">--- Seleccione Departamento ---</option>
                             </select>
-                            <input type="text" ng-show="!ctrl.colombia" class="form-control texto"  name="depart" ng-model="ctrl.oferta.depart" >
-                        </p>
-                        <p>
-                            <label class="etiqueta_e" for="ciudad">Ciudad:</label>                                        
-                            <select class="form-control selector_e" ng-show="ctrl.colombia" name="ciudad" ng-model="ctrl.oferta.ciudad" ng-options="ciudad for ciudad in ctrl.ciudades">
-                                <option value="" selected>--Seleccione Ciudad--</option>
+                            <input type="text" ng-show="!ctrl.colombia" 
+                                class="form-control texto_e"  
+                                name="depart" 
+                                ng-model="ctrl.oferta.depart" 
+                                required="{{!ctrl.colombia}}" 
+                                clase="text_valid_e"
+                                validator = "ctrl.lengthValidator(ctrl.oferta.depart, 4) === true"
+                                invalid-message = "ctrl.lengthValidator(ctrl.oferta.depart, 4)"
+                                required-message="'El campo no puede estar vacio'"/>
+                        </div>
+                        <label class="etiqueta_e">Ciudad<i class="required">*</i>:</label>
+                        <div class="form-group">
+                            <select class="form-control selector_e" 
+                                ng-show="ctrl.colombia" 
+                                required="{{ctrl.colombia}}" 
+                                name="ciudad" 
+                                ng-model="ctrl.oferta.ciudad" 
+                                ng-options="ciudad for ciudad in ctrl.ciudades"
+                                clase="text_valid_e"
+                                required-message="'El campo no puede estar vacio'">
+                                <option value="">--- Seleccione Ciudad ---</option>
                             </select>
-                            <input type="text" ng-show="!ctrl.colombia" class="form-control texto"  name="ciudad" ng-model="ctrl.oferta.ciudad" >
-                        </p>
-                        <p>
-                            <label class="etiqueta_e">Tipo contrato<i class="required">*</i>:</label>
-                            <select class="form-control selector_e" name="tipo" ng-model="ctrl.oferta.tipo" ng-options="Tipo.ID as Tipo.Value for Tipo in ctrl.TipoContrato" >
-                                <option value="">--- Seleccione Tipo ---</option>
-                            </select>
-                        </p>
-                        <p  ng-class="{ 'has-error': form_oferta.vacantes.$error.required}">
-                            <label class="etiqueta_e">Fecha contratación<i class="required">*</i>:</label>
-                            <input type="date" class="form-control texto_e" name="fecha_contratacion" ng-model="ctrl.oferta.fecha_contratacion" required />
-                        </p>
-                        <p>
-                            <label class="etiqueta_e">Estado<i class="required">*</i>:</label>
+                            <input type="text" 
+                                ng-show="!ctrl.colombia" 
+                                class="form-control texto_e"  
+                                name="ciudad" 
+                                ng-model="ctrl.oferta.ciudad" 
+                                required="{{!ctrl.colombia}}"
+                                clase="text_valid_e"
+                                validator = "ctrl.lengthValidator(ctrl.oferta.ciudad, 4) === true"
+                                invalid-message = "ctrl.lengthValidator(ctrl.oferta.ciudad, 4)"
+                                required-message="'El campo no puede estar vacio'"/>
+                        </div>
+                        <label class="etiqueta_e">Estado<i class="required">*</i>:</label>
+                        <div class="form-group">
                             <label class="checkbox-inline" >
                                 <input type="checkbox" value="1" name="estado" ng-model="ctrl.oferta.estado"> Activar.
                             </label>
-                        </p>
+                        </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" ng-disabled="form_oferta.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_formacion" class="btn btn-primary" >Añadir</button>
+                            <button type="submit" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_add_formacion" class="btn btn-primary" >Añadir</button>
                         </div>
                     </form>
                 </div>

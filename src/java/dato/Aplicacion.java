@@ -66,7 +66,7 @@ public class Aplicacion {
                         //valido las credenciales
                         String hash = datos.getString(3);
                         String pasw = datos.getString(4);
-                        if(pasw.equals(Metodos.sha256(pass, hash))){
+                        if(pasw.equals(Metodos.sha512(pass, hash))){
                             //obtengo el usuario
                             u = new usuario();
                             u.setCodigo(datos.getString(1));
@@ -226,7 +226,7 @@ public class Aplicacion {
         String instruccion="UPDATE tblUsuario SET hsh_usuario = ?, pwd_usuario = ?, ver_usuario = 1, tkn_ver_usuario = NULL WHERE eml_usuario = ?;";
         
         String hash = Metodos.RandomString(25, true);
-        String pass = Metodos.sha256(passw, hash);
+        String pass = Metodos.sha512(passw, hash);
         
         insertar=conn.prepareStatement(instruccion);
         insertar.setString(1, hash);

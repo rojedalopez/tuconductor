@@ -84,14 +84,14 @@ if(session.getAttribute("user") == null){
         }
     </script>
     
-    <script type="text/javascript" src="../js/date.js"></script>      
+    <script type="text/javascript" src="../js/angular/dirPagination.js"></script>
     <script type="text/javascript" src="../js/app.js"></script>      
+    <script type="text/javascript" src="../js/angular/angular-validator.js"></script>
     <script type="text/javascript" src="../js/angular/profile.js"></script>
     <script type="text/javascript" src="../js/angular/sign.js"></script>
     <script type="text/javascript" src="../js/angular/wall.js"></script>
     <script type="text/javascript" src="../js/angular/oferta.js"></script>
     <script type="text/javascript" src="../js/angular/inbox.js"></script>
-    <script type="text/javascript" src="../js/angular/angular-validator.js"></script>
     
      <script src="../assets/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="../assets/plugins/pace/pace.js"></script>

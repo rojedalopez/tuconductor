@@ -3,15 +3,15 @@
 <% 
 response.setHeader("Pragma", "No-chache"); 
 response.setHeader("Expires", "0"); 
-response.setHeader("Cache-Control", "no-cache"); 
+response.setHeader("Cache-Control", "no-store"); 
 response.setHeader("Cache", "no-cache"); 
 if(session.getAttribute("user") == null){
    //redirijo al login
    response.sendRedirect("../?mensaje=Acabo su sesion.");
 }else{
     usuario u = (usuario)session.getAttribute("user");
-   if(u.getRol()==2){
-        response.sendRedirect("../empresa/");
+   if(u.getRol()==1){
+        response.sendRedirect("../admin/");
    }else if(u.getRol()==3){
         response.sendRedirect("../conductor/");
    }
@@ -50,27 +50,21 @@ if(session.getAttribute("user") == null){
     <script src="../js/angular-material.min.js"></script>
     <script src="../js/dist/angular-datatables.min.js"></script>   
     
+    
     <script type="text/javascript">
-        var Modal_filter;
-        var btn_search, btn_clear;
-        console.log("entro");
-        $(document).ready(function (){
-            Modal_filter = $("#Modal_filter");
-            btn_search = $("#btn_search");
-            btn_clear = $("#btn_clear");
+          var btn_guardar_cambios, form_oferta, btn_add_exp, btn_add_formacion;
+          var dialog_oferta, form_compra;
+        $(document).ready(function(){
+            btn_guardar_cambios = $("#btn_guardar_cambios");
+            form_oferta = $("#form_oferta");
+            dialog_oferta = $("#Modal_publicar");
+            btn_add_exp = $("#btn_add_exp");
+            btn_add_formacion = $("#btn_add_formacion");
+            form_compra = $("#form_compra");
         });
         
-        function Open_dialog_filter(){
-            $( "#Modal_filter" ).modal("show");
-        }
-        function Open_dialog_tokens(){
-            $( "#Modal_tokens" ).modal("show");
-        }
-        
-
     </script>
     
-
     <script type="text/javascript" src="../js/angular/dirPagination.js"></script>
     <script type="text/javascript" src="../js/app.js"></script>      
     <script type="text/javascript" src="../js/angular/angular-validator.js"></script>
@@ -79,7 +73,6 @@ if(session.getAttribute("user") == null){
     <script type="text/javascript" src="../js/angular/wall.js"></script>
     <script type="text/javascript" src="../js/angular/oferta.js"></script>
     <script type="text/javascript" src="../js/angular/inbox.js"></script>
-    
     
     <script src="../assets/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="../assets/plugins/pace/pace.js"></script>
@@ -93,7 +86,7 @@ if(session.getAttribute("user") == null){
    </head>
 <body ng-app="myApp" class="ng-cloak">
     <!--  wrapper -->
-    <div id="wrapper"  ng-controller="ProfileAdminConductorController as ctrl">
+    <div id="wrapper" ng-controller="PlanesController as ctrl">
         <!-- navbar top -->
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="navbar">
             <!-- navbar-header -->
@@ -104,15 +97,16 @@ if(session.getAttribute("user") == null){
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.jsp">
-                    <img src="../assets/img/logo.png" alt=""/>
+                <a class="navbar-brand" href="index.html">
+                    <img src="../assets/img/logo.png" alt="" />
                 </a>
             </div>
             <!-- end navbar-header -->
             <!-- navbar-top-links -->
             <ul class="nav navbar-top-links navbar-right">
-                <!-- main dropdown -->
+                <!-- main dropdown -->                
                 <li class="dropdown">
+                    
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <span class="top-label label label-danger">3</span><i class="fa fa-envelope fa-3x"></i>
                     </a>
@@ -349,12 +343,38 @@ if(session.getAttribute("user") == null){
                         </div>
                         <!--end user image section-->
                     </li>
-                    <li class="selected">
+                    <li class="sidebar-search">
+                        <!-- search section-->
+                        <div class="input-group custom-search-form">
+                            <input type="text" class="form-control" placeholder="Search...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                        <!--end search section-->
+                    </li>
+                    <li>
                         <a href="index.jsp"><i class="fa fa-home fa-fw"></i>Inicio</a>
                     </li>
-                    
                     <li>
-                        <a href="#" onclick="Open_dialog_filter()"><i class="fa fa-search fa-fw"></i>Filtros de busqueda</a>
+                        <a href="#"><i class="fa fa-user fa-fw"></i> Perfil<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="#editperfil.html">Editar perfil</a>
+                            </li>
+                            <li>
+                                <a href="morris.html">Quién ha visto tu perfil</a>
+                            </li>
+                            <li>
+                                <a href="morris.html">Tus actualizaciones</a>
+                            </li>
+                        </ul>
+                        <!-- second-level-items -->
+                    </li>
+                    <li class="selected">
+                        <a href="viewoferta.jsp"><i class="fa fa-tags fa-fw"></i> Ofertas</a>                        
                     </li>
                 </ul>
                 <!-- end side-menu -->
@@ -368,206 +388,111 @@ if(session.getAttribute("user") == null){
             <div class="row">
                 <!-- Page Header -->
                 <div class="col-lg-12">
-                    <h1 class="page-header">Perfil Administrativo (Conductores)</h1>
+                    <h1 class="page-header">Comprar Tokens</h1>
                 </div>
                 <!--End Page Header -->
             </div>
 
             <div class="row">
-                
+                <div class="col-lg-6" style="cursor: pointer;" ng-click="ctrl.openOferta()">
+                    <div class="panel panel-primary text-center no-boder">
+                        <div class="panel-body blue">
+                            <img src="../assets/img/token_icon.png" />
+                            <label>COMPRAR TOKENS</label>
+                        </div>
+                        <div class="panel-footer">
+                            <span class="panel-eyecandy-title">Obtener tokens por demanda
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 tooltip-demo" style="cursor: pointer;" >
+                    <div class="panel panel-primary text-center no-boder"  data-toggle="tooltip" data-placement="bottom" title="Ofertas disponibles: 3 / Ofertas disponibles: 3">
+                        <div class="panel-body yellow">
+                            <img src="../assets/img/vista_icon.png" />
+                            <label>MIS TOKENS</label>
+
+                        </div>
+                        <div class="panel-footer">
+                            <span class="panel-eyecandy-title">Registro de mis tokens
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
                 <div class="col-lg-12">
-                    <!-- Advanced Tables -->
-                    <div class="panel panel-default">
+                    <div class="panel panel-info">
                         <div class="panel-heading">
-                             Lista de Conductores
+                            LISTA DE PLANES
                         </div>
                         <div class="panel-body">
-                                <table class="table table-striped table-bordered dt-responsive nowrap compact table-hover" width="100%" cellspacing="0" datatable="ng" dt-options="ctrl.dtOptions" id="dataTables-example">
-                                    <thead>
-                                        <tr>
-                                            <th>Puntaje</th>
-                                            <th>Nombre</th>
-                                            <th>Apellido</th>
-                                            <th>Depart.</th>
-                                            <th>Tipo Vehiculo</th>
-                                            <th>Edad</th>
-                                            <th>Exp.(Años)</th>
-                                            <th>H.V</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr dir-paginate="empleado in ctrl.empleados|itemsPerPage:ctrl.itemsPerPage" total-items="ctrl.total_count">
-                                            <td style="text-align: center;">{{empleado.puntaje}}</td>
-                                            <td>{{empleado.nombre}}</td>
-                                            <td>{{empleado.apellido}}</td>
-                                            <td>{{empleado.depto}}</td>
-                                            <td>Camion</td>
-                                            <td style="text-align: center;">{{empleado.edad}}</td>
-                                            <td style="text-align: center;">{{empleado.experiencia}}</td>
-                                            <td style="text-align: center; cursor: pointer;"><img src="../assets/img/hv_icon.png" class="btn_icon_red" data-toggle="tooltip" data-placement="left" title="Descargar H.V"/></td>
-                                            <td style="text-align: center; cursor: pointer;"><a target="_blanck" href="editprofile-employed.jsp?cod={{empleado.cod}}"><img src="../assets/img/edit2_icon.png" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Editar este conductor"/></a></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <dir-pagination-controls
-                                    max-size="8"
-                                    direction-links="true"
-                                    boundary-links="true" 
-                                    on-page-change="ctrl.getData(newPageNumber)">
-                                </dir-pagination-controls>
-                        </div>
-                    </div>
-                    <!--End Advanced Tables -->
-                </div>
-
-            </div>
-
-
-         
-
-
-        </div>
-        <!-- end page-wrapper -->
-
-    
-
-    
-    <div class="modal fade" id="Modal_filter" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Filtros de busqueda</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                            <label class="etiqueta_e_izq">por Estado:</label>
-                            <div class="form-group">
-                                <div class="form-inline">
-                                    <label class="checkbox-inline">
-                                        <input type="radio" value="1" name="estado" ng-model="ctrl.busqueda.estado"> Admitido
-                                    </label>
-                                    <label class="checkbox-inline">
-                                        <input type="radio" value="0" name="estado" ng-model="ctrl.busqueda.estado"> No Admitido
-                                    </label>
-                                </div>                                
-                            </div>
-                            <label class="etiqueta_e_izq">por texto:</label>
-                            <div class="form-group">
-                                <input type="text" class="form-control texto_e" ng-model="ctrl.busqueda.q" placeholder="Buscar por nombre o apellido..."/>
-                            </div>
-                            <label class="etiqueta_e_izq">por experiencia:</label>
-                            <div class="form-group">
-                                <div class="form-inline">
-                                    <input type="number" class="form-control" min="18" max="80" ng-model="ctrl.busqueda.edadmi" placeholder="Min"/>
-                                    <input type="number" class="form-control" min="18" max="80" ng-model="ctrl.busqueda.edadmx" placeholder="Max"/>
-                                </div>
-                            </div>
-                            <label class="etiqueta_e_izq">por edades:</label>
-                            <div class="form-group">
-                                <div class="form-inline">
-                                    <input type="number" class="form-control" min="1" max="60" ng-model="ctrl.busqueda.expmi" placeholder="Min"/>
-                                    <input type="number" class="form-control" min="1" max="60" ng-model="ctrl.busqueda.expmx" placeholder="Max"/>
-                                </div>
-                            </div>
-                            <label class="etiqueta_e_izq">por puntos:</label>
-                            <div class="form-group">
-                                <div class="form-inline">
-                                    <input type="number" class="form-control" min="1" max="10" ng-model="ctrl.busqueda.punmi" placeholder="Min"/>
-                                    <input type="number" class="form-control" min="1" max="10" ng-model="ctrl.busqueda.punmx" placeholder="Max"/>
-                                </div>
-                            </div>
-                            <label class="etiqueta_e_izq">por lugar:</label>
-                            <div class="form-group">
-                                <select class="form-control selector_e" ng-model="ctrl.busqueda.depto" name="departamento" id="departamento" ng-options="depto.id as depto.departamento for depto in ctrl.deptos">
-                                    <option value="">--Seleccione Departamento--</option>
-                                </select>  
-                            </div>
-                            <div class="form-group">
-                                <div class="form-group" style="text-align: right;">
-                                    <button class="btn btn-primary" ng-click="ctrl.buscar()" type="button"  data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Buscando..." id="btn_search">Buscar</button>
-                                    <button class="btn btn-default" ng-click="ctrl.limpiar()" type="button" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Limpiando..." id="btn_clear">Limpiar</button>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-        
-        
-    <div class="modal fade" id="Modal_infoadicional" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Informacion Adicional</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="panel panel-info">
-                                <div class="panel-heading">
-                                    MULTAS
-                                </div>
-                                <div class="panel-body">
-                                    <p ng-class="{ 'has-error': datos_personales.cargo.$error.required || datos_personales.cargo.$error.minlength}">
-                                        <label class="etiqueta_a">Cargo o titulo breve de su hoja de vida<i class="required">*</i>:</label>                                                                                  
-                                        <input type="text" name="cargo" ng-model="ctrl.usuario_dp.cargo" class="form-control area" placeholder="Ej: C" required minlength="15"/>
-                                        <!-- <span ng-show="datos_personales.cargo.$error.required && datos_personales.cargo.$dirty" class="required">Error requerido</span>
-                                        <span ng-show="datos_personales.cargo.$error.minlength && datos_personales.cargo.$dirty" class="required">Error tamaño</span>-->
-                                    </p>
-                                    <p ng-class="{ 'has-error': datos_personales.perfil.$error.required || datos_personales.perfil.$error.minlength}">
-                                        <label class="etiqueta_a">Decripcion breve de su perfil profesional:</label>                                                                                 
-                                        <textarea class="form-control area" name="perfil" ng-model="ctrl.usuario_dp.perfil" placeholder="Ej: C" rows="4" required minlength="50"></textarea>
-                                    </p>
-
-                                    <div class="form-group">
-                                        <div class="form-group" style="text-align: right;">
-                                            <button type="submit" ng-disabled="datos_personales.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_guardar_cambios" class="btn btn-primary" >Guardar cambios</button>
-                                            <input type="reset" class="btn btn-default" value="Cancelar">
+                            <div class="row">                                
+                                <div class="col-lg-12" ng-repeat="plan in ctrl.planes">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading">    
+                                            <b>{{plan.nombre}}</b>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="col-lg-9">
+                                                <div class="form-control-static">
+                                                    <i class="fa fa-eye fa-2x"></i>&nbsp;&nbsp;{{(plan.visual===0)?'Visualizaciones de empleados Ilimitadas.':plan.visual+' visualizaciones de empleados.'}}
+                                                </div>
+                                                <div class="form-control-static">
+                                                    <i class="fa fa-tags fa-2x"></i>&nbsp;&nbsp;{{(plan.oferta===0)?'Publicación de ofertas Ilimitadas.':plan.oferta+' publicaciones de ofertas.'}}
+                                                </div>
+                                                <div class="form-control-static">
+                                                    <i class="fa fa-calendar fa-2x"></i>&nbsp;&nbsp;{{(plan.duracion===1)?'Plan valido por un mes.':'Plan valido por '+plan.duracion/12+' año.'}}
+                                                </div>
+                                                <div class="form-control-static">
+                                                    <i class="fa fa-dollar fa-2x"></i>&nbsp;&nbsp;{{plan.valor | currency:"Valor $":0}}
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="panel panel-primary text-center no-boder" ng-click="ctrl.compra(plan.id)" data-toggle="tooltip" data-placement="bottom" title="Ofertas disponibles: 3 / Ofertas disponibles: 3">
+                                                    <div class="panel-body" style="background-color: #008CBA; cursor: pointer;">
+                                                        <img src="../assets/img/payvalidda_blanco_s.png" />
+                                                    </div>
+                                                    <div class="panel-footer">
+                                                        <span class="panel-eyecandy-title">COMPRAR</span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>                        
-                        </div>
-                        
-                        <div class="col-lg-12">
-                            <div class="panel panel-info">
-                                <div class="panel-heading">
-                                    MULTAS
-                                </div>
-                                <div class="panel-body">
-                                    <p ng-class="{ 'has-error': datos_personales.cargo.$error.required || datos_personales.cargo.$error.minlength}">
-                                        <label class="etiqueta_a">Cargo o titulo breve de su hoja de vida<i class="required">*</i>:</label>                                                                                  
-                                        <input type="text" name="cargo" ng-model="ctrl.usuario_dp.cargo" class="form-control area" placeholder="Ej: C" required minlength="15"/>
-                                        <!-- <span ng-show="datos_personales.cargo.$error.required && datos_personales.cargo.$dirty" class="required">Error requerido</span>
-                                        <span ng-show="datos_personales.cargo.$error.minlength && datos_personales.cargo.$dirty" class="required">Error tamaño</span>-->
-                                    </p>
-                                    <p ng-class="{ 'has-error': datos_personales.perfil.$error.required || datos_personales.perfil.$error.minlength}">
-                                        <label class="etiqueta_a">Decripcion breve de su perfil profesional:</label>                                                                                 
-                                        <textarea class="form-control area" name="perfil" ng-model="ctrl.usuario_dp.perfil" placeholder="Ej: C" rows="4" required minlength="50"></textarea>
-                                    </p>
-
-                                    <div class="form-group">
-                                        <div class="form-group" style="text-align: right;">
-                                            <button type="submit" ng-disabled="datos_personales.$invalid" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Guardando..." id="btn_guardar_cambios" class="btn btn-primary" >Guardar cambios</button>
-                                            <input type="reset" class="btn btn-default" value="Cancelar">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>                        
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            
         </div>
+        
+        <div class="modal fade" id="form_compra" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Formulario de Admision</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="https://testpayvalidaapp.payvalida.com/AppPaymentPay" method="post">
+                            <input type="hidden" name="merchant_id" value="{{ctrl.formulario.merchant_id}}"/>
+                            <input type="hidden" name="po_id" value="{{ctrl.formulario.po_id}}"/>
+                            <input type="hidden" name="iso_currency" value="{{ctrl.formulario.iso_currency}}"/>
+                            <input type="hidden" name="amount" value="{{ctrl.formulario.amount}}"/>
+                            <input type="hidden" name="pv_checksum" value="{{ctrl.formulario.pv_checksum}}"/>
+                            <input type="hidden" name="lifetime" value="{{ctrl.formulario.lifetime}}"/>
+                            <input type="submit" value="enviar"/>   
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- end wrapper -->    
     </div>
-    
-    </div>
-    <!-- end wrapper -->
-    
 
 </body>
 

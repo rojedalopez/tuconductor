@@ -41,7 +41,7 @@ if(session.getAttribute("user") == null){
     <script type="text/javascript" src="../js/dataTables.responsive.min.js"></script>
     <script src="../js/bootstrap/js/bootstrap.min.js"></script>
     <!-- Angular Material requires Angular.js Libraries -->
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    <script src="../js/angular.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
@@ -52,11 +52,16 @@ if(session.getAttribute("user") == null){
     
     
     <script type="text/javascript">
-        var Modal_confirmacion, btn_add_compra;
+        var Modal_confirmacion, btn_add_compra, Modal_filter, btn_clear, btn_search,
+            Modal_compras;
         
         $(document).ready(function(){
             Modal_confirmacion = $("#Modal_confirmacion");
             btn_add_compra = $("#btn_add_compra");
+            btn_clear = $("#btn_clear");
+            btn_search = $("#btn_search");
+            Modal_filter = $("#Modal_filter");
+            Modal_compras = $("#Modal_compras");
         });
         
         function Open_dialog_filter(){
@@ -70,16 +75,16 @@ if(session.getAttribute("user") == null){
             $( "#Modal_confirmacion" ).modal("show");
         }
 
-
     </script>
     
+    <script type="text/javascript" src="../js/angular/dirPagination.js"></script>
     <script type="text/javascript" src="../js/app.js"></script>      
+    <script type="text/javascript" src="../js/angular/angular-validator.js"></script>
     <script type="text/javascript" src="../js/angular/profile.js"></script>
     <script type="text/javascript" src="../js/angular/sign.js"></script>
     <script type="text/javascript" src="../js/angular/wall.js"></script>
     <script type="text/javascript" src="../js/angular/oferta.js"></script>
     <script type="text/javascript" src="../js/angular/inbox.js"></script>
-    <script type="text/javascript" src="../js/angular/angular-validator.js"></script>
     
     <script src="../assets/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="../assets/plugins/pace/pace.js"></script>
@@ -112,10 +117,12 @@ if(session.getAttribute("user") == null){
             <!-- navbar-top-links -->
             <ul class="nav navbar-top-links navbar-right">
                 <!-- main dropdown -->
-                <li style="cursor: pointer;" onclick="open_modal_subirhv()">                    
-                    <div class="alert2 alert-info text-center" style="position: relative; top:-7px;">
-                        <i class="fa fa-shopping-cart"></i>&nbsp;<b>Comprar Tokens</b>
-                    </div>
+                <li>                    
+                    <a href="buytoken.jsp" target="_blank">
+                        <div class="alert2 alert-info text-center" style="position: relative; top:-7px;" onclick="Open_compras()">
+                            <i class="fa fa-shopping-cart"></i>&nbsp;<b>Comprar Tokens</b>
+                        </div>
+                    </a>
                 </li>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -448,32 +455,40 @@ if(session.getAttribute("user") == null){
                         </div>
                         <div class="panel-body">
                             <div>
-                                <table class="table table-striped table-bordered dt-responsive nowrap compact table-hover" cellspacing="0" width="100%"  datatable="ng" dt-options="ctrl.dtOptions" id="dataTables-example">
+                                <table class="table table-striped table-bordered dt-responsive nowrap compact table-hover" cellspacing="0" width="100%"  datatable="ng" dt-options="ctrl.dtOptions" id="dataTables-example_">
                                     <thead>
                                         <tr>
                                             <th>Puntaje</th>
-                                            <th>Tipo Vehiculo</th>
-                                            <th>Licencia</th>
-                                            <th>Exp.(Años)</th>
                                             <th>Nombre</th>
                                             <th>Apellido</th>
+                                            <th>Depart.</th>
+                                            <th>Tipo Vehiculo</th>
+                                            <th>Edad</th>
+                                            <th>Exp.(Años)</th>
                                             <th>H.V</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody >
-                                        <tr class="gradeA tooltip-demo" ng-repeat="emp in ctrl.empleados">
-                                            <td style="text-align: center;"><spam ng-bind="emp.puntaje"></spam></td>
+                                        <tr class="gradeA tooltip-demo" dir-paginate="empleado in ctrl.empleados|itemsPerPage:ctrl.itemsPerPage" total-items="ctrl.total_count">
+                                            <td style="text-align: center;">{{empleado.puntaje}}</td>
+                                            <td>{{empleado.nombre}}</td>
+                                            <td>{{empleado.apellido}}</td>
+                                            <td>{{empleado.depto}}</td>
                                             <td>Camion</td>
-                                            <td style="text-align: center;">C3</td>
-                                            <td style="text-align: center;"><spam ng-bind="emp.experiencia"></spam></td>
-                                            <td><spam ng-bind="emp.nombre"></spam></td>
-                                            <td><spam ng-bind="emp.apellido"></spam></td>
-                                            <td style="text-align: center; cursor: pointer;"><a href="../upload/{{emp.hoja_vida}}"><img src="../assets/img/hv_icon.png" class="btn_icon_red" data-toggle="tooltip" data-placement="left" title="Descargar H.V"/></a></td>
-                                            <td style="text-align: center; cursor: pointer;"><a  ng-click="ctrl.openAdquirir(emp.cod)"><img src="../assets/img/token2_icon.png" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Obtener este conductor"/></a></td>
+                                            <td style="text-align: center;">{{empleado.edad}}</td>
+                                            <td style="text-align: center;">{{empleado.experiencia}}</td>
+                                            <td style="text-align: center; cursor: pointer;"><a href="../upload/{{empleado.hoja_vida}}"><img src="../assets/img/hv_icon.png" class="btn_icon_red" data-toggle="tooltip" data-placement="left" title="Descargar H.V"/></a></td>
+                                            <td style="text-align: center; cursor: pointer;"><a  ng-click="ctrl.openAdquirir(empleado.cod)"><img src="../assets/img/token2_icon.png" class="btn_icon" data-toggle="tooltip" data-placement="left" title="Obtener este conductor"/></a></td>
                                         </tr>
                                     </tbody>
                                 </table>
+                                <dir-pagination-controls
+                                    max-size="8"
+                                    direction-links="true"
+                                    boundary-links="true" 
+                                    on-page-change="ctrl.getData(newPageNumber)">
+                                </dir-pagination-controls>
                             </div>                            
                         </div>
                     </div>
@@ -499,7 +514,45 @@ if(session.getAttribute("user") == null){
                     <h4 class="modal-title" id="myModalLabel">Filtros de busqueda</h4>
                 </div>
                 <div class="modal-body">
-                    prueba
+                    <div class="form-group">
+                            <label class="etiqueta_e_izq">por texto:</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control texto_e" ng-model="ctrl.busqueda.q" placeholder="Buscar por nombre o apellido..."/>
+                            </div>
+                            <label class="etiqueta_e_izq">por experiencia:</label>
+                            <div class="form-group">
+                                <div class="form-inline">
+                                    <input type="number" class="form-control" min="18" max="80" ng-model="ctrl.busqueda.edadmi" placeholder="Min"/>
+                                    <input type="number" class="form-control" min="18" max="80" ng-model="ctrl.busqueda.edadmx" placeholder="Max"/>
+                                </div>
+                            </div>
+                            <label class="etiqueta_e_izq">por edades:</label>
+                            <div class="form-group">
+                                <div class="form-inline">
+                                    <input type="number" class="form-control" min="1" max="60" ng-model="ctrl.busqueda.expmi" placeholder="Min"/>
+                                    <input type="number" class="form-control" min="1" max="60" ng-model="ctrl.busqueda.expmx" placeholder="Max"/>
+                                </div>
+                            </div>
+                            <label class="etiqueta_e_izq">por puntos:</label>
+                            <div class="form-group">
+                                <div class="form-inline">
+                                    <input type="number" class="form-control" min="1" max="10" ng-model="ctrl.busqueda.punmi" placeholder="Min"/>
+                                    <input type="number" class="form-control" min="1" max="10" ng-model="ctrl.busqueda.punmx" placeholder="Max"/>
+                                </div>
+                            </div>
+                            <label class="etiqueta_e_izq">por lugar:</label>
+                            <div class="form-group">
+                                <select class="form-control selector_e" ng-model="ctrl.busqueda.depto" name="departamento" id="departamento" ng-options="depto.id as depto.departamento for depto in ctrl.deptos">
+                                    <option value="">--Seleccione Departamento--</option>
+                                </select>  
+                            </div>
+                            <div class="form-group">
+                                <div class="form-group" style="text-align: right;">
+                                    <button class="btn btn-primary" ng-click="ctrl.buscar()" type="button"  data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Buscando..." id="btn_search">Buscar</button>
+                                    <button class="btn btn-default" ng-click="ctrl.limpiar()" type="button" data-loading-text="<i class='fa fa-refresh fa-spin fa-1x fa-fw'></i> Limpiando..." id="btn_clear">Limpiar</button>
+                                </div>
+                            </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -544,7 +597,7 @@ if(session.getAttribute("user") == null){
                                 <i class="fa fa-eye fa-3x"></i>&nbsp;<b>{{ctrl.info_empresa.tkn_disp}} </b>Vistas disponibles
 
                             </div>
-                        </div>
+                        </div> 
                         <!--end quick info section -->
                     </div>
 

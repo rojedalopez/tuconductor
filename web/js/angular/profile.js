@@ -434,6 +434,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     email_replegal:"", tel_replegal:"", demo:false, id_plan:0, tkn_disp:0, ofertas_disp:0, ult_compra:"", vence_compra:"", tot_tkn:0, tot_ofr:0, trazas:[], eliminar:false}
     self.list_empresas=[];    
     
+    
     self.llenarEmpresas = function(){
         ProfileAdminService.llenarEmpresas().then(function(d) {
             self.list_empresas = d;
@@ -519,15 +520,39 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
             });
 	}
     };
-}]).controller('ProfileAdminConductorController', ['$scope', 'ProfileAdminConductorService', function($scope, ProfileAdminConductorService) {
+}]).controller('ProfileAdminConductorController', ['$scope', 'ProfileAdminConductorService', '$http', function($scope, ProfileAdminConductorService, $http) {
     var self = this;
-    
-    self.empleado={email:"", cod:"",nombre:"", apellido:"", puntaje:0, hoja_vida:"",experiencia:0, eliminar:false};
+    self.busqueda={porpage:10, pageno:1, q:"", edadmi:"", edadmx:"", expmi:"", expmx:"", punmi:"", punmx:"", depto:"", estado:1};
+    self.empleado={email:"", cod:"",nombre:"", apellido:"", puntaje:0, hoja_vida:"",experiencia:0, edad:0, depto:""};
+    self.deptos=[];
+    self.depto={id:"", departamento:"", ciudades:[]};
     self.list_empleados=[];
+    self.empleados = [];
+    self.pageno = 1; // initialize page no to 1
+    self.total_count = 0;
+    self.itemsPerPage = 20; //this could be a dynamic value from a drop down
+        
+    self.getData = function(pageno){ // This would fetch the data on page change.
+        //In practice this should be in a factory.
+        self.busqueda.porpage = self.itemsPerPage;
+        self.busqueda.pageno = pageno;
+        self.empleados = [];  
+        $http.post("../list_employes_byadmin", self.busqueda).success(function(response){ 
+            //ajax request to fetch data into vm.data
+            self.empleados = response.data;  // data to be displayed on current page.
+            self.total_count = response.total_count; // total data count.
+            Modal_filter.modal('hide');
+        });
+    };
     
-    self.llenarEmpleados = function(){
-        ProfileAdminConductorService.llenarEmpleados().then(function(d) {
-            self.list_empleados = d;
+    
+    self.getData(self.pageno);
+    
+    
+    
+    self.llenarListaDeptos = function(){
+        ProfileAdminConductorService.listaDptosCiudad().then(function(d) {
+            self.deptos = d;
         },function(errResponse){
             console.error('Error while fetching Currencies');
         });
@@ -543,11 +568,37 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         }
     };
     
-    self.llenarEmpleados();
+    self.limpiar = function(){
+        btn_clear.button('loading');
+        self.busqueda={porpage:10, pageno:1, q:"", edadmi:"", edadmx:"", expmi:"", expmx:"", punmi:"", punmx:"", depto:"", estado:1};
+        self.getData(1);
+        btn_clear.button('reset');
+    };
+    
+    self.buscar = function(){
+        btn_search.button('loading');
+        self.getData(1);
+        btn_search.button('reset');
+    };
+    
+    self.llenarListaDeptos();
     
     self.dtOptions = {
             bAutoWidth:true,
             stateSave: true,
+            paging:false,
+            order: [[ 0, "desc" ]],
+            bFilter: false,
+            columnDefs: [ 
+                {
+                targets: 7,
+                orderable: false
+                },
+                {
+                targets: 8,
+                orderable: false
+                },
+            ],
             language: {
                 "lengthMenu": "Mostrar _MENU_ registros",
                 "zeroRecords": "No se encontraron registros",
@@ -561,9 +612,9 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
           
 }]).factory('ProfileAdminConductorService', ['$http', '$q', function($http, $q){
     return {
-        llenarEmpleados: function() {
-            return $http.post('../list_employes_byadmin').then(function(response){
-		return response.data;
+        listaDptosCiudad: function() {
+            return $http.post('../assets/colombia.json').then(function(response){
+                return response.data;
             },function(errResponse){
                 console.error('Error while fetching expenses');
                 return $q.reject(errResponse);

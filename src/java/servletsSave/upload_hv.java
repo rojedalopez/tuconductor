@@ -6,7 +6,6 @@
 package servletsSave;
 
 import bean.usuario;
-import dato.Json.Listas;
 import dato.Metodos;
 import dato.Save.Guardar;
 import java.io.File;
@@ -25,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
-import org.json.simple.JSONObject;
 
 @MultipartConfig
 public class upload_hv extends HttpServlet {

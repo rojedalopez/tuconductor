@@ -1,7 +1,9 @@
+
 package servletsGet;
 
 import bean.usuario;
-import dato.Json.Listas;
+import dato.Json.Objetos;
+import dato.Save.Guardar;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,10 +20,10 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 
-public class list_oferta_empleado extends HttpServlet {
+public class pago_plan extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException, ParseException {
+            throws ServletException, IOException, ParseException, ClassNotFoundException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         StringBuffer sb = new StringBuffer();
         
@@ -36,31 +38,24 @@ public class list_oferta_empleado extends HttpServlet {
         } catch (Exception e) { e.printStackTrace(); }
  
         JSONParser parser = new JSONParser();
-        JSONObject joOferta = null;
+        JSONObject joPagoPlan = null;
+        joPagoPlan = (JSONObject) parser.parse(sb.toString());
         System.out.println(sb.toString());
-        joOferta = (JSONObject) parser.parse(sb.toString());
-        int porpage = Integer.parseInt(joOferta.get("porpage").toString());
-        int pageno = Integer.parseInt(joOferta.get("pageno").toString());
-        String q = (String) joOferta.get("q");
+        int id_ = Integer.parseInt(joPagoPlan.get("id").toString());
+        int id_plan = Integer.parseInt(joPagoPlan.get("id_plan").toString());
+        float valor = Float.parseFloat(joPagoPlan.get("valor").toString());
+        String iso_cur = (String)joPagoPlan.get("iso_cur");
+        String medio = (String)joPagoPlan.get("medio");
+        int tok_vis = Integer.parseInt(joPagoPlan.get("visual").toString());
+        int tok_ofr = Integer.parseInt(joPagoPlan.get("oferta").toString());
         
-        int depto = -1;
-        
-       
-        if(joOferta.get("depto")!=null){
-            if(joOferta.get("depto").toString().equals("")){
-                depto = -1;
-            }else{
-                depto = Integer.parseInt(joOferta.get("depto").toString());
-            }
-        }
         HttpSession session =  null;
-        
+ 
         session = request.getSession(false);
-         
         try (PrintWriter out = response.getWriter()) {
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
-                String x = Listas.listaOfertasEmpleado(u.getCodigo(), q, depto, pageno, porpage).toJSONString();//?
+                String x = Guardar.SaveCompraTokens(id_, u.getCodigo(), id_plan, valor, iso_cur, medio, tok_vis, tok_ofr).toJSONString();
                 out.print(x);
             }else{
                 out.print("session");
@@ -69,16 +64,17 @@ public class list_oferta_empleado extends HttpServlet {
     }
 
 
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             processRequest(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(list_oferta_empleado.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {
-            Logger.getLogger(list_oferta_empleado.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(pago_plan.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(pago_plan.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(pago_plan.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

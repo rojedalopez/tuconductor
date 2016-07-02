@@ -6,6 +6,7 @@
 package dato;
 
 import java.security.InvalidKeyException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,8 +26,8 @@ public class Metodos {
     static SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     static SimpleDateFormat formateador_ = new SimpleDateFormat("yyyy/MM/dd hh:mm a");
         
-    //CANCULA CON EL ALGORITMO SHA256
-    public static String sha256(String usuario, String key) throws InvalidKeyException{
+    //CANCULA CON EL ALGORITMO SHA512
+    public static String sha512(String usuario, String key) throws InvalidKeyException{
     	String sha="";
     	String secretAccessKey = key;
         String data = usuario;
@@ -46,6 +47,8 @@ public class Metodos {
         sha=Base64.encode(rawHmac);
     	return sha;
     }
+    
+   
     
     //GENERA UN NUMERO RAnDOM DE TAMAÑO X
     public static String RandomString(int tamano, boolean especiales){
@@ -132,5 +135,21 @@ public class Metodos {
         return desde;
     }
 
+    
+    public static String SHA256(String valor) throws NoSuchAlgorithmException{
+   	
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        md.update(valor.getBytes());
+        
+        byte byteData[] = md.digest();
+ 
+        //convert the byte to hex format method 1
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < byteData.length; i++) {
+         sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        
+        return sb.toString();
+    }
     
 }

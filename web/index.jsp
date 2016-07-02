@@ -42,7 +42,7 @@ if(session.getAttribute("user") != null){
     <script type="text/javascript" src="js/dataTables.responsive.min.js"></script>
     <script src="js/bootstrap/js/bootstrap.min.js"></script>
     <!-- Angular Material requires Angular.js Libraries -->
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    <script src="js/angular.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
@@ -104,13 +104,15 @@ if(session.getAttribute("user") != null){
     </script>
     
     <script type="text/javascript" src="js/date.js"></script>
-    <script type="text/javascript" src="js/app.js"></script>      
+    <script type="text/javascript" src="js/angular/dirPagination.js"></script>
+    <script type="text/javascript" src="js/angular/angular-validator.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
     <script type="text/javascript" src="js/angular/profile.js"></script>
     <script type="text/javascript" src="js/angular/sign.js"></script>
     <script type="text/javascript" src="js/angular/wall.js"></script>
     <script type="text/javascript" src="js/angular/oferta.js"></script>
     <script type="text/javascript" src="js/angular/inbox.js"></script>
-    <script type="text/javascript" src="js/angular/angular-validator.js"></script>
+    
     
     <script src="assets/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="assets/plugins/pace/pace.js"></script>
@@ -502,11 +504,11 @@ if(session.getAttribute("user") != null){
                         <div class="form-group">   
                             <input type="file"
                             name="cam_com"
-                            class="form-control texto_e"  
+                            class="form-control-file texto_e"  
                             clase="text_valid_e"
                             uploader-model="ctrl.empresa.cam_com"
                             accept=".pdf, .docx"/>
-                            <label class="control-label text_help"> <i class='fa fa-question-circle'></i> Debe escanear el CCG expedido por la Camara de comercio y adjuntarlo</label>
+                            <small class="text-muted"> <i class='fa fa-question-circle'></i> Debe escanear el CCG expedido por la Camara de comercio y adjuntarlo
                         </div>
                         <label class="etiqueta_e_up">Nombre Rep. legal<i class="required">*</i>:</label>
                         <div class="form-group">    

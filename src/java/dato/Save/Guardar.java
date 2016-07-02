@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -20,13 +21,14 @@ import java.util.List;
  */
 public class Guardar {
     static SimpleDateFormat Fechaformateador = new SimpleDateFormat("yyyy-MM-dd 00:00");
-    
+    static String FIXED_HASH = "b0b20707cca2b283b5844e77cadf2b5813bd923362b91583c95b736c8763937c0e0df27e9b730c404eeac6484666430f6042c043089135e8d3e76f2e86a82c38";
+    static String MERCHANT_ID = "logiseg";
     public static boolean InsertUsuario(String correo, String contrasena, String nomb, String apellido, String telefono, String path, String nacimiento) throws ClassNotFoundException, SQLException, InvalidKeyException{
         boolean b=false;
         Connection conn=null;
         PreparedStatement insertar=null;
         String hash = Metodos.RandomString(25, false);
-        String pass = Metodos.sha256(contrasena, hash);
+        String pass = Metodos.sha512(contrasena, hash);
         String cod = Metodos.RandomString(20, false);
         String token = Metodos.RandomString(10, false);
         
@@ -279,6 +281,68 @@ public class Guardar {
             return false;
 
     }
+    /*
+    
+    */
+    
+    
+    
+    public static JSONObject SaveCompraTokens(int id, String empresa, int plan, float valor, String iso_cur, String medio,
+            int tok_vis, int tok_ofr) throws ClassNotFoundException, SQLException{
+        boolean b=false;
+        JSONObject jSONObject = new JSONObject();
+        Connection conn=null;
+        PreparedStatement insertar=null;
+        
+        conn=conexion();
+            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveCompraTokens(?, ?, ?, ?, ?, ?, ?, ?, ?)};")) {
+                cs.setInt(1, id);
+                cs.setString(2, empresa);
+                cs.setInt(3, plan);
+                cs.setFloat(4, valor);
+                cs.setString(5, iso_cur);
+                cs.setString(6, medio);
+                cs.setInt(7, tok_vis);
+                cs.setInt(8, tok_ofr);
+                cs.registerOutParameter(9, Types.INTEGER);
+                cs.executeQuery();
+
+                int retorno = cs.getInt(9);
+
+                if(retorno!=0){
+                    jSONObject.put("merchant_id",MERCHANT_ID);
+                    jSONObject.put("po_id",retorno);
+                    jSONObject.put("iso_currency",iso_cur);
+                    jSONObject.put("amount",(int)valor);
+                    jSONObject.put("pv_checksum",Metodos.SHA256(retorno+""+iso_cur+""+((int)valor)+""+FIXED_HASH));
+                    jSONObject.put("lifetime",0);
+                    jSONObject.put("error",0);
+                    return jSONObject;
+                }else{
+                    jSONObject.put("merchant_id","");
+                    jSONObject.put("po_id",0);
+                    jSONObject.put("iso_currency","");
+                    jSONObject.put("amount",0);
+                    jSONObject.put("pv_checksum","");
+                    jSONObject.put("lifetime",0);
+                    jSONObject.put("error",1);
+                    return jSONObject;
+                }
+
+            }catch (SQLException e) {
+                System.out.println("error SQLException en SAVE FORMACION USUARIO");
+                System.out.println(e.getMessage());
+            }catch (Exception e){
+                System.out.println("error Exception en SAVE FORMACION USUARIO");
+                System.out.println(e.getMessage());
+            }finally{
+                if(!conn.isClosed()){
+                    conn.close();
+                }
+            }
+            return null;
+
+    }
     
     //PROC_SaveFormacion
     public static boolean SaveMulta(String cod_, int id, String lgr_multa, String fch_multa, String cgo_multa, 
@@ -491,7 +555,7 @@ public class Guardar {
         Connection conn=null;
         PreparedStatement insertar=null;
         String hash = Metodos.RandomString(25, false);
-        String pass = Metodos.sha256(contrasena, hash);
+        String pass = Metodos.sha512(contrasena, hash);
         String cod = Metodos.RandomString(20, false);
         String token = Metodos.RandomString(10, false);
         conn=conexion();        

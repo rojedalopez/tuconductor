@@ -2,7 +2,9 @@
 
 angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'OfertaService', function($scope, OfertaService) {
     var self = this;
-    self.oferta={id:-1, titulo:"", descripcion:"", vacante:"", salario:0,tipo:1, estado:false, fecha_creacion:"", fecha_contratacion:"", pais:"CO", ciudad:"", depto:-1, dapart:"", eliminar:false };
+    self.oferta={id:-1, titulo:"", descripcion:"", vacante:"", salario:0,tipo:1, estado:false, 
+    fecha_creacion:"", fecha_contratacion:"", pais:"CO", ciudad:"", depto:-1, dapart:"", eliminar:false };
+
     self.ofertas=[];
     
     self.Paises=[];
@@ -30,7 +32,15 @@ angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'Of
         });
     };
           
+    self.lengthValidator = function(texto, length) {
+        if(!texto){return;}
 
+        if (texto.length < length) {
+                return "El campo debe tener como minimo " + length + " caracteres de largo";
+        }
+    
+        return true;
+    };
     
     self.selectPais = function(pais){
         if(pais==="CO"){
@@ -121,8 +131,9 @@ angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'Of
     ];
 
     self.resetOferta = function(){
-        self.oferta={id:-1, titulo:"", descripcion:"", vacante:"", salario:0, tipo:1, estado:false, fecha_creacion:"", fecha_contratacion:"", eliminar:false};
-        $scope.form_oferta.$setPristine();
+        self.oferta={id:-1, titulo:"", descripcion:"", vacante:"", salario:0,tipo:1, estado:false, 
+        fecha_creacion:"", fecha_contratacion:"", pais:"CO", ciudad:"", depto:-1, dapart:"", eliminar:false };
+        $scope.form_oferta.reset();
       };
         
 }]).factory('OfertaService', ['$http', '$q', function($http, $q){
@@ -130,16 +141,12 @@ angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'Of
 	return {
                     
             SaveOferta: function(oferta){
-            return $http.post('../oferta', oferta).then(
-                                                            function(response){
-                                                                    console.log(response.data);
-                                                                    return response.data;
-                                                            }, 
-                                                            function(errResponse){
-                                                                    console.error('Error guardando datos personales ' +errResponse);
-                                                                    return $q.reject(errResponse);
-                                                            }
-                                            );
+                return $http.post('../oferta', oferta).then(function(response){
+                    return response.data;
+                },function(errResponse){
+                    console.error('Error guardando datos personales ' +errResponse);
+                    return $q.reject(errResponse);
+                });
             },
             listaOfertas: function() {
                 return $http.post('../list_oferta').then(function(response){
@@ -183,4 +190,80 @@ angular.module('MyApp.Oferta', []).controller('OfertaController', ['$scope', 'Of
             }
         };
     }
-}; });
+}; })
+.controller('PlanesController', ['$scope', 'PlanesService', function($scope, PlanesService) {
+    var self = this;
+    self.plan={id:-1, nombre:"", visual:0, oferta:0, duracion:0,valor:0};
+    self.transaccion={id:-1, id_plan:-1, visual:0, oferta:0, valor:0, iso_cur:"COP", medio:"W"};
+    self.formulario ={merchant_id:'', po_id: '', iso_currency: '', amount: 0,
+        pv_checksum: '',lifetime: 0, error:0};
+    self.planes=[];
+    
+    self.SaveCompraPlanes = function(transaccion){
+        PlanesService.SaveCompraPlanes(transaccion).then(function(d){
+            self.formulario = d;
+            self.transaccion.id = self.formulario.po_id;
+            form_compra.modal('show');
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+        });
+    };
+
+    self.compra = function(id){
+        for(var i = 0; i < self.planes.length; i++){
+            if(self.planes[i].id === id) {
+                self.plan = angular.copy(self.planes[i]);
+                self.transaccion.id_plan = self.plan.id;
+                self.transaccion.visual = self.plan.visual;
+                self.transaccion.oferta = self.plan.oferta;
+                self.transaccion.valor = self.plan.valor;                
+                self.SaveCompraPlanes(self.transaccion);
+                break;
+            }
+        }
+    };
+    
+    self.listaPlanes = function(){
+        PlanesService.listaPlanes().then(function(d){
+            self.planes = d;
+        },function(errResponse){
+            console.error('Error while creating Paper.');
+        });
+    };
+          
+    self.GetUsuarioGeneral = function(){
+        PlanesService.GetUsuarioGeneral().then(function(d) {
+            self.Planess = d.Planes;
+       },function(errResponse){
+           console.error('Error while fetching Currencies');
+       });
+    };
+       
+    self.listaPlanes();
+
+    self.submitCompraPlanes = function(){
+        self.SaveCompraPlanes(self.Planes);
+    };
+       
+}]).factory('PlanesService', ['$http', '$q', function($http, $q){
+
+	return {
+            SaveCompraPlanes: function(transaccion){
+                return $http.post('../pago_plan', transaccion).then(function(response){
+                    return response.data;
+                },function(errResponse){
+                    console.error('Error guardando datos personales ' +errResponse);
+                    return $q.reject(errResponse);
+                });
+            },
+            listaPlanes: function() {
+                return $http.post('../list_planes').then(function(response){
+                    return response.data;
+                }, 
+                function(errResponse){
+                    console.error('Error while fetching expenses');
+                    return $q.reject(errResponse);
+                });
+            }
+	};
+}]);

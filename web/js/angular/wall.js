@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallService', 'PagerService', 
-    function($scope, WallService, PagerService) {
+angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallService', '$http', 
+    function($scope, WallService, $http) {
     var self = this;
+    self.busqueda={porpage:10, pageno:1, q:"", depto:""};
     self.usuario={mail:"", password:"",name:"", lastname:"", phone:""};
     self.oferta={id:-1, titulo:"", descripcion:"", vacante:"", salario:0,tipo:1, estado:false, fecha:"", fecha_contratacion:"", visto:false, pais:"CO", ciudad:"", depto:-1, dapart:""};
     self.ofertas=[];
@@ -10,40 +11,32 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
     
     self.dptos=[];
     self.dpto={id:0, departamento:"", ciudades:[]};
-    self.tamano = 0;
-    self.lugar = "";
     self.mensaje = "Se ha ejecutado el proceso correctamente...";
     self.error = false;
-    self.palabra_clave = "";
-    self.pag = 1;
-      
-    self.pager = {};
     
-    self.setPage = function(page){
-        console.log(page);
-        if (page < 1 || page > self.pager.totalPages) {
-            return;
-        }
-        self.pag = page;
-        self.listaOfertas(page);
-    };
-    
-    self.listaOfertas = function(pagina){
-        console.log(pagina);
-        WallService.listaOfertas(self.palabra_clave, (self.lugar===null||self.lugar==="")?"-1":self.lugar,pagina).then(function(d){
-            self.ofertas = d.lista;
-            self.tamano = d.tamano;
-            self.pager = PagerService.GetPager(self.tamano, pagina);
-        },function(errResponse){
-            console.error('Error while creating Paper.');
+    self.pageno = 1; // initialize page no to 1
+    self.total_count = 0;
+    self.itemsPerPage = 20; //this could be a dynamic value from a drop down
+        
+    self.getData = function(pageno){ // This would fetch the data on page change.
+        //In practice this should be in a factory.
+        self.busqueda.porpage = self.itemsPerPage;
+        self.busqueda.pageno = pageno;
+        self.ofertas = [];  
+        $http.post("../list_oferta_empleado", self.busqueda).success(function(response){ 
+            //ajax request to fetch data into vm.data
+            self.ofertas = response.data;  // data to be displayed on current page.
+            self.total_count = response.total_count; // total data count.
         });
     };
     
-    self.initController = function() {
-        // initialize to page 1
-        self.setPage(1);
+    self.getData(self.pageno);
+    
+    self.limpiar = function(){
+        self.busqueda={porpage:10, pageno:1, q:"", depto:""};
+        self.getData(1);
     };
-        
+    
     self.SaveHV = function(hoja_vida){
         WallService.SaveHV(hoja_vida).then(function(d){
             if(d==="true"){
@@ -66,15 +59,6 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
         });
     };
        
-    self.buscarOferta = function(){
-        WallService.listaOfertas(self.palabra_clave, (self.lugar===null)?"-1":self.lugar,1).then(function(d){
-            self.ofertas = d.lista;  
-            self.setPage(1);
-        },function(errResponse){
-            console.error('Error while creating Paper.');
-        });
-    };
-          
     self.verOferta = function(id){
         WallService.verOferta(id).then(function(d) {
             btn_aplicacion.button("reset");
@@ -107,7 +91,6 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
     
     self.listaDptosCiudad();
     self.getDatosUser();
-    self.initController();
     
     self.submit = function() {
         self.SaveUser(self.usuario); 
@@ -236,14 +219,6 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
 		return $q.reject(errResponse);
             });
 	},
-        listaOfertas: function(txt, dpto_select, pagina) {
-            return $http.post('../list_oferta_empleado', {'txt':txt,'dpto_select':dpto_select,'pagina':pagina}).then(function(response){
-                return response.data;
-            },function(errResponse){
-                console.error('Error while fetching expenses');
-                return $q.reject(errResponse);
-            });
-        },
         verOferta: function(id) {
             return $http.post('../vista_oferta', {"id":id}).then(function(response){
                 return response.data;
@@ -294,16 +269,52 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
             });
         }
     };
-}]).controller('WallEmpresaController', ['$scope', 'WallEmpresaService', function($scope, WallEmpresaService) {
+}]).controller('WallEmpresaController', ['$scope', 'WallEmpresaService', '$http', function($scope, WallEmpresaService, $http) {
     var self = this;
-    self.empleado={email:"", cod:"",nombre:"", apellido:"", puntaje:0, hoja_vida:"",experiencia:0, adquirir:false};
-    self.empleados=[];
-    
     self.info_empresa={nit:"",r_social:"", dir:"", tel:"", cam_com:"", doc_replegal:"",nombre_replegal:"", 
     email_replegal:"", tel_replegal:"", demo:false, id_plan:0, tkn_disp:0, ofertas_disp:0, ult_compra:"", vence_compra:"", tot_tkn:0, tot_ofr:0};
     self.list_trazas=[];
     self.traza={fecha:"",hora:"",evento:""};
     self.mensajeModal="";
+    self.busqueda={porpage:10, pageno:1, q:"", edadmi:"", edadmx:"", expmi:"", expmx:"", punmi:"", punmx:"", depto:""};
+    self.empleado={email:"", cod:"",nombre:"", apellido:"", puntaje:0, hoja_vida:"",experiencia:0, edad:0, depto:""};
+    self.deptos=[];
+    self.depto={id:"", departamento:"", ciudades:[]};
+    self.list_empleados=[];
+    self.empleados = [];
+    self.pageno = 1; // initialize page no to 1
+    self.total_count = 0;
+    self.itemsPerPage = 20; //this could be a dynamic value from a drop down
+        
+    self.getData = function(pageno){ // This would fetch the data on page change.
+        //In practice this should be in a factory.
+        self.busqueda.porpage = self.itemsPerPage;
+        self.busqueda.pageno = pageno;
+        self.empleados = [];  
+        $http.post("../list_employes", self.busqueda).success(function(response){ 
+            //ajax request to fetch data into vm.data
+            console.log(response.data);
+            self.empleados = response.data;  // data to be displayed on current page.
+            self.total_count = response.total_count; // total data count.
+            Modal_filter.modal('hide');
+        });
+    };
+    
+    
+    self.getData(self.pageno);
+    
+    self.limpiar = function(){
+        btn_clear.button('loading');
+        self.busqueda={porpage:10, pageno:1, q:"", edadmi:"", edadmx:"", expmi:"", expmx:"", punmi:"", punmx:"", depto:"", estado:1};
+        self.getData(1);
+        btn_clear.button('reset');
+    };
+    
+    self.buscar = function(){
+        btn_search.button('loading');
+        self.getData(1);
+        btn_search.button('reset');
+    };
     
     self.GetEmpresaGeneral = function(){
         WallEmpresaService.GetEmpresaGeneral().then(function(d) {
@@ -327,16 +338,17 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
         });
     };
     
-    self.llenarEmpleados = function(){
-        WallEmpresaService.llenarEmpleados().then(function(d) {
-            self.empleados = d;
+    self.llenarListaDeptos = function(){
+        WallEmpresaService.listaDptosCiudad().then(function(d) {
+            self.deptos = d;
         },function(errResponse){
             console.error('Error while fetching Currencies');
         });
-    };
+    };    
         
-    self.GetEmpresaGeneral();    
-    self.llenarEmpleados();
+    self.GetEmpresaGeneral(); 
+    self.llenarListaDeptos();
+
     
     self.adquirirEmp = function(cod){
         self.empleado.adquirir = true;
@@ -357,6 +369,19 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
     self.dtOptions = {
             bAutoWidth:true,
             stateSave: true,
+            paging:false,
+            order: [[ 0, "desc" ]],
+            bFilter: false,
+            columnDefs: [ 
+                {
+                targets: 7,
+                orderable: false
+                },
+                {
+                targets: 8,
+                orderable: false
+                },
+            ],
             language: {
                 "lengthMenu": "Mostrar _MENU_ registros",
                 "zeroRecords": "No se encontraron registros",
@@ -366,18 +391,10 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
                 "search": "Buscar"
             }
         };
-        
-          
+    
+    
 }]).factory('WallEmpresaService', ['$http', '$q', function($http, $q){
     return {
-        llenarEmpleados: function() {
-            return $http.post('../list_employes').then(function(response){
-		return response.data;
-            },function(errResponse){
-                console.error('Error while fetching expenses');
-                return $q.reject(errResponse);
-            });
-	},
         GetEmpresaGeneral: function() {
             return $http.post('../empresa_general').then(function(response){
                 return response.data;
@@ -392,6 +409,14 @@ angular.module('MyApp.Wall', []).controller('WallController', ['$scope', 'WallSe
                 console.error('Error while fetching expenses');
                 return $q.reject(errResponse);
             });
-	}	
+	},
+        listaDptosCiudad: function() {
+            return $http.post('../assets/colombia.json').then(function(response){
+                return response.data;
+            },function(errResponse){
+                console.error('Error while fetching expenses');
+                return $q.reject(errResponse);
+            });
+	}
     };
 }]);
