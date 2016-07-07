@@ -31,6 +31,7 @@ public class list_experiencia extends HttpServlet {
             if(session.getAttribute("user")!=null){
                 usuario u = (usuario)session.getAttribute("user");
                 String x = Listas.listaExpLaborales(u.getCodigo(), false).toJSONString();
+                System.out.println(x);
                 out.print(x);
             }else{
                 out.print("session");

@@ -65,6 +65,7 @@ public class experiencia_byadmin extends HttpServlet {
         int anio_inicio = Integer.parseInt(joExperiencia_usr.get("anio_inicio").toString());
         int mes_fin = 0;
         int anio_fin = 0;
+        int tipo_equipo = 0;
         
         if(joExperiencia_usr.get("mes_fin")!=null){
             if(joExperiencia_usr.get("mes_fin").toString().equals("")){
@@ -78,6 +79,13 @@ public class experiencia_byadmin extends HttpServlet {
                 anio_fin = 0;
             }else{
                 anio_fin = Integer.parseInt(joExperiencia_usr.get("anio_fin").toString());
+            }
+        }
+        if(joExperiencia_usr.get("tipo_equipo")!=null){
+            if(joExperiencia_usr.get("tipo_equipo").toString().equals("")){
+                tipo_equipo = 0;
+            }else{
+                tipo_equipo = Integer.parseInt(joExperiencia_usr.get("tipo_equipo").toString());
             }
         }
         boolean labora = (Boolean) joExperiencia_usr.get("labora");
@@ -94,7 +102,7 @@ public class experiencia_byadmin extends HttpServlet {
                 usuario u = (usuario)session.getAttribute("user");
                 boolean b = Guardar.SaveExperiencia(codigoConductor, id, empresa, cargo, 
                         salario, bonos, supervisor, telefono, pais, dpto, depart, ciudad, direccion, mes_inicio, 
-                        anio_inicio, mes_fin, anio_fin, labora, eliminar, retiro);
+                        anio_inicio, mes_fin, anio_fin, labora, eliminar, retiro, tipo_equipo);
                 if(b){
                     out.print("true");
                 }else{

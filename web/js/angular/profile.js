@@ -17,7 +17,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
           
     self.experiencias=[];
     self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", depto:"", depart:"" ,
-        ciudad:"", direccion:"", mes_inicio:"", anio_inicio:"", mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0, eliminar:false};
+        ciudad:"", direccion:"", mes_inicio:"", anio_inicio:"", mes_fin:0, anio_fin:0, labora:false, retiro:"", exp_meses:0, eliminar:false, tipo_equipo:""};
 
     self.formaciones=[];
     self.formacion={id:-1, c_educativo:"", nivel_estudio: "", area_estudio:"", estado:2, mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"", eliminar:false};
@@ -299,7 +299,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
     self.resetExp = function(){
         $scope.exp_laboral.reset();
         self.exp_laboral={id:-1, empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", dpto:"", 
-        ciudad:"", direccion:"", mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"", labora:false, retiro:"", exp_meses:0, eliminar:false};
+        ciudad:"", direccion:"", mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"", labora:false, retiro:"", exp_meses:0, eliminar:false, tipo_equipo:""};
         self.colombiaExp = true;
     };
           
@@ -355,6 +355,18 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         {ID: 7, Value: 'Postgrado / Especialización'},
         {ID: 8, Value: 'Postgrado / Maestría'},
         {ID: 9, Value: 'Postgrado / Doctorado'}
+    ];
+    
+    self.TipoEquipos = [
+        {ID: 1, Value: 'Cama baja'},
+        {ID: 2, Value: 'Camión'},
+        {ID: 3, Value: 'Estacas'},
+        {ID: 4, Value: 'Plataforma'},
+        {ID: 5, Value: 'Refrigerado'},
+        {ID: 6, Value: 'Remolque'},
+        {ID: 7, Value: 'Remolque Articulado'},
+        {ID: 8, Value: 'Tanque'},
+        {ID: 9, Value: 'Volqueta-Tolva'}
     ];
         
 }]).factory('ProfileService', ['$http', '$q', function($http, $q){
@@ -640,7 +652,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
           
     self.experiencias=[];
     self.exp_laboral={id:-1, cod:"", empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", depto:"", depart:"",
-         ciudad:"", direccion:"", mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"", labora:false, retiro:"", exp_meses:0, eliminar:false};
+         ciudad:"", direccion:"", mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"", labora:false, retiro:"", exp_meses:0, eliminar:false, tipo_equipo:""};
 
     self.check={cod:"", chk_lab:false, chk_esc:false, chk_cur:false, chk_exp: false, chk_uexp:false, chk_equ:false, chk_myo:false, chk_com:false, chk_acc:false, chk_jud:false,
     not_lab:"", not_esc:"", not_cur:"", not_exp:"", not_uexp:"", not_equ:"", not_myo:"", not_com:"", not_acc:"", not_jud:"", tot_cal:0, not_:""};
@@ -1002,10 +1014,11 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         for(var i = 0; i < self.experiencias.length; i++){
             if(self.experiencias[i].id === id) {
                self.exp_laboral = angular.copy(self.experiencias[i]);
-               if(self.exp_laboral.depto<=-1){
+               if(self.exp_laboral.depto!==""){
                    self.selectDptoExp(self.exp_laboral.depto);
+                   console.log(self.exp_laboral.depto + "entro aqui");
                }
-               console.log(self.exp_laboral.mes_inicio);
+               console.log(self.exp_laboral.depto);
                form_experiencia.modal( "show" );
                break;
             }
@@ -1158,7 +1171,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         $scope.expe_laboral.reset();
        var cod = self.getVarUrl("cod");
         self.exp_laboral={id:-1, cod:"", empresa:"", cargo:"", salario:0, bonos:0, supervisor:"", telefono:"", pais:"CO", dpto:"", 
-        ciudad:"", direccion:"", mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"", labora:false, retiro:"", exp_meses:0, eliminar:false};
+        ciudad:"", direccion:"", mes_inicio:"", anio_inicio:"", mes_fin:"", anio_fin:"", labora:false, retiro:"", exp_meses:0, eliminar:false, tipo_equipo:""};
         self.exp_laboral.cod = cod; 
         self.colombiaExp = true;
     };
@@ -1255,6 +1268,18 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         {ID: 7, Value: 'Postgrado / Especialización'},
         {ID: 8, Value: 'Postgrado / Maestría'},
         {ID: 9, Value: 'Postgrado / Doctorado'}
+    ];
+    
+    self.TipoEquipos = [
+        {ID: 1, Value: 'Cama baja'},
+        {ID: 2, Value: 'Camión'},
+        {ID: 3, Value: 'Estacas'},
+        {ID: 4, Value: 'Plataforma'},
+        {ID: 5, Value: 'Refrigerado'},
+        {ID: 6, Value: 'Remolque'},
+        {ID: 7, Value: 'Remolque Articulado'},
+        {ID: 8, Value: 'Tanque'},
+        {ID: 9, Value: 'Volqueta-Tolva'}
     ];
     
 }]).factory('EditConductorbyAdminService', ['$http', '$q', function($http, $q){

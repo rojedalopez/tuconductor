@@ -84,10 +84,10 @@ public class Objetos {
                     return obj.toJSONString();
              
         }catch (SQLException e) {
-            System.out.println("error SQLException en ObtenerCliente");
+            System.out.println("error SQLException en ObtenerDatosdeUsuario");
                     System.out.println(e.toString());
         }catch (Exception e){
-                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println("error Exception en ObtenerDatosdeUsuario");
                     System.out.println(e.toString());
         }finally{
                     if(!conn.isClosed()){
@@ -143,10 +143,10 @@ public class Objetos {
                     return obj.toJSONString();
              
         }catch (SQLException e) {
-            System.out.println("error SQLException en ObtenerCliente");
+            System.out.println("error SQLException en ObtenerDatosdeEmpresa");
                     System.out.println(e.getMessage());
         }catch (Exception e){
-                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println("error Exception en ObtenerDatosdeEmpresa");
                     System.out.println(e.getMessage());
         }finally{
                     if(!conn.isClosed()){
@@ -185,10 +185,10 @@ public class Objetos {
                     return obj.toJSONString();
              
         }catch (SQLException e) {
-            System.out.println("error SQLException en ObtenerCliente");
+            System.out.println("error SQLException en ObtenerDatosGeneral");
                     System.out.println(e.getMessage());
         }catch (Exception e){
-                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println("error Exception en ObtenerDatosGeneral");
                     System.out.println(e.getMessage());
         }finally{
                     if(!conn.isClosed()){
@@ -210,7 +210,12 @@ public class Objetos {
                     conn=conexion();
                     String instruccion="";
                      
-                    instruccion =   "";
+                    instruccion =   "SELECT chk_exp_calificacion, not_exp_calificacion, chk_acc_calificacion, not_acc_calificacion, " +
+                                    "chk_uexp_calificacion, not_uexp_calificacion, chk_cur_calificacion, not_cur_calificacion, " +
+                                    "chk_myo_calificacion, not_myo_calificacion, chk_esc_calificacion, not_esc_calificacion, " +
+                                    "chk_jud_calificacion, not_jud_calificacion, chk_com_calificacion, not_com_calificacion, " +
+                                    "chk_equ_calificacion, not_equ_calificacion, chk_lab_calificacion, not_lab_calificacion, " +
+                                    "pun_tot_calificacion, not_calificacion FROM tblCalificacion WHERE cod_empleado = ?;";
                      
                     insertar=conn.prepareStatement(instruccion);
                     insertar.setString(1, id);
@@ -244,10 +249,10 @@ public class Objetos {
                     return obj;
              
         }catch (SQLException e) {
-            System.out.println("error SQLException en ObtenerCliente");
+            System.out.println("error SQLException en ObtenerPuntaje");
                     System.out.println(e.getMessage());
         }catch (Exception e){
-                    System.out.println("error Exception en ObtenerCliente");
+                    System.out.println("error Exception en ObtenerPuntaje");
                     System.out.println(e.getMessage());
         }finally{
                     if(!conn.isClosed()){
@@ -257,9 +262,5 @@ public class Objetos {
         return null;
     }
 
-    public static Object SaveCompraTokens(String codigo, int id_plan, float valor, String o_cur, String medio, int tok_vis, int tok_ofr) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
     
 }

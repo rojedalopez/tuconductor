@@ -347,7 +347,7 @@ public class Listas {
                     instruccion =   "SELECT id_explaboral, epr_explaboral, crg_explaboral, slr_explaboral, bon_explaboral, spv_explaboral, " +
                                     "tel_spv_explaboral, dir_explaboral, cui_explaboral, dpt_explaboral, nbr_dpt_explaboral, IFNULL(pais_explaboral,'CO'), aun_explaboral, " +
                                     "rzn_fin_explaboral, mes_ini_explaboral, anio_ini_explaboral, mes_fin_explaboral, " +
-                                    "anio_fin_explaboral, mes_explaboral, anio_explaboral, cod_empleado " +
+                                    "anio_fin_explaboral, mes_explaboral, cod_empleado, id_tipequipo " +
                                     "FROM tuconductor.tblExpLaboral WHERE cod_empleado = ? ORDER BY aun_explaboral DESC, anio_ini_explaboral DESC, mes_ini_explaboral DESC;";
                      
                     insertar=conn.prepareStatement(instruccion);
@@ -373,8 +373,8 @@ public class Listas {
                         obj.put("anio_inicio", datos.getInt(16));
                         obj.put("mes_fin", datos.getInt(17));
                         obj.put("anio_fin", datos.getInt(18));
-                        obj.put("exp_meses", datos.getInt(19));
                         obj.put("cod", datos.getString(20));
+                        obj.put("tipo_equipo", datos.getInt(21));
                         obj.put("eliminar", false);
                         lista.add(obj);
                     }

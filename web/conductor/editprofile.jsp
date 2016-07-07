@@ -756,6 +756,14 @@ if(session.getAttribute("user") == null){
                                 required-message="'El campo no puede estar vacio'"
                                 required/>
                         </div>
+                        <label class="etiqueta_e">Tipo Equipo:</label>
+                        <div class="form-group">
+                            <select class="form-control selector_e" 
+                                name="tipo_equipo" ng-model="ctrl.exp_laboral.tipo_equipo" 
+                                ng-options="TipoE.ID as TipoE.Value for TipoE in ctrl.TipoEquipos">
+                                <option>--- Seleccione Tipo Equipo ---</option>
+                            </select>
+                        </div>
                         <label class="etiqueta_e">Salario:</label>
                         <div class="form-group">
                             <input type="number" class="form-control texto_e_min" min="0" name="salario" ng-model="ctrl.exp_laboral.salario" placeholder="$" />

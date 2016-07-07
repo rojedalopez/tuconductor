@@ -183,13 +183,13 @@ public class Guardar {
     
     public static boolean SaveExperiencia(String cod_, int id, String empresa, String cargo, float salario, float bonos, String supervisor, 
             String telefono, String pais, int dpto, String nbr_depto, String ciudad, String dir, int mes_inicio, int anio_inicio, int mes_fin, int anio_fin, 
-            boolean labora, boolean eliminar, String retiro) throws ClassNotFoundException, SQLException{
+            boolean labora, boolean eliminar, String retiro, int tipo_equipo) throws ClassNotFoundException, SQLException{
         boolean b=false;
         Connection conn=null;
         PreparedStatement insertar=null;
         
         conn=conexion();
-            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveExperiencia(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)};")) {
+            try (CallableStatement cs = conn.prepareCall("{CALL tuconductor.PROC_SaveExperiencia(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)};")) {
                 cs.setString(1, cod_);
                 cs.setInt(2, id);
                 cs.setString(3, empresa);
@@ -210,10 +210,11 @@ public class Guardar {
                 cs.setInt(18, (labora)?1:0);
                 cs.setInt(19, (eliminar)?1:0);
                 cs.setString(20, retiro);
-                cs.registerOutParameter(21, Types.INTEGER);
+                cs.setInt(21, tipo_equipo);
+                cs.registerOutParameter(22, Types.INTEGER);
                 cs.executeQuery();
 
-                int retorno = cs.getInt(21);
+                int retorno = cs.getInt(22);
                 
                 if(retorno==1){
                     return true;
