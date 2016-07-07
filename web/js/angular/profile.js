@@ -274,7 +274,7 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
         for(var i = 0; i < self.experiencias.length; i++){
             if(self.experiencias[i].id === id) {
                self.exp_laboral = angular.copy(self.experiencias[i]);
-               if(self.exp_laboral.depto<=0){
+               if(self.exp_laboral.depto!==""){
                    self.selectDptoExp(self.exp_laboral.depto);
                }
                form_experiencia.modal( "show" );
@@ -1016,7 +1016,6 @@ angular.module('MyApp.Profile', []).controller('ProfileController', ['$scope', '
                self.exp_laboral = angular.copy(self.experiencias[i]);
                if(self.exp_laboral.depto!==""){
                    self.selectDptoExp(self.exp_laboral.depto);
-                   console.log(self.exp_laboral.depto + "entro aqui");
                }
                console.log(self.exp_laboral.depto);
                form_experiencia.modal( "show" );
