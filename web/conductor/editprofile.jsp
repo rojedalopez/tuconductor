@@ -417,7 +417,6 @@ if(session.getAttribute("user") == null){
                                         name="num_doc" 
                                         ng-model="ctrl.usuario_dp.num_doc" 
                                         clase="text_valid"
-                                        
                                         validator = "ctrl.lengthValidator(ctrl.usuario_dp.num_doc, 4) === true"
                                         invalid-message = "ctrl.lengthValidator(ctrl.usuario_dp.num_doc, 4)"
                                         required-message="'El campo no puede estar vacio'" 
